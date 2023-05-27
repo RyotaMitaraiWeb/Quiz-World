@@ -19,6 +19,7 @@ npm run test:e2e:debug # runs Playwright tests in debug mode, useful for close i
 ## Structure
 
 ### app
+- ``constants`` - holds files that contain constant values, e.g. API endpoints, available roles, etc.
 - ``core`` - holds singleton services, shell components like header, footer, and etc., and other elements that need to be imported within the ``AppModule``.
 - ``shared`` - holds reusable components, pipes, guards, directives, and other elements that can be used across multipe modules. You can import the shared module in any module where you need the components, pipes, or directives.
 - ``features`` - holds components and services that implement a specific feature of the app, such as a form page, search bar, etc.
