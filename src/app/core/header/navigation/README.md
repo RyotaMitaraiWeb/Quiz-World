@@ -21,4 +21,4 @@ Returns ``true`` if the user's roles array in the user state is empty, ``false``
 ```typescript
 function getInnerWidth(): number
 ```
-Returns the viewport width when called. This is used in place of CSS media queries for easier testing.
+Returns the viewport width when called. This is used when testing.
