@@ -1,7 +1,9 @@
 #nav {
   margin: 0;
   padding: 0;
-
+  @media screen and (max-width: 500px) {
+    display: none;
+  }
   .links {
     display: flex;
     list-style: none;
