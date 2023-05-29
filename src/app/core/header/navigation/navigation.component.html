@@ -1,0 +1,20 @@
+<nav id="nav" *ngIf="getInnerWidth() > 500">
+  <ul class="links">
+    <li *ngIf="isGuest" class="guest">
+      <mat-icon>account_box</mat-icon>
+      <a routerLink="/register">Register</a>
+    </li>
+    <li *ngIf="isGuest" class="guest">
+      <mat-icon>arrow_forward</mat-icon>
+      <a routerLink="/login">Login</a>
+    </li>
+    <li *ngIf="!isGuest" class="user">
+      <mat-icon>add</mat-icon>
+      <a routerLink="/quiz/create">Create a quiz</a>
+    </li>
+    <li *ngIf="!isGuest" class="user">
+      <mat-icon>arrow_forward</mat-icon>
+      <a routerLink="/logout">Logout</a>
+    </li>
+  </ul>
+</nav>
