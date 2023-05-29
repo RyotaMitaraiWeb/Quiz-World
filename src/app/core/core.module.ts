@@ -1,5 +1,6 @@
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HeaderModule } from './header/header.module';
 
 export abstract class EnsureImportedOnceModule {
   protected constructor(targetModule: any) {
@@ -11,8 +12,10 @@ export abstract class EnsureImportedOnceModule {
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule
-  ]
+    CommonModule,
+    HeaderModule,
+  ],
+  exports: [HeaderModule]
 })
 export class CoreModule extends EnsureImportedOnceModule {
   public constructor(@SkipSelf() @Optional() parent: CoreModule) {
