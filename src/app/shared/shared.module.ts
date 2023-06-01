@@ -5,7 +5,8 @@ import { QuestionModule } from './quiz-form/question/question.module';
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule
+    CommonModule,
+    QuestionModule,
   ],
   exports: [QuestionModule]
 })

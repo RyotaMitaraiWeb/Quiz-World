@@ -97,9 +97,8 @@ describe('QuestionComponent', () => {
 
         fixture.detectChanges();
 
-        // This will change when the other question forms are implemented
-        const h2 = questionEl.querySelector('.multiple-choice-question');
-        expect(h2?.textContent).toBe('random');
+        const multipleChoiceQuestion = questionEl.querySelector('.multiple-choice-question');
+        expect(multipleChoiceQuestion).not.toBeNull();
       });
     });
   });
