@@ -1,0 +1,15 @@
+<article class="question">
+  <h1 class="question-index">Question #{{ index }}</h1>
+  <h2 class="question-type">{{ questionLabels[type].label }}</h2>
+  <mat-form-field>
+    <mat-select [(value)]="type">
+      <mat-option value="single">Single-choice</mat-option>
+      <mat-option value="multi">Multiple-choice</mat-option>
+      <mat-option value="text">Text</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <app-single-choice *ngIf="type === 'single'" [answers]="question.answers"
+    [prompt]="question.prompt" (changeEvent)="triggerChange($event)"></app-single-choice>
+
+  <h2 *ngIf="type === 'multi'" class="multiple-choice-question">{{ question.prompt }}</h2>
+</article>

@@ -19,9 +19,20 @@ export interface IQuestion {
     prompt: string;
     answers: IAnswer[];
     order: number;
+    type: question;
   }
  * ```
  */
 export interface IQuestionSubmission extends IQuestion {
   order: number;
+  type: question;
 }
+
+/**
+ * * **single:** question presents multiple answers, of which only one is correct
+ * * **multi:** question presents multiple answers, of which AT LEAST one (and possibly more)
+ *  is correct
+ * * **text:** question presents a text field and the user must input an answer. These questions
+ * can have multiple correct answers
+ */
+export type question = 'single' | 'multi' | 'text';
