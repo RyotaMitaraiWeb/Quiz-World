@@ -3,13 +3,14 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { IQuestion, IQuestionSubmission, question } from '../../../../types/components/question.types';
 import { SingleChoiceComponent } from './single-choice/single-choice.component';
+import { MultipleChoiceComponent } from './multiple-choice/multiple-choice.component';
 
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss'],
   standalone: true,
-  imports: [CommonModule, SingleChoiceComponent, MatSelectModule],
+  imports: [CommonModule, SingleChoiceComponent, MultipleChoiceComponent, MatSelectModule],
 })
 export class QuestionComponent {
   @Input() question: IQuestion = {

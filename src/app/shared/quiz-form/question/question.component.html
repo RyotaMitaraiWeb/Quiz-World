@@ -8,8 +8,10 @@
       <mat-option value="text">Text</mat-option>
     </mat-select>
   </mat-form-field>
-  <app-single-choice *ngIf="type === 'single'" [answers]="question.answers"
-    [prompt]="question.prompt" (changeEvent)="triggerChange($event)"></app-single-choice>
+  <app-single-choice *ngIf="type === 'single'" [answers]="question.answers" [prompt]="question.prompt"
+    (changeEvent)="triggerChange($event)"></app-single-choice>
 
   <h2 *ngIf="type === 'multi'" class="multiple-choice-question">{{ question.prompt }}</h2>
+  <app-multiple-choice *ngIf="type === 'multi'" [prompt]="question.prompt"
+    [answers]="question.answers"></app-multiple-choice>
 </article>
