@@ -127,7 +127,7 @@ export class TextComponent {
     if (answers.length === 0) {
       return [{
         value: '',
-        correct: false,
+        correct: true,
       }];
     }
 
