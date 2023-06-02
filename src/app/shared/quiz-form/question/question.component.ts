@@ -4,13 +4,20 @@ import { MatSelectModule } from '@angular/material/select';
 import { IQuestion, IQuestionSubmission, question } from '../../../../types/components/question.types';
 import { SingleChoiceComponent } from './single-choice/single-choice.component';
 import { MultipleChoiceComponent } from './multiple-choice/multiple-choice.component';
+import { TextComponent } from './text/text.component';
 
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
   styleUrls: ['./question.component.scss'],
   standalone: true,
-  imports: [CommonModule, SingleChoiceComponent, MultipleChoiceComponent, MatSelectModule],
+  imports: [
+    CommonModule,
+    SingleChoiceComponent,
+    MultipleChoiceComponent,
+    TextComponent,
+    MatSelectModule,
+  ],
 })
 export class QuestionComponent {
   @Input() question: IQuestion = {
@@ -24,7 +31,7 @@ export class QuestionComponent {
 
   triggerChange(question: IQuestion) {
     this.question.prompt = question.prompt;
-    this.question.answers = question.answers;
+    this.question.answers = question.answers;    
 
     this.changeEvent.emit({
       ...question,
