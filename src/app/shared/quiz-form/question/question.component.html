@@ -13,7 +13,7 @@
 
   <h2 *ngIf="type === 'multi'" class="multiple-choice-question">{{ question.prompt }}</h2>
   <app-multiple-choice *ngIf="type === 'multi'" [prompt]="question.prompt"
-    [answers]="question.answers"></app-multiple-choice>
+    [answers]="question.answers" (changeEvent)="triggerChange($event)"></app-multiple-choice>
   
   <app-text *ngIf="type === 'text'" [prompt]="question.prompt" [answers]="question.answers" (changeEvent)="triggerChange($event)"></app-text>
 </article>
