@@ -1,0 +1,32 @@
+<div [formGroup]="form" class="text-question question">
+  <mat-form-field>
+    <input required matInput class="prompt" formControlName="prompt" (input)="triggerChange()">
+    <mat-error *ngIf="form.controls.prompt.errors?.['required']">Please fill this field!</mat-error>
+    <mat-error *ngIf="form.controls.prompt.errors?.['maxlength']">This field is too long!</mat-error>
+  </mat-form-field>
+  <h4>Correct Answers</h4>
+  <div class="correct-answer">
+    <div *ngFor="let answer of correctAnswersFormArray; index as i" formArrayName="correctAnswers">
+      <mat-form-field [formGroupName]="i">
+        <input required maxlength="100" class="correct-answer-field" matInput formControlName="correctAnswer" (input)="triggerChange()">
+        <mat-error *ngIf="correctAnswerFieldAtIndexErrors(i)?.['required']">Please fill this field!</mat-error>
+        <mat-error *ngIf="correctAnswerFieldAtIndexErrors(i)?.['maxlength']">This field is too long!</mat-error>
+      </mat-form-field>
+      <button 
+        aria-label="Remove this field"
+        mat-mini-fab
+        color="warn"
+        class="remove-field-btn correct"
+        matTooltip="Remove this field"
+        matTooltipPosition="above"
+        (click)="removeCorrectAnswerFieldAt(i)"
+      >
+        <mat-icon aria-hidden="true">delete</mat-icon>
+      </button>
+    </div>
+    <button mat-raised-button color="accent" class="add-field-btn correct" (click)="addNewCorrectAnswerField()">
+      <mat-icon>add</mat-icon>
+      Add new correct answer
+    </button>
+  </div>
+</div>
