@@ -6,7 +6,7 @@ import { TextComponent } from './text.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormArray } from '@angular/forms';
 
-describe('MultipleChoiceComponent', () => {
+describe('TextComponent', () => {
   let component: TextComponent;
   let fixture: ComponentFixture<TextComponent>;
   let loader: HarnessLoader;
