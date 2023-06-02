@@ -98,7 +98,7 @@ export class MultipleChoiceComponent {
 
       answers.push({
         value,
-        correct: false,
+        correct: true,
       });
     })
 
