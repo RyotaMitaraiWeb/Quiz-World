@@ -5,6 +5,7 @@ import { MatSelectHarness } from '@angular/material/select/testing';
 import { QuestionComponent } from './question.component';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatInputHarness } from '@angular/material/input/testing';
 
 describe('QuestionComponent', () => {
   let component: QuestionComponent;
@@ -23,6 +24,232 @@ describe('QuestionComponent', () => {
 
     it('should create', () => {
       expect(component).toBeTruthy();
+    });
+
+    describe('onChangeQuestionType', () => {
+      describe('passing "multi"', () => {
+        it('appends an empty wrong answer field if the question did not have such at all', () => {
+          component.question.answers = [{
+            value: 'correct',
+            correct: true,
+          }];
+
+          component.onChangeQuestionType('multi');
+
+          expect(component.question.answers.length).toBe(2);
+          expect(component.question.answers[1]).toEqual({
+            value: '',
+            correct: false,
+          });
+        });
+
+        it('appends an empty correct answer field if the question did not have such at all', () => {
+          component.question.answers = [{
+            value: 'incorrect',
+            correct: false,
+          }];
+
+          component.onChangeQuestionType('multi');
+
+          expect(component.question.answers.length).toBe(2);
+          expect(component.question.answers[1]).toEqual({
+            value: '',
+            correct: true,
+          });
+        });
+
+        it('Does not append anything if there was at least one correct and one wrong answer', () => {
+          component.question.answers = [
+            {
+              value: 'correct',
+              correct: true,
+            },
+            {
+              value: 'incorrect',
+              correct: false,
+            }
+          ];
+
+          component.onChangeQuestionType('multi');
+
+          expect(component.question.answers).toEqual([
+            {
+              value: 'correct',
+              correct: true,
+            },
+            {
+              value: 'incorrect',
+              correct: false,
+            }
+          ]);
+        });
+      });
+
+      describe('passing "text"', () => {
+        it('Removes any incorrect answers', () => {
+          component.question.answers = [
+            {
+              value: 'correct',
+              correct: true,
+            },
+            {
+              value: 'incorrect',
+              correct: false,
+            }
+          ];
+
+          component.onChangeQuestionType('text');
+
+          expect(component.question.answers).toEqual([
+            {
+              value: 'correct',
+              correct: true,
+            }
+          ]);
+        });
+
+        it('Answers remain the same if they follow the format', () => {
+          component.question.answers = [
+            {
+              value: 'correct',
+              correct: true,
+            },
+            {
+              value: 'correct2',
+              correct: true,
+            }
+          ];
+
+          component.onChangeQuestionType('text');
+
+          expect(component.question.answers).toEqual([
+            {
+              value: 'correct',
+              correct: true,
+            },
+            {
+              value: 'correct2',
+              correct: true,
+            }
+          ]);
+        });
+      });
+
+      describe('passing "single"', () => {
+        it('Passes only the first correct answer', () => {
+          component.question.answers = [
+            {
+              value: 'correct',
+              correct: true,
+            },
+            {
+              value: 'correct2',
+              correct: true,
+            },
+            {
+              value: 'wrong',
+              correct: false,
+            }
+          ];
+
+          component.onChangeQuestionType('single');
+
+          expect(component.question.answers).toEqual(
+            [
+              {
+                value: 'correct',
+                correct: true,
+              },
+              {
+                value: 'wrong',
+                correct: false,
+              }
+            ]
+          )
+        });
+
+        it('Appends an empty wrong answer if there isn\'t a wrong answer', () => {
+          component.question.answers = [
+            {
+              value: 'correct',
+              correct: true,
+            }
+          ];
+
+          component.onChangeQuestionType('single');
+
+          expect(component.question.answers).toEqual([
+            {
+              value: 'correct',
+              correct: true,
+            }, {
+              value: '',
+              correct: false,
+            }
+          ]);
+        });
+
+        it('Works correctly if there are multiple correct answers and no wrong ones', () => {
+          component.question.answers = [
+            {
+              value: 'correct',
+              correct: true,
+            },
+            {
+              value: 'correct2',
+              correct: true,
+            }
+          ];
+
+          component.onChangeQuestionType('single');
+          expect(component.question.answers).toEqual([
+            {
+              value: 'correct',
+              correct: true,
+            }, {
+              value: '',
+              correct: false,
+            }
+          ]);
+
+        });
+
+        it('Answers remain the same if they satisfy the format', () => {
+          component.question.answers = [
+            {
+              value: 'correct',
+              correct: true,
+            },
+            {
+              value: 'wrong',
+              correct: false,
+            },
+            {
+              value: 'wrong',
+              correct: false,
+            }
+          ];
+
+          component.onChangeQuestionType('single');
+
+          expect(component.question.answers).toEqual(
+            [
+              {
+                value: 'correct',
+                correct: true,
+              },
+              {
+                value: 'wrong',
+                correct: false,
+              },
+              {
+                value: 'wrong',
+                correct: false,
+              }
+            ]
+          );
+        });
+      });
     });
   });
 
@@ -45,7 +272,6 @@ describe('QuestionComponent', () => {
       fixture.detectChanges();
 
       const questionIndex = questionEl.querySelector('.question-index');
-      console.log(questionIndex);
 
       expect(questionIndex?.textContent).toBe('Question #2');
     });
@@ -99,6 +325,273 @@ describe('QuestionComponent', () => {
 
         const multipleChoiceQuestion = questionEl.querySelector('.multiple-choice-question');
         expect(multipleChoiceQuestion).not.toBeNull();
+      });
+    });
+
+    describe('Transfering answers from one type to another', () => {
+      let select: MatSelectHarness;
+      beforeEach(async () => {
+        select = await loader.getHarness(MatSelectHarness);
+      });
+
+      describe('to single-choice questions', () => {
+        it('transfers from multiple-choice questions', async () => {
+          await select.open();
+          fixture.detectChanges();
+
+          const options = await select.getOptions();
+          await options[1].click();
+
+          fixture.detectChanges();
+
+          const fields = await loader.getAllHarnesses(MatInputHarness);
+
+          await fields[1].setValue('correct');
+          await fields[2].setValue('incorrect');
+
+          fixture.detectChanges();
+
+          const addNewCorrectAnswerFieldBtn = document.querySelector('.add-field-btn.correct') as HTMLButtonElement;
+          const addNewWrongAnswerFieldBtn = document.querySelector('.add-field-btn.wrong') as HTMLButtonElement;
+
+          addNewCorrectAnswerFieldBtn.click();
+          addNewWrongAnswerFieldBtn.click();
+
+          fixture.detectChanges();
+
+          const updatedFields = await loader.getAllHarnesses(MatInputHarness);
+          await updatedFields[2].setValue('right');
+          await updatedFields[4].setValue('wrong');
+
+          fixture.detectChanges();
+
+          await select.open();
+          fixture.detectChanges();
+          await options[0].click();
+          fixture.detectChanges();
+
+
+          const correctAnswerFields = document.querySelectorAll('.correct-answer-field') as NodeListOf<HTMLInputElement>;
+          expect(correctAnswerFields.length).toBe(1);
+
+          expect(correctAnswerFields[0].value).toBe('correct');
+
+          const wrongAnswerFields = document.querySelectorAll('.wrong-answer-field') as NodeListOf<HTMLInputElement>;
+          expect(wrongAnswerFields.length).toBe(2);
+
+          expect(wrongAnswerFields[0].value).toBe('incorrect');
+          expect(wrongAnswerFields[1].value).toBe('wrong');
+        });
+
+        it('transfers from text questions', async () => {
+          await select.open();
+          fixture.detectChanges();
+
+          const options = await select.getOptions();
+          await options[2].click();
+
+          fixture.detectChanges();
+
+          const fields = await loader.getAllHarnesses(MatInputHarness);
+
+          await fields[1].setValue('correct');
+          fixture.detectChanges();
+
+          const addNewCorrectAnswerFieldBtn = document.querySelector('.add-field-btn.correct') as HTMLButtonElement;
+          addNewCorrectAnswerFieldBtn.click();
+
+          fixture.detectChanges();
+
+          const updatedFields = await loader.getAllHarnesses(MatInputHarness);
+          await updatedFields[2].setValue('right');
+
+          fixture.detectChanges();
+
+          await select.open();
+          fixture.detectChanges();
+
+          await options[0].click();
+          fixture.detectChanges();
+
+          const correctAnswerFields = document.querySelectorAll('.correct-answer-field') as NodeListOf<HTMLInputElement>;
+          expect(correctAnswerFields.length).toBe(1);
+
+          expect(correctAnswerFields[0].value).toBe('correct');
+
+          const wrongAnswerFields = document.querySelectorAll('.wrong-answer-field') as NodeListOf<HTMLInputElement>;
+          expect(wrongAnswerFields.length).toBe(1);
+          expect(wrongAnswerFields[0].value).toBe('');
+        });
+      });
+
+      describe('to multiple-choice questions', () => {
+        it('transfers from single-choice question successfully', async () => {
+          await select.open();
+          fixture.detectChanges();
+
+          const options = await select.getOptions();
+          await options[0].click();
+
+          fixture.detectChanges();
+
+          const fields = await loader.getAllHarnesses(MatInputHarness);
+
+          await fields[1].setValue('correct');
+
+          fixture.detectChanges();
+
+          await fields[2].setValue('wrong');
+
+          fixture.detectChanges();
+
+          const addFieldBtn = document.querySelector('.add-field-btn') as HTMLButtonElement;
+          addFieldBtn.click();
+
+          fixture.detectChanges();
+
+          await select.open();
+          await options[1].click();
+
+          fixture.detectChanges();
+
+          const correctAnswerFields = document.querySelectorAll('.correct-answer-field') as NodeListOf<HTMLInputElement>;
+          expect(correctAnswerFields.length).toBe(1);
+
+          expect(correctAnswerFields[0].value).toBe('correct')
+
+          const wrongAnswerFields = document.querySelectorAll('.wrong-answer-field') as NodeListOf<HTMLInputElement>;
+          expect(wrongAnswerFields.length).toBe(2);
+          expect(wrongAnswerFields[0].value).toBe('wrong');
+          expect(wrongAnswerFields[1].value).toBe('');
+        });
+
+        it('transfers from text question successfully', async () => {
+          await select.open();
+          fixture.detectChanges();
+
+          const options = await select.getOptions();
+          await options[2].click();
+
+          fixture.detectChanges();
+
+          const fields = await loader.getAllHarnesses(MatInputHarness);
+
+          await fields[1].setValue('correct');
+
+          fixture.detectChanges();
+
+          const addFieldBtn = document.querySelector('.add-field-btn') as HTMLButtonElement;
+          addFieldBtn.click();
+
+          fixture.detectChanges();
+
+          const newField = (await loader.getAllHarnesses(MatInputHarness))[2];
+          await newField.setValue('right');
+          fixture.detectChanges();
+
+          await select.open();
+          fixture.detectChanges();
+
+          await options[1].click();
+
+          fixture.detectChanges();
+
+          const correctAnswerFields = document.querySelectorAll('.correct-answer-field') as NodeListOf<HTMLInputElement>;
+          expect(correctAnswerFields.length).toBe(2);
+
+          expect(correctAnswerFields[0].value).toBe('correct');
+          expect(correctAnswerFields[1].value).toBe('right');
+
+          const wrongAnswerFields = document.querySelectorAll('.wrong-answer-field') as NodeListOf<HTMLInputElement>;
+          expect(wrongAnswerFields.length).toBe(1);
+          expect(wrongAnswerFields[0].value).toBe('');
+        });
+      });
+
+      describe('to text questions', () => {
+        it('transfers from single-choice questions successfully', async () => {
+          await select.open();
+          fixture.detectChanges();
+
+          const options = await select.getOptions();
+          await options[0].click();
+
+          fixture.detectChanges();
+
+          const fields = await loader.getAllHarnesses(MatInputHarness);
+
+          await fields[1].setValue('correct');
+
+          fixture.detectChanges();
+
+          await fields[2].setValue('wrong');
+
+          fixture.detectChanges();
+
+          const addFieldBtn = document.querySelector('.add-field-btn') as HTMLButtonElement;
+          addFieldBtn.click();
+
+          fixture.detectChanges();
+
+          await select.open();
+          await options[2].click();
+
+          fixture.detectChanges();
+
+          const correctAnswerFields = document.querySelectorAll('.correct-answer-field') as NodeListOf<HTMLInputElement>;
+          expect(correctAnswerFields.length).toBe(1);
+
+          expect(correctAnswerFields[0].value).toBe('correct')
+
+          const wrongAnswerFields = document.querySelectorAll('.wrong-answer-field') as NodeListOf<HTMLInputElement>;
+          expect(wrongAnswerFields.length).toBe(0);
+        });
+
+        it('transfers from multiple-choice questions', async () => {
+          await select.open();
+          fixture.detectChanges();
+
+          const options = await select.getOptions();
+          await options[1].click();
+
+          fixture.detectChanges();
+
+          const fields = await loader.getAllHarnesses(MatInputHarness);
+
+          await fields[1].setValue('correct');
+          await fields[2].setValue('incorrect');
+
+          fixture.detectChanges();
+
+          const addNewCorrectAnswerFieldBtn = document.querySelector('.add-field-btn.correct') as HTMLButtonElement;
+          const addNewWrongAnswerFieldBtn = document.querySelector('.add-field-btn.wrong') as HTMLButtonElement;
+
+          addNewCorrectAnswerFieldBtn.click();
+          addNewWrongAnswerFieldBtn.click();
+
+          fixture.detectChanges();
+
+          const updatedFields = await loader.getAllHarnesses(MatInputHarness);
+          await updatedFields[2].setValue('right');
+          await updatedFields[4].setValue('wrong');
+
+          fixture.detectChanges();
+
+          await select.open();
+          fixture.detectChanges();
+          await options[2].click();
+          fixture.detectChanges();
+
+
+          const correctAnswerFields = document.querySelectorAll('.correct-answer-field') as NodeListOf<HTMLInputElement>;
+          expect(correctAnswerFields.length).toBe(2);
+
+          expect(correctAnswerFields[0].value).toBe('correct');
+          expect(correctAnswerFields[1].value).toBe('right');
+
+          const wrongAnswerFields = document.querySelectorAll('.wrong-answer-field') as NodeListOf<HTMLInputElement>;
+          expect(wrongAnswerFields.length).toBe(0);
+        });
       });
     });
   });

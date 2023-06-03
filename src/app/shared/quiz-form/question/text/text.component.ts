@@ -46,7 +46,6 @@ export class TextComponent {
       const value = ca.value;
       correctAnswersForm.push(this.fb.group({ correctAnswer: value }));
     });
-
   }
 
   @Input() prompt = '';
@@ -80,7 +79,7 @@ export class TextComponent {
 
       answers.push({
         value,
-        correct: false,
+        correct: true,
       });
     });
     

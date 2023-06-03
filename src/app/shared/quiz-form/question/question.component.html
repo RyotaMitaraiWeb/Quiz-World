@@ -2,7 +2,7 @@
   <h1 class="question-index">Question #{{ index }}</h1>
   <h2 class="question-type">{{ questionLabels[type].label }}</h2>
   <mat-form-field>
-    <mat-select [(value)]="type">
+    <mat-select [(value)]="type" (valueChange)="onChangeQuestionType($event)">
       <mat-option value="single">Single-choice</mat-option>
       <mat-option value="multi">Multiple-choice</mat-option>
       <mat-option value="text">Text</mat-option>
