@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IAnswer } from '../../../../../types/components/answer.types';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -26,7 +26,7 @@ import { IQuestion } from '../../../../../types/components/question.types';
   styleUrls: ['./multiple-choice.component.scss']
 })
 export class MultipleChoiceComponent {
-  constructor(private readonly fb: FormBuilder) {
+  constructor(private readonly fb: FormBuilder, private readonly changeDetectorRef: ChangeDetectorRef) {
     this.form = this.fb.group({
       prompt: [this.prompt, [Validators.required, Validators.maxLength(100)]],
       correctAnswers: this.fb.array([
@@ -37,6 +37,7 @@ export class MultipleChoiceComponent {
       ]),
     });
   }
+  
   ngOnInit(): void {
     this.form.patchValue({
       prompt: this.prompt,
@@ -62,6 +63,12 @@ export class MultipleChoiceComponent {
       const value = wa.value;
       wrongAnswersForm.push(this.fb.group({ wrongAnswer: value }));
     });
+
+    /* 
+      prevent "ExpressionChangedAfterItHasBeenCheckedError", seen so far
+      only in a test for this component.
+    */
+    this.changeDetectorRef.detectChanges();
   }
 
   @Input() prompt = '';
@@ -109,7 +116,7 @@ export class MultipleChoiceComponent {
         value,
         correct: false,
       });
-    });
+    });    
     
     this.changeEvent.emit({
       prompt,

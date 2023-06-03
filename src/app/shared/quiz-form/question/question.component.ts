@@ -31,13 +31,83 @@ export class QuestionComponent {
 
   triggerChange(question: IQuestion) {
     this.question.prompt = question.prompt;
-    this.question.answers = question.answers;    
+    this.question.answers = question.answers;
 
     this.changeEvent.emit({
       ...question,
       order: this.index,
       type: this.type,
     })
+  }
+
+  onChangeQuestionType(value: question) {
+    if (value === 'text') {
+      this.transferAnswerToTextQuestion();
+    } else if (value === 'single') {
+      this.transferAnswersToSingleChoiceQuestion();
+    } else if (value === 'multi') {
+      this.transferAnswersToMultipleChoiceQuestion();
+    }
+    
+    this.triggerChange(this.question);    
+  }
+
+  private transferAnswerToTextQuestion() {
+    this.question.answers = this.question.answers.filter(a => a.correct);
+  }
+
+  private transferAnswersToSingleChoiceQuestion() {
+    let hasNotEncounteredACorrectAnswer = true;
+    let hasNotEncounteredAWrongAnswer = true;
+    const result = this.question.answers.filter(a => {
+      const canBeAdded = hasNotEncounteredACorrectAnswer && a.correct;
+
+      if (a.correct) {
+        hasNotEncounteredACorrectAnswer = false;
+      }
+
+      if (!a.correct) {
+        hasNotEncounteredAWrongAnswer = false;
+      }
+
+      return !a.correct || canBeAdded;
+    });
+
+    if (hasNotEncounteredAWrongAnswer) {
+      result.push({
+        value: '',
+        correct: false,
+      });
+    }
+
+    this.question.answers = result;
+  }
+
+  private transferAnswersToMultipleChoiceQuestion() {
+    let hasNotEncounteredACorrectAnswer = true;
+    let hasNotEncounteredAWrongAnswer = true;
+
+    this.question.answers.forEach(a => {
+      if (a.correct) {
+        hasNotEncounteredACorrectAnswer = false;
+      } else {
+        hasNotEncounteredAWrongAnswer = false;
+      }
+    });
+
+    if (hasNotEncounteredACorrectAnswer) {
+      this.question.answers.push({
+        value: '',
+        correct: true,
+      });
+    }
+
+    if (hasNotEncounteredAWrongAnswer) {
+      this.question.answers.push({
+        value: '',
+        correct: false,
+      });
+    }
   }
 
   questionLabels: Record<question, IQuestionHint> = {
