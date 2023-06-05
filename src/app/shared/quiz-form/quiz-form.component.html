@@ -1,0 +1,10 @@
+<form>
+  <article *ngFor="let question of questions; index as i">
+    <app-question [question]="question" [type]="question.type" [index]="i"></app-question>
+    <button (click)="removeQuestion(i, $event)" mat-raised-button color="warn">Remove this question</button>
+  </article>
+  <button mat-raised-button color="primary" (click)="addQuestion($event)">
+    <mat-icon>add</mat-icon>
+    Add a new question
+  </button>
+</form>
