@@ -86,7 +86,6 @@ describe('AnswersManager', () => {
       form.controls[0].controls.answer.markAsTouched();
 
       const errors = manager.getErrorsAt(0);
-      console.log(errors);
       
       expect(errors).toEqual({maxlength: { requiredLength: 100, actualLength: 500 }});
     });
