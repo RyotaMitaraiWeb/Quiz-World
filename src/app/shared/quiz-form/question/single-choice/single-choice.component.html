@@ -1,26 +1,26 @@
 <div [formGroup]="form" class="single-choice-question question">
   <mat-form-field>
-    <input required matInput class="prompt" formControlName="prompt" (input)="triggerChange()">
+    <input required matInput class="prompt" formControlName="prompt">
     <mat-error *ngIf="form.controls.prompt.errors?.['required']">Please fill this field!</mat-error>
     <mat-error *ngIf="form.controls.prompt.errors?.['maxlength']">This field is too long!</mat-error>
   </mat-form-field>
   <h4>Correct Answer</h4>
-  <div class="correct-answer">
-    <mat-radio-button disabled checked></mat-radio-button>
-    <mat-form-field [formGroup]="form">
-      <input required maxlength="100" matInput class="correct-answer-field" formControlName="correctAnswer" (input)="triggerChange()">
-      <mat-error *ngIf="form.controls.correctAnswer.errors?.['required']">Please fill this field!</mat-error>
-      <mat-error *ngIf="form.controls.correctAnswer.errors?.['maxlength']">This field is too long!</mat-error>
+  <div class="correct-answer" formArrayName="correctAnswers">
+    <mat-radio-button disabled checked [name]="uniqueName"></mat-radio-button>
+    <mat-form-field [formGroupName]="0">
+      <input required maxlength="100" matInput class="correct-answer-field" formControlName="answer">
+      <mat-error *ngIf="correctAnswersManager.getErrorsAt(0)?.['required']">Please fill this field!</mat-error>
+      <mat-error *ngIf="correctAnswersManager.getErrorsAt(0)?.['maxlength']">This field is too long!</mat-error>
     </mat-form-field>
   </div>
   <h4>Wrong answers</h4>
   <div class="wrong-answers">
-    <div *ngFor="let answer of wrongAnswersFormArray; index as i" formArrayName="wrongAnswers">
+    <div *ngFor="let answer of form.controls.wrongAnswers.controls; index as i" formArrayName="wrongAnswers">
       <mat-radio-button disabled></mat-radio-button>
       <mat-form-field [formGroupName]="i">
-        <input required maxlength="100" class="wrong-answer-field" matInput formControlName="wrongAnswer" (input)="triggerChange()">
-        <mat-error *ngIf="wrongAnswerFieldAtIndexErrors(i)?.['required']">Please fill this field!</mat-error>
-        <mat-error *ngIf="wrongAnswerFieldAtIndexErrors(i)?.['maxlength']">This field is too long!</mat-error>
+        <input required maxlength="100" class="wrong-answer-field" matInput formControlName="answer">
+        <mat-error *ngIf="wrongAnswersManager.getErrorsAt(0)?.['required']">Please fill this field!</mat-error>
+      <mat-error *ngIf="wrongAnswersManager.getErrorsAt(0)?.['maxlength']">This field is too long!</mat-error>
       </mat-form-field>
       <button 
         aria-label="Remove this field"
@@ -29,14 +29,14 @@
         class="remove-field-btn"
         matTooltip="Remove this field"
         matTooltipPosition="above"
-        (click)="removeWrongAnswerFieldAt(i)"
+        (click)="removeWrongAnswerFieldAt($event, i)"
       >
         <mat-icon aria-hidden="true">delete</mat-icon>
       </button>
     </div>
+    <button mat-raised-button color="accent" class="add-field-btn" (click)="addNewWrongAnswerField($event)">
+      <mat-icon>add</mat-icon>
+      Add new wrong answer
+    </button>
   </div>
-  <button mat-raised-button color="accent" class="add-field-btn" (click)="addNewWrongAnswerField()">
-    <mat-icon>add</mat-icon>
-    Add new wrong answer
-  </button>
 </div>
