@@ -1,16 +1,16 @@
-<div [formGroup]="form" class="text-question question">
+<div [formGroup]="form">
   <mat-form-field>
-    <input required matInput class="prompt" formControlName="prompt" (input)="triggerChange()">
+    <input required matInput class="prompt" formControlName="prompt">
     <mat-error *ngIf="form.controls.prompt.errors?.['required']">Please fill this field!</mat-error>
     <mat-error *ngIf="form.controls.prompt.errors?.['maxlength']">This field is too long!</mat-error>
   </mat-form-field>
   <h4>Correct Answers</h4>
   <div class="correct-answer">
-    <div *ngFor="let answer of correctAnswersFormArray; index as i" formArrayName="correctAnswers">
+    <div *ngFor="let answer of answersManager.form.controls; index as i" formArrayName="correctAnswers">
       <mat-form-field [formGroupName]="i">
-        <input required maxlength="100" class="correct-answer-field" matInput formControlName="correctAnswer" (input)="triggerChange()">
-        <mat-error *ngIf="correctAnswerFieldAtIndexErrors(i)?.['required']">Please fill this field!</mat-error>
-        <mat-error *ngIf="correctAnswerFieldAtIndexErrors(i)?.['maxlength']">This field is too long!</mat-error>
+        <input required maxlength="100" class="correct-answer-field" matInput formControlName="answer">
+        <mat-error *ngIf="answersManager.getErrorsAt(i)?.['required']">Please fill this field!</mat-error>
+        <mat-error *ngIf="answersManager.getErrorsAt(i)?.['maxlength']">This field is too long!</mat-error>
       </mat-form-field>
       <button 
         aria-label="Remove this field"
@@ -19,12 +19,12 @@
         class="remove-field-btn correct"
         matTooltip="Remove this field"
         matTooltipPosition="above"
-        (click)="removeCorrectAnswerFieldAt(i)"
+        (click)="removeField($event, i)"
       >
         <mat-icon aria-hidden="true">delete</mat-icon>
       </button>
     </div>
-    <button mat-raised-button color="accent" class="add-field-btn correct" (click)="addNewCorrectAnswerField()">
+    <button mat-raised-button color="accent" class="add-field-btn correct" (click)="addField($event)">
       <mat-icon>add</mat-icon>
       Add new correct answer
     </button>
