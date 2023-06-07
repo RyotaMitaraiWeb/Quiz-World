@@ -1,9 +1,12 @@
 <form>
-  <article *ngFor="let question of questions; index as i">
-    <app-question [question]="question" [type]="question.type" [index]="i"></app-question>
-    <button (click)="removeQuestion(i, $event)" mat-raised-button color="warn">Remove this question</button>
-  </article>
-  <button mat-raised-button color="primary" (click)="addQuestion($event)">
+  <section *ngFor="let question of form.controls.questions.controls; index as i">
+    <app-question [form]="question" [index]="i"></app-question>
+    <button class="remove-question-btn" (click)="removeQuestionAt(i, $event)" mat-raised-button color="warn">
+      <mat-icon>remove_circle</mat-icon>
+      Remove this question
+    </button>
+  </section>
+  <button mat-raised-button color="primary" (click)="addQuestion($event)" class="add-question-btn">
     <mat-icon>add</mat-icon>
     Add a new question
   </button>

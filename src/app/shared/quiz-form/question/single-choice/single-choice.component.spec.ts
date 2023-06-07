@@ -2,12 +2,30 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SingleChoiceComponent } from './single-choice.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormArray, ReactiveFormsModule } from '@angular/forms';
-import { IAnswer } from '../../../../../types/components/answer.types';
+import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 describe('SingleChoiceComponent', () => {
   let component: SingleChoiceComponent;
   let fixture: ComponentFixture<SingleChoiceComponent>;
+  const event = new Event('click');
+
+  const fb = new FormBuilder();
+
+  let form = fb.group({
+    title: ['', [Validators.required, Validators.maxLength(100)]],
+    description: ['', [Validators.maxLength(300)]],
+    questions: fb.array(
+      [fb.group(
+        {
+          prompt: ['', [Validators.required, Validators.maxLength(100)]],
+          correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
+          wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
+          type: ['single'],
+        }
+      )]
+    ),
+    instantMode: [false, [Validators.required]],
+  });
 
   describe('Unit tests', () => {
     beforeEach(() => {
@@ -22,146 +40,16 @@ describe('SingleChoiceComponent', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
     });
-  });
-
-  describe('Integration tests', () => {
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [SingleChoiceComponent, BrowserAnimationsModule]
-      });
-      fixture = TestBed.createComponent(SingleChoiceComponent);
-      component = fixture.componentInstance;
-      fixture.detectChanges();
-    });
-
-    describe('ngOnInit implementation', () => {
-      it('Sets form value successfully if @Input properties are passed', () => {
-        component.prompt = 'a';
-        component.answers = [
-          {
-            value: 'a',
-            correct: true,
-          },
-          {
-            value: 'a',
-            correct: false,
-          },
-        ];
-
-        component.ngOnInit();
-
-        expect(component.form.value).toEqual(
-          {
-            prompt: 'a',
-            correctAnswer: 'a',
-            wrongAnswers: [{ wrongAnswer: 'a' }]
-          }
-        );
-      });
-
-      it('Sets form value successfully if no @Input properties are passed', () => {
-        component.ngOnInit();
-
-        expect(component.form.value).toEqual(
-          {
-            prompt: '',
-            correctAnswer: '',
-            wrongAnswers: [{ wrongAnswer: '' }]
-          }
-        );
-      });
-    });
-
-    describe('hasMoreThanOneWrongAnswerField getter', () => {
-      it('Returns true if the form has more than one wrong answer', () => {
-        component.answers = [
-          {
-            value: 'a',
-            correct: false,
-          },
-          {
-            value: 'a',
-            correct: false,
-          },
-        ];
-
-        component.ngOnInit();
-
-        const result = component.hasMoreThanOneWrongAnswerField;
-        expect(result).toBe(true);
-      });
-
-      it('Returns false if the form has exactly one wrong answer', () => {
-        component.answers = [
-
-          {
-            value: 'a',
-            correct: false,
-          },
-        ];
-
-        component.ngOnInit();
-
-        const result = component.hasMoreThanOneWrongAnswerField;
-        expect(result).toBe(false);
-      });
-    });
 
     describe('addNewWrongAnswerField', () => {
       it('Adds a new field to the form', () => {
         component.ngOnInit();
 
-        component.addNewWrongAnswerField();
+        component.addNewWrongAnswerField(event);
         const form = component.form.get('wrongAnswers') as FormArray;
         expect(form.controls.length).toBe(2);
 
-        expect(form.controls[1].value).toEqual({ wrongAnswer: ''});
-      });
-    });
-
-    describe('removeWrongAnswerFieldAt', () => {
-      it('Removes field at the given index', () => {
-        component.answers = [
-          {
-            value: 'a',
-            correct: true,
-          },
-          {
-            value: 'a',
-            correct: false,
-          },
-          {
-            value: 'a',
-            correct: false,
-          }
-        ];
-
-        component.ngOnInit();
-
-        component.removeWrongAnswerFieldAt(0);
-        const wrongAnswersForm = component.form.get('wrongAnswers') as FormArray;
-        expect(wrongAnswersForm.length).toBe(1);
-
-        expect(wrongAnswersForm.value).toEqual([{ wrongAnswer: 'a'}]);
-      });
-
-      it('Does nothing if there is only one fields', () => {
-        component.answers = [
-          {
-            value: 'a',
-            correct: true,
-          },
-          {
-            value: 'a',
-            correct: false,
-          },
-        ];
-
-        component.ngOnInit();
-
-        component.removeWrongAnswerFieldAt(0);
-        const wrongAnswersForm = component.form.get('wrongAnswers') as FormArray;
-        expect(wrongAnswersForm.length).toBe(1);
+        expect(form.controls[1].value).toEqual({ answer: ''});
       });
     });
   });
@@ -174,47 +62,32 @@ describe('SingleChoiceComponent', () => {
       fixture = TestBed.createComponent(SingleChoiceComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
+
+      form = fb.group({
+        title: ['', [Validators.required, Validators.maxLength(100)]],
+        description: ['', [Validators.maxLength(300)]],
+        questions: fb.array(
+          [fb.group(
+            {
+              prompt: ['', [Validators.required, Validators.maxLength(100)]],
+              correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
+              wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
+              type: ['single'],
+            }
+          )]
+        ),
+        instantMode: [false, [Validators.required]],
+      });
     });
 
     describe('Data populating', () => {
-      it('Renders input properties correctly', () => {
-        component.prompt = 'Random Question';
-        component.answers = [
-          {
-            value: 'Correct answer',
-            correct: true,
-          },
-          {
-            value: 'Wrong answer',
-            correct: false,
-          },
-          {
-            value: 'Wrong answer2',
-            correct: false,
-          },
-        ];
+      it('Renders a passed form properly', () => {
+        form.controls.questions.controls[0].controls.correctAnswers.push(fb.group({ answer: 'correct'}));
+        form.controls.questions.controls[0].controls.wrongAnswers.setValue([{ answer: 'wrong1' }]);
+        form.controls.questions.controls[0].controls.wrongAnswers.push(fb.group({ answer: 'wrong2'}));
+        form.controls.questions.controls[0].controls.type.setValue('single');
 
-        component.ngOnInit();
-
-        fixture.detectChanges();
-
-        const questionDe = fixture.debugElement;
-        const questionEl = questionDe.nativeElement as HTMLElement;
-
-        const prompt = questionEl.querySelector('.prompt') as HTMLInputElement;
-        expect(prompt.value).toBe('Random Question');
-
-        const correctAnswer = questionEl.querySelector('.correct-answer-field') as HTMLInputElement;
-        expect(correctAnswer.value).toBe('Correct answer');
-
-        const wrongAnswers = questionEl.querySelectorAll('.wrong-answer-field') as NodeListOf<HTMLInputElement>;
-
-        expect(wrongAnswers.length).toBe(2);
-        expect(wrongAnswers[0].value).toBe('Wrong answer');
-        expect(wrongAnswers[1].value).toBe('Wrong answer2');
-      });
-
-      it('Renders properly if no props are passed to it', () => {
+        component.form = form.controls.questions.controls[0];
         component.ngOnInit();
 
         fixture.detectChanges();
@@ -229,22 +102,18 @@ describe('SingleChoiceComponent', () => {
         expect(correctAnswer.value).toBe('');
 
         const wrongAnswers = questionEl.querySelectorAll('.wrong-answer-field') as NodeListOf<HTMLInputElement>;
-        expect(wrongAnswers.length).toBe(1);
-        expect(wrongAnswers[0].value).toBe('');
+        expect(wrongAnswers.length).toBe(2);
+        expect(wrongAnswers[0].value).toBe('wrong1');
+        expect(wrongAnswers[1].value).toBe('wrong2');
       });
     });
 
     describe('Input and validation', () => {
       let questionEl: HTMLElement;
-
-      let promptField: HTMLInputElement;
-      let correctAnswerField: HTMLInputElement;
+      
       beforeEach(() => {
         const questionDe = fixture.debugElement;
         questionEl = questionDe.nativeElement as HTMLElement;
-
-        promptField = questionEl.querySelector('.prompt') as HTMLInputElement;
-        correctAnswerField = questionEl.querySelector('.correct-answer-field') as HTMLInputElement;
       });
 
       describe('Prompt', () => {
