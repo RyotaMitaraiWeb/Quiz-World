@@ -6,11 +6,29 @@ import { QuestionComponent } from './question.component';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputHarness } from '@angular/material/input/testing';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 describe('QuestionComponent', () => {
   let component: QuestionComponent;
   let fixture: ComponentFixture<QuestionComponent>;
   let loader: HarnessLoader;
+  const fb = new FormBuilder();
+
+  let form = fb.group({
+    title: ['', [Validators.required, Validators.maxLength(100)]],
+    description: ['', [Validators.maxLength(300)]],
+    questions: fb.array(
+      [fb.group(
+        {
+          prompt: ['', [Validators.required, Validators.maxLength(100)]],
+          correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
+          wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
+          type: ['single'],
+        }
+      )]
+    ),
+    instantMode: [false, [Validators.required]],
+  });
 
   describe('Unit tests', () => {
     beforeEach(() => {
@@ -20,6 +38,21 @@ describe('QuestionComponent', () => {
       fixture = TestBed.createComponent(QuestionComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
+      form = fb.group({
+        title: ['', [Validators.required, Validators.maxLength(100)]],
+        description: ['', [Validators.maxLength(300)]],
+        questions: fb.array(
+          [fb.group(
+            {
+              prompt: ['', [Validators.required, Validators.maxLength(100)]],
+              correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
+              wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
+              type: ['single'],
+            }
+          )]
+        ),
+        instantMode: [false, [Validators.required]],
+      });
     });
 
     it('should create', () => {
@@ -28,226 +61,33 @@ describe('QuestionComponent', () => {
 
     describe('onChangeQuestionType', () => {
       describe('passing "multi"', () => {
-        it('appends an empty wrong answer field if the question did not have such at all', () => {
-          component.question.answers = [{
-            value: 'correct',
-            correct: true,
-          }];
-
+        it('enables the wrongAnswers control', () => {
+          component.form.controls.wrongAnswers.disable();
           component.onChangeQuestionType('multi');
-
-          expect(component.question.answers.length).toBe(2);
-          expect(component.question.answers[1]).toEqual({
-            value: '',
-            correct: false,
-          });
-        });
-
-        it('appends an empty correct answer field if the question did not have such at all', () => {
-          component.question.answers = [{
-            value: 'incorrect',
-            correct: false,
-          }];
-
-          component.onChangeQuestionType('multi');
-
-          expect(component.question.answers.length).toBe(2);
-          expect(component.question.answers[1]).toEqual({
-            value: '',
-            correct: true,
-          });
-        });
-
-        it('Does not append anything if there was at least one correct and one wrong answer', () => {
-          component.question.answers = [
-            {
-              value: 'correct',
-              correct: true,
-            },
-            {
-              value: 'incorrect',
-              correct: false,
-            }
-          ];
-
-          component.onChangeQuestionType('multi');
-
-          expect(component.question.answers).toEqual([
-            {
-              value: 'correct',
-              correct: true,
-            },
-            {
-              value: 'incorrect',
-              correct: false,
-            }
-          ]);
+          expect(component.form.controls.wrongAnswers.disabled).toBeFalse();
         });
       });
 
       describe('passing "text"', () => {
-        it('Removes any incorrect answers', () => {
-          component.question.answers = [
-            {
-              value: 'correct',
-              correct: true,
-            },
-            {
-              value: 'incorrect',
-              correct: false,
-            }
-          ];
-
+        it('Restarts the wrongAnswers control', () => {
+          component.form.controls.wrongAnswers.push(new FormGroup({ answer: new FormControl('aewwew')}))
           component.onChangeQuestionType('text');
-
-          expect(component.question.answers).toEqual([
-            {
-              value: 'correct',
-              correct: true,
-            }
-          ]);
-        });
-
-        it('Answers remain the same if they follow the format', () => {
-          component.question.answers = [
-            {
-              value: 'correct',
-              correct: true,
-            },
-            {
-              value: 'correct2',
-              correct: true,
-            }
-          ];
-
-          component.onChangeQuestionType('text');
-
-          expect(component.question.answers).toEqual([
-            {
-              value: 'correct',
-              correct: true,
-            },
-            {
-              value: 'correct2',
-              correct: true,
-            }
-          ]);
+          
+          expect(component.form.controls.wrongAnswers.length).toBe(0);
         });
       });
 
       describe('passing "single"', () => {
         it('Passes only the first correct answer', () => {
-          component.question.answers = [
-            {
-              value: 'correct',
-              correct: true,
-            },
-            {
-              value: 'correct2',
-              correct: true,
-            },
-            {
-              value: 'wrong',
-              correct: false,
-            }
-          ];
-
+          component.form.controls.correctAnswers.push(new FormGroup({ answer: new FormControl('aewwew')}));
           component.onChangeQuestionType('single');
-
-          expect(component.question.answers).toEqual(
-            [
-              {
-                value: 'correct',
-                correct: true,
-              },
-              {
-                value: 'wrong',
-                correct: false,
-              }
-            ]
-          )
+          expect(component.form.controls.correctAnswers.length).toBe(1);
         });
 
-        it('Appends an empty wrong answer if there isn\'t a wrong answer', () => {
-          component.question.answers = [
-            {
-              value: 'correct',
-              correct: true,
-            }
-          ];
-
+        it('Enables the wrongAnswers control', () => {
+          component.form.controls.wrongAnswers.disable();
           component.onChangeQuestionType('single');
-
-          expect(component.question.answers).toEqual([
-            {
-              value: 'correct',
-              correct: true,
-            }, {
-              value: '',
-              correct: false,
-            }
-          ]);
-        });
-
-        it('Works correctly if there are multiple correct answers and no wrong ones', () => {
-          component.question.answers = [
-            {
-              value: 'correct',
-              correct: true,
-            },
-            {
-              value: 'correct2',
-              correct: true,
-            }
-          ];
-
-          component.onChangeQuestionType('single');
-          expect(component.question.answers).toEqual([
-            {
-              value: 'correct',
-              correct: true,
-            }, {
-              value: '',
-              correct: false,
-            }
-          ]);
-
-        });
-
-        it('Answers remain the same if they satisfy the format', () => {
-          component.question.answers = [
-            {
-              value: 'correct',
-              correct: true,
-            },
-            {
-              value: 'wrong',
-              correct: false,
-            },
-            {
-              value: 'wrong',
-              correct: false,
-            }
-          ];
-
-          component.onChangeQuestionType('single');
-
-          expect(component.question.answers).toEqual(
-            [
-              {
-                value: 'correct',
-                correct: true,
-              },
-              {
-                value: 'wrong',
-                correct: false,
-              },
-              {
-                value: 'wrong',
-                correct: false,
-              }
-            ]
-          );
+          expect(component.form.controls.wrongAnswers.disabled).toBeFalse();
         });
       });
     });
@@ -265,6 +105,21 @@ describe('QuestionComponent', () => {
 
       questionEl = fixture.debugElement.nativeElement;
       loader = TestbedHarnessEnvironment.loader(fixture);
+      form = fb.group({
+        title: ['', [Validators.required, Validators.maxLength(100)]],
+        description: ['', [Validators.maxLength(300)]],
+        questions: fb.array(
+          [fb.group(
+            {
+              prompt: ['', [Validators.required, Validators.maxLength(100)]],
+              correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
+              wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
+              type: ['single'],
+            }
+          )]
+        ),
+        instantMode: [false, [Validators.required]],
+      });
     });
 
     it('Generates correct heading based on index', () => {
@@ -273,26 +128,25 @@ describe('QuestionComponent', () => {
 
       const questionIndex = questionEl.querySelector('.question-index');
 
-      expect(questionIndex?.textContent).toBe('Question #2');
+      expect(questionIndex?.textContent).toBe('Question #3');
     });
 
     describe('Generating question type', () => {
-      it('Successfully generates a question based on @Input type', async () => {
-        component.type = 'multi';
+      it('Successfully generates a question based on form input', async () => {
+        const questionForm = form.controls.questions.controls[0];
+        questionForm.controls.type.setValue('multi');
+
+        component.form = questionForm;
+        component.ngOnInit();
         fixture.detectChanges();
 
         const select = await loader.getHarness(MatSelectHarness);
         const selectValue = await select.getValueText();
+        
         expect(selectValue).toBe('Multiple-choice');
 
-        const questionType = questionEl.querySelector('.question-type');
+        const questionType = questionEl.querySelector('.question-type');        
         expect(questionType?.textContent).toBe('Multiple-choice question');
-
-        component.type = 'single';
-        fixture.detectChanges();
-
-        expect(questionType?.textContent).toBe('Single-choice question');
-        expect(await select.getValueText()).toBe('Single-choice');
       });
 
       it('Changes question type via the select menu', async () => {
@@ -309,10 +163,9 @@ describe('QuestionComponent', () => {
         expect(single).toBe(null);
       });
 
-      it('Memorizes prompt if type is changed through the select menu', async () => {
-        const promptField = questionEl.querySelector('.prompt') as HTMLInputElement;
-        promptField.value = 'random';
-        promptField.dispatchEvent(new Event('input'));
+      it('Memorizes prompt', async () => {
+        const promptField = (await loader.getAllHarnesses(MatInputHarness))[0];
+        promptField.setValue('random')
         fixture.detectChanges();
 
         const select = await loader.getHarness(MatSelectHarness);
@@ -325,6 +178,9 @@ describe('QuestionComponent', () => {
 
         const multipleChoiceQuestion = questionEl.querySelector('.multiple-choice-question');
         expect(multipleChoiceQuestion).not.toBeNull();
+
+        const newPromptField = multipleChoiceQuestion?.querySelector('.prompt') as HTMLInputElement;
+        expect(newPromptField.value).toBe('random');
       });
     });
 

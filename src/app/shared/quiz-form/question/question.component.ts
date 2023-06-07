@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, OnInit} from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
-import { IQuestion, IQuestionSubmission, question } from '../../../../types/components/question.types';
+import { question } from '../../../../types/components/question.types';
 import { SingleChoiceComponent } from './single-choice/single-choice.component';
 import { MultipleChoiceComponent } from './multiple-choice/multiple-choice.component';
 import { TextComponent } from './text/text.component';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-question',
@@ -19,98 +20,62 @@ import { TextComponent } from './text/text.component';
     MatSelectModule,
   ],
 })
-export class QuestionComponent {
-  @Input() question: IQuestion = {
-    prompt: '',
-    answers: [],
-  };
+export class QuestionComponent implements OnInit {
+  constructor(private readonly fb: FormBuilder) { }
+
+  ngOnInit(): void {
+    this.type = this.form.controls.type.value as question;
+  }
+
   @Input() index = 0;
-  @Input() type: question = 'single';
 
-  @Output() changeEvent = new EventEmitter<IQuestionSubmission>();
+  @Input() form = this.fb.group({
+    prompt: ['', [Validators.required, Validators.maxLength(100)]],
+    correctAnswers: this.fb.array([
+      this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
+    ]),
+    wrongAnswers: this.fb.array([
+      this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
+    ]),
+    type: ['single']
+  });
 
-  triggerChange(question: IQuestion) {
-    this.question.prompt = question.prompt;
-    this.question.answers = question.answers;
+  private _type: question = this.form.controls.type.value as question;
 
-    this.changeEvent.emit({
-      ...question,
-      order: this.index,
-      type: this.type,
-    })
+  protected get type() {
+    return this._type;
+  }
+
+  protected set type(value: question) {
+    this._type = value;
   }
 
   onChangeQuestionType(value: question) {
+    this.form.controls.type.setValue(value);
+
     if (value === 'text') {
-      this.transferAnswerToTextQuestion();
-    } else if (value === 'single') {
-      this.transferAnswersToSingleChoiceQuestion();
-    } else if (value === 'multi') {
-      this.transferAnswersToMultipleChoiceQuestion();
-    }
-    
-    this.triggerChange(this.question);    
-  }
-
-  private transferAnswerToTextQuestion() {
-    this.question.answers = this.question.answers.filter(a => a.correct);
-  }
-
-  private transferAnswersToSingleChoiceQuestion() {
-    let hasNotEncounteredACorrectAnswer = true;
-    let hasNotEncounteredAWrongAnswer = true;
-    const result = this.question.answers.filter(a => {
-      const canBeAdded = hasNotEncounteredACorrectAnswer && a.correct;
-
-      if (a.correct) {
-        hasNotEncounteredACorrectAnswer = false;
+      while (this.form.controls.wrongAnswers.length) {
+        this.form.controls.wrongAnswers.removeAt(0);
       }
-
-      if (!a.correct) {
-        hasNotEncounteredAWrongAnswer = false;
+    } else {
+      this.form.controls.wrongAnswers.enable();
+      if (this.form.controls.wrongAnswers.length === 0) {
+        this.form.controls.wrongAnswers.push(this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] }));
       }
-
-      return !a.correct || canBeAdded;
-    });
-
-    if (hasNotEncounteredAWrongAnswer) {
-      result.push({
-        value: '',
-        correct: false,
-      });
     }
 
-    this.question.answers = result;
-  }
-
-  private transferAnswersToMultipleChoiceQuestion() {
-    let hasNotEncounteredACorrectAnswer = true;
-    let hasNotEncounteredAWrongAnswer = true;
-
-    this.question.answers.forEach(a => {
-      if (a.correct) {
-        hasNotEncounteredACorrectAnswer = false;
-      } else {
-        hasNotEncounteredAWrongAnswer = false;
-      }
-    });
-
-    if (hasNotEncounteredACorrectAnswer) {
-      this.question.answers.push({
-        value: '',
-        correct: true,
-      });
-    }
-
-    if (hasNotEncounteredAWrongAnswer) {
-      this.question.answers.push({
-        value: '',
-        correct: false,
-      });
+    if (value === 'single') {
+      this.removeAllCorrectAnswersExceptTheFirstOne();
     }
   }
 
-  questionLabels: Record<question, IQuestionHint> = {
+  private removeAllCorrectAnswersExceptTheFirstOne() {
+    while (this.form.controls.correctAnswers.length > 1) {
+      this.form.controls.correctAnswers.removeAt(1);
+    }
+  }
+
+  protected questionLabels: Record<question, IQuestionHint> = {
     single: {
       label: 'Single-choice question',
       tooltip: 'Single-choice questions are ones where there are multiple answers present, with only one of them being correct',
