@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { IQuestion } from '../../../../../types/components/question.types';
+import { AnswersManager } from '../../../../util/AnswersManager/AnswersManager';
 
 
 @Component({
@@ -26,189 +27,44 @@ import { IQuestion } from '../../../../../types/components/question.types';
   styleUrls: ['./multiple-choice.component.scss']
 })
 export class MultipleChoiceComponent {
-  constructor(private readonly fb: FormBuilder, private readonly changeDetectorRef: ChangeDetectorRef) {
-    this.form = this.fb.group({
-      prompt: [this.prompt, [Validators.required, Validators.maxLength(100)]],
-      correctAnswers: this.fb.array([
-        this.fb.group({ correctAnswer: ['', [Validators.required, Validators.maxLength(100)]] })
-      ]),
-      wrongAnswers: this.fb.array([
-        this.fb.group({ wrongAnswer: ['', [Validators.required, Validators.maxLength(100)]] })
-      ]),
-    });
-  }
-  
+  correctAnswersManager!: AnswersManager;
+  wrongAnswersManager!: AnswersManager;
+
+  constructor(private readonly fb: FormBuilder) { }
+
   ngOnInit(): void {
-    this.form.patchValue({
-      prompt: this.prompt,
-    });
-
-    const correctAnswersForm = this.form.get('correctAnswers') as FormArray;
-    while (correctAnswersForm.length) {
-      correctAnswersForm.removeAt(0);
-    }
-
-    this.correctAnswers.forEach(ca => {
-      const value = ca.value;
-      correctAnswersForm.push(this.fb.group({ correctAnswer: value }));
-    });
-
-    const wrongAnswersForm = this.form.get('wrongAnswers') as FormArray;
-
-    while (wrongAnswersForm.length) {
-      wrongAnswersForm.removeAt(0);
-    }
-
-    this.wrongAnswers.forEach(wa => {
-      const value = wa.value;
-      wrongAnswersForm.push(this.fb.group({ wrongAnswer: value }));
-    });
-
-    /* 
-      prevent "ExpressionChangedAfterItHasBeenCheckedError", seen so far
-      only in a test for this component.
-    */
-    this.changeDetectorRef.detectChanges();
+    this.correctAnswersManager = new AnswersManager(this.form.controls.correctAnswers, this.fb);
+    this.wrongAnswersManager = new AnswersManager(this.form.controls.wrongAnswers, this.fb);
   }
 
-  @Input() prompt = '';
-  @Input() answers: IAnswer[] = [
-    {
-      value: '',
-      correct: true,
-    },
-    {
-      value: '',
-      correct: false,
-    }
-  ];
-
-  @Output() changeEvent = new EventEmitter<IQuestion>()
-
-  form = this.fb.group({
-    prompt: [this.prompt, [Validators.required, Validators.maxLength(100)]],
+  @Input({ required: true }) form = this.fb.group({
+    prompt: ['', [Validators.required, Validators.maxLength(100)]],
     correctAnswers: this.fb.array([
-      this.fb.group({ correctAnswer: ['', [Validators.required, Validators.maxLength(100)]] })
+      this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
     ]),
     wrongAnswers: this.fb.array([
-      this.fb.group({ wrongAnswer: ['', [Validators.required, Validators.maxLength(100)]] })
+      this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
     ]),
+    type: ['multi']
   });
 
-  triggerChange() {
-    const values = this.form.value;
-    const prompt = values.prompt || '';
-    const answers: IAnswer[] = [];
-
-    values.correctAnswers?.forEach((ca) => {
-      const value = ca.correctAnswer || '';
-
-      answers.push({
-        value,
-        correct: true,
-      });
-    })
-
-    values.wrongAnswers?.forEach((wa) => {
-      const value = wa.wrongAnswer || '';
-
-      answers.push({
-        value,
-        correct: false,
-      });
-    });    
-    
-    this.changeEvent.emit({
-      prompt,
-      answers,
-    });
+  addNewWrongAnswerField(event: Event) {
+    event.preventDefault();
+    this.wrongAnswersManager.addField();
   }
 
-  addNewCorrectAnswerField() {
-    const correctAnswersForm = this.form.get('correctAnswers') as FormArray;
-    correctAnswersForm.push(this.fb.group({ correctAnswer: ['', [Validators.required, Validators.maxLength(100)]] }));
-    this.triggerChange();
+  removeWrongAnswerFieldAt(event: Event, index: number) {
+    event.preventDefault();
+    this.wrongAnswersManager.removeFieldAt(index);
   }
 
-  addNewWrongAnswerField() {
-    const wrongAnswersForm = this.form.get('wrongAnswers') as FormArray;
-    wrongAnswersForm.push(this.fb.group({ wrongAnswer: ['', [Validators.required, Validators.maxLength(100)]] }));
-    this.triggerChange();
+  addNewCorrectAnswerField(event: Event) {
+    event.preventDefault();
+    this.correctAnswersManager.addField();
   }
 
-  removeCorrectAnswerFieldAt(index: number) {
-    const correctAnswersForm = this.form.get('correctAnswers') as FormArray;
-
-    if (this.hasMoreThanOneCorrectAnswerField) {
-      correctAnswersForm.removeAt(index);
-      this.triggerChange();
-    }
-  }
-
-  removeWrongAnswerFieldAt(index: number) {
-    const wrongAnswersForm = this.form.get('wrongAnswers') as FormArray;
-
-    if (this.hasMoreThanOneWrongAnswerField) {
-      wrongAnswersForm.removeAt(index);
-      this.triggerChange();
-    }
-  }
-
-  correctAnswerFieldAtIndexErrors(index: number) {
-    const correctAnswersControls = this.form.controls.correctAnswers.controls
-    const errors = correctAnswersControls[index].controls.correctAnswer?.errors;
-    return errors;
-  }
-
-  wrongAnswerFieldAtIndexErrors(index: number) {
-    const wrongAnswersControls = this.form.controls.wrongAnswers.controls
-    const errors = wrongAnswersControls[index].controls.wrongAnswer?.errors;
-    return errors;
-  }
-
-  get correctAnswersFormArray() {
-    const correctAnswers = this.form.get('correctAnswers') as FormArray;
-    const controls = correctAnswers.controls;
-
-    return controls;
-  }
-
-  get wrongAnswersFormArray() {
-    const wrongAnswers = this.form.get('wrongAnswers') as FormArray;
-    const controls = wrongAnswers.controls;
-
-    return controls;
-  }
-
-  get hasMoreThanOneWrongAnswerField() {
-    return this.wrongAnswersFormArray.length > 1;
-  }
-
-  get hasMoreThanOneCorrectAnswerField() {
-    return this.correctAnswersFormArray.length > 1;
-  }
-
-  private get correctAnswers(): IAnswer[] {
-    const answers = this.answers.filter(a => a.correct);
-    if (answers.length === 0) {
-      return [{
-        value: '',
-        correct: false,
-      }];
-    }
-
-    return answers;
-  }
-
-  private get wrongAnswers(): IAnswer[] {
-    const answers = this.answers.filter(a => !a.correct);
-    if (answers.length === 0) {
-      return [{
-        value: '',
-        correct: false,
-      }];
-    }
-
-    return answers;
+  removeCorrectAnswerFieldAt(event: Event, index: number) {
+    event.preventDefault();
+    this.correctAnswersManager.removeFieldAt(index);
   }
 }
