@@ -4,7 +4,6 @@ import { QuestionModule } from './question/question.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IQuestion } from '../../../types/components/question.types';
 import { IQuestionSubmission } from '../../../types/components/question.types';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -92,6 +91,11 @@ export class QuizFormComponent implements OnInit {
     instantMode: [false, [Validators.required]],
   });
 
+  
+  /**
+   * Adds an empty single-choice question to the questions control of the form.
+   * @param event 
+   */
   addQuestion(event: Event) {
     event.preventDefault();
     this.form.controls.questions.push(
@@ -106,6 +110,12 @@ export class QuizFormComponent implements OnInit {
     )
   }
 
+  /**
+   * Removes the control at the given ``index`` of the questions control.
+   * @param index 
+   * @param event
+   * @throws if the form has only one question or the field at the given index does not exist.
+   */
   removeQuestionAt(index: number, event: Event) {
     event.preventDefault();
     if (index < 0 || index >= this.form.controls.questions.length) {

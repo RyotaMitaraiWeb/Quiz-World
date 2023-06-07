@@ -50,6 +50,18 @@ export class QuestionComponent implements OnInit {
     this._type = value;
   }
 
+  /**
+   * Handles the transfer of answers when the question type is changed. The following
+   * happens with the answers:
+   * * if the question is changed to a text one, all wrong answers are removed and 
+   * the wrong answers control is disabled
+   * * if the question is changed to a single-choice one, all correct answers are
+   * removed, with the exception of the first one
+   * * if the question is changed to any type other than a text one, the wrong answers
+   * control will be enabled and, if the question does not currently have a wrong answer,
+   * an empty wrong answer will be added to the wrong answers control.
+   * @param value the new question type
+   */
   onChangeQuestionType(value: question) {
     this.form.controls.type.setValue(value);
 
