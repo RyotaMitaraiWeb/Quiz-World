@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { QuestionModule } from './question/question.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
@@ -7,6 +7,9 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IQuestionSubmission } from '../../../types/components/question.types';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+
 @Component({
   selector: 'app-quiz-form',
   templateUrl: './quiz-form.component.html',
@@ -23,6 +26,8 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class QuizFormComponent implements OnInit {
   constructor(private readonly fb: FormBuilder) { }
+
+  @ViewChild('autosize') protected autosize!: CdkTextareaAutosize;
 
   ngOnInit(): void {
     while (this.form.controls.questions.controls.length) {
@@ -46,7 +51,7 @@ export class QuizFormComponent implements OnInit {
 
       const questionControl = this.fb.group(
         {
-          prompt: q.prompt,
+          prompt: [q.prompt, [Validators.required, Validators.maxLength(100)]],
           correctAnswers: correctAnswersFormArray,
           wrongAnswers: wrongAnswersFormArray,
           type: q.type as string,
@@ -55,6 +60,10 @@ export class QuizFormComponent implements OnInit {
 
       this.form.controls.questions.push(questionControl);
     });
+
+    this.form.controls.title.setValue(this.title);
+    this.form.controls.description.setValue(this.description);
+    this.form.controls.instantMode.setValue(this.instantMode);
   }
 
   @Input() questions: IQuestionSubmission[] = [
@@ -75,9 +84,14 @@ export class QuizFormComponent implements OnInit {
     },
   ];
 
+  @Input() title = '';
+  @Input() description = '';
+  @Input() instantMode = false;
+  @Output() submitEvent = new EventEmitter<IQuizFormSubmission>();
+
   form = this.fb.group({
-    title: ['', [Validators.required, Validators.maxLength(100)]],
-    description: ['', [Validators.maxLength(300)]],
+    title: [this.title, [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
+    description: [this.description, [Validators.required, Validators.maxLength(300)]],
     questions: this.fb.array(
       [this.fb.group(
         {
@@ -88,7 +102,7 @@ export class QuizFormComponent implements OnInit {
         }
       )]
     ),
-    instantMode: [false, [Validators.required]],
+    instantMode: [this.instantMode],
   });
 
   
@@ -127,6 +141,16 @@ export class QuizFormComponent implements OnInit {
     } else {
       throw new Error('You cannot remove the only question remaining!');
     }
+  }
+
+  /**
+   * Emits the component's ``submitEvent``, passing the form's current value.
+   * @param event 
+   */
+  onSubmit(event: Event) {
+    event.preventDefault();
+    const value = this.form.value as IQuizFormSubmission;
+    this.submitEvent.emit(value);
   }
 
   protected get hasMoreThanOneQuestion() {

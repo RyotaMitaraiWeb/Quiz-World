@@ -1,4 +1,20 @@
-<form>
+<form [formGroup]="form" (submit)="onSubmit($event)">
+  <section class="title-field">
+    <mat-form-field>
+      <input required matInput formControlName="title" id="title" maxlength="100">
+      <mat-error *ngIf="form.controls.title.errors?.['required']">Please fill this field!</mat-error>
+      <mat-error *ngIf="form.controls.title.errors?.['minlength']">Title is too short!</mat-error>
+    </mat-form-field>
+  </section>
+  <section class="description-field">
+    <mat-form-field>
+      <textarea cdkTextareaAutosize matInput required formControlName="description" id="description" maxlength="300"></textarea>
+      <mat-error *ngIf="form.controls.description.errors?.['required']">Please fill this field!</mat-error>
+    </mat-form-field>
+  </section>
+  <section class="other-options-field">
+    <mat-checkbox formControlName="instantMode">Instant mode</mat-checkbox>
+  </section>
   <section *ngFor="let question of form.controls.questions.controls; index as i">
     <app-question [form]="question" [index]="i"></app-question>
     <button class="remove-question-btn" (click)="removeQuestionAt(i, $event)" mat-raised-button color="warn">
@@ -10,4 +26,6 @@
     <mat-icon>add</mat-icon>
     Add a new question
   </button>
+
+  <button mat-raised-button color="primary" id="submit" [disabled]="form.invalid">Submit</button>
 </form>

@@ -2,10 +2,15 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { QuizFormComponent } from './quiz-form.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormBuilder, Validators } from '@angular/forms';
+import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
+import { MatSelectHarness } from '@angular/material/select/testing';
+import { HarnessLoader } from '@angular/cdk/testing';
 
 describe('QuizFormComponent', () => {
   let component: QuizFormComponent;
   let fixture: ComponentFixture<QuizFormComponent>;
+  let loader: HarnessLoader;
 
   const event = new Event('click');
   const fb = new FormBuilder();
@@ -203,10 +208,13 @@ describe('QuizFormComponent', () => {
       fixture.detectChanges();
 
       formEl = fixture.debugElement.nativeElement;
+      loader = TestbedHarnessEnvironment.loader(fixture);
     });
 
     describe('Initial render', () => {
-      it('Renders the correct amount of question elements if props are passed', () => {
+      it('Renders the form correctly based on @Input() props', async () => {
+        component.title = 'some title';
+        component.description = 'some description';
         component.questions = [
           {
             prompt: 'question1',
@@ -251,20 +259,41 @@ describe('QuizFormComponent', () => {
             ]
           }
         ];
-  
+        component.instantMode = true;
+
         component.ngOnInit();
         fixture.detectChanges();
-  
-        const questions = formEl.querySelectorAll('.question.wrapper');      
+
+        const questions = formEl.querySelectorAll('.question.wrapper');
         expect(questions.length).toBe(2);
+
+        const titleField = formEl.querySelector('#title') as HTMLInputElement;
+        expect(titleField.value).toBe('some title');
+
+        const descriptionField = formEl.querySelector('#description') as HTMLTextAreaElement;
+        expect(descriptionField.value).toBe('some description');
+
+        const checkbox = await loader.getHarness(MatCheckboxHarness);
+        const checked = await checkbox.isChecked();
+        expect(checked).toBeTrue();
       });
 
-      it('Renders the correct amount of question elements if no props are passed', () => {
+      it('Renders the form correctly if no props are passed', async () => {
         component.ngOnInit();
         fixture.detectChanges();
-  
+
         const questions = formEl.querySelectorAll('.question.wrapper');
         expect(questions.length).toBe(1);
+
+        const titleField = formEl.querySelector('#title') as HTMLInputElement;
+        expect(titleField.value).toBe('');
+
+        const descriptionField = formEl.querySelector('#description') as HTMLTextAreaElement;
+        expect(descriptionField.value).toBe('');
+
+        const checkbox = await loader.getHarness(MatCheckboxHarness);
+        const checked = await checkbox.isChecked();
+        expect(checked).toBeFalse();
       });
     });
 
@@ -306,6 +335,237 @@ describe('QuizFormComponent', () => {
 
         const questions = formEl.querySelectorAll('.question.wrapper');
         expect(questions.length).toBe(2);
+      });
+    });
+
+    describe('Title field', () => {
+      it('Displays validation error for required', () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        component.form.controls.title.markAsTouched();
+        fixture.detectChanges();
+
+        const matErrors = formEl.querySelectorAll('mat-error');
+        expect(matErrors.length).toBe(1);
+        expect(matErrors[0].textContent).toBe('Please fill this field!');
+      });
+
+      it('Displays validation error for minlength', () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        component.form.controls.title.setValue('a');
+        fixture.detectChanges();
+
+        component.form.controls.title.markAsTouched();
+        fixture.detectChanges();
+
+        const matErrors = formEl.querySelectorAll('mat-error');
+        expect(matErrors.length).toBe(1);
+        expect(matErrors[0].textContent).toBe('Title is too short!');
+      });
+    });
+
+    describe('Description field', () => {
+      it('Displays validation error for required', async () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        component.form.controls.description.markAsTouched();
+        fixture.detectChanges();
+
+        const matErrors = formEl.querySelectorAll('mat-error');
+        expect(matErrors.length).toBe(1);
+        expect(matErrors[0].textContent).toBe('Please fill this field!');
+      });
+    });
+
+    describe('Submit button', () => {
+      it('is enabled if there are no validation errors', () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+        component.form.controls.description.setValue('a');
+
+        component.form.controls.title.setValue('1234567890112');
+        component.form.controls.questions.controls[0].controls.prompt.setValue('a');
+        component.form.controls
+          .questions.controls[0].controls.correctAnswers.controls[0]
+          .controls.answer.setValue('a');
+
+        component.form.controls
+          .questions.controls[0].controls.wrongAnswers.controls[0]
+          .controls.answer.setValue('a');
+        fixture.detectChanges();
+
+        component.form.markAllAsTouched();
+        fixture.detectChanges();
+
+        const submit = formEl.querySelector('#submit') as HTMLButtonElement;
+        expect(submit.disabled).toBeFalse();
+      });
+
+      it('is disabled if there are validation errors in the title', () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        component.form.controls.title.setValue('a');
+
+        component.form.controls.description.setValue('a');
+        component.form.controls
+          .questions.controls[0].controls.correctAnswers.controls[0]
+          .controls.answer.setValue('a');
+
+        component.form.controls
+          .questions.controls[0].controls.wrongAnswers.controls[0]
+          .controls.answer.setValue('a');
+        fixture.detectChanges();
+
+        component.form.markAllAsTouched();
+        fixture.detectChanges();
+
+        const submit = formEl.querySelector('#submit') as HTMLButtonElement;
+        expect(submit.disabled).toBeTrue();
+      });
+
+      it('is disabled if there are validation errors in the description', () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+        component.form.controls.description.setValue('');
+
+        component.form.controls.title.setValue('1234567890112');
+        component.form.controls
+          .questions.controls[0].controls.correctAnswers.controls[0]
+          .controls.answer.setValue('a');
+
+        component.form.controls
+          .questions.controls[0].controls.wrongAnswers.controls[0]
+          .controls.answer.setValue('a');
+        fixture.detectChanges();
+
+        component.form.markAllAsTouched();
+        fixture.detectChanges();
+
+        const submit = formEl.querySelector('#submit') as HTMLButtonElement;
+        expect(submit.disabled).toBeTrue();
+      });
+
+      it('is disabled if there are validation errors in one of the questions', () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        component.form.controls.title.setValue('1234567890112');
+
+        component.form.controls.description.setValue('a');
+        component.form.controls.questions.controls[0].controls.prompt.setValue('a');
+        component.form.controls
+          .questions.controls[0].controls.correctAnswers.controls[0]
+          .controls.answer.setValue('');
+
+        component.form.controls
+          .questions.controls[0].controls.wrongAnswers.controls[0]
+          .controls.answer.setValue('a');
+        fixture.detectChanges();
+
+        component.form.markAllAsTouched();
+        fixture.detectChanges();
+
+        const submit = formEl.querySelector('#submit') as HTMLButtonElement;
+        expect(submit.disabled).toBeTrue();
+      });
+
+      it('updates disabled status when a new question is added', () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+        component.form.controls.description.setValue('a');
+
+        component.form.controls.title.setValue('1234567890112');
+        component.form.controls.questions.controls[0].controls.prompt.setValue('a');
+        component.form.controls
+          .questions.controls[0].controls.correctAnswers.controls[0]
+          .controls.answer.setValue('a');
+
+        component.form.controls
+          .questions.controls[0].controls.wrongAnswers.controls[0]
+          .controls.answer.setValue('a');
+        fixture.detectChanges();
+
+        component.form.markAllAsTouched();
+        fixture.detectChanges();
+
+        const submit = formEl.querySelector('#submit') as HTMLButtonElement;
+        expect(submit.disabled).toBeFalse();
+
+        const addBtn = formEl.querySelector('.add-question-btn') as HTMLButtonElement;
+        addBtn.click();
+        fixture.detectChanges();
+
+        expect((formEl.querySelector('#submit') as HTMLButtonElement).disabled).toBeTrue();
+      });
+
+      it('updates disabled status when a new answer is added', () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+        component.form.controls.description.setValue('a');
+
+        component.form.controls.title.setValue('1234567890112');
+        component.form.controls.questions.controls[0].controls.prompt.setValue('a');
+        component.form.controls
+          .questions.controls[0].controls.correctAnswers.controls[0]
+          .controls.answer.setValue('a');
+
+        component.form.controls
+          .questions.controls[0].controls.wrongAnswers.controls[0]
+          .controls.answer.setValue('a');
+        fixture.detectChanges();
+
+        component.form.markAllAsTouched();
+        fixture.detectChanges();
+
+        const submit = formEl.querySelector('#submit') as HTMLButtonElement;
+        expect(submit.disabled).toBeFalse();
+
+        const addBtn = formEl.querySelector('.add-field-btn') as HTMLButtonElement;
+        addBtn.click();
+        fixture.detectChanges();
+
+        expect((formEl.querySelector('#submit') as HTMLButtonElement).disabled).toBeTrue();
+      });
+
+      it('updates disabled status when question type change renders the form invalid', async () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+        component.form.controls.description.setValue('a');
+
+        component.form.controls.questions.controls[0].controls.prompt.setValue('a');
+        component.form.controls.title.setValue('1234567890112');
+        component.form.controls
+          .questions.controls[0].controls.correctAnswers.controls[0]
+          .controls.answer.setValue('a');
+
+        component.form.controls
+          .questions.controls[0].controls.wrongAnswers.controls[0]
+          .controls.answer.setValue('a');
+        fixture.detectChanges();
+
+        component.form.markAllAsTouched();
+        fixture.detectChanges();
+
+        const submit = formEl.querySelector('#submit') as HTMLButtonElement;
+        expect(submit.disabled).toBeFalse();
+
+        const select = await loader.getHarness(MatSelectHarness);
+        await select.open();
+        fixture.detectChanges();
+
+        const options = await select.getOptions();
+        await options[2].click();
+        fixture.detectChanges();
+
+        await options[0].click();
+        fixture.detectChanges();
+
+        expect((formEl.querySelector('#submit') as HTMLButtonElement).disabled).toBeTrue();
       });
     });
   });

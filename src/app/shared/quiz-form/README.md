@@ -10,12 +10,32 @@
 ```typescript
 class QuizFormComponent {
   @Input() questions: IQuestionSubmission[];
+  @Input() title = '';
+  @Input() description = '';
+  @Input() instantMode = false;
 }
 ```
+Passing the props is needed only when editing a particular quiz form; when the context is creating a new quiz, you can safely skip passing those.
 
-* ``questions`` - a list of questions to be populated in the form (in the context of editing), defaults to an array of one element: a single-choice question with an empty promp, correct answer, and wrong answer.
+* ``questions`` - a list of questions to be populated in the form, defaults to an array of one element: a single-choice question with an empty prompt, correct answer, and wrong answer.
+* ``title`` - the title of the form, defaults to an empty string.
+* ``description`` - the description of the form, defaults to an empty string.
+* ``instantMode`` - whether the form is in instant mode, defaults to an empty string
 
-Renders a ``form`` that itself renders an ``<app-question>`` for each question in the ``form`` property.
+### Output events
+```typescript
+@Output() submitEvent = new EventEmitter<IQuizFormSubmission>();
+```
+This event is emitted when the form is submitted.
+
+Renders a ``form`` that itself renders an ``<app-question>`` for each question in the ``form`` property, alongside a few other fields/controls:
+* title
+* description
+* instant mode
+
+Instant mode means that the user can check whether they have given the correct answer without having to submit the entire form.
+
+The submit button updates reactively updates its disabled status.
 
 ### Methods
 ```typescript
