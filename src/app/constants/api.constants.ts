@@ -3,6 +3,7 @@ import { environment } from '../../environments/environment.development'
 const root = environment.api;
 const auth = `${root}/auth`;
 const quiz = `${root}/quiz`;
+const answer = `${root}/answers`;
 
 export const api = {
   root,
@@ -31,6 +32,10 @@ export const api = {
       edit: (id: string | number) => `${quiz}/${id}`,
       delete: (id: string | number) => `${quiz}/${id}`,
       all: `${quiz}/all`,
+    },
+    answers: {
+      correctAnswersInstantMode: (questionId: number) => `${answer}/${questionId}/instant`,
+      correctAnswersFull: (quizId: number) => `${answer}/${quizId}/full`,
     }
   }
 };

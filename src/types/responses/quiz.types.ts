@@ -59,3 +59,8 @@ export interface ISessionAnswer {
   id: number;
   value: string;
 }
+
+export interface IGradedAnswer {
+  questionId: number;
+  answers: ISessionAnswer[];
+}
