@@ -13,7 +13,7 @@ export class AuthService {
   url = api.endpoints.auth;
 
   /**
-   * Sends a request to ``/auth/login`` and returns an observable with the
+   * Sends a POST request to ``/auth/login`` and returns an observable with the
    * response of the request
    * @param body the username and password that the user has inputted
    * @returns an Observable that resolves to the response of the request.
@@ -26,7 +26,7 @@ export class AuthService {
   }
 
   /**
-   * Sends a request to ``/auth/login`` and returns an observable with the
+   * Sends a POST request to ``/auth/login`` and returns an observable with the
    * response of the request
    * @param body the username and password that the user has inputted
    * @returns an Observable that resolves to the response of the request.
