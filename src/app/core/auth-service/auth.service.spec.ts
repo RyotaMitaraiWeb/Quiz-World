@@ -183,6 +183,48 @@ describe('AuthService', () => {
     });
   });
 
+  describe('usernameExists', () => {
+    it('Correctly handles a successful response', (done: DoneFn) => {
+      const res = service.usernameExists('a');
+      res.subscribe({
+        next: res => {
+          expect(res.status).toBe(HttpStatusCode.Ok);
+          done();
+        },
+        error: err => {
+          done.fail('Expected a successs response, not an error one');
+          console.warn(err);
+        }
+      });
+
+      const request = testController.expectOne(service.url.usernameExists('a'));
+      request.flush(null, {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok',
+      });
+    });
+
+    it('Correctly handles an error response', (done: DoneFn) => {
+      const res = service.usernameExists('a');
+      res.subscribe({
+        next: res => {
+          done.fail('Expected an error response, not a successful one');
+          console.warn(res);
+        },
+        error: err => {
+          expect(err.status).toBe(HttpStatusCode.NotFound);
+          done();
+        }
+      });
+
+      const request = testController.expectOne(service.url.usernameExists('a'));
+      request.flush(null, {
+        status: HttpStatusCode.NotFound,
+        statusText: 'Not Found',
+      });
+    });
+  });
+
   afterEach(() => {
     testController.verify();
   });

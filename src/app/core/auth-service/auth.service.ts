@@ -49,4 +49,17 @@ export class AuthService {
       observe: 'response',
     });
   }
+
+  /**
+   * Sends a GET request to ``/auth/username/{username}`` and returns an Observable
+   * that holds the response.
+   * @param username the username to be checked
+   * @returns An Observable that resolves to an HTTP response. The component that relies
+   * on this method should use the status code to determine its next course of action.
+   */
+  usernameExists(username: string): Observable<HttpResponse<unknown>> {
+    return this.http.get(this.url.usernameExists(username), {
+      observe: 'response',
+    });
+  }
 }
