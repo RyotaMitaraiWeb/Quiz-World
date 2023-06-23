@@ -1,3 +1,4 @@
+import { ISessionAnswer } from '../responses/quiz.types';
 import { IAnswer } from './answer.types';
 
 /**
@@ -36,3 +37,8 @@ export interface IQuestionSubmission extends IQuestion {
  * can have multiple correct answers
  */
 export type question = 'single' | 'multi' | 'text';
+
+export interface IQuestionComponent<T> {
+  correctAnswers: ISessionAnswer[] | null;
+  get isCorrect(): boolean | null;
+}
