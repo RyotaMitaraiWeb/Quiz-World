@@ -1,0 +1,10 @@
+<section class="question text-question">
+  <h1 [ngClass]="promptClass">{{ prompt }}</h1>
+  <mat-form-field [formGroup]="form">
+    <input matInput formControlName="currentAnswer" required class="text-question-field">
+  </mat-form-field>
+</section>
+
+<p>{{ isCorrect }}</p>
+<p *ngIf="isCorrect" class="correct-answer answer-feedback">Correct! The answers are: {{ formattedCorrectAnswers?.join(', ') }}</p>
+<p *ngIf="isCorrect === false" class="wrong-answer answer-feedback">Wrong! The answers are: {{ formattedCorrectAnswers?.join(', ') }}</p>
