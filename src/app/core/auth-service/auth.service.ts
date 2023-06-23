@@ -25,7 +25,12 @@ export class AuthService {
     });
   }
 
-
+  /**
+   * Sends a request to ``/auth/login`` and returns an observable with the
+   * response of the request
+   * @param body the username and password that the user has inputted
+   * @returns an Observable that resolves to the response of the request.
+   */
   register(body: IAuthBody): Observable<HttpResponse<IAuthSuccessResponse>> {
     return this.http.post<IAuthSuccessResponse>(this.url.register, body, {
       observe: 'response',
