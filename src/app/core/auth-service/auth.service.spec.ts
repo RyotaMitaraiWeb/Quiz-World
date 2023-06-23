@@ -140,6 +140,49 @@ describe('AuthService', () => {
       });
     });
   });
+
+  describe('logout', () => {
+    it('Correctly handles a successful response', (done: DoneFn) => {
+      const res = service.logout();
+      res.subscribe({
+        next: res => {
+          expect(res.status).toBe(HttpStatusCode.NoContent);
+          done();
+        },
+        error: err => {
+          done.fail('Expected a successs response, not an error one');
+          console.warn(err);
+        }
+      });
+
+      const request = testController.expectOne(service.url.logout);
+      request.flush(null, {
+        status: HttpStatusCode.NoContent,
+        statusText: 'No Content',
+      });
+    });
+
+    it('Correctly handles an error response', (done: DoneFn) => {
+      const res = service.logout();
+      res.subscribe({
+        next: res => {
+          done.fail('Expected an error response, not a successful one');
+          console.warn(res);
+        },
+        error: err => {
+          expect(err.status).toBe(HttpStatusCode.Unauthorized);
+          done();
+        }
+      });
+
+      const request = testController.expectOne(service.url.logout);
+      request.flush(null, {
+        status: HttpStatusCode.Unauthorized,
+        statusText: 'Unauthorized',
+      });
+    });
+  });
+
   afterEach(() => {
     testController.verify();
   });

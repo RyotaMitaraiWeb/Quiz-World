@@ -37,4 +37,16 @@ export class AuthService {
       responseType: 'json',
     });
   }
+
+  /**
+   * Sends a DELETE request to ``/auth/logout`` and returns an Observable of the response.
+   * @returns an Observable that resolves to the response. The component that uses this
+   * method should not expect a body from this response and only work with the
+   * status code.
+   */
+  logout(): Observable<HttpResponse<unknown>> {
+    return this.http.delete(this.url.logout, {
+      observe: 'response',
+    });
+  }
 }
