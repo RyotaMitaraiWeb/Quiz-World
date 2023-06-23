@@ -15,6 +15,7 @@ export const api = {
       register: `${auth}/register`,
       login: `${auth}/login`,
       logout: `${auth}/logout`,
+      usernameExists: (username: string) => `${auth}/username/${username}`,
       /**Endpoint to check if the user has a valid session upon app load */
       session: auth,
     },
