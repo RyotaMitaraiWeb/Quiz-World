@@ -1,0 +1,21 @@
+<h1>Questions</h1>
+<form action="" (submit)="gradeQuestions($event)">
+  <div *ngFor="let question of (questionKeys | keyvalue); index as i">
+    <app-question-session [prompt]="prompts.get(question.key) || ''"
+      [answers]="questions[i].answers"
+      [correctAnswers]="question.value"
+      [instantMode]="instantMode"
+      [type]="getQuestionControlAt(i).controls.type.value"
+      [form]="getQuestionControlAt(i)"
+    ></app-question-session>
+  </div>
+  
+  <button 
+    *ngIf="!instantMode"
+    mat-raised-button color="primary"
+    [disabled]="form.invalid"
+    id="grade-answers-btn"
+  >
+    Check your answers
+  </button>
+</form>
