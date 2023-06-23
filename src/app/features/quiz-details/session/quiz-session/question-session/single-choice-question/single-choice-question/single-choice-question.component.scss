@@ -1,0 +1,9 @@
+::ng-deep label {
+  &.correct {
+    color: green;
+  }
+
+  &.wrong {
+    color: red;
+  }
+}

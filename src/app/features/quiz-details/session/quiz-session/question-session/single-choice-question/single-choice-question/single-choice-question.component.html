@@ -1,0 +1,13 @@
+<section class="question single-choice-question" [formGroup]="form">
+  <h1 [ngClass]="promptClass">{{ prompt }}</h1>
+  <mat-radio-group formControlName="currentAnswer" [name]="radioName" required>
+    <mat-radio-button *ngFor="let answer of answers; index as i" [value]="answer.id"
+      [ngClass]="answerClass(answer.id)"
+    >
+      {{ answer.value }}
+    </mat-radio-button>
+  </mat-radio-group>
+</section>
+
+<p *ngIf="isCorrect" class="correct answer-feedback">Correct!</p>
+<p *ngIf="isCorrect === false" class="wrong answer-feedback">Wrong!</p>
