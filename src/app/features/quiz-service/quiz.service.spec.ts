@@ -78,7 +78,6 @@ describe('QuizService', () => {
         error: (err: HttpErrorResponse) => {
           expect(err.status).toBe(HttpStatusCode.Unauthorized);
           expect(err.error).toEqual(res);
-          console.log(err);
           
           done();
         }

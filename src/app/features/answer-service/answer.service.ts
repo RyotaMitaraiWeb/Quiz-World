@@ -31,7 +31,7 @@ export class AnswerService {
    * @param quizId the ID of the quiz
    * @returns an Observable of the response which holds the response body of type JSON.
    */
-  getCorrectAnswersForAllQuestions(quizId: number): Observable<HttpResponse<IGradedAnswer[]>> {
+  getCorrectAnswersForAllQuestions(quizId: number): Observable<HttpResponse<IGradedAnswer[]>> {        
     return this.http.get<IGradedAnswer[]>(this.url.correctAnswersFull(quizId), {
       observe: 'response',
       responseType: 'json',

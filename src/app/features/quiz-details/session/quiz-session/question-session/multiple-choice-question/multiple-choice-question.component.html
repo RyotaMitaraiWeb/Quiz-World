@@ -1,0 +1,14 @@
+<section class="question single-choice-question">
+  <h1 [ngClass]="promptClass">{{ prompt }}</h1>
+  <mat-radio-group required [name]="checkboxName">
+    <mat-checkbox *ngFor="let answer of answers; index as i" [value]="answer.id.toString()"
+      [ngClass]="answerClass(answer.id)" (change)="updateAnswers($event)"
+      [checked]="this.currentAnswers.includes(answer.id.toString())"
+    >
+      {{ answer.value }}
+    </mat-checkbox>
+  </mat-radio-group>
+</section>
+
+<p *ngIf="isCorrect" class="correct answer-feedback">Correct!</p>
+<p *ngIf="isCorrect === false" class="wrong answer-feedback">Wrong!</p>
