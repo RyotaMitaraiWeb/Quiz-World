@@ -11,7 +11,7 @@ import { api } from '../../constants/api.constants';
 export class AuthService {
   constructor(private readonly http: HttpClient) { }
   url = api.endpoints.auth;
-  
+
   /**
    * Sends a request to ``/auth/login`` and returns an observable with the
    * response of the request
@@ -20,6 +20,14 @@ export class AuthService {
    */
   login(body: IAuthBody): Observable<HttpResponse<IAuthSuccessResponse>> {
     return this.http.post<IAuthSuccessResponse>(this.url.login, body, {
+      observe: 'response',
+      responseType: 'json',
+    });
+  }
+
+
+  register(body: IAuthBody): Observable<HttpResponse<IAuthSuccessResponse>> {
+    return this.http.post<IAuthSuccessResponse>(this.url.register, body, {
       observe: 'response',
       responseType: 'json',
     });
