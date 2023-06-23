@@ -22,3 +22,8 @@ function usernameExists(username: string): Observable<HttpResponse<unknown>>
 ```
 Sends a GET request to ``/auth/username/{username}`` and returns an Observable
 that holds the response. The component that relies on the method should work with the status code only.
+
+```typescript
+function retrieveSession(): Observable<HttpResponse<IAuthSuccessResponse>>
+```
+Sends a POST request to ``/auth`` and returns an Observable of the response.

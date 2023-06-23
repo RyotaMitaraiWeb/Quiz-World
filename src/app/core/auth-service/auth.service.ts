@@ -62,4 +62,16 @@ export class AuthService {
       observe: 'response',
     });
   }
+
+  /**
+   * Sends a POST request to ``/auth`` and returns an Observable 
+   * of the response.
+   * @returns An Observable that resolves to the response.
+   */
+  retrieveSession(): Observable<HttpResponse<IAuthSuccessResponse>> {
+    return this.http.post<IAuthSuccessResponse>(this.url.session, undefined, {
+      observe: 'response',
+      responseType: 'json',
+    });
+  }
 }
