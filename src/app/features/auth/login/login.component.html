@@ -1,1 +1,14 @@
-<p>login works!</p>
+<h1>Log into your account</h1>
+<form (submit)="login($event)" [formGroup]="form">
+  <mat-form-field>
+    <input required matInput name="username" id="username" formControlName="username" />
+    <mat-error *ngIf="controlError('username')?.['required']">Username is required!</mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <input required matInput name="password" id="password" type="password" formControlName="password" />
+    <mat-error *ngIf="controlError('password')?.['required']">Password is required!</mat-error>
+  </mat-form-field>
+  <button matButton mat-raised-button color="primary" [disabled]="form.invalid">
+    Login
+  </button>
+</form>
