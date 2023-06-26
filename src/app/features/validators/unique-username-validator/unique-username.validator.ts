@@ -25,13 +25,13 @@ export class UniqueUsernameValidator implements AsyncValidator {
   validate(control: AbstractControl<string, string>): Observable<ValidationErrors | null> {
     const value = control.value;
     return this.authService.usernameExists(value)
-    .pipe(
-      debounceTime(1500),
-      distinctUntilChanged(),
-      map(res => res.status),
-      map(this.determineIfValidByStatus),
-      catchError((err: HttpErrorResponse) => of(this.determineIfValidByStatus(err.status)))
-    );
+      .pipe(
+        debounceTime(1500),
+        distinctUntilChanged(),
+        map(res => res.status),
+        map(this.determineIfValidByStatus),
+        catchError((err: HttpErrorResponse) => of(this.determineIfValidByStatus(err.status)))
+      );
   }
 
   private determineIfValidByStatus(status: number) {    
@@ -41,6 +41,6 @@ export class UniqueUsernameValidator implements AsyncValidator {
       return null;
     }
 
-    return { uniqueUsername: 'Something went wrong! Please try again later!'};
+    return { uniqueUsername: 'Something went wrong! Please try again later!' };
   }
 }
