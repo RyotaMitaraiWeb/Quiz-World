@@ -14,6 +14,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { selectUserRoles } from '../../../store/user/user.selector';
 import { IAuthSuccessResponse } from '../../../../types/responses/auth.types';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +25,8 @@ import { IAuthSuccessResponse } from '../../../../types/responses/auth.types';
     ReactiveFormsModule,
     MatInputModule,
     MatButtonModule,
+    MatIconModule,
+    MatTooltipModule,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
@@ -33,7 +37,6 @@ export class LoginComponent implements OnDestroy {
     private readonly fb: FormBuilder,
     private readonly router: Router,
     private readonly store: Store<IAppStore>,
-    private readonly uniqueUsernameValidator: UniqueUsernameValidator,
   ) { }
 
   form = this.fb.group({
@@ -45,13 +48,31 @@ export class LoginComponent implements OnDestroy {
     return this.form.controls[control].errors;
   }
 
+  passwordIsVisible = false;
+  togglePasswordVisibility(event: Event): void {
+    event.preventDefault();
+    this.passwordIsVisible = !this.passwordIsVisible;
+  }
+
+  protected get passwordFieldAriaLabel() {
+    return this.passwordIsVisible ? 'Hide password' : 'Show password';
+  }
+
+  protected get passwordVisibilityIcon() {
+    return this.passwordIsVisible ? 'visibility_off' : 'visibility';
+  }
+
+  protected get passwordFieldType() {
+    return this.passwordIsVisible ? 'text' : 'password';
+  }
+
   /**
    * Sends a request to the server to log in the user. If the login is successful,
    * the user is redirected to the home page, the local storage is updated with
    * the returned token, and the store is updated with the authenticated user.
    * @param event 
    */
-  login(event: Event) {
+  login(event: Event): void {
     event.preventDefault();
 
     const body: IAuthBody = {

@@ -103,6 +103,20 @@ describe('LoginComponent', () => {
         expect(localStorage.setItem).not.toHaveBeenCalled();
       }));
     });
+
+    describe('togglePasswordVisibility', () => {
+      it('Toggles the passwordIsVisible property', () => {
+        expect(component.passwordIsVisible)
+          .withContext('Password visibility started as true, expected it to start as false')
+          .toBeFalse();
+
+        component.togglePasswordVisibility(event);
+        expect(component.passwordIsVisible).toBeTrue();
+
+        component.togglePasswordVisibility(event);
+        expect(component.passwordIsVisible).toBeFalse();
+      });
+    });
   });
 
   describe('Component tests', () => {
@@ -169,11 +183,31 @@ describe('LoginComponent', () => {
         const errors = element.querySelectorAll('mat-error');
         expect(errors.length).toBe(1);
       });
+
+      it('Password visibility can be toggled successfully', async () => {
+        const inputFields = await loader.getAllHarnesses(MatInputHarness);
+        // const passwordField = inputFields[1];
+        const button = await loader.getHarness(MatButtonHarness);
+
+        const ariaLabel1 = element.querySelector('[aria-label="Show password"]');
+        expect(ariaLabel1)
+          .withContext('Password should not be visible on load')
+          .not.toBeNull();
+
+        await button.click();
+        const ariaLabel2 = element.querySelector('[aria-label="Hide password"]');
+        expect(ariaLabel2).not.toBeNull();
+
+        await button.click();
+
+        const ariaLabel3 = element.querySelector('[aria-label="Show password"]');
+        expect(ariaLabel3).not.toBeNull();
+      });
     });
 
     describe('Submitting', () => {
       it('Submit button is disabled if the form is invalid', async () => {
-        const button = await loader.getHarness(MatButtonHarness);
+        const button = (await loader.getAllHarnesses(MatButtonHarness))[1];
         expect(component.form.invalid)
           .withContext('Expected form to be invalid')
           .toBeTrue();
@@ -198,7 +232,8 @@ describe('LoginComponent', () => {
         fixture.detectChanges();
 
         const inputFields = await loader.getAllHarnesses(MatInputHarness);
-        const button = await loader.getHarness(MatButtonHarness);
+        const button = (await loader.getAllHarnesses(MatButtonHarness))[1];
+
 
         const [usernameField, passwordField] = inputFields;
 
@@ -237,7 +272,7 @@ describe('LoginComponent', () => {
         fixture.detectChanges();
 
         const inputFields = await loader.getAllHarnesses(MatInputHarness);
-        const button = await loader.getHarness(MatButtonHarness);
+        const button = (await loader.getAllHarnesses(MatButtonHarness))[1];
 
         const [usernameField, passwordField] = inputFields;
 

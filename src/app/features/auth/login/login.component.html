@@ -5,7 +5,15 @@
     <mat-error *ngIf="controlError('username')?.['required']">Username is required!</mat-error>
   </mat-form-field>
   <mat-form-field>
-    <input required matInput name="password" id="password" type="password" formControlName="password" />
+    <input required matInput name="password" id="password" [type]="passwordFieldType" formControlName="password" />
+    <button 
+      matPrefix
+      [matTooltip]="passwordFieldAriaLabel"
+      matTooltipPosition="above"
+      mat-icon-button
+      [attr.aria-label]="passwordFieldAriaLabel" (click)="togglePasswordVisibility($event)">
+      <mat-icon>{{ passwordVisibilityIcon }}</mat-icon>
+    </button>
     <mat-error *ngIf="controlError('password')?.['required']">Password is required!</mat-error>
   </mat-form-field>
   <button matButton mat-raised-button color="primary" [disabled]="form.invalid">
