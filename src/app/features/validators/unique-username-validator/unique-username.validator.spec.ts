@@ -38,9 +38,7 @@ describe('UniqueUsernameValidator', () => {
     
     const result = validator.validate(form);
     result.subscribe({
-      next: res => {
-        console.log(res);
-        
+      next: res => {        
         expect(res).not.toBeNull();
         expect(res).toEqual({ uniqueUsername: 'This username is already taken!' });
         
