@@ -7,7 +7,7 @@
 
 Renders the login page. The login page allows the user to authenticate with a username and password. The login button is disabled until the user fills the two fields.
 
-The password field also provides a button to toggle the character's visibility.
+The password field also provides a button to toggle the characters' visibility.
 
 ## Methods
 ```typescript
