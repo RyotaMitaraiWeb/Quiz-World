@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppStoreModule } from './store/app-store.module';
-import { TokenInterceptor } from './util/interceptors/token.interceptor';
+import { TokenInterceptor } from './util/interceptors/token-interceptor/token.interceptor';
 
 @NgModule({
     declarations: [
