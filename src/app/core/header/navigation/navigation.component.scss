@@ -15,7 +15,7 @@
       align-items: center;
       gap: 5px;
       margin-left: 10px;
-      a {
+      a, ::ng-deep a {
         color: white;
         text-decoration: none;
 

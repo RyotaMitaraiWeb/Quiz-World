@@ -16,7 +16,8 @@ describe('AuthService', () => {
   const response: IAuthSuccessResponse = {
     token: 'a',
     id: 1,
-    username: 'a'
+    username: 'a',
+    roles: [],
   }
 
   let testController: HttpTestingController;

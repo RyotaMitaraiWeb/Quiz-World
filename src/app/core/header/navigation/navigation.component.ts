@@ -6,11 +6,17 @@ import { selectUserRoles } from '../../../store/user/user.selector';
 import { RouterModule } from '@angular/router';
 import { role } from '../../../../types/auth/roles.types';
 import { MatIconModule } from '@angular/material/icon';
+import { LogoutButtonModule } from './logout-button/logout-button.module';
 
 @Component({
   selector: 'app-navigation',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatIconModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatIconModule,
+    LogoutButtonModule,
+  ],
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })

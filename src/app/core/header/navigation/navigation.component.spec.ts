@@ -7,6 +7,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { IAppStore } from '../../../../types/store/store.types';
 import { restartUser, setUser } from '../../../store/user/user.action';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClient } from '@angular/common/http';
+import { AuthService } from '../../auth-service/auth.service';
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
@@ -16,9 +19,14 @@ describe('NavigationComponent', () => {
   describe('Unit tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [NavigationComponent, AppStoreModule, RouterTestingModule],
+        imports: [
+          NavigationComponent,
+          AppStoreModule,
+          RouterTestingModule,
+          HttpClientTestingModule
+        ],
       });
-      
+
       fixture = TestBed.createComponent(NavigationComponent);
       component = fixture.componentInstance;
       store = TestBed.inject(Store<IAppStore>);
@@ -43,9 +51,17 @@ describe('NavigationComponent', () => {
   describe('Integration tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [NavigationComponent, AppStoreModule, RouterTestingModule],
+        imports: [
+          NavigationComponent,
+          AppStoreModule,
+          RouterTestingModule,
+          HttpClientTestingModule
+        ],
+        providers: [
+          AuthService
+        ]
       });
-      
+
       fixture = TestBed.createComponent(NavigationComponent);
       component = fixture.componentInstance;
       store = TestBed.inject(Store<IAppStore>);
@@ -56,7 +72,7 @@ describe('NavigationComponent', () => {
       it('Correctly tracks the user state', () => {
         expect(component.isGuest).toBe(true);
 
-        store.dispatch(setUser({ id: 1, username: 'some username', roles: ['User']}));
+        store.dispatch(setUser({ id: 1, username: 'some username', roles: ['User'] }));
 
         expect(component.isGuest).toBe(false);
 
@@ -70,14 +86,14 @@ describe('NavigationComponent', () => {
   describe('Component tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [NavigationComponent, AppStoreModule, RouterTestingModule],
+        imports: [NavigationComponent, AppStoreModule, RouterTestingModule, HttpClientTestingModule],
       });
       fixture = TestBed.createComponent(NavigationComponent);
       component = fixture.componentInstance;
       store = TestBed.inject(Store<IAppStore>);
       fixture.detectChanges();
     });
-  
+
     it('should create', () => {
       expect(component).toBeTruthy();
     });
@@ -88,11 +104,11 @@ describe('NavigationComponent', () => {
         const guestLinks = document.querySelectorAll('.guest');
         expect(guestLinks.length).toBe(2);
       });
-  
+
       it('Correctly displays links for logged in users', () => {
-        store.dispatch(setUser({ id: 1, username: 'admin', roles: ['User']}));
+        store.dispatch(setUser({ id: 1, username: 'admin', roles: ['User'] }));
         fixture.detectChanges();
-  
+
         const adminLinks = document.querySelectorAll('.user');
         expect(adminLinks.length).toBe(2);
       });
