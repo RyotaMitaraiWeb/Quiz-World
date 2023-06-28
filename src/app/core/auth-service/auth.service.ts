@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { IAuthSuccessResponse } from '../../../types/responses/auth.types';
 import { IAuthBody } from '../../../types/auth/general.types';
 import { api } from '../../constants/api.constants';
+import { SkipUnauthorizedRedirectionHeader } from '../../util/interceptors/unauthorized-redirect/unauthorized-redirect.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,9 @@ export class AuthService {
     return this.http.post<IAuthSuccessResponse>(this.url.login, body, {
       observe: 'response',
       responseType: 'json',
+      headers: {
+        [SkipUnauthorizedRedirectionHeader]: 'true',
+      },
     });
   }
 
@@ -35,6 +39,9 @@ export class AuthService {
     return this.http.post<IAuthSuccessResponse>(this.url.register, body, {
       observe: 'response',
       responseType: 'json',
+      headers: {
+        [SkipUnauthorizedRedirectionHeader]: 'true',
+      },
     });
   }
 
@@ -72,6 +79,9 @@ export class AuthService {
     return this.http.post<IAuthSuccessResponse>(this.url.session, undefined, {
       observe: 'response',
       responseType: 'json',
+      headers: {
+        [SkipUnauthorizedRedirectionHeader]: 'true',
+      },
     });
   }
 }
