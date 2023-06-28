@@ -11,3 +11,8 @@ the ``userRoles`` property.
 function isAdmin(): boolean
 ```
 Returns a boolean value that indicates whether ``userRoles`` contains ``Administrator``.
+
+```typescript
+function isModerator(): boolean
+```
+Returns a boolean value that indicates whether ``userRoles`` contains ``Moderator``.

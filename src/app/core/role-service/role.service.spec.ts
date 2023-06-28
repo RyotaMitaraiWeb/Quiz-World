@@ -51,4 +51,22 @@ describe('RoleService', () => {
       expect(service.isAdmin()).toBeFalse();
     });
   });
+
+  describe('isModerator', () => {
+    it('Returns true if userRoles contains Moderator', () => {
+      service.userRoles = [roles.moderator];
+      expect(service.isModerator()).toBeTrue();
+
+      service.userRoles = [roles.admin, roles.moderator];
+      expect(service.isModerator()).toBeTrue();
+    });
+
+    it('Returns false if the user is not a moderator', () => {
+      service.userRoles = [];
+      expect(service.isModerator()).toBeFalse();
+
+      service.userRoles = [roles.user];
+      expect(service.isModerator()).toBeFalse();
+    });
+  });
 });

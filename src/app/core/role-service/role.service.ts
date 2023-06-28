@@ -28,4 +28,8 @@ export class RoleService {
   isAdmin(): boolean {
     return this.userRoles.includes(roles.admin);
   }
+
+  isModerator(): boolean {
+    return this.userRoles.includes(roles.moderator);
+  }
 }
