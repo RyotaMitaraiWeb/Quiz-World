@@ -14,9 +14,6 @@ The nav is not rendered at all if the viewport width is <= 500px.
 
 ## Methods and getters
 
-### ``isGuest`` (getter)
-Returns ``true`` if the user's roles array in the user state is empty, ``false`` otherwise.
-
 ### ``getInnerWidth``
 ```typescript
 function getInnerWidth(): number

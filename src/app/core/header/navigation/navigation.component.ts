@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { role } from '../../../../types/auth/roles.types';
 import { MatIconModule } from '@angular/material/icon';
 import { LogoutButtonModule } from './logout-button/logout-button.module';
+import { RoleService } from '../../role-service/role.service';
 
 @Component({
   selector: 'app-navigation',
@@ -20,22 +21,18 @@ import { LogoutButtonModule } from './logout-button/logout-button.module';
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
 })
-export class NavigationComponent implements OnInit {
-  constructor(private readonly store: Store<IAppStore>) { }
-  ngOnInit(): void {
-    this.store.select(selectUserRoles).subscribe(state => {
-      this.userRoles = state;
-    });
-  }
-
-  userRoles!: role[];
+export class NavigationComponent {
+  constructor(
+    private readonly store: Store<IAppStore>,
+    private readonly roleService: RoleService,
+    ) { }
 
   /**
    * Returns ``true`` if the ``userRoles`` property is an empty array,
    * otherwise returns ``false``
    */
-  get isGuest() {
-    return this.userRoles.length === 0;
+  protected get isGuest() {
+    return this.roleService.isGuest();
   }
 
   /**
