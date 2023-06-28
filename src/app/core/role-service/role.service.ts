@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { IAppStore } from '../../../types/store/store.types';
 import { role } from '../../../types/auth/roles.types';
 import { selectUserRoles } from '../../store/user/user.selector';
+import { roles } from '../../constants/roles.constants';
 
 /**
  * An injectable service to work with roles, such as verifying if the user
@@ -23,4 +24,8 @@ export class RoleService {
   }
 
   userRoles: role[] = [];
+
+  isAdmin(): boolean {
+    return this.userRoles.includes(roles.admin);
+  }
 }
