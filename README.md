@@ -24,6 +24,7 @@ npm run test:e2e:debug # runs Playwright tests in debug mode, useful for close i
 - ``shared`` - holds reusable components, pipes, guards, directives, and other elements that can be used across multipe modules. You can import the shared module in any module where you need the components, pipes, or directives.
 - ``features`` - holds components and services that implement a specific feature of the app, such as a form page, search bar, etc.
 - ``store`` - configures the ngrx store.
+- ``util`` - holds features that do not fit in any of the above, such as interceptors and resolvers.
 
 Each folder and its respective subfolders contain more documentation for the different components, services, etc.
 
