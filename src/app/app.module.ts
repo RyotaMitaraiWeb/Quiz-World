@@ -8,6 +8,7 @@ import { CoreModule } from './core/core.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppStoreModule } from './store/app-store.module';
 import { TokenInterceptor } from './util/interceptors/token-interceptor/token.interceptor';
+import { UnauthorizedRedirectInterceptor } from './util/interceptors/unauthorized-redirect/unauthorized-redirect.interceptor';
 
 @NgModule({
     declarations: [
@@ -17,6 +18,11 @@ import { TokenInterceptor } from './util/interceptors/token-interceptor/token.in
       {
         provide: HTTP_INTERCEPTORS,
         useClass: TokenInterceptor,
+        multi: true,
+      },
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: UnauthorizedRedirectInterceptor,
         multi: true,
       },
     ],
