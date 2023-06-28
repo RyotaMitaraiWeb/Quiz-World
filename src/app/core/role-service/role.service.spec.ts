@@ -69,4 +69,16 @@ describe('RoleService', () => {
       expect(service.isModerator()).toBeFalse();
     });
   });
+
+  describe('isGuestr', () => {
+    it('Returns true if userRoles is empty', () => {
+      service.userRoles = [];
+      expect(service.isGuest()).toBeTrue();
+    });
+
+    it('Returns false if userRoles is not empty', () => {
+      service.userRoles = [roles.user];
+      expect(service.isGuest()).toBeFalse();
+    });
+  });
 });

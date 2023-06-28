@@ -32,4 +32,8 @@ export class RoleService {
   isModerator(): boolean {
     return this.userRoles.includes(roles.moderator);
   }
+
+  isGuest(): boolean {
+    return this.userRoles.length === 0;
+  }
 }

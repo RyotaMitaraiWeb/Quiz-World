@@ -16,3 +16,8 @@ Returns a boolean value that indicates whether ``userRoles`` contains ``Administ
 function isModerator(): boolean
 ```
 Returns a boolean value that indicates whether ``userRoles`` contains ``Moderator``.
+
+```typescript
+function isGuest(): boolean
+```
+Returns a boolean value that indicates whether ``userRoles`` is empty.
