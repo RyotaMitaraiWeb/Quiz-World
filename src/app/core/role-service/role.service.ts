@@ -25,18 +25,26 @@ export class RoleService {
 
   userRoles: role[] = [];
 
+  /**
+   * Returns a boolean value that indicates whether ``userRoles`` contains ``Administrator``.
+   */
   isAdmin(): boolean {
     return this.userRoles.includes(roles.admin);
   }
 
+  /**
+   * Returns a boolean value that indicates whether ``userRoles`` contains ``Moderator``.
+   */
   isModerator(): boolean {
     return this.userRoles.includes(roles.moderator);
   }
 
+  /**
+   * Returns a boolean value that indicates whether ``userRoles`` is empty.
+   */
   isGuest(): boolean {
     return this.userRoles.length === 0;
   }
-
 
   /**
    * Returns a boolean value that indicates whether the user is logged in or not.
