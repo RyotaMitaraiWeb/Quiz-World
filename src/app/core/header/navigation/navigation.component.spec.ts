@@ -2,86 +2,16 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NavigationComponent } from './navigation.component';
 import { AppStoreModule } from '../../../store/app-store.module';
-import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { IAppStore } from '../../../../types/store/store.types';
 import { restartUser, setUser } from '../../../store/user/user.action';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../../auth-service/auth.service';
 
 describe('NavigationComponent', () => {
   let component: NavigationComponent;
   let fixture: ComponentFixture<NavigationComponent>;
   let store: Store<IAppStore>;
-
-  describe('Unit tests', () => {
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          NavigationComponent,
-          AppStoreModule,
-          RouterTestingModule,
-          HttpClientTestingModule
-        ],
-      });
-
-      fixture = TestBed.createComponent(NavigationComponent);
-      component = fixture.componentInstance;
-      store = TestBed.inject(Store<IAppStore>);
-      fixture.detectChanges();
-    });
-
-    describe('isGuest', () => {
-      it('Returns true if the userRoles array is empty', () => {
-        component.userRoles = [];
-        const result = component.isGuest;
-        expect(result).toBe(true);
-      });
-
-      it('Returns false if the userRoles array is not empty', () => {
-        component.userRoles = ['User'];
-        const result = component.isGuest;
-        expect(result).toBe(false);
-      });
-    });
-  });
-
-  describe('Integration tests', () => {
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [
-          NavigationComponent,
-          AppStoreModule,
-          RouterTestingModule,
-          HttpClientTestingModule
-        ],
-        providers: [
-          AuthService
-        ]
-      });
-
-      fixture = TestBed.createComponent(NavigationComponent);
-      component = fixture.componentInstance;
-      store = TestBed.inject(Store<IAppStore>);
-      fixture.detectChanges();
-    });
-
-    describe('isGuest', () => {
-      it('Correctly tracks the user state', () => {
-        expect(component.isGuest).toBe(true);
-
-        store.dispatch(setUser({ id: 1, username: 'some username', roles: ['User'] }));
-
-        expect(component.isGuest).toBe(false);
-
-        store.dispatch(restartUser());
-
-        expect(component.isGuest).toBe(true)
-      });
-    });
-  });
 
   describe('Component tests', () => {
     beforeEach(() => {
