@@ -63,4 +63,26 @@ export class RoleService {
 
     return localStorage.getItem('token') !== null;
   }
+
+  /**
+   * Returns the user's "highest" role. For example, if the user has the Administrator
+   * and Moderator roles, this method will return "Administrator". ``null`` is returned
+   * if the user is not logged in.
+   * @returns the user's highest role or ``null`` if the user is a guest
+   */
+  getHighestRole(): role | null {
+    if (this.isAdmin()) {
+      return roles.admin;
+    }
+
+    if (this.isModerator()) {
+      return roles.moderator;
+    }
+
+    if (this.isLoggedIn()) {
+      return roles.user;
+    }
+
+    return null;
+  }
 }
