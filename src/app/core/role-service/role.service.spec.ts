@@ -81,4 +81,39 @@ describe('RoleService', () => {
       expect(service.isGuest()).toBeFalse();
     });
   });
+
+  describe('isLoggedIn', () => {
+    it('Returns true if userRoles is not empty (store strategy)', () => {
+      service.userRoles = [roles.user];
+      localStorage.removeItem('token');
+      expect(service.isLoggedIn()).toBeTrue();
+
+      expect(service.isLoggedIn('store')).toBeTrue();
+    });
+
+    it('Returns true if localStorage token is not null (localStorage strategy)', () => {
+      service.userRoles = [];
+      localStorage.setItem('token', 'a');
+      expect(service.isLoggedIn('localStorage')).toBeTrue();
+    });
+
+    it('Returns false if userRoles is empty (store strategy)', () => {
+      service.userRoles = [];
+      localStorage.setItem('token', 'a');
+
+      expect(service.isLoggedIn()).toBeFalse();
+      expect(service.isLoggedIn('store')).toBeFalse();
+    });
+
+    it('Returns false if userRoles is empty (localStorage is empty)', () => {
+      service.userRoles = [roles.user];
+      localStorage.removeItem('token');
+
+      expect(service.isLoggedIn('localStorage')).toBeFalse();
+    });
+  });
+
+  afterEach(() => {
+    localStorage.clear();
+  })
 });
