@@ -31,3 +31,11 @@ Sends a PUT request to ``/administration/promote/{id}``. In order for this reque
 function demoteToUser(id: number): Observable<IUser[]>
 ```
 Sends a PUT request to ``/administration/demote/{id}``. In order for this request to work, the user must be of role ``moderator`` (and nothing higher). The method returns an updated list of users.
+
+
+```typescript
+function getActivityLogs(): Observable<ILogActivity[]>;
+function getActivityLogs(page: number | string): Observable<ILogActivity[]>;
+function getActivityLogs(page: number | string, order: order): Observable<ILogActivity[]>;
+```
+Returns a list of logs containing moderator/admin activities, such as promotions, demotions, editing/deleting of other people's quizzes and so on, sorted by the date. Arguments can be used to control the pagination and order of the results. The default options are page 1, sorted in an ascending order.

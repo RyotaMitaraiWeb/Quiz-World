@@ -6,6 +6,7 @@ import { AppStoreModule } from '../../store/app-store.module';
 import { IUser, IUserResponse } from '../../../types/responses/administration.types';
 import { roles } from '../../constants/roles.constants';
 import { HttpStatusCode } from '@angular/common/http';
+import { ILogActivity } from '../../../types/administration/logs.types';
 
 describe('AdminService', () => {
   let service: AdminService;
@@ -80,7 +81,7 @@ describe('AdminService', () => {
           username: 'a',
           roles: [roles.moderator, roles.user, roles.admin],
         },
-       
+
       ] as IUserResponse[], {
         status: HttpStatusCode.Ok,
         statusText: 'Ok'
@@ -116,10 +117,10 @@ describe('AdminService', () => {
           roles: [roles.user, roles.moderator],
         },
       ] as IUserResponse[],
-      {
-        status: HttpStatusCode.Ok,
-        statusText: 'Ok',
-      }
+        {
+          status: HttpStatusCode.Ok,
+          statusText: 'Ok',
+        }
       );
     });
 
@@ -155,10 +156,10 @@ describe('AdminService', () => {
           roles: [roles.user, roles.moderator],
         },
       ] as IUserResponse[],
-      {
-        status: HttpStatusCode.Ok,
-        statusText: 'Ok',
-      }
+        {
+          status: HttpStatusCode.Ok,
+          statusText: 'Ok',
+        }
       );
     });
   });
@@ -186,7 +187,7 @@ describe('AdminService', () => {
           username: 'a',
           roles: [roles.moderator, roles.user, roles.admin],
         },
-       
+
       ] as IUserResponse[], {
         status: HttpStatusCode.Ok,
         statusText: 'Ok'
@@ -209,7 +210,7 @@ describe('AdminService', () => {
           console.warn(err);
         },
       });
-      
+
       const request = testController.expectOne(service.url.demoteToUser(1));
       request.flush([
         {
@@ -217,10 +218,65 @@ describe('AdminService', () => {
           username: 'a',
           roles: [roles.user],
         },
-       
+
       ] as IUserResponse[], {
         status: HttpStatusCode.Ok,
         statusText: 'Ok'
+      });
+    });
+  });
+
+  describe('getActivityLogs', () => {
+    it('Retrieves a list of logs', (done: DoneFn) => {
+      service.getActivityLogs().subscribe({
+        next: res => {
+          expect(res.length).toBe(1);
+          expect(res[0].message).toBe('a');
+          done();
+        },
+        error: err => {
+          console.warn(err);
+          done.fail('Expected a successful response, not an error one');
+        },
+      });
+
+      const request = testController.expectOne(service.url.logs);
+      request.flush(
+        [
+          {
+            message: 'a',
+          },
+        ] as ILogActivity[],
+        {
+          status: HttpStatusCode.Ok,
+          statusText: 'Ok',
+        },
+      );
+    });
+
+    it('Attaches query parameters successfully', (done: DoneFn) => {
+      service.getActivityLogs(2, 'desc').subscribe({
+        next: res => {
+          expect(res).toBeTruthy();
+          done();
+        },
+        error: err => {
+          console.warn(err);
+          done.fail('Expected a successful response, not an error one');
+        },
+      });
+
+      const request = testController.expectOne(req => {
+        const params = req.params;
+        const page = params.get('page');
+        const order = params.get('order');
+
+        return page === '2' && order === 'desc';
+      });
+
+      request.flush([], {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok',
       });
     });
   });

@@ -6,7 +6,8 @@ import { IUser, IUserResponse } from '../../../types/responses/administration.ty
 import { api } from '../../constants/api.constants';
 import { role } from '../../../types/auth/roles.types';
 import { roles } from '../../constants/roles.constants';
-import { order } from '../../../types/others/lists.types';
+import { order, sort } from '../../../types/others/lists.types';
+import { ILogActivity } from '../../../types/administration/logs.types';
 
 /**
  * An injectable service that makes HTTP calls relating to administration,
@@ -128,6 +129,38 @@ export class AdminService {
     .pipe(
       map(users => users.map(this.mapUserToHighestRole))
     );
+  }
+
+  /**
+   * Retrieves a list of moderator and admin activities.
+   * 
+   * @returns a list of log activities on page 1, sorted by title in an ascending order.
+   */
+  getActivityLogs(): Observable<ILogActivity[]>;
+  /**
+   * Retrieves a list of moderator and admin activities.
+   * @param page the page of the query
+   * @returns a list of log activities on the specified page, sorted by date in an ascending order.
+   */
+  getActivityLogs(page: number | string): Observable<ILogActivity[]>;
+  /**
+   * Retrieves a list of moderator and admin activities.
+   * @param page the page of the query
+   * @param order the order by which the result will be sorted.
+   * @returns a list of log activities on the specified page, sorted by date in the specified order.
+   */
+  getActivityLogs(page: number | string, order: order): Observable<ILogActivity[]>;
+  getActivityLogs(page?: number | string, order?: order): Observable<ILogActivity[]> {
+    let params = new HttpParams();
+    if (page) {
+      params = params.append('page', page);
+    }
+
+    if (order) {
+      params = params.append('order', order);
+    }
+
+    return this.http.get<ILogActivity[]>(this.url.logs, { params });
   }
 
   private mapUserToHighestRole(user: IUserResponse): IUser {
