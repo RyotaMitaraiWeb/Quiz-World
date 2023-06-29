@@ -21,3 +21,8 @@ function getUsersByUsername(username: string, page: number | string, order: orde
 Sends a GET request to ``/administration/users/{username}`` and returns a list of all users that contain the given ``username`` string. Each user is listed with their highest role. Optionally, you can pass a page to specify how the result should be paginated, and how the result will be ordered. The list is ordered based entirely on the username. The default options are page 1 and an ascending order.
 
 When passing page as a string, ensure that it is a numerical one.
+
+```typescript
+function promoteToModerator(id: number): Observable<IUser[]>
+```
+Sends a PUT request to ``/administration/promote/{id}``. In order for this request to work, the user must be of role ``user`` (and nothing else). The method returns an updated list of users.

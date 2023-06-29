@@ -102,6 +102,20 @@ export class AdminService {
     return request;
   }
 
+  /**
+   * Sends a PUT request to ``/administration/promote/{id}``. In order for this
+   * request to work, the user must be of role ``user``.
+   * @param id the ID of the user to be promoted to a Moderator
+   * @returns an Observable of type ``IUser[]``. You can use this to update
+   * the list of users after the response resolves.
+   */
+  promoteToModerator(id: number): Observable<IUser[]> {
+    return this.http.put<IUserResponse[]>(this.url.promoteToModerator(id), {})
+    .pipe(
+      map(users => users.map(this.mapUserToHighestRole))
+    );
+  }
+
   private mapUserToHighestRole(user: IUserResponse): IUser {
     const { id, username } = user;
     if (user.roles.includes(roles.admin)) {

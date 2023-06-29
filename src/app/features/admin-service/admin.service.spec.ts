@@ -71,7 +71,7 @@ describe('AdminService', () => {
         error: err => {
           done.fail('Expected a successful response, not an error one');
           console.warn(err);
-        }
+        },
       })
       const request = testController.expectOne(service.url.getAdmins);
       request.flush([
@@ -84,7 +84,7 @@ describe('AdminService', () => {
       ] as IUserResponse[], {
         status: HttpStatusCode.Ok,
         statusText: 'Ok'
-      })
+      });
     });
   });
 
@@ -160,6 +160,37 @@ describe('AdminService', () => {
         statusText: 'Ok',
       }
       );
+    });
+  });
+
+  describe('promoteToModerator', () => {
+    it('Returns a list of users successfully', (done: DoneFn) => {
+      service.promoteToModerator(1).subscribe({
+        next: res => {
+          expect(res.length).toBe(1);
+          expect(res[0].id).toBe(1);
+          expect(res[0].role).toBe(roles.admin);
+
+          done();
+        },
+        error: err => {
+          done.fail('Expected a successful response, not an error one');
+          console.warn(err);
+        },
+      });
+      
+      const request = testController.expectOne(service.url.promoteToModerator(1));
+      request.flush([
+        {
+          id: 1,
+          username: 'a',
+          roles: [roles.moderator, roles.user, roles.admin],
+        },
+       
+      ] as IUserResponse[], {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok'
+      });
     });
   });
 
