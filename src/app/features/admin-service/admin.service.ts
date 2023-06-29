@@ -36,6 +36,19 @@ export class AdminService {
     );
   }
 
+  /**
+   * Sends a GET request to ``/administration/admins`` and returns a list
+   * of all users that have the Administrator role.
+   * Each user is listed with only one role, which is their highest one.
+   * @returns an Observable that resolves to an array of ``IUser``.
+   */
+  getAdmins(): Observable<IUser[]> {
+    return this.http.get<IUserResponse[]>(this.url.getAdmins)
+    .pipe(
+      map(users => users.map(this.mapUserToHighestRole))
+    );
+  }
+
   private mapUserToHighestRole(user: IUserResponse): IUser {
     const { id, username } = user;
     if (user.roles.includes(roles.admin)) {

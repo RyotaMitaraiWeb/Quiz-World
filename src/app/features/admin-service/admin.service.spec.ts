@@ -58,6 +58,36 @@ describe('AdminService', () => {
     });
   });
 
+  describe('getAdmins', () => {
+    it('Returns an array of users and maps all roles to the highest one', (done: DoneFn) => {
+      service.getAdmins().subscribe({
+        next: res => {
+          expect(res.length).toBe(1);
+          expect(res[0].id).toBe(1);
+          expect(res[0].role).toBe(roles.admin);
+
+          done();
+        },
+        error: err => {
+          done.fail('Expected a successful response, not an error one');
+          console.warn(err);
+        }
+      })
+      const request = testController.expectOne(service.url.getAdmins);
+      request.flush([
+        {
+          id: 1,
+          username: 'a',
+          roles: [roles.moderator, roles.user, roles.admin],
+        },
+       
+      ] as IUserResponse[], {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok'
+      })
+    });
+  });
+
   afterEach(() => {
     testController.verify();
   });

@@ -7,3 +7,8 @@ such as promoting and demoting users and obtaining logs.
 function getModerators(): Observable<IUser[]>
 ```
 Sends a GET request to ``/administration/moderators`` and returns a list of all users that have the Moderator role (including administrators). Each user is listed with only one role, which is their highest one.
+
+```typescript
+function getAdmins(): Observable<IUser[]>
+```
+Sends a GET request to ``/administration/admins`` and returns a list of all users that have the Administrator role. Each user is listed with only one role, which is their highest one.
