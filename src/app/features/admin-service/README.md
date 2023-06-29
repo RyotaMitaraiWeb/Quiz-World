@@ -12,3 +12,12 @@ Sends a GET request to ``/administration/moderators`` and returns a list of all 
 function getAdmins(): Observable<IUser[]>
 ```
 Sends a GET request to ``/administration/admins`` and returns a list of all users that have the Administrator role. Each user is listed with only one role, which is their highest one.
+
+```typescript
+function getUsersByUsername(username: string): Observable<IUser[]>;
+function getUsersByUsername(username: string, page: number | string): Observable<IUser[]>;
+function getUsersByUsername(username: string, page: number | string, order: order): Observable<IUser[]>;
+```
+Sends a GET request to ``/administration/users/{username}`` and returns a list of all users that contain the given ``username`` string. Each user is listed with their highest role. Optionally, you can pass a page to specify how the result should be paginated, and how the result will be ordered. The list is ordered based entirely on the username. The default options are page 1 and an ascending order.
+
+When passing page as a string, ensure that it is a numerical one.

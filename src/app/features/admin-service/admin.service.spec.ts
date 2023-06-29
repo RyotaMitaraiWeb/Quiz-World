@@ -88,6 +88,81 @@ describe('AdminService', () => {
     });
   });
 
+  describe('getUsersByUsername', () => {
+    it('Returns a list of users', (done: DoneFn) => {
+      service.getUsersByUsername('a').subscribe({
+        next: res => {
+          expect(res.length).toBe(2);
+          expect(res[0].role).toBe(roles.user);
+          expect(res[1].role).toBe(roles.moderator);
+          done();
+        },
+        error: err => {
+          done.fail('Expected a successful response, not an error one');
+          console.warn(err);
+        },
+      });
+
+      const request = testController.expectOne(service.url.getUserByUsername('a'));
+      request.flush([
+        {
+          id: 1,
+          username: 'a',
+          roles: [roles.user],
+        },
+        {
+          id: 2,
+          username: 'aa',
+          roles: [roles.user, roles.moderator],
+        },
+      ] as IUserResponse[],
+      {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok',
+      }
+      );
+    });
+
+    it('Attaches correct parameters based on page and sort arguments', (done: DoneFn) => {
+      service.getUsersByUsername('a', 2, 'desc').subscribe({
+        next: res => {
+          expect(res).toBeTruthy();
+          done();
+        },
+        error: err => {
+          done.fail('Expected a successful response, not an error one');
+          console.warn(err);
+        },
+      });
+
+      const request = testController.expectOne(req => {
+        const params = req.params;
+        const page = params.get('page');
+        const order = params.get('order');
+
+        return page === '2' && order === 'desc';
+      });
+
+      request.flush([
+        {
+          id: 2,
+          username: 'ba',
+          roles: [roles.user],
+        },
+        {
+          id: 1,
+          username: 'aa',
+          roles: [roles.user, roles.moderator],
+        },
+      ] as IUserResponse[],
+      {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok',
+      }
+      );
+    });
+  });
+
   afterEach(() => {
     testController.verify();
   });
