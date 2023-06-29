@@ -43,6 +43,8 @@ export const api = {
       getModerators: `${administration}/moderators`,
       getAdmins: `${administration}/admins`,
       getUserByUsername: (username: string) => `${administration}/users/${username}`,
+      promoteToModerator: (id: number) => `${administration}/promote/${id}`,
+      demoteToUser: (id: number) => `${administration}/demote/${id}`,
     }
   }
 };
