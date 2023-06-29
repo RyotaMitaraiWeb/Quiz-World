@@ -4,6 +4,7 @@ const root = environment.api;
 const auth = `${root}/auth`;
 const quiz = `${root}/quiz`;
 const answer = `${root}/answers`;
+const administration = `${root}/administration`;
 
 export const api = {
   root,
@@ -37,6 +38,11 @@ export const api = {
     answers: {
       correctAnswersInstantMode: (questionId: number) => `${answer}/${questionId}/instant`,
       correctAnswersFull: (quizId: number) => `${answer}/${quizId}/full`,
+    },
+    administration: {
+      getModerators: `${administration}/moderators`,
+      getAdmins: `${administration}/admins`,
+      getUserByUsername: (username: string) => `${administration}/users/${username}`,
     }
   }
 };
