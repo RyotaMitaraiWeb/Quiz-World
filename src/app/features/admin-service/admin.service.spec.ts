@@ -178,13 +178,44 @@ describe('AdminService', () => {
           console.warn(err);
         },
       });
-      
+
       const request = testController.expectOne(service.url.promoteToModerator(1));
       request.flush([
         {
           id: 1,
           username: 'a',
           roles: [roles.moderator, roles.user, roles.admin],
+        },
+       
+      ] as IUserResponse[], {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok'
+      });
+    });
+  });
+
+  describe('demoteToUser', () => {
+    it('Returns a list of users successfully', (done: DoneFn) => {
+      service.demoteToUser(1).subscribe({
+        next: res => {
+          expect(res.length).toBe(1);
+          expect(res[0].id).toBe(1);
+          expect(res[0].role).toBe(roles.user);
+
+          done();
+        },
+        error: err => {
+          done.fail('Expected a successful response, not an error one');
+          console.warn(err);
+        },
+      });
+      
+      const request = testController.expectOne(service.url.demoteToUser(1));
+      request.flush([
+        {
+          id: 1,
+          username: 'a',
+          roles: [roles.user],
         },
        
       ] as IUserResponse[], {

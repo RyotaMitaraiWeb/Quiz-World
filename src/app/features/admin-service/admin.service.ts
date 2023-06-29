@@ -116,6 +116,20 @@ export class AdminService {
     );
   }
 
+  /**
+   * Sends a PUT request to ``/administration/demote/{id}``. In order for this
+   * request to work, the user must be of role ``moderator``.
+   * @param id the ID of the moderator to be demoted to user.
+   * @returns an Observable of type ``IUser[]``. You can use this to update
+   * the list of users after the response resolves.
+   */
+  demoteToUser(id: number): Observable<IUser[]> {
+    return this.http.put<IUserResponse[]>(this.url.demoteToUser(id), {})
+    .pipe(
+      map(users => users.map(this.mapUserToHighestRole))
+    );
+  }
+
   private mapUserToHighestRole(user: IUserResponse): IUser {
     const { id, username } = user;
     if (user.roles.includes(roles.admin)) {

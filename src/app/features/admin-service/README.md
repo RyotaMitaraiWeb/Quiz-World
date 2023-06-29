@@ -26,3 +26,8 @@ When passing page as a string, ensure that it is a numerical one.
 function promoteToModerator(id: number): Observable<IUser[]>
 ```
 Sends a PUT request to ``/administration/promote/{id}``. In order for this request to work, the user must be of role ``user`` (and nothing else). The method returns an updated list of users.
+
+```typescript
+function demoteToUser(id: number): Observable<IUser[]>
+```
+Sends a PUT request to ``/administration/demote/{id}``. In order for this request to work, the user must be of role ``moderator`` (and nothing higher). The method returns an updated list of users.
