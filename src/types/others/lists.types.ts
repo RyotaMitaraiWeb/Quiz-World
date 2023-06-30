@@ -7,5 +7,5 @@ export interface IQuizListItem {
   description: string;
   instantMode: boolean;
   createdOn: string;
-  updatedOn: string;
+  updatedOn?: string;
 }
