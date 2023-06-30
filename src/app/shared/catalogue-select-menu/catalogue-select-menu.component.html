@@ -1,1 +1,16 @@
-<p>catalogue-select-menu works!</p>
+<form>
+  <mat-form-field [formGroup]="form">
+    <mat-label>Sort by</mat-label>
+    <mat-select formControlName="value" (selectionChange)="select($event)">
+      <ng-container *ngFor="let category of categories">
+        <mat-option
+          *ngFor="let order of orderOptions"
+          [value]="category + '-' + order"
+          
+        >
+        {{ labels[category].sort }} ({{ labels[category][order] }})
+        </mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+</form>
