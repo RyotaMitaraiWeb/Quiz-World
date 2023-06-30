@@ -9,3 +9,8 @@ export interface IQuizListItem {
   createdOn: string;
   updatedOn?: string;
 }
+
+export interface IQuizList {
+  quizzes: IQuizListItem[];
+  total: number;
+}
