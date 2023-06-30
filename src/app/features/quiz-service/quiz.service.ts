@@ -4,6 +4,8 @@ import { api } from '../../constants/api.constants';
 import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { Observable, Subscriber } from 'rxjs';
 import { ICreatedQuizResponse, IQuizDetails } from '../../../types/responses/quiz.types';
+import { IQuizListItem, order, sort } from '../../../types/others/lists.types';
+import { paramsBuilder } from '../../../util/params-builder/params-builder';
 
 /**
  * An injectable service for managing quizzes (retrieving/creating/editing/deleting).
@@ -40,6 +42,48 @@ export class QuizService {
     return this.http.get<IQuizDetails>(this.url.id(id), {
       observe: 'response',
       responseType: 'json',
+    });
+  }
+
+  /**
+   * Sends a GET request to ``/quiz/all`` and retrieves a paginated and sorted list of
+   * quizzes.
+   * @param page the page of the result.
+   * @param sort the category by which the result will be sorted.
+   * @param order the order in which the result will be sorted.
+   * @returns an Observable of type ``IQuizListItem[]`` on the specified page, sorted by
+   * the specified category in the specified order.
+   */
+  getAllQuizzes(page?: number | string, sort?: sort, order?: order): Observable<IQuizListItem[]>;
+  /**
+   * Sends a GET request to ``/quiz/all`` and retrieves a paginated and sorted list of
+   * quizzes.
+   * @returns an Observable of type ``IQuizListItem[]`` on page 1, sorted by
+   * title in an ascending order.
+   */
+  getAllQuizzes(): Observable<IQuizListItem[]>;
+  /**
+   * Sends a GET request to ``/quiz/all`` and retrieves a paginated and sorted list of
+   * quizzes.
+   * @param page the page of the result.
+   * @returns an Observable of type ``IQuizListItem[]`` on the specified page, sorted by
+   * title in an ascending order.
+   */
+  getAllQuizzes(page: number | string): Observable<IQuizListItem[]>;
+  /**
+   * Sends a GET request to ``/quiz/all`` and retrieves a paginated and sorted list of
+   * quizzes.
+   * @param page the page of the result.
+   * @param sort the category by which the result will be sorted.
+   * @returns an Observable of type ``IQuizListItem[]`` on the specified page, sorted by
+   * the specified category in an ascending order.
+   */
+  getAllQuizzes(page: number | string, sort: sort): Observable<IQuizListItem[]>;
+  getAllQuizzes(page?: number | string, sort?: sort, order?: order): Observable<IQuizListItem[]> {
+    const params = paramsBuilder(page, sort, order);
+
+    return this.http.get<IQuizListItem[]>(this.url.all, {
+      params,
     });
   }
 }
