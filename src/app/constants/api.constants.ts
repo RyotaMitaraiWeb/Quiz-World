@@ -34,6 +34,7 @@ export const api = {
       edit: (id: string | number) => `${quiz}/${id}`,
       delete: (id: string | number) => `${quiz}/${id}`,
       all: `${quiz}/all`,
+      search: `${quiz}/search`,
     },
     answers: {
       correctAnswersInstantMode: (questionId: number) => `${answer}/${questionId}/instant`,
