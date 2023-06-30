@@ -32,3 +32,13 @@ function getQuizzesByTitle(query: string, page?: number | string, sort?: sort, o
 
 ```
 Sends a GET request to ``/quiz/search`` and retrieves a paginated and sorted list of quizzes whose title contains the given ``query``. You can pass arguments to control the pagination and sorting. The default options are page 1, sorted by title in an ascending order.
+
+```typescript
+function getUserQuizzes(userId: number): Observable<IQuizListItem[]>;
+function getUserQuizzes(userId: number, page: number | string): Observable<IQuizListItem[]>;
+function getUserQuizzes(userId: number, page: number | string, sort: sort): Observable<IQuizListItem[]>;
+function getUserQuizzes(userId: number, page: number | string, sort: sort, order: order): Observable<IQuizListItem[]>
+function getUserQuizzes(userId: number, page?: number | string, sort?: sort, order?: order): Observable<IQuizListItem[]>
+
+```
+Sends a GET request to ``/quiz/user/{userId}`` and retrieves a paginated and sorted list of quizzes that were created by the user with the given ID. You can pass arguments to control the pagination and sorting. The default options are page 1, sorted by title in an ascending order.
