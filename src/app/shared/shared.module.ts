@@ -5,6 +5,7 @@ import { QuizFormModule } from './quiz-form/quiz-form.module';
 import { ShortenPipe } from './pipes/shorten/shorten.pipe';
 import { QuizListItemModule } from './quiz-list-item/quiz-list-item.module';
 import { CatalogueSelectMenuModule } from './catalogue-select-menu/catalogue-select-menu.module';
+import { CataloguePaginatorModule } from './catalogue-paginator/catalogue-paginator.module';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { CatalogueSelectMenuModule } from './catalogue-select-menu/catalogue-sel
     QuizListItemModule,
     ShortenPipe,
     CatalogueSelectMenuModule,
+    CataloguePaginatorModule,
   ],
 })
 export class SharedModule { }
