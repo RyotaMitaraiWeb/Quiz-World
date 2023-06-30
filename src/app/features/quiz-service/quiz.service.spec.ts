@@ -228,6 +228,90 @@ describe('QuizService', () => {
     });
   });
 
+  describe('getQuizzesByTitle', () => {
+    it('Correctly returns a response with a given body (response is ok)', (done: DoneFn) => {
+      service.getQuizzesByTitle('a').subscribe({
+        next: (res) => {
+          expect(res.length).toBe(1);
+          done();
+        },
+        error: () => {
+          done.fail('Expected a successful response, not an error one');
+        }
+      });
+
+      const req = httpTestingController.expectOne(req => {
+        const url = req.url;
+        return url === service.url.search;
+      });
+
+      req.flush([{
+        id: 1,
+        title: 'a',
+        description: 'a',
+        createdOn: '01/01/2002',
+        instantMode: true,
+      }] as IQuizListItem[], {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok',
+      });
+    });
+
+    it('Correctly returns a response with a given body (response is an error)', (done: DoneFn) => {
+      const response = ['a', 'b']
+
+      service.getQuizzesByTitle('a').subscribe({
+        next: () => {
+          done.fail('Expected an error response, not a successful one');
+        },
+        error: (err: HttpErrorResponse) => {
+          expect(err.status).toBe(HttpStatusCode.NotFound);
+          expect(err.error).toEqual(response);          
+          done();
+        }
+      });
+
+      const req = httpTestingController.expectOne(req => {
+        const url = req.url;
+        return url === service.url.search;
+      });
+
+      req.flush(response, {
+        status: HttpStatusCode.NotFound,
+        statusText: 'Not Found',
+      });
+    });
+
+    it('Attaches headers successfully', (done: DoneFn) => {
+      service.getQuizzesByTitle('a', 2).subscribe({
+        next: (res) => {
+          expect(res.length).toBe(1);
+          done();
+        },
+        error: () => {
+          done.fail('Expected a successful response, not an error one');
+        }
+      });
+
+      const req = httpTestingController.expectOne(req => {
+        const page = req.params.get('page');
+        const query = req.params.get('title');
+        return req.url === service.url.search && page === '2';
+      });
+
+      req.flush([{
+        id: 1,
+        title: 'a',
+        description: 'a',
+        createdOn: '01/01/2002',
+        instantMode: true,
+      }] as IQuizListItem[], {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok',
+      });
+    });
+  });
+
   afterEach(() => {
     httpTestingController.verify();
   });

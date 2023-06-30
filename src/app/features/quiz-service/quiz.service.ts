@@ -86,4 +86,49 @@ export class QuizService {
       params,
     });
   }
+
+  /**
+   * Sends a GET request to ``/quiz/search`` and retrieves a paginated and sorted list of
+   * quizzes that contain the given ``query``.
+   * @param query the title by which the quizzes will be looked up.
+   * @param page the page of the result.
+   * @param sort the category by which the result will be sorted.
+   * @param order the order in which the result will be sorted.
+   * @returns an Observable of type ``IQuizListItem[]`` on the specified page, sorted by
+   * the specified category in the specified order.
+   */
+  getQuizzesByTitle(query: string, page?: number | string, sort?: sort, order?: order): Observable<IQuizListItem[]>
+  /**
+   * Sends a GET request to ``/quiz/search`` and retrieves a paginated and sorted list of
+   * quizzes that contain the given ``query``.
+   * @param query the title by which the quizzes will be looked up.
+   * @returns an Observable of type ``IQuizListItem[]`` on page 1, sorted by
+   * title in an ascending order.
+   */
+  getQuizzesByTitle(query: string): Observable<IQuizListItem[]>;
+  /**
+   * Sends a GET request to ``/quiz/search`` and retrieves a paginated and sorted list of
+   * quizzes that contain the given ``query``.
+   * @param query the title by which the quizzes will be looked up.
+   * @param page the page of the result.
+   * @returns an Observable of type ``IQuizListItem[]`` on the specified page, sorted by
+   * title in an ascending order.
+   */
+  getQuizzesByTitle(query: string, page: number | string): Observable<IQuizListItem[]>;
+  /**
+   * Sends a GET request to ``/quiz/search`` and retrieves a paginated and sorted list of
+   * quizzes that contain the given ``query``.
+   * @param query the title by which the quizzes will be looked up.
+   * @param page the page of the result.
+   * @param sort the category by which the result will be sorted.
+   * @returns an Observable of type ``IQuizListItem[]`` on the specified page, sorted by
+   * the specified category in an ascending order.
+   */
+  getQuizzesByTitle(query: string, page: number | string, sort: sort): Observable<IQuizListItem[]>;
+  getQuizzesByTitle(query: string, page?: number | string, sort?: sort, order?: order): Observable<IQuizListItem[]> {
+    let params = paramsBuilder(page, sort, order);
+    params = params.append('title', query);
+
+    return this.http.get<IQuizListItem[]>(this.url.search, { params });
+  }
 }

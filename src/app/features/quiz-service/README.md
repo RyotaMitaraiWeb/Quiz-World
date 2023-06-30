@@ -22,3 +22,13 @@ function getAllQuizzes(page?: number | string, sort?: sort, order?: order): Obse
 
 ```
 Sends a GET request to ``/quiz/all`` and retrieves a paginated and sorted list of quizzes. You can pass arguments to control the pagination and sorting. The default options are page 1, sorted by title in an ascending order.
+
+```typescript
+function getQuizzesByTitle(query: string): Observable<IQuizListItem[]>;
+function getQuizzesByTitle(query: string, page: number | string): Observable<IQuizListItem[]>;
+function getQuizzesByTitle(query: string, page: number | string, sort: sort): Observable<IQuizListItem[]>;
+function getQuizzesByTitle(query: string, page: number | string, sort: sort, order: order): Observable<IQuizListItem[]>
+function getQuizzesByTitle(query: string, page?: number | string, sort?: sort, order?: order): Observable<IQuizListItem[]>
+
+```
+Sends a GET request to ``/quiz/search`` and retrieves a paginated and sorted list of quizzes whose title contains the given ``query``. You can pass arguments to control the pagination and sorting. The default options are page 1, sorted by title in an ascending order.
