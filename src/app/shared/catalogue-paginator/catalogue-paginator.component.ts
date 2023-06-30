@@ -13,11 +13,14 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
   styleUrls: ['./catalogue-paginator.component.scss']
 })
 export class CataloguePaginatorComponent {
-  @Output() pageEvent = new EventEmitter();
+  @Output() pageEvent = new EventEmitter<number>();
   @Input() page = 1;
   @Input({ required: true }) total = 0;
 
   changePage(event: PageEvent) {
+    const value = event.pageIndex;
     
+    this.pageEvent.emit(value + 1);
+    this.page = value + 1;
   }
 }
