@@ -132,6 +132,21 @@ describe('AllQuizzesComponent', () => {
         expect(component.catalogue.total).toBe(3);
         expect(location.replaceState).toHaveBeenCalled();
       });
+
+      it('Sets the page property even if request fails', () => {
+        spyOn(quizService, 'getAllQuizzes').and.returnValue(
+          new Observable(o => {
+            o.error('getAllQuizzes failed');
+          })
+        );
+
+        spyOn(location, 'replaceState').and.stub();
+
+        component.changePage(2);
+
+        expect(component.page).toBe(2);
+        expect(location.replaceState).toHaveBeenCalled();
+      });
     });
   });
   
