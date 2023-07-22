@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
-import { IQuizList, IQuizListItem } from '../../../../types/others/lists.types';
+import { IQuizList, IQuizListItem, order, sort } from '../../../../types/others/lists.types';
+import { ActivatedRoute } from '@angular/router';
+import { QuizService } from '../../quiz-service/quiz.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-all-quizzes',
@@ -13,71 +16,41 @@ import { IQuizList, IQuizListItem } from '../../../../types/others/lists.types';
   templateUrl: './all-quizzes.component.html',
   styleUrls: ['./all-quizzes.component.scss']
 })
-export class AllQuizzesComponent {
-  protected quizzes: IQuizList = {
-    quizzes: [
-      {
-        id: 1,
-        instantMode: true,
-        title: 'a',
-        description: 'a',
-        createdOn: '01/04/2022',
-      },
-      {
-        id: 2,
-        instantMode: true,
-        title: 'a',
-        description: 'a',
-        createdOn: '01/04/2022',
-      },
-      {
-        id: 3,
-        instantMode: true,
-        title: 'a',
-        description: 'a',
-        createdOn: '01/04/2022',
-      },
-      {
-        id: 4,
-        instantMode: true,
-        title: 'a',
-        description: 'a',
-        createdOn: '01/04/2022',
-      },
-      {
-        id: 5,
-        instantMode: true,
-        title: 'a',
-        description: 'a',
-        createdOn: '01/04/2022',
-      },
-      {
-        id: 6,
-        instantMode: true,
-        title: 'a',
-        description: 'a',
-        createdOn: '01/04/2022',
-      },
-      {
-        id: 7,
-        instantMode: true,
-        title: 'a',
-        description: 'a',
-        createdOn: '01/04/2022',
-      },
-    ],
-    total: 8,
+export class AllQuizzesComponent implements OnInit, OnDestroy {
+  constructor(
+    private readonly location: Location,
+    private readonly quizService: QuizService,
+    private readonly activatedRoute: ActivatedRoute,
+  ) { }
+
+  private paramsSub: Subscription = new Subscription();
+  private catalogueSub: Subscription = new Subscription();
+
+  ngOnInit(): void {
+    this.page = Number(this.activatedRoute.snapshot.queryParamMap.get('page')) || 1;
+    this.sort = this.activatedRoute.snapshot.queryParamMap.get('sort') as sort || 'title';
+    this.order = this.activatedRoute.snapshot.queryParamMap.get('order') as order || 'asc';
+
+    this.catalogueSub = this.getResolvedData().subscribe(data => {
+      this.catalogue = data['catalogue'];
+    });
   }
 
-  next: IQuizListItem = {
-    id: 8,
-    instantMode: true,
-    title: 'a',
-    description: 'a',
-    createdOn: '01/04/2022',
+  getResolvedData() {
+    return this.activatedRoute.data;
+  }
+
+  catalogue: IQuizList = {
+    total: 0,
+    quizzes: [],
   };
+  page = 0;
+  sort: sort = 'title';
+  order: order = 'asc';
 
-  changePage(value: number) {
-    this.quizzes.quizzes = [this.next];
+  ngOnDestroy(): void {
+    this.paramsSub.unsubscribe();
+    this.catalogueSub.unsubscribe();
   }
+
 }
