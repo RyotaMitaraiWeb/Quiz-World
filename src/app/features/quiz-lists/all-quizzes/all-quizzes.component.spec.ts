@@ -148,6 +148,50 @@ describe('AllQuizzesComponent', () => {
         expect(location.replaceState).toHaveBeenCalled();
       });
     });
+
+    describe('changeSortAndOrder', () => {
+      it('Changes the sort, order, and catalogue properties when called', () => {
+        spyOn(quizService, 'getAllQuizzes').and.returnValue(
+          of(
+            {
+              total: 3,
+              quizzes: [
+                {
+                  title: 'a',
+                }
+              ]
+            } as IQuizList
+          )
+        );
+
+        spyOn(location, 'replaceState').and.stub();
+
+        component.changeSortAndOrder({ sort: 'createdOn', order: 'desc' });
+
+        expect(component.sort).toBe('createdOn');
+        expect(component.order).toBe('desc');
+
+        expect(component.catalogue.total).toBe(3);
+        expect(location.replaceState).toHaveBeenCalled();
+      });
+
+      it('Changes the sort and order properties even if request fails', () => {
+        spyOn(quizService, 'getAllQuizzes').and.returnValue(
+          new Observable(o => {
+            o.error('getAllQuizzes failed');
+          })
+        );
+
+        spyOn(location, 'replaceState').and.stub();
+
+        component.changeSortAndOrder({ sort: 'createdOn', order: 'desc' });
+
+        expect(component.sort).toBe('createdOn');
+        expect(component.order).toBe('desc');
+        
+        expect(location.replaceState).toHaveBeenCalled();
+      });
+    });
   });
   
 });

@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { QuizService } from '../../quiz-service/quiz.service';
 import { Subscription } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
+import { ISort } from '../../../../types/components/catalogue-select-menu.types';
 
 @Component({
   selector: 'app-all-quizzes',
@@ -53,6 +54,32 @@ export class AllQuizzesComponent implements OnInit, OnDestroy {
   page = 0;
   sort: sort = 'title';
   order: order = 'asc';
+
+  /**
+   * *Updates the ``sort`` and ``order`` properties with the input, 
+   * the URL's string queries, and the catalogue with
+   * the respective quizzes
+   * @param value the new sort category and order
+   */
+  changeSortAndOrder(value: ISort) {
+    this.sort = value.sort;
+    this.order = value.order;
+
+    const params = new HttpParams().appendAll(
+      {
+        page: this.page.toString(),
+        sort: this.sort,
+        order: this.order,
+      },
+    );
+
+    this.location.replaceState(
+      location.pathname,
+      params.toString()
+    );
+
+    this.updateQuizzes();
+  }
 
   /**
    * Updates the ``page`` property with the input, 
