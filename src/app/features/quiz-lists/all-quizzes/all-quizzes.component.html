@@ -1,0 +1,11 @@
+<h1>All quizzes</h1>
+<app-catalogue-select-menu></app-catalogue-select-menu>
+
+<app-quiz-list-item
+  *ngFor="let quiz of quizzes.quizzes"
+  [quiz]="quiz"
+>
+
+</app-quiz-list-item>
+
+<app-catalogue-paginator [total]="quizzes.total" (pageEvent)="changePage($event)"></app-catalogue-paginator>
