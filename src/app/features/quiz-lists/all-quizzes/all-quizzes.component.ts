@@ -5,6 +5,7 @@ import { IQuizList, IQuizListItem, order, sort } from '../../../../types/others/
 import { ActivatedRoute } from '@angular/router';
 import { QuizService } from '../../quiz-service/quiz.service';
 import { Subscription } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
 
 @Component({
   selector: 'app-all-quizzes',
@@ -36,6 +37,10 @@ export class AllQuizzesComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * returns the resolved data from the activated route. This is used
+   * for easier spying in tests.
+   */
   getResolvedData() {
     return this.activatedRoute.data;
   }
@@ -44,9 +49,49 @@ export class AllQuizzesComponent implements OnInit, OnDestroy {
     total: 0,
     quizzes: [],
   };
+
   page = 0;
   sort: sort = 'title';
   order: order = 'asc';
+
+  /**
+   * Updates the ``page`` property with the input, 
+   * the URL's string queries, and the catalogue with
+   * the respective quizzes
+   * @param page the new page
+   */
+  changePage(page: number) {
+    this.page = page;
+    const params = new HttpParams().appendAll(
+      {
+        page: this.page.toString(),
+        sort: this.sort,
+        order: this.order,
+      },
+    );
+
+    this.location.replaceState(
+      location.pathname,
+      params.toString()
+    );
+
+    this.updateQuizzes();
+  }
+
+  private updateQuizzes() {
+    this.catalogueSub = this.quizService
+      .getAllQuizzes(this.page, this.sort, this.order)
+      .subscribe(
+        {
+          next: res => {
+            this.catalogue = res;
+          },
+          error: err => {
+            console.warn(err);
+          }
+        }
+      );
+  }
 
   ngOnDestroy(): void {
     this.paramsSub.unsubscribe();

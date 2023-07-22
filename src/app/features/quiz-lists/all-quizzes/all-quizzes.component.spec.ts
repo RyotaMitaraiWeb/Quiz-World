@@ -108,5 +108,31 @@ describe('AllQuizzesComponent', () => {
         expect(component.catalogue.quizzes[0].title).toBe('a');
       });
     });
+
+    describe('changePage', () => {
+      it('Sets the page and catalogue properties when called', () => {
+        spyOn(quizService, 'getAllQuizzes').and.returnValue(
+          of(
+            {
+              total: 3,
+              quizzes: [
+                {
+                  title: 'a',
+                }
+              ]
+            } as IQuizList
+          )
+        );
+
+        spyOn(location, 'replaceState').and.stub();
+
+        component.changePage(2);
+
+        expect(component.page).toBe(2);
+        expect(component.catalogue.total).toBe(3);
+        expect(location.replaceState).toHaveBeenCalled();
+      });
+    });
   });
+  
 });
