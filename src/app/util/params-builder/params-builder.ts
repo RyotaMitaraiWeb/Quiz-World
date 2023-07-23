@@ -1,5 +1,5 @@
 import { HttpParams } from '@angular/common/http';
-import { order, sort } from '../../types/others/lists.types';
+import { order, sort } from '../../../types/others/lists.types';
 
 /**
  * Returns an ``HttpParams`` object that has been configured 

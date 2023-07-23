@@ -5,7 +5,7 @@ import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { Observable, Subscriber } from 'rxjs';
 import { ICreatedQuizResponse, IQuizDetails } from '../../../types/responses/quiz.types';
 import { IQuizList, IQuizListItem, order, sort } from '../../../types/others/lists.types';
-import { paramsBuilder } from '../../../util/params-builder/params-builder';
+import { paramsBuilder } from '../../util/params-builder/params-builder';
 
 /**
  * An injectable service for managing quizzes (retrieving/creating/editing/deleting).
