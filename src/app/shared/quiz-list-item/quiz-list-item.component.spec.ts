@@ -33,8 +33,6 @@ describe('QuizListItemComponent', () => {
   });
 
   it('should create', () => {
-    console.log(component.quiz);
-    
     expect(component).toBeTruthy();
   });
 
