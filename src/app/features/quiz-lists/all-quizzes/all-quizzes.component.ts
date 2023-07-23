@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
 import { IQuizList, IQuizListItem, order, sort } from '../../../../types/others/lists.types';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QuizService } from '../../quiz-service/quiz.service';
-import { Subscription } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { HttpParams } from '@angular/common/http';
 import { ISort } from '../../../../types/components/catalogue-select-menu.types';
 
@@ -25,13 +25,13 @@ export class AllQuizzesComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
   ) { }
 
-  private paramsSub: Subscription = new Subscription();
+  private routerSub: Subscription = new Subscription();
   private catalogueSub: Subscription = new Subscription();
 
   ngOnInit(): void {
-    this.page = Number(this.activatedRoute.snapshot.queryParamMap.get('page')) || 1;
-    this.sort = this.activatedRoute.snapshot.queryParamMap.get('sort') as sort || 'title';
-    this.order = this.activatedRoute.snapshot.queryParamMap.get('order') as order || 'asc';
+    this.page = Number(this.getQueryString('page')) || 1;
+    this.sort = this.getQueryString('sort') as sort || 'title';
+    this.order = this.getQueryString('order') as order || 'asc';
 
     this.catalogueSub = this.getResolvedData().subscribe(data => {
       this.catalogue = data['catalogue'];
@@ -46,6 +46,17 @@ export class AllQuizzesComponent implements OnInit, OnDestroy {
     return this.activatedRoute.data;
   }
 
+  /**
+   * Returns the given query string from the URL.
+   * @param query 
+   * @returns the query string or null if the query string is absent from the URL.
+   */
+  getQueryString(query: string) {
+    const url: URL = new URL(window.top?.location.href || '');
+    const params: URLSearchParams = url.searchParams;
+    return params.get(query);
+  }
+
   catalogue: IQuizList = {
     total: 0,
     quizzes: [],
@@ -54,6 +65,8 @@ export class AllQuizzesComponent implements OnInit, OnDestroy {
   page = 0;
   sort: sort = 'title';
   order: order = 'asc';
+
+  protected get sortOrder() { return `${this.sort}-${this.order}` }
 
   /**
    * *Updates the ``sort`` and ``order`` properties with the input, 
@@ -121,7 +134,7 @@ export class AllQuizzesComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.paramsSub.unsubscribe();
+    this.routerSub.unsubscribe();
     this.catalogueSub.unsubscribe();
   }
 
