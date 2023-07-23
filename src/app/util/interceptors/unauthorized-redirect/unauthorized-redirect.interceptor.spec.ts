@@ -39,8 +39,6 @@ describe('UnauthorizedRedirectInterceptor', () => {
     });
 
     const req = testController.expectOne('/test');
-    console.log(req);
-
 
     req.flush(null, {
       status: HttpStatusCode.Unauthorized,
