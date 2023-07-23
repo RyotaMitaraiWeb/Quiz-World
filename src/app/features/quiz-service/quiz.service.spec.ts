@@ -4,6 +4,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { ICreatedQuizResponse, IQuizDetails } from '../../../types/responses/quiz.types';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IQuizList, IQuizListItem } from '../../../types/others/lists.types';
 describe('QuizService', () => {
   let service: QuizService;
   let httpTestingController: HttpTestingController;
@@ -78,7 +79,7 @@ describe('QuizService', () => {
         error: (err: HttpErrorResponse) => {
           expect(err.status).toBe(HttpStatusCode.Unauthorized);
           expect(err.error).toEqual(res);
-          
+
           done();
         }
       });
@@ -134,7 +135,7 @@ describe('QuizService', () => {
         },
         error: (err: HttpErrorResponse) => {
           expect(err.status).toBe(HttpStatusCode.NotFound);
-          expect(err.error).toEqual(response);          
+          expect(err.error).toEqual(response);
           done();
         }
       });
@@ -146,6 +147,264 @@ describe('QuizService', () => {
       req.flush(response, {
         status: HttpStatusCode.NotFound,
         statusText: 'Not Found',
+      });
+    });
+  });
+
+  describe('getAllQuizzes', () => {
+    it('Correctly returns a response with a given body (response is ok)', (done: DoneFn) => {
+      service.getAllQuizzes().subscribe({
+        next: (res) => {
+          expect(res.quizzes.length).toBe(1);
+          done();
+        },
+        error: () => {
+          done.fail('Expected a successful response, not an error one');
+        }
+      });
+
+      const req = httpTestingController.expectOne(service.url.all);
+
+      req.flush({
+        quizzes: [
+          {
+            id: 1,
+            title: 'a',
+            description: 'a',
+            createdOn: '01/01/2002',
+            instantMode: true,
+          }
+        ],
+        total: 6,
+      } as IQuizList, {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok',
+      });
+    });
+
+    it('Correctly returns a response with a given body (response is an error)', (done: DoneFn) => {
+      const response = ['a', 'b']
+
+      service.getAllQuizzes().subscribe({
+        next: () => {
+          done.fail('Expected an error response, not a successful one');
+        },
+        error: (err: HttpErrorResponse) => {
+          expect(err.status).toBe(HttpStatusCode.NotFound);
+          expect(err.error).toEqual(response);
+          done();
+        }
+      });
+
+      const req = httpTestingController.expectOne(service.url.all);
+
+      req.flush(response, {
+        status: HttpStatusCode.NotFound,
+        statusText: 'Not Found',
+      });
+    });
+
+    it('Attaches headers successfully', (done: DoneFn) => {
+      service.getAllQuizzes(2).subscribe({
+        next: (res) => {
+          expect(res.quizzes.length).toBe(1);
+          done();
+        },
+        error: () => {
+          done.fail('Expected a successful response, not an error one');
+        }
+      });
+
+      const req = httpTestingController.expectOne(req => {
+        const page = req.params.get('page');
+        return req.url === service.url.all && page === '2';
+      });
+
+      req.flush({
+        quizzes: [{
+          id: 1,
+          title: 'a',
+          description: 'a',
+          createdOn: '01/01/2002',
+          instantMode: true,
+        }],
+        total: 6,
+      } as IQuizList, {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok',
+      });
+    });
+  });
+
+  describe('getQuizzesByTitle', () => {
+    it('Correctly returns a response with a given body (response is ok)', (done: DoneFn) => {
+      service.getQuizzesByTitle('a').subscribe({
+        next: (res) => {
+          expect(res.quizzes.length).toBe(1);
+          done();
+        },
+        error: () => {
+          done.fail('Expected a successful response, not an error one');
+        }
+      });
+
+      const req = httpTestingController.expectOne(req => {
+        const url = req.url;
+        return url === service.url.search;
+      });
+
+      req.flush({
+        quizzes: [{
+          id: 1,
+          title: 'a',
+          description: 'a',
+          createdOn: '01/01/2002',
+          instantMode: true,
+        }],
+        total: 6,
+      } as IQuizList, {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok',
+      });
+    });
+
+    it('Correctly returns a response with a given body (response is an error)', (done: DoneFn) => {
+      const response = ['a', 'b']
+
+      service.getQuizzesByTitle('a').subscribe({
+        next: () => {
+          done.fail('Expected an error response, not a successful one');
+        },
+        error: (err: HttpErrorResponse) => {
+          expect(err.status).toBe(HttpStatusCode.NotFound);
+          expect(err.error).toEqual(response);
+          done();
+        }
+      });
+
+      const req = httpTestingController.expectOne(req => {
+        const url = req.url;
+        return url === service.url.search;
+      });
+
+      req.flush(response, {
+        status: HttpStatusCode.NotFound,
+        statusText: 'Not Found',
+      });
+    });
+
+    it('Attaches headers successfully', (done: DoneFn) => {
+      service.getQuizzesByTitle('a', 2).subscribe({
+        next: (res) => {
+          expect(res.quizzes.length).toBe(1);
+          done();
+        },
+        error: () => {
+          done.fail('Expected a successful response, not an error one');
+        }
+      });
+
+      const req = httpTestingController.expectOne(req => {
+        const page = req.params.get('page');
+        const query = req.params.get('title');
+        return req.url === service.url.search && page === '2';
+      });
+
+      req.flush({
+        quizzes: [{
+          id: 1,
+          title: 'a',
+          description: 'a',
+          createdOn: '01/01/2002',
+          instantMode: true,
+        }],
+        total: 6,
+      } as IQuizList, {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok',
+      });
+    });
+  });
+
+  describe('getUserQuizzes', () => {
+    it('Correctly returns a response with a given body (response is ok)', (done: DoneFn) => {
+      service.getUserQuizzes(1).subscribe({
+        next: (res) => {
+          expect(res.quizzes.length).toBe(1);
+          done();
+        },
+        error: () => {
+          done.fail('Expected a successful response, not an error one');
+        }
+      });
+
+      const req = httpTestingController.expectOne(service.url.user(1));
+
+      req.flush({
+        quizzes: [{
+          id: 1,
+          title: 'a',
+          description: 'a',
+          createdOn: '01/01/2002',
+          instantMode: true,
+        }],
+        total: 6,
+      } as IQuizList, {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok',
+      });
+    });
+
+    it('Correctly returns a response with a given body (response is an error)', (done: DoneFn) => {
+      const response = ['a', 'b']
+
+      service.getUserQuizzes(1).subscribe({
+        next: () => {
+          done.fail('Expected an error response, not a successful one');
+        },
+        error: (err: HttpErrorResponse) => {
+          expect(err.status).toBe(HttpStatusCode.NotFound);
+          expect(err.error).toEqual(response);
+          done();
+        }
+      });
+
+      const req = httpTestingController.expectOne(service.url.user(1));
+
+      req.flush(response, {
+        status: HttpStatusCode.NotFound,
+        statusText: 'Not Found',
+      });
+    });
+
+    it('Attaches headers successfully', (done: DoneFn) => {
+      service.getUserQuizzes(1, 2).subscribe({
+        next: (res) => {
+          expect(res.quizzes.length).toBe(1);
+          done();
+        },
+        error: () => {
+          done.fail('Expected a successful response, not an error one');
+        }
+      });
+
+      const req = httpTestingController.expectOne(req => {
+        const page = req.params.get('page');
+        return req.url === service.url.user(1) && page === '2';
+      });
+
+      req.flush({
+        quizzes: [{
+          id: 1,
+          title: 'a',
+          description: 'a',
+          createdOn: '01/01/2002',
+          instantMode: true,
+        }],
+        total: 6,
+      } as IQuizList, {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok',
       });
     });
   });
