@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SingleChoiceQuestionComponent } from './single-choice-question/single-choice-question/single-choice-question.component';
 import { MultipleChoiceQuestionComponent } from './multiple-choice-question/multiple-choice-question.component';
+import { questionTypes } from '../../../../../constants/question-types.constants';
 
 @Component({
   selector: 'app-question-session',
@@ -24,6 +25,8 @@ import { MultipleChoiceQuestionComponent } from './multiple-choice-question/mult
   styleUrls: ['./question-session.component.scss']
 })
 export class QuestionSessionComponent implements OnChanges, OnDestroy {
+  protected types = questionTypes;
+
   constructor(
       private readonly answerService: AnswerService,
       private readonly fb: FormBuilder,
@@ -33,7 +36,7 @@ export class QuestionSessionComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) answers: ISessionAnswer[] | undefined = [];
   @Input({ required: true }) correctAnswers: ISessionAnswer[] | null = null;
   @Input({ required: true }) instantMode: boolean = false;
-  @Input({ required: true }) type: question | null = 'single';
+  @Input({ required: true }) type: question | null = questionTypes.single;
   @Input({ required: true }) form: FormGroup<
     {
       currentAnswer: any;
@@ -43,7 +46,7 @@ export class QuestionSessionComponent implements OnChanges, OnDestroy {
   > = this.fb.group({
     currentAnswer: ['', Validators.required],
     id: [0],
-    type: ['single' as question]
+    type: [questionTypes.single]
   });
 
   ngOnChanges(changes: SimpleChanges) {

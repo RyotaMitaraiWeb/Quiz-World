@@ -7,6 +7,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { questionTypes } from '../../../constants/question-types.constants';
 
 describe('QuestionComponent', () => {
   let component: QuestionComponent;
@@ -23,7 +24,7 @@ describe('QuestionComponent', () => {
           prompt: ['', [Validators.required, Validators.maxLength(100)]],
           correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
           wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          type: ['single'],
+          type: [questionTypes.single],
         }
       )]
     ),
@@ -47,7 +48,7 @@ describe('QuestionComponent', () => {
               prompt: ['', [Validators.required, Validators.maxLength(100)]],
               correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
               wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              type: ['single'],
+              type: [questionTypes.single],
             }
           )]
         ),
@@ -63,7 +64,7 @@ describe('QuestionComponent', () => {
       describe('passing "multi"', () => {
         it('enables the wrongAnswers control', () => {
           component.form.controls.wrongAnswers.disable();
-          component.onChangeQuestionType('multi');
+          component.onChangeQuestionType(questionTypes.multi);
           expect(component.form.controls.wrongAnswers.disabled).toBeFalse();
         });
       });
@@ -71,7 +72,7 @@ describe('QuestionComponent', () => {
       describe('passing "text"', () => {
         it('Restarts the wrongAnswers control', () => {
           component.form.controls.wrongAnswers.push(new FormGroup({ answer: new FormControl('aewwew')}))
-          component.onChangeQuestionType('text');
+          component.onChangeQuestionType(questionTypes.text);
           
           expect(component.form.controls.wrongAnswers.length).toBe(0);
         });
@@ -80,13 +81,13 @@ describe('QuestionComponent', () => {
       describe('passing "single"', () => {
         it('Passes only the first correct answer', () => {
           component.form.controls.correctAnswers.push(new FormGroup({ answer: new FormControl('aewwew')}));
-          component.onChangeQuestionType('single');
+          component.onChangeQuestionType(questionTypes.single);
           expect(component.form.controls.correctAnswers.length).toBe(1);
         });
 
         it('Enables the wrongAnswers control', () => {
           component.form.controls.wrongAnswers.disable();
-          component.onChangeQuestionType('single');
+          component.onChangeQuestionType(questionTypes.single);
           expect(component.form.controls.wrongAnswers.disabled).toBeFalse();
         });
       });
@@ -114,7 +115,7 @@ describe('QuestionComponent', () => {
               prompt: ['', [Validators.required, Validators.maxLength(100)]],
               correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
               wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              type: ['single'],
+              type: [questionTypes.single],
             }
           )]
         ),
@@ -134,7 +135,7 @@ describe('QuestionComponent', () => {
     describe('Generating question type', () => {
       it('Successfully generates a question based on form input', async () => {
         const questionForm = form.controls.questions.controls[0];
-        questionForm.controls.type.setValue('multi');
+        questionForm.controls.type.setValue(questionTypes.multi);
 
         component.form = questionForm;
         component.ngOnInit();

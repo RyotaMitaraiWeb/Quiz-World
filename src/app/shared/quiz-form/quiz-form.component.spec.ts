@@ -6,6 +6,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
+import { questionTypes } from '../../constants/question-types.constants';
 
 describe('QuizFormComponent', () => {
   let component: QuizFormComponent;
@@ -23,7 +24,7 @@ describe('QuizFormComponent', () => {
           prompt: ['', [Validators.required, Validators.maxLength(100)]],
           correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
           wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          type: ['single'],
+          type: [questionTypes.single],
         }
       )]
     ),
@@ -48,7 +49,7 @@ describe('QuizFormComponent', () => {
               prompt: ['', [Validators.required, Validators.maxLength(100)]],
               correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
               wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              type: ['single'],
+              type: [questionTypes.single],
             }
           )]
         ),
@@ -65,7 +66,7 @@ describe('QuizFormComponent', () => {
         component.questions = [
           {
             prompt: 'question1',
-            type: 'single',
+            type: questionTypes.single,
             order: 1,
             answers: [
               {
@@ -80,7 +81,7 @@ describe('QuizFormComponent', () => {
           },
           {
             prompt: 'question2',
-            type: 'multi',
+            type: questionTypes.multi,
             order: 2,
             answers: [
               {
@@ -115,7 +116,7 @@ describe('QuizFormComponent', () => {
         const q2 = questions.controls[1];
 
         expect(q1.controls.prompt.value).toBe('question1');
-        expect(q1.controls.type.value).toBe('single');
+        expect(q1.controls.type.value).toBe(questionTypes.single);
 
         expect(q1.controls.correctAnswers.length).toBe(1);
         expect(q1.controls.correctAnswers.controls[0].controls.answer.value).toBe('a');
@@ -141,7 +142,7 @@ describe('QuizFormComponent', () => {
         const q1 = questions.controls[0];
 
         expect(q1.controls.prompt.value).toBe('');
-        expect(q1.controls.type.value).toBe('single');
+        expect(q1.controls.type.value).toBe(questionTypes.single);
 
         expect(q1.controls.correctAnswers.length).toBe(1);
         expect(q1.controls.correctAnswers.controls[0].controls.answer.value).toBe('');
@@ -157,7 +158,7 @@ describe('QuizFormComponent', () => {
         expect(component.form.controls.questions.length).toBe(2);
 
         const question = component.form.controls.questions.controls[1].controls;
-        expect(question.type.value).toBe('single');
+        expect(question.type.value).toBe(questionTypes.single);
         expect(question.prompt.value).toBe('');
         expect(question.correctAnswers.length).toBe(1);
         expect(question.wrongAnswers.length).toBe(1);
@@ -177,7 +178,7 @@ describe('QuizFormComponent', () => {
               prompt: ['question prompt', [Validators.required, Validators.maxLength(100)]],
               correctAnswers: fb.array([fb.group({ answer: ['b', [Validators.required, Validators.maxLength(100)]] })]),
               wrongAnswers: fb.array([fb.group({ answer: ['c', [Validators.required, Validators.maxLength(100)]] })]),
-              type: ['single'],
+              type: [questionTypes.single],
             }
           )
         );
@@ -218,7 +219,7 @@ describe('QuizFormComponent', () => {
         component.questions = [
           {
             prompt: 'question1',
-            type: 'single',
+            type: questionTypes.single,
             order: 1,
             answers: [
               {
@@ -233,7 +234,7 @@ describe('QuizFormComponent', () => {
           },
           {
             prompt: 'question2',
-            type: 'multi',
+            type: questionTypes.multi,
             order: 2,
             answers: [
               {

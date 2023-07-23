@@ -9,6 +9,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { IQuestion } from '../../../../../types/components/question.types';
 import { AnswersManager } from '../../../../util/AnswersManager/AnswersManager';
+import { questionTypes } from '../../../../constants/question-types.constants';
 
 
 @Component({
@@ -45,7 +46,7 @@ export class MultipleChoiceComponent {
     wrongAnswers: this.fb.array([
       this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
     ]),
-    type: ['multi']
+    type: [questionTypes.multi]
   });
 
   addNewWrongAnswerField(event: Event) {

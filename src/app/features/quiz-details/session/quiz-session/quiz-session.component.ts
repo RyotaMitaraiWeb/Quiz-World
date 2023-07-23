@@ -7,6 +7,7 @@ import { QuestionSessionModule } from './question-session/question-session.modul
 import { question } from '../../../../../types/components/question.types';
 import { MatButtonModule } from '@angular/material/button';
 import { Subscription, delay } from 'rxjs';
+import { questionTypes } from '../../../../constants/question-types.constants';
 
 @Component({
   selector: 'app-quiz-session',
@@ -31,12 +32,12 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
 
   private addControl(value: any, questionId: number, type: question) {
     const group = this.fb.group({
-      currentAnswer: type === 'multi' ? value : [value, [Validators.required]],
+      currentAnswer: type === questionTypes.multi ? value : [value, [Validators.required]],
       id: [questionId],
       type: [type]
     });
 
-    if (type === 'multi') {
+    if (type === questionTypes.multi) {
       group.setErrors({ required: true });
     }
 
@@ -47,9 +48,9 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
     this.form.removeAt(0);
 
     this.questions.forEach(q => {
-      if (q.type === 'text') {
+      if (q.type === questionTypes.text) {
         this.form.push(this.addControl('', q.id, q.type));
-      } else if (q.type === 'multi') {
+      } else if (q.type === questionTypes.multi) {
         this.form.push(this.addControl(
           this.fb.array([]), q.id, q.type
         ));
@@ -72,7 +73,7 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
       type: FormControl<question | null>,
     }
   >> = this.fb.array([
-    this.addControl('', 0, 'single')
+    this.addControl('', 0, questionTypes.single)
   ]);
 
   protected getQuestionControlAt(index: number) {

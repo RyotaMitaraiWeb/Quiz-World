@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { IQuestionComponent, question } from '../../../../../../../../types/components/question.types';
 import { ISessionAnswer } from '../../../../../../../../types/responses/quiz.types';
 import { MatRadioModule } from '@angular/material/radio';
+import { questionTypes } from '../../../../../../../constants/question-types.constants';
 
 @Component({
   selector: 'app-single-choice-question',
@@ -47,7 +48,7 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
   > = this.fb.group({
     currentAnswer: [null as number | null, [Validators.required]],
     id: [0],
-    type: ['single' as question]
+    type: [questionTypes.single]
   });
 
   ngOnChanges(changes: SimpleChanges): void {

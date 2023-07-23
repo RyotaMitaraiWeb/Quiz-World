@@ -6,6 +6,7 @@ import { SingleChoiceComponent } from './single-choice/single-choice.component';
 import { MultipleChoiceComponent } from './multiple-choice/multiple-choice.component';
 import { TextComponent } from './text/text.component';
 import { FormBuilder, Validators } from '@angular/forms';
+import { questionTypes } from '../../../constants/question-types.constants';
 
 @Component({
   selector: 'app-question',
@@ -21,6 +22,8 @@ import { FormBuilder, Validators } from '@angular/forms';
   ],
 })
 export class QuestionComponent implements OnInit {
+  protected types = questionTypes;
+
   constructor(private readonly fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -37,7 +40,7 @@ export class QuestionComponent implements OnInit {
     wrongAnswers: this.fb.array([
       this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
     ]),
-    type: ['single']
+    type: [questionTypes.single]
   });
 
   private _type: question = this.form.controls.type.value as question;
@@ -65,7 +68,7 @@ export class QuestionComponent implements OnInit {
   onChangeQuestionType(value: question) {
     this.form.controls.type.setValue(value);
 
-    if (value === 'text') {
+    if (value === questionTypes.text) {
       while (this.form.controls.wrongAnswers.length) {
         this.form.controls.wrongAnswers.removeAt(0);
       }
@@ -76,7 +79,7 @@ export class QuestionComponent implements OnInit {
       }
     }
 
-    if (value === 'single') {
+    if (value === questionTypes.single) {
       this.removeAllCorrectAnswersExceptTheFirstOne();
     }
   }
@@ -88,15 +91,15 @@ export class QuestionComponent implements OnInit {
   }
 
   protected questionLabels: Record<question, IQuestionHint> = {
-    single: {
+    'SingleChoice': {
       label: 'Single-choice question',
       tooltip: 'Single-choice questions are ones where there are multiple answers present, with only one of them being correct',
     },
-    multi: {
+    'MultipleChoice': {
       label: 'Multiple-choice question',
       tooltip: 'Multiple-choice questions are ones where there are multiple answers presents and AT LEAST one of them is correct. More than one correct answer is also possible',
     },
-    text: {
+    'Text': {
       label: 'Text question',
       tooltip: 'Text questions are ones where the respondent must type their answer in a text field. There can be multiple correct answers'
     }

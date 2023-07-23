@@ -5,6 +5,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TextComponent } from './text.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { questionTypes } from '../../../../constants/question-types.constants';
 
 describe('TextComponent', () => {
   let component: TextComponent;
@@ -23,7 +24,7 @@ describe('TextComponent', () => {
           prompt: ['', [Validators.required, Validators.maxLength(100)]],
           correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
           wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          type: ['text'],
+          type: [questionTypes.text],
         }
       )]
     ),
@@ -48,7 +49,7 @@ describe('TextComponent', () => {
               prompt: ['', [Validators.required, Validators.maxLength(100)]],
               correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
               wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              type: ['text'],
+              type: [questionTypes.text],
             }
           )]
         ),
@@ -106,7 +107,7 @@ describe('TextComponent', () => {
               prompt: ['', [Validators.required, Validators.maxLength(100)]],
               correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
               wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              type: ['single'],
+              type: [questionTypes.single],
             }
           )]
         ),
@@ -125,7 +126,7 @@ describe('TextComponent', () => {
             wrongAnswers: [
               { answer: 'wrong' }
             ],
-            type: 'text',
+            type: questionTypes.text,
           },
         ]);
 

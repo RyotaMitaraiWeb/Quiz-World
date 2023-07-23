@@ -5,6 +5,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { MultipleChoiceComponent } from './multiple-choice.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { questionTypes } from '../../../../constants/question-types.constants';
 
 describe('MultipleChoiceComponent', () => {
   let component: MultipleChoiceComponent;
@@ -24,7 +25,7 @@ describe('MultipleChoiceComponent', () => {
           prompt: ['', [Validators.required, Validators.maxLength(100)]],
           correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
           wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          type: ['multi'],
+          type: [questionTypes.multi],
         }
       )]
     ),
@@ -93,7 +94,7 @@ describe('MultipleChoiceComponent', () => {
               prompt: ['', [Validators.required, Validators.maxLength(100)]],
               correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
               wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              type: ['multi'],
+              type: [questionTypes.multi],
             }
           )]
         ),
@@ -107,7 +108,7 @@ describe('MultipleChoiceComponent', () => {
           prompt: 'question',
           correctAnswers: [ { answer: 'correct' }],
           wrongAnswers: [{ answer: 'wrong' }],
-          type: 'multi',
+          type: questionTypes.multi,
         });
 
         form.controls.questions.controls[0].controls.correctAnswers.push(

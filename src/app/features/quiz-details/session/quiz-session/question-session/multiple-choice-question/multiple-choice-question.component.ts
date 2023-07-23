@@ -5,6 +5,7 @@ import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox
 import { IQuestionComponent, question } from '../../../../../../../types/components/question.types';
 import { ISessionAnswer } from '../../../../../../../types/responses/quiz.types';
 import { MatRadioModule } from '@angular/material/radio';
+import { questionTypes } from '../../../../../../constants/question-types.constants';
 
 @Component({
   selector: 'app-multiple-choice-question',
@@ -30,7 +31,7 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
   > = this.fb.group({
     currentAnswer: this.fb.array([] as FormControl<string | null>[]),
     id: [0],
-    type: ['multi' as question]
+    type: [questionTypes.multi]
   });
 
   protected checkboxName = Date.now().toString();

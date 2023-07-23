@@ -10,6 +10,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Va
 import { IAnswer } from '../../../../../types/components/answer.types';
 import { IQuestion } from '../../../../../types/components/question.types';
 import { AnswersManager } from '../../../../util/AnswersManager/AnswersManager';
+import { questionTypes } from '../../../../constants/question-types.constants';
 
 @Component({
   selector: 'app-single-choice',
@@ -51,7 +52,7 @@ export class SingleChoiceComponent implements OnInit {
     wrongAnswers: this.fb.array([
       this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
     ]),
-    type: ['single']
+    type: [questionTypes.single]
   });
 
   addNewWrongAnswerField(event: Event) {

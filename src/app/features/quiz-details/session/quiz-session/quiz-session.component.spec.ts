@@ -8,11 +8,12 @@ import { HttpErrorResponse, HttpResponse, HttpStatusCode } from '@angular/common
 import { IGradedAnswer, ISessionQuestion } from '../../../../../types/responses/quiz.types';
 import { api } from '../../../../constants/api.constants';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { questionTypes } from '../../../../constants/question-types.constants';
 
 const questions: ISessionQuestion[] = [
   {
     prompt: 'question #1',
-    type: 'single',
+    type: questionTypes.single,
     id: 1,
     answers: [
       {
@@ -27,7 +28,7 @@ const questions: ISessionQuestion[] = [
   },
   {
     prompt: 'question #2',
-    type: 'multi',
+    type: questionTypes.multi,
     id: 2,
     answers: [
       {
@@ -46,7 +47,7 @@ const questions: ISessionQuestion[] = [
   },
   {
     prompt: 'question #3',
-    type: 'text',
+    type: questionTypes.text,
     id: 3,
   }
 ];
@@ -80,9 +81,9 @@ describe('QuizSessionComponent', () => {
         component.ngOnInit();
 
         expect(component.form.length).toBe(3);
-        expect(component.form.controls[0].controls.type.value).toBe('single');
-        expect(component.form.controls[1].controls.type.value).toBe('multi');
-        expect(component.form.controls[2].controls.type.value).toBe('text');
+        expect(component.form.controls[0].controls.type.value).toBe(questionTypes.single);
+        expect(component.form.controls[1].controls.type.value).toBe(questionTypes.multi);
+        expect(component.form.controls[2].controls.type.value).toBe(questionTypes.text);
       });
 
       it('Correctly sets the questionKeys map', () => {
@@ -252,7 +253,7 @@ describe('QuizSessionComponent', () => {
           {
             prompt: 'question #1',
             id: 1,
-            type: 'text',
+            type: questionTypes.text,
           }
         ];
 
@@ -299,7 +300,7 @@ describe('QuizSessionComponent', () => {
           {
             prompt: 'question #1',
             id: 1,
-            type: 'text',
+            type: questionTypes.text,
           }
         ];
 
