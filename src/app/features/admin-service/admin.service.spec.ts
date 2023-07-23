@@ -40,7 +40,7 @@ describe('AdminService', () => {
           console.warn(err);
         }
       })
-      const request = testController.expectOne(service.url.getModerators);
+      const request = testController.expectOne(service.rolesUrl.getUsersOfRole(roles.moderator));
       request.flush([
         {
           id: 1,
@@ -74,7 +74,7 @@ describe('AdminService', () => {
           console.warn(err);
         },
       })
-      const request = testController.expectOne(service.url.getAdmins);
+      const request = testController.expectOne(service.rolesUrl.getUsersOfRole(roles.admin));
       request.flush([
         {
           id: 1,
@@ -104,7 +104,7 @@ describe('AdminService', () => {
         },
       });
 
-      const request = testController.expectOne(service.url.getUserByUsername('a'));
+      const request = testController.expectOne(service.rolesUrl.getUsersOfUsername('a'));
       request.flush([
         {
           id: 1,
@@ -166,7 +166,7 @@ describe('AdminService', () => {
 
   describe('promoteToModerator', () => {
     it('Returns a list of users successfully', (done: DoneFn) => {
-      service.promoteToModerator(1).subscribe({
+      service.promoteToModerator('1').subscribe({
         next: res => {
           expect(res.length).toBe(1);
           expect(res[0].id).toBe(1);
@@ -180,7 +180,7 @@ describe('AdminService', () => {
         },
       });
 
-      const request = testController.expectOne(service.url.promoteToModerator(1));
+      const request = testController.expectOne(service.rolesUrl.promote('1', roles.moderator));
       request.flush([
         {
           id: 1,
@@ -197,7 +197,7 @@ describe('AdminService', () => {
 
   describe('demoteToUser', () => {
     it('Returns a list of users successfully', (done: DoneFn) => {
-      service.demoteToUser(1).subscribe({
+      service.demoteToUser('1').subscribe({
         next: res => {
           expect(res.length).toBe(1);
           expect(res[0].id).toBe(1);
@@ -211,7 +211,7 @@ describe('AdminService', () => {
         },
       });
 
-      const request = testController.expectOne(service.url.demoteToUser(1));
+      const request = testController.expectOne(service.rolesUrl.demote('1', roles.moderator));
       request.flush([
         {
           id: 1,
@@ -240,7 +240,7 @@ describe('AdminService', () => {
         },
       });
 
-      const request = testController.expectOne(service.url.logs);
+      const request = testController.expectOne(service.logsUrl.getLogs);
       request.flush(
         [
           {

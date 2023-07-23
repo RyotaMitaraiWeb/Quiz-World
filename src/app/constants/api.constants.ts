@@ -3,8 +3,9 @@ import { environment } from '../../environments/environment.development'
 const root = environment.api;
 const auth = `${root}/auth`;
 const quiz = `${root}/quiz`;
-const answer = `${root}/answers`;
-const administration = `${root}/administration`;
+const answer = `${root}/grade`;
+const logs = `${root}/logs`;
+const roles = `${root}/roles`;
 
 export const api = {
   root,
@@ -18,13 +19,13 @@ export const api = {
       logout: `${auth}/logout`,
       usernameExists: (username: string) => `${auth}/username/${username}`,
       /**Endpoint to check if the user has a valid session upon app load */
-      session: auth,
+      session: `${auth}/session`,
     },
     /**
      * Endpoints related to actions with quizzes (``api/quiz``)
      */
     quiz: {
-      create: `${quiz}/create`,
+      create: quiz,
       /**
        * Endpoint for retrieving a specific quiz by its id.
        * @param id 
@@ -38,16 +39,18 @@ export const api = {
       user: (id: number) => `${quiz}/user/${id}`
     },
     answers: {
-      correctAnswersInstantMode: (questionId: number) => `${answer}/${questionId}/instant`,
-      correctAnswersFull: (quizId: number) => `${answer}/${quizId}/full`,
+      correctAnswersInstantMode: (questionId: number) => `${answer}/${questionId}/question`,
+      correctAnswersFull: (quizId: number) => `${answer}/${quizId}/quiz`,
     },
-    administration: {
-      getModerators: `${administration}/moderators`,
-      getAdmins: `${administration}/admins`,
-      getUserByUsername: (username: string) => `${administration}/users/${username}`,
-      promoteToModerator: (id: number) => `${administration}/promote/${id}`,
-      demoteToUser: (id: number) => `${administration}/demote/${id}`,
-      logs: `${administration}/logs`,
+    logs: {
+      getLogs: logs,
+    },
+
+    roles: {
+      getUsersOfRole: (role: string) => `${roles}/users/${role}`,
+      promote: (userId: string, role: string) => `${roles}/promote/${userId}/${role}`,
+      demote: (userId: string, role: string) => `${roles}/demote/${userId}/${role}`,
+      getUsersOfUsername: (username: string) => `${roles}/usernames/${username}`,
     }
   }
 };

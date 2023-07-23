@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AnswersManager } from '../../../../util/AnswersManager/AnswersManager';
+import { questionTypes } from '../../../../constants/question-types.constants';
 
 @Component({
   selector: 'app-text',
@@ -38,7 +39,7 @@ export class TextComponent {
     wrongAnswers: this.fb.array([
       this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
     ]),
-    type: ['text']
+    type: [questionTypes.text]
   });
   
   answersManager!: AnswersManager;

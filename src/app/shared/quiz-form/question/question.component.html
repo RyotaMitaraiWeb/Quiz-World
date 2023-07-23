@@ -3,12 +3,12 @@
   <h2 class="question-type">{{ questionLabels[type].label }}</h2>
   <mat-form-field>
     <mat-select [(value)]="type" (valueChange)="onChangeQuestionType($event)">
-      <mat-option value="single">Single-choice</mat-option>
-      <mat-option value="multi">Multiple-choice</mat-option>
-      <mat-option value="text">Text</mat-option>
+      <mat-option [value]="types.single">Single-choice</mat-option>
+      <mat-option [value]="types.multi">Multiple-choice</mat-option>
+      <mat-option [value]="types.text">Text</mat-option>
     </mat-select>
   </mat-form-field>
-  <app-single-choice [form]="form" *ngIf="form.controls.type.value === 'single'"></app-single-choice>
-  <app-multiple-choice [form]="form" *ngIf="form.controls.type.value === 'multi'"></app-multiple-choice>
-  <app-text *ngIf="form.controls.type.value === 'text'" [form]="form"></app-text>
+  <app-single-choice [form]="form" *ngIf="form.controls.type.value === types.single"></app-single-choice>
+  <app-multiple-choice [form]="form" *ngIf="form.controls.type.value === types.multi"></app-multiple-choice>
+  <app-text *ngIf="form.controls.type.value === types.text" [form]="form"></app-text>
 </article>

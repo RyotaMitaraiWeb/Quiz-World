@@ -1,11 +1,11 @@
-<app-text-question *ngIf="type === 'text'" [correctAnswers]="correctAnswers" 
+<app-text-question *ngIf="type === types.text" [correctAnswers]="correctAnswers" 
 [form]="form" [prompt]="prompt">
 </app-text-question>
 
-<app-single-choice-question *ngIf="type === 'single'" [correctAnswers]="correctAnswers"
+<app-single-choice-question *ngIf="type === types.single" [correctAnswers]="correctAnswers"
   [form]="form" [answers]="answers!" [prompt]="prompt"></app-single-choice-question>
 
-<app-multiple-choice-question *ngIf="type === 'multi'"
+<app-multiple-choice-question *ngIf="type === types.multi"
   [correctAnswers]="correctAnswers" [form]="form" [answers]="answers!" [prompt]="prompt">
 </app-multiple-choice-question>
 

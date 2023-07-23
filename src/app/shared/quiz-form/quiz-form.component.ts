@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { questionTypes } from '../../constants/question-types.constants';
 
 @Component({
   selector: 'app-quiz-form',
@@ -54,7 +55,7 @@ export class QuizFormComponent implements OnInit {
           prompt: [q.prompt, [Validators.required, Validators.maxLength(100)]],
           correctAnswers: correctAnswersFormArray,
           wrongAnswers: wrongAnswersFormArray,
-          type: q.type as string,
+          type: q.type,
         }
       );
 
@@ -80,7 +81,7 @@ export class QuizFormComponent implements OnInit {
         }
       ],
       order: 1,
-      type: 'single',
+      type: questionTypes.single,
     },
   ];
 
@@ -98,7 +99,7 @@ export class QuizFormComponent implements OnInit {
           prompt: ['', [Validators.required, Validators.maxLength(100)]],
           correctAnswers: this.fb.array([this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
           wrongAnswers: this.fb.array([this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          type: ['single'],
+          type: [questionTypes.single],
         }
       )]
     ),
@@ -118,7 +119,7 @@ export class QuizFormComponent implements OnInit {
           prompt: ['', [Validators.required, Validators.maxLength(100)]],
           correctAnswers: this.fb.array([this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
           wrongAnswers: this.fb.array([this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          type: ['single'],
+          type: [questionTypes.single],
         }
       )
     )

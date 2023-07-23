@@ -23,7 +23,8 @@ export class AdminService {
     private readonly roleService: RoleService,
   ) { }
 
-  url = api.endpoints.administration;
+  logsUrl = api.endpoints.logs;
+  rolesUrl = api.endpoints.roles;
 
   /**
    * Sends a GET request to ``/administration/moderators`` and returns a list
@@ -32,7 +33,7 @@ export class AdminService {
    * @returns an Observable that resolves to an array of ``IUser``.
    */
   getModerators(): Observable<IUser[]> {
-    return this.http.get<IUserResponse[]>(this.url.getModerators)
+    return this.http.get<IUserResponse[]>(this.rolesUrl.getUsersOfRole(roles.moderator))
       .pipe(
         map(users => users.map(this.mapUserToHighestRole))
       );
@@ -45,7 +46,7 @@ export class AdminService {
    * @returns an Observable that resolves to an array of ``IUser``.
    */
   getAdmins(): Observable<IUser[]> {
-    return this.http.get<IUserResponse[]>(this.url.getAdmins)
+    return this.http.get<IUserResponse[]>(this.rolesUrl.getUsersOfRole(roles.admin))
       .pipe(
         map(users => users.map(this.mapUserToHighestRole))
       );
@@ -93,7 +94,7 @@ export class AdminService {
     }
 
     const request = this.http
-      .get<IUserResponse[]>(this.url.getUserByUsername(username), {
+      .get<IUserResponse[]>(this.rolesUrl.getUsersOfUsername(username), {
         params
       })
       .pipe(
@@ -110,8 +111,8 @@ export class AdminService {
    * @returns an Observable of type ``IUser[]``. You can use this to update
    * the list of users after the response resolves.
    */
-  promoteToModerator(id: number): Observable<IUser[]> {
-    return this.http.put<IUserResponse[]>(this.url.promoteToModerator(id), {})
+  promoteToModerator(id: string): Observable<IUser[]> {
+    return this.http.put<IUserResponse[]>(this.rolesUrl.promote(id, roles.moderator), {})
     .pipe(
       map(users => users.map(this.mapUserToHighestRole))
     );
@@ -124,8 +125,8 @@ export class AdminService {
    * @returns an Observable of type ``IUser[]``. You can use this to update
    * the list of users after the response resolves.
    */
-  demoteToUser(id: number): Observable<IUser[]> {
-    return this.http.put<IUserResponse[]>(this.url.demoteToUser(id), {})
+  demoteToUser(id: string): Observable<IUser[]> {
+    return this.http.put<IUserResponse[]>(this.rolesUrl.demote(id, roles.moderator), {})
     .pipe(
       map(users => users.map(this.mapUserToHighestRole))
     );
@@ -160,7 +161,7 @@ export class AdminService {
       params = params.append('order', order);
     }
 
-    return this.http.get<ILogActivity[]>(this.url.logs, { params });
+    return this.http.get<ILogActivity[]>(this.logsUrl.getLogs, { params });
   }
 
   private mapUserToHighestRole(user: IUserResponse): IUser {

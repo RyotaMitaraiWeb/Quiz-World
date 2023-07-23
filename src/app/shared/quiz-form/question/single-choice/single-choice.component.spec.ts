@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SingleChoiceComponent } from './single-choice.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormArray, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { questionTypes } from '../../../../constants/question-types.constants';
 
 describe('SingleChoiceComponent', () => {
   let component: SingleChoiceComponent;
@@ -20,7 +21,7 @@ describe('SingleChoiceComponent', () => {
           prompt: ['', [Validators.required, Validators.maxLength(100)]],
           correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
           wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          type: ['single'],
+          type: [questionTypes.single],
         }
       )]
     ),
@@ -72,7 +73,7 @@ describe('SingleChoiceComponent', () => {
               prompt: ['', [Validators.required, Validators.maxLength(100)]],
               correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
               wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              type: ['single'],
+              type: [questionTypes.single],
             }
           )]
         ),
@@ -85,7 +86,7 @@ describe('SingleChoiceComponent', () => {
         form.controls.questions.controls[0].controls.correctAnswers.push(fb.group({ answer: 'correct'}));
         form.controls.questions.controls[0].controls.wrongAnswers.setValue([{ answer: 'wrong1' }]);
         form.controls.questions.controls[0].controls.wrongAnswers.push(fb.group({ answer: 'wrong2'}));
-        form.controls.questions.controls[0].controls.type.setValue('single');
+        form.controls.questions.controls[0].controls.type.setValue(questionTypes.single);
 
         component.form = form.controls.questions.controls[0];
         component.ngOnInit();
