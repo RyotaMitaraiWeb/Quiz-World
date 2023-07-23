@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ISort } from '../../../types/components/catalogue-select-menu.types';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
@@ -23,17 +23,26 @@ interface ILabel {
   templateUrl: './catalogue-select-menu.component.html',
   styleUrls: ['./catalogue-select-menu.component.scss']
 })
-export class CatalogueSelectMenuComponent implements OnInit {
+export class CatalogueSelectMenuComponent implements OnInit, OnChanges {
   constructor(private readonly fb: FormBuilder) {
-    
+
   }
 
   ngOnInit(): void {
-    this.form.controls.value.setValue(this.selectedValue);
+    this.form.controls.value.setValue(this.selectedValue);    
   }
 
   @Output() selectEvent = new EventEmitter<ISort>();
   @Input() selectedValue = 'title-asc';
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const value = changes['selectedValue'];
+
+    if (value) {
+      this.form.controls.value.setValue(value.currentValue);
+      this.selectedValue = value.currentValue;
+    }
+  }
 
   protected readonly categories = sorting.categories;
   protected readonly orderOptions = sorting.order;
