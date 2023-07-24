@@ -4,17 +4,20 @@ import { AllQuizzesComponent } from './all-quizzes.component';
 import { AppStoreModule } from '../../../store/app-store.module';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { CatalogueModule } from '../../../shared/catalogue/catalogue.module';
+import { CataloguePaginatorComponent } from '../../../shared/catalogue-paginator/catalogue-paginator.component';
+import { CatalogueSelectMenuComponent } from '../../../shared/catalogue-select-menu/catalogue-select-menu.component';
+import { CatalogueComponent } from '../../../shared/catalogue/catalogue.component';
+import { SharedModule } from '../../../shared/shared.module';
+import { of } from 'rxjs';
+import { IQuizList, IQuizListItem } from '../../../../types/others/lists.types';
+import { QuizService } from '../../quiz-service/quiz.service';
+import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatPaginatorHarness } from '@angular/material/paginator/testing';
-import { HarnessLoader } from '@angular/cdk/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { ActivatedRoute, RouterModule } from '@angular/router';
-import { QuizService } from '../../quiz-service/quiz.service';
-import { Observable, generate, of } from 'rxjs';
-import { IQuizList, IQuizListItem, order, sort } from '../../../../types/others/lists.types';
-import { Location } from '@angular/common';
 import { MatSelectHarness } from '@angular/material/select/testing';
-import { fetchAllQuizzesResolver } from '../../../util/resolvers/fetch-all-quizzes/fetch-all-quizzes.resolver';
 
 function generateQuizzes(n: number, reverse = false): IQuizList {
   const quizzes: IQuizListItem[] = [];
@@ -34,7 +37,7 @@ function generateQuizzes(n: number, reverse = false): IQuizList {
   if (reverse) {
     quizzes.reverse();
   }
-  
+
   return {
     total: 10,
     quizzes,
@@ -44,58 +47,39 @@ function generateQuizzes(n: number, reverse = false): IQuizList {
 describe('AllQuizzesComponent', () => {
   let component: AllQuizzesComponent;
   let fixture: ComponentFixture<AllQuizzesComponent>;
-
-  let location: Location;
   let quizService: QuizService;
-  let activatedRoute: ActivatedRoute;
-  let loader: HarnessLoader;
-
   let element: HTMLElement;
-  let spy: any;
+  let loader: HarnessLoader;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         AllQuizzesComponent,
         AppStoreModule,
-        RouterModule.forRoot([
-          {
-            path: '',
-            component: AllQuizzesComponent,
-          },
-          {
-            path: 'test',
-            component: AllQuizzesComponent,
-            data: {
-              catalogue: generateQuizzes(7)
-            }
-          }
-        ]),
+        RouterTestingModule,
         NoopAnimationsModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
       ],
 
     });
 
-    fixture = TestBed.createComponent(AllQuizzesComponent);
     quizService = TestBed.inject(QuizService);
-    location = TestBed.inject(Location);
-    activatedRoute = TestBed.inject(ActivatedRoute);
-
+    fixture = TestBed.createComponent(AllQuizzesComponent);
+    component = fixture.componentInstance;
+    element = fixture.debugElement.nativeElement;
     loader = TestbedHarnessEnvironment.loader(fixture);
 
-    component = fixture.componentInstance;
-    spy = spyOn(component, 'getResolvedData').and.returnValue(
+    spyOn(component, 'getResolvedData').and.returnValue(
       of(
         {
-          catalogue: {
-            total: 0,
-            quizzes: []
-          }
+          catalogue:
+            {
+              total: 0,
+              quizzes: []
+            } as IQuizList
         }
       )
     );
-    element = fixture.debugElement.nativeElement as HTMLElement;
     fixture.detectChanges();
   });
 
@@ -105,202 +89,33 @@ describe('AllQuizzesComponent', () => {
 
   describe('Unit tests', () => {
     describe('ngOnInit', () => {
-      it('Sets all relevant properties based on query parameters', () => {
-        spyOn(component, 'getQueryString')
-          .withArgs('page')
-          .and.returnValue('121')
-          .withArgs('sort')
-          .and.returnValue('createdOn')
-          .withArgs('order')
-          .and.returnValue('desc');
-
-        component.ngOnInit();
-
-        expect(component.page).toBe(121);
-        expect(component.sort).toBe('createdOn');
-        expect(component.order).toBe('desc');
-      });
-
-      it('Sets all relevant properties from query parameters to default values if the query params are missing', () => {
-        spyOn(component, 'getQueryString')
-          .withArgs('page')
-          .and.returnValue(null)
-          .withArgs('sort')
-          .and.returnValue(null)
-          .withArgs('order')
-          .and.returnValue(null);
-
-        component.ngOnInit();
-
-        expect(component.page).toBe(1);
-        expect(component.sort).toBe('title');
-        expect(component.order).toBe('asc');
-      });
-
-      it('Sets the catalogue to whatever data the route has', () => {
-
+      it('Retrieves data from route correctly', waitForAsync(() => {
         component.getResolvedData = jasmine.createSpy().and.returnValue(
-          of({
-            catalogue: generateQuizzes(7)
-          })
+          of(
+            {
+              catalogue: generateQuizzes(3)
+            }
+          )
         );
-
+  
         component.ngOnInit();
         expect(component.catalogue.total).toBe(10);
-      });
+      }));
     });
-
-    describe('changePage', () => {
-      it('Sets the page and catalogue properties when called', () => {
+  
+    describe('updateQuizzes', () => {
+      it('Updates the catalogue property successfully', waitForAsync(() => {
         spyOn(quizService, 'getAllQuizzes').and.returnValue(
-          of(
-            {
-              total: 3,
-              quizzes: [
-                {
-                  title: 'a',
-                }
-              ]
-            } as IQuizList
-          )
+          of(generateQuizzes(3))
         );
-
-        spyOn(location, 'replaceState').and.stub();
-
-        component.changePage(2);
-
-        expect(component.page).toBe(2);
-        expect(component.catalogue.total).toBe(3);
-        expect(location.replaceState).toHaveBeenCalled();
-      });
-
-      it('Sets the page property even if request fails', () => {
-        spyOn(quizService, 'getAllQuizzes').and.returnValue(
-          new Observable(o => {
-            o.error('getAllQuizzes failed');
-          })
-        );
-
-        spyOn(location, 'replaceState').and.stub();
-
-        component.changePage(2);
-
-        expect(component.page).toBe(2);
-        expect(location.replaceState).toHaveBeenCalled();
-      });
-    });
-
-    describe('changeSortAndOrder', () => {
-      it('Changes the sort, order, and catalogue properties when called', () => {
-        spyOn(quizService, 'getAllQuizzes').and.returnValue(
-          of(
-            {
-              total: 3,
-              quizzes: [
-                {
-                  title: 'a',
-                }
-              ]
-            } as IQuizList
-          )
-        );
-
-        spyOn(location, 'replaceState').and.stub();
-
-        component.changeSortAndOrder({ sort: 'createdOn', order: 'desc' });
-
-        expect(component.sort).toBe('createdOn');
-        expect(component.order).toBe('desc');
-
-        expect(component.catalogue.total).toBe(3);
-        expect(location.replaceState).toHaveBeenCalled();
-      });
-
-      it('Changes the sort and order properties even if request fails', () => {
-        spyOn(quizService, 'getAllQuizzes').and.returnValue(
-          new Observable(o => {
-            o.error('getAllQuizzes failed');
-          })
-        );
-
-        spyOn(location, 'replaceState').and.stub();
-
-        component.changeSortAndOrder({ sort: 'createdOn', order: 'desc' });
-
-        expect(component.sort).toBe('createdOn');
-        expect(component.order).toBe('desc');
-
-        expect(location.replaceState).toHaveBeenCalled();
-      });
+  
+        component.updateQuizzes({ page: 2, sort: 'createdOn', order: 'desc'});
+        expect(component.catalogue.total).toBe(10);
+      }));
     });
   });
 
   describe('Component tests', () => {
-    describe('component initilization', () => {
-      it('Sets paginator to correct page based on query string', waitForAsync(async () => {
-        const paginators = await loader.getAllHarnesses(MatPaginatorHarness);
-        const paginator = paginators[0];
-
-        spyOn(component, 'getQueryString')
-          .withArgs('page')
-          .and.returnValue('3')
-          .withArgs('sort')
-          .and.returnValue(null)
-          .withArgs('order')
-          .and.returnValue(null);
-
-        component.ngOnInit();
-        fixture.detectChanges();
-
-        component.catalogue.total = 100;
-        fixture.detectChanges();
-
-        await paginator.goToNextPage();
-
-        expect(component.page).toBe(4);
-      }));
-
-      it('Sets the select menu to the correct option based on query string', waitForAsync(async () => {
-        const selectMenus = await loader.getAllHarnesses(MatSelectHarness);
-        const menu = selectMenus[0];
-
-        spyOn(component, 'getQueryString')
-          .withArgs('page')
-          .and.returnValue('3')
-          .withArgs('sort')
-          .and.returnValue('createdOn')
-          .withArgs('order')
-          .and.returnValue('desc');
-
-        component.ngOnInit();
-        fixture.detectChanges();
-
-        await fixture.whenStable();
-
-        await menu.open();
-        fixture.detectChanges()
-        const value = await menu.getValueText();
-        fixture.detectChanges();
-        expect(value).toBe('Date of creation (Descending)');
-      }));
-
-      it('Populates the page with quizzes from route data', waitForAsync(async () => {
-        component.getResolvedData = jasmine.createSpy().and.returnValue(
-          of({
-            catalogue: generateQuizzes(7)
-          })
-        );
-
-        component.ngOnInit();
-        fixture.detectChanges();
-
-        await fixture.whenStable();
-
-        const items = element.querySelectorAll('.quiz-list-item');
-        expect(items.length).toBe(7);
-      }));
-    });
-
     describe('interaction', () => {
       it('Reacts correctly to change in quiz list items due to page change', waitForAsync(async () => {
         component.getResolvedData = jasmine.createSpy().and.returnValue(
@@ -310,6 +125,7 @@ describe('AllQuizzesComponent', () => {
             }
           )
         );
+  
         spyOn(quizService, 'getAllQuizzes').and.returnValue(
           of(generateQuizzes(3))
         );
@@ -327,18 +143,20 @@ describe('AllQuizzesComponent', () => {
 
         const items = element.querySelectorAll('.quiz-list-item');
         expect(items.length).toBe(3);
-
-        const path = location.path();
-        expect(path.includes('page=2')).toBeTrue();
       }));
 
       it('Reacts correctly to change in quiz list items due to menu change', waitForAsync(async () => {
+        component.getResolvedData = jasmine.createSpy().and.returnValue(
+          of(
+            {
+              catalogue: generateQuizzes(7)
+            }
+          )
+        );
+        
         spyOn(quizService, 'getAllQuizzes').and.returnValue(
-          of(generateQuizzes(7))
-        ).and.returnValue(
           of(generateQuizzes(7, true))
         );
-
         const menu = await loader.getHarness(MatSelectHarness);
 
         component.ngOnInit();
@@ -353,10 +171,6 @@ describe('AllQuizzesComponent', () => {
 
         const items = element.querySelectorAll('.quiz-list-item');
         expect(items.length).toBe(7);
-
-        const path = location.path();
-        expect(path.includes('sort=title')).toBeTrue();
-        expect(path.includes('order=desc')).toBeTrue();
 
         const title = items[0].querySelector('.title')?.textContent;
         expect(title).toBe('6');
