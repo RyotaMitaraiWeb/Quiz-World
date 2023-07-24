@@ -1,12 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { CommonModule, Location } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { SharedModule } from '../../../shared/shared.module';
-import { IQuizList, IQuizListItem, order, sort } from '../../../../types/others/lists.types';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Data } from '@angular/router';
 import { QuizService } from '../../quiz-service/quiz.service';
-import { Subscription, tap } from 'rxjs';
-import { HttpParams } from '@angular/common/http';
-import { ISort } from '../../../../types/components/catalogue-select-menu.types';
+import { IQuizList, order, sort } from '../../../../types/others/lists.types';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-all-quizzes',
@@ -20,41 +18,16 @@ import { ISort } from '../../../../types/components/catalogue-select-menu.types'
 })
 export class AllQuizzesComponent implements OnInit, OnDestroy {
   constructor(
-    private readonly location: Location,
-    private readonly quizService: QuizService,
     private readonly activatedRoute: ActivatedRoute,
+    private readonly quizService: QuizService,
   ) { }
-
-  private routerSub: Subscription = new Subscription();
-  private catalogueSub: Subscription = new Subscription();
+  
+  private catalogueSub = new Subscription();
 
   ngOnInit(): void {
-    this.page = Number(this.getQueryString('page')) || 1;
-    this.sort = this.getQueryString('sort') as sort || 'title';
-    this.order = this.getQueryString('order') as order || 'asc';
-
     this.catalogueSub = this.getResolvedData().subscribe(data => {
       this.catalogue = data['catalogue'];
     });
-  }
-
-  /**
-   * returns the resolved data from the activated route. This is used
-   * for easier spying in tests.
-   */
-  getResolvedData() {
-    return this.activatedRoute.data;
-  }
-
-  /**
-   * Returns the given query string from the URL.
-   * @param query 
-   * @returns the query string or null if the query string is absent from the URL.
-   */
-  getQueryString(query: string) {
-    const url: URL = new URL(window.top?.location.href || '');
-    const params: URLSearchParams = url.searchParams;
-    return params.get(query);
   }
 
   catalogue: IQuizList = {
@@ -62,80 +35,24 @@ export class AllQuizzesComponent implements OnInit, OnDestroy {
     quizzes: [],
   };
 
-  page = 0;
-  sort: sort = 'title';
-  order: order = 'asc';
-
-  protected get sortOrder() { return `${this.sort}-${this.order}` }
-
   /**
-   * *Updates the ``sort`` and ``order`` properties with the input, 
-   * the URL's string queries, and the catalogue with
-   * the respective quizzes
-   * @param value the new sort category and order
+   * returns the resolved data from the activated route. This is used
+   * for easier spying in tests.
    */
-  changeSortAndOrder(value: ISort) {
-    this.sort = value.sort;
-    this.order = value.order;
-
-    const params = new HttpParams().appendAll(
-      {
-        page: this.page.toString(),
-        sort: this.sort,
-        order: this.order,
-      },
-    );
-
-    this.location.replaceState(
-      location.pathname,
-      params.toString()
-    );
-
-    this.updateQuizzes();
+  getResolvedData(): Observable<Data> {
+    return this.activatedRoute.data;
   }
 
   /**
-   * Updates the ``page`` property with the input, 
-   * the URL's string queries, and the catalogue with
-   * the respective quizzes
-   * @param page the new page
+   * Updates the catalogue property with the fetched data.
    */
-  changePage(page: number) {
-    this.page = page;
-    const params = new HttpParams().appendAll(
-      {
-        page: this.page.toString(),
-        sort: this.sort,
-        order: this.order,
-      },
-    );
-
-    this.location.replaceState(
-      location.pathname,
-      params.toString()
-    );
-
-    this.updateQuizzes();
-  }
-
-  private updateQuizzes() {
-    this.catalogueSub = this.quizService
-      .getAllQuizzes(this.page, this.sort, this.order)
-      .subscribe(
-        {
-          next: res => {
-            this.catalogue = res;
-          },
-          error: err => {
-            console.warn(err);
-          }
-        }
-      );
+  updateQuizzes({ page, sort, order }: { page: number, sort: sort, order: order } ): void {
+    this.catalogueSub = this.quizService.getAllQuizzes(page, sort, order).subscribe(data => {
+      this.catalogue = data
+    });
   }
 
   ngOnDestroy(): void {
-    this.routerSub.unsubscribe();
     this.catalogueSub.unsubscribe();
   }
-
 }
