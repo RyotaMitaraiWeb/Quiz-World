@@ -14,3 +14,10 @@ export interface IQuizList {
   quizzes: IQuizListItem[];
   total: number;
 }
+
+export interface IProfile {
+  id: string;
+  username: string;
+  roles: string;
+  quizzes: IQuizList;
+}
