@@ -69,18 +69,7 @@ export class CatalogueComponent implements OnInit {
     this.sort = value.sort;
     this.order = value.order;
 
-    const params = new HttpParams().appendAll(
-      {
-        page: this.page.toString(),
-        sort: this.sort,
-        order: this.order,
-      },
-    );
-
-    this.location.replaceState(
-      location.pathname,
-      params.toString()
-    );
+    this.updateURL();
 
     this.updateQuizzesEvent.emit({ page: this.page, sort: this.sort, order: this.order });
   }
@@ -93,7 +82,18 @@ export class CatalogueComponent implements OnInit {
    */
   changePage(page: number): void {
     this.page = page;
-    const params = new HttpParams().appendAll(
+
+    this.updateURL();
+
+    this.updateQuizzesEvent.emit({ page: this.page, sort: this.sort, order: this.order });
+  }
+
+  /**
+   * Updates the URL with the current pagination/sorting orders.
+   * If there is a search query in the URL, it will be preserved.
+   */
+  private updateURL(): void {
+    let params = new HttpParams().appendAll(
       {
         page: this.page.toString(),
         sort: this.sort,
@@ -101,12 +101,14 @@ export class CatalogueComponent implements OnInit {
       },
     );
 
+    const searchQuery = this.getQueryString('query');
+    if (searchQuery) {
+      params = params.append('query', searchQuery);
+    }
+
     this.location.replaceState(
       location.pathname,
       params.toString()
     );
-
-    this.updateQuizzesEvent.emit({ page: this.page, sort: this.sort, order: this.order });
   }
-
 }

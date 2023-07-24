@@ -22,9 +22,9 @@ Returns the value of the given ``query`` from the URL or ``null`` if the query i
 ```typescript
 function changeSortAndOrder(value: ISort): void
 ```
-Updates the ``sort`` and ``order`` properties to the passed ``value``'s respective properties and updates the URL's query strings to reflect that. In addition, this method will emit, ``updateQuizzesEvent`` passing the current page and the new values as arguments.
+Updates the ``sort`` and ``order`` properties to the passed ``value``'s respective properties and updates the URL's query strings to reflect that. In addition, this method will emit, ``updateQuizzesEvent`` passing the current page and the new values as arguments. If there is a search query in the URL, it will be preserved.
 
 ```typescript
 function changePage(page: number): void
 ```
-Updates the ``page`` property to the passed argument and updates the URL's query strings to reflect that. In addition, this method will emit, ``updateQuizzesEvent`` passing the new page and the current sorting options as arguments.
+Updates the ``page`` property to the passed argument and updates the URL's query strings to reflect that. In addition, this method will emit, ``updateQuizzesEvent`` passing the new page and the current sorting options as arguments. If there is a search query in the URL, it will be preserved.

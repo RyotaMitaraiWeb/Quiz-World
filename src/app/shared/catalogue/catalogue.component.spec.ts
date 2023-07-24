@@ -262,6 +262,25 @@ describe('CatalogueComponent', () => {
         expect(path.includes('order=desc')).toBeTrue();
 
       }));
+
+      it('Retains the query param string when an update happens', waitForAsync(async () => {
+        component.catalogue = generateQuizzes(7);
+        const menu = await loader.getHarness(MatSelectHarness);
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        spyOn(component, 'getQueryString').and.returnValue('mytitle');
+        await menu.open();
+        fixture.detectChanges();
+
+        const options = await menu.getOptions();
+        await options[1].click();
+        fixture.detectChanges();
+
+        const path = location.path();
+        expect(path.includes('query=mytitle')).toBe(true);
+      }))
     });
   });
 });
