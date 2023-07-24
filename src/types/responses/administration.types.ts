@@ -9,5 +9,5 @@ export interface IUser {
 export interface IUserResponse {
   username: string;
   id: string;
-  roles: role[],
+  roles: string,
 }
