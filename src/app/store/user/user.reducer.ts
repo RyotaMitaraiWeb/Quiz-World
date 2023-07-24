@@ -3,7 +3,7 @@ import { restartUser, setUser } from './user.action';
 import { IUserState } from '../../../types/store/user.types';
 
 export const initialState: IUserState = {
-  id: 0,
+  id: '',
   username: '',
   roles: [],
 };
@@ -16,7 +16,7 @@ export const userReducer = createReducer(
     roles: user.roles,
   })),
   on(restartUser, () => ({
-    id: 0,
+    id: '',
     username: '',
     roles: [],
   }))

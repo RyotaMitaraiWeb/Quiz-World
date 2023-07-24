@@ -6,7 +6,7 @@ import { initialState, userReducer } from './user.reducer';
 describe('User reducer', () => {
   it('updates on actions successfully', () => {
     const user: IUserState = {
-      id: 1,
+      id: '1',
       username: 'test',
       roles: ['User'],
     };

@@ -21,7 +21,7 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
   @Input({ required: true }) prompt: string = '';
   @Input({ required: true }) correctAnswers: ISessionAnswer[] | null = null;
   @Input({ required: true }) answers: ISessionAnswer[] = [{
-    id: 0,
+    id: '',
     value: '',
   }];
 
@@ -31,7 +31,7 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
    * Returns the ID of the correct answer or ``null`` if ``correctAnswers`` is ``null``
    * (aka the question has not been graded)
   */
-  get correctAnswer(): number | null {
+  get correctAnswer(): string | null {
     if (this.correctAnswers === null) {
       return null;
     }
@@ -41,13 +41,13 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
 
   @Input({ required: true }) form: FormGroup<
     {
-      currentAnswer: FormControl<number | null>;
-      id: FormControl<number | null>;
+      currentAnswer: FormControl<string | null>;
+      id: FormControl<string | null>;
       type: FormControl<question | null>;
     }
   > = this.fb.group({
-    currentAnswer: [null as number | null, [Validators.required]],
-    id: [0],
+    currentAnswer: [null as string | null, [Validators.required]],
+    id: [''],
     type: [questionTypes.single]
   });
 
@@ -84,7 +84,7 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
     return this.correctAnswer === this.currentAnswer;
   }
 
-  private answerIsCorrect(id: number): boolean | null {
+  private answerIsCorrect(id: string): boolean | null {
     if (this.correctAnswer === null) {
       return null;
     }
@@ -98,7 +98,7 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
    * @param id the ID of the answer
    * @returns a string representing the answer's status.
    */
-  answerClass(id: number): "not-graded" | "correct-answer" | "wrong-answer" {
+  answerClass(id: string): "not-graded" | "correct-answer" | "wrong-answer" {
     const result = this.answerIsCorrect(id);
     if (result === null) {
       return 'not-graded';
@@ -107,7 +107,7 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
     return result ? 'correct-answer' : 'wrong-answer';
   }
 
-  private get currentAnswer(): number {
-    return this.form.controls.currentAnswer.value || 0;
+  private get currentAnswer(): string {
+    return this.form.controls.currentAnswer.value || '';
   }
 }

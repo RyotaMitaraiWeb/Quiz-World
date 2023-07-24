@@ -143,7 +143,7 @@ export class QuizService {
    * @returns an Observable of type ``IQuizList`` on the specified page, sorted by
    * the specified category in the specified order.
    */
-  getUserQuizzes(userId: number, page: number | string, sort: sort, order: order): Observable<IQuizList>;
+  getUserQuizzes(userId: string, page: number | string, sort: sort, order: order): Observable<IQuizList>;
   /**
    * Sends a GET request to ``/quizzes/user/{userId}`` and retrieves a sorted and paginated
    * list of the quizzes created by the user.
@@ -153,7 +153,7 @@ export class QuizService {
    * @returns an Observable of type ``IQuizList`` on the specified page, sorted by
    * the specified category in an ascending order.
    */
-  getUserQuizzes(userId: number, page: number | string, sort: sort): Observable<IQuizList>;
+  getUserQuizzes(userId: string, page: number | string, sort: sort): Observable<IQuizList>;
   /**
    * Sends a GET request to ``/quizzes/user/{userId}`` and retrieves a sorted and paginated
    * list of the quizzes created by the user.
@@ -162,7 +162,7 @@ export class QuizService {
    * @returns an Observable of type ``IQuizList`` on the specified page, sorted by
    * title in an ascending order.
    */
-  getUserQuizzes(userId: number, page: number | string): Observable<IQuizList>;
+  getUserQuizzes(userId: string, page: number | string): Observable<IQuizList>;
   /**
    * Sends a GET request to ``/quizzes/user/{userId}`` and retrieves a sorted and paginated
    * list of the quizzes created by the user.
@@ -170,9 +170,9 @@ export class QuizService {
    * @returns an Observable of type ``IQuizList`` on page 1, sorted by
    * title in an ascending order.
    */
-  getUserQuizzes(userId: number): Observable<IQuizList>;
-  getUserQuizzes(userId: number, page?: number | string, sort?: sort, order?: order): Observable<IQuizList>;
-  getUserQuizzes(userId: number, page?: number | string, sort?: sort, order?: order): Observable<IQuizList> {
+  getUserQuizzes(userId: string): Observable<IQuizList>;
+  getUserQuizzes(userId: string, page?: number | string, sort?: sort, order?: order): Observable<IQuizList>;
+  getUserQuizzes(userId: string, page?: number | string, sort?: sort, order?: order): Observable<IQuizList> {
     const params = paramsBuilder(page, sort, order);
     return this.http.get<IQuizList>(this.url.user(userId), { params });
   }

@@ -48,8 +48,8 @@ describe('MultipleChoiceQuestionComponent', () => {
         setAnswers(1, 2, 3, 4);
         
         component.correctAnswers = [
-          { id: 1, value: 'a' }, { id: 2, value: 'b' },
-          { id: 3, value: 'c' },
+          { id: '1', value: 'a' }, { id: '2', value: 'b' },
+          { id: '3', value: 'c' },
         ];
 
         const result = component.isCorrect;
@@ -67,8 +67,8 @@ describe('MultipleChoiceQuestionComponent', () => {
       it('Returns false if the correct and current answers do not match', () => {
         setAnswers(2, 1, 4);
         component.correctAnswers = [
-          { id: 1, value: 'a' }, { id: 2, value: 'b' },
-          { id: 3, value: 'c' },
+          { id: '1', value: 'a' }, { id: '2', value: 'b' },
+          { id: '3', value: 'c' },
         ];
 
         const result = component.isCorrect;
@@ -78,8 +78,8 @@ describe('MultipleChoiceQuestionComponent', () => {
       it('Returns true if the correct and current answers match', () => {
         setAnswers(2, 1, 3);
         component.correctAnswers = [
-          { id: 1, value: 'a' }, { id: 2, value: 'b' },
-          { id: 3, value: 'c' },
+          { id: '1', value: 'a' }, { id: '2', value: 'b' },
+          { id: '3', value: 'c' },
         ];
 
         const result = component.isCorrect;
@@ -93,25 +93,25 @@ describe('MultipleChoiceQuestionComponent', () => {
     describe('answerClass', () => {
       it('Returns correct name for an ungraded question', () => {
         component.correctAnswers = null;
-        const result = component.answerClass(0);
+        const result = component.answerClass('');
 
         expect(result).toBe('not-graded');
       });
 
       it('Returns correct name for a correct answer', () => {
-        component.correctAnswers = [{ value: 'correct', id: 1 }, { value: 'correct2', id: 2 }];
+        component.correctAnswers = [{ value: 'correct', id: '1' }, { value: 'correct2', id: '2' }];
 
-        const result = component.answerClass(1);
+        const result = component.answerClass('1');
         expect(result).toBe('correct-answer');
 
-        const result2 = component.answerClass(2);
+        const result2 = component.answerClass('2');
         expect(result2).toBe('correct-answer');
       });
 
       it('Returns correct name for a wrong answer', () => {
-        component.correctAnswers = [{ value: 'correct', id: 1 }];
+        component.correctAnswers = [{ value: 'correct', id: '1' }];
 
-        const result = component.answerClass(2);
+        const result = component.answerClass('2');
         expect(result).toBe('wrong-answer');
       });
     });
@@ -198,15 +198,15 @@ describe('MultipleChoiceQuestionComponent', () => {
         component.correctAnswers = null;
         component.answers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
           {
-            id: 2,
+            id: '2',
             value: 'correct2',
           },
           {
-            id: 3,
+            id: '3',
             value: 'wrong',
           },
         ];
@@ -221,22 +221,22 @@ describe('MultipleChoiceQuestionComponent', () => {
         component.correctAnswers = null;
         component.answers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
           {
-            id: 2,
+            id: '2',
             value: 'correct2',
           },
           {
-            id: 3,
+            id: '3',
             value: 'wrong',
           },
         ];
 
         fixture.detectChanges();
 
-        component.correctAnswers = [{ value: 'correct', id: 1 }, { value: 'correct2', id: 2 }];
+        component.correctAnswers = [{ value: 'correct', id: '1' }, { value: 'correct2', id: '2' }];
         fixture.detectChanges();
 
         const correctAnswers = element.querySelectorAll('.correct-answer');
@@ -252,15 +252,15 @@ describe('MultipleChoiceQuestionComponent', () => {
         component.correctAnswers = null;
         component.answers = component.answers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
           {
-            id: 2,
+            id: '2',
             value: 'correct2',
           },
           {
-            id: 3,
+            id: '3',
             value: 'wrong',
           },
         ];
@@ -272,18 +272,18 @@ describe('MultipleChoiceQuestionComponent', () => {
       });
 
       it('Displays correct feedback for a correct answer', () => {
-        component.correctAnswers = [{ id: 1, value: 'correct' }, { id: 2, value: 'correct2' }];
+        component.correctAnswers = [{ id: '1', value: 'correct' }, { id: '2', value: 'correct2' }];
         component.answers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
           {
-            id: 2,
+            id: '2',
             value: 'correct2',
           },
           {
-            id: 3,
+            id: '3',
             value: 'wrong',
           },
         ];
@@ -301,15 +301,15 @@ describe('MultipleChoiceQuestionComponent', () => {
       it('Displays correct feedback for a wrong answer', () => {
         component.answers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
           {
-            id: 2,
+            id: '2',
             value: 'correct2',
           },
           {
-            id: 3,
+            id: '3',
             value: 'wrong',
           },
         ];
@@ -317,7 +317,7 @@ describe('MultipleChoiceQuestionComponent', () => {
         setAnswers(1, 2, 3);
 
         fixture.detectChanges();
-        component.correctAnswers = [{ id: 1, value: 'correct' }, { id: 2, value: 'correct2' }];
+        component.correctAnswers = [{ id: '1', value: 'correct' }, { id: '2', value: 'correct2' }];
 
         fixture.detectChanges();
 

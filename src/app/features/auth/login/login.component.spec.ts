@@ -62,7 +62,7 @@ describe('LoginComponent', () => {
           status: HttpStatusCode.Created,
           statusText: 'Created',
           body: {
-            id: 1,
+            id: '1',
             username: 'a',
             token: 'a',
             roles: [],
@@ -221,7 +221,7 @@ describe('LoginComponent', () => {
           statusText: 'Created',
           body: {
             token: 'a',
-            id: 1,
+            id: '1',
             username: 'a',
             roles: [],
           }
@@ -248,7 +248,7 @@ describe('LoginComponent', () => {
         fixture.detectChanges();
 
         store.select('user').subscribe(user => {
-          expect(user.id).toBe(1);
+          expect(user.id).toBe('1');
         })
 
         expect(location.path()).toBe('/');
@@ -288,7 +288,7 @@ describe('LoginComponent', () => {
         fixture.detectChanges();
 
         store.select('user').subscribe(user => {
-          expect(user.id).toBe(0);
+          expect(user.id).toBe('');
         })
 
         expect(location.path()).toBe('/login');

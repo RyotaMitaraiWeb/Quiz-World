@@ -33,7 +33,7 @@ describe('TextQuestionComponent', () => {
       it('Returns false if the correct answers property does not include the user\'s answer', () => {
         component.correctAnswers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           }
         ];
@@ -46,7 +46,7 @@ describe('TextQuestionComponent', () => {
       it('Returns true if the correct answers property includes the user\'s answer (case insensitive)', () => {
         component.correctAnswers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           }
         ];
@@ -59,12 +59,12 @@ describe('TextQuestionComponent', () => {
 
     describe('ngOnChanges', () => {
       it('Sets the correctAnswers property to whatever changes have come', () => {
-        const changes = new SimpleChange(null, [{ id: 1, value: 'correct' }], true);
+        const changes = new SimpleChange(null, [{ id: '1', value: 'correct' }], true);
         component.ngOnChanges({
           correctAnswers: changes,
         });
 
-        expect(component.correctAnswers).toEqual([{ id: 1, value: 'correct' }]);
+        expect(component.correctAnswers).toEqual([{ id: '1', value: 'correct' }]);
       });
     });
   });
@@ -97,7 +97,7 @@ describe('TextQuestionComponent', () => {
         const unanswered = element.querySelector('h1.unanswered');
         expect(unanswered).not.toBeNull();
 
-        component.correctAnswers = [{ value: 'correct', id: 1 }];
+        component.correctAnswers = [{ value: 'correct', id: '1' }];
         component.form.controls.currentAnswer.setValue('wrong');
         fixture.detectChanges();
 
@@ -124,11 +124,11 @@ describe('TextQuestionComponent', () => {
       it('Shows a feedback for correct answers', () => {
         component.correctAnswers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
           {
-            id: 2,
+            id: '2',
             value: 'right',
           },
         ];
@@ -143,11 +143,11 @@ describe('TextQuestionComponent', () => {
       it('Shows a feedback for a wrong answer', () => {
         component.correctAnswers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
           {
-            id: 2,
+            id: '2',
             value: 'right',
           },
         ];

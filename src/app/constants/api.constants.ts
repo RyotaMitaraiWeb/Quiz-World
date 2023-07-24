@@ -36,10 +36,10 @@ export const api = {
       delete: (id: string | number) => `${quiz}/${id}`,
       all: `${quiz}/all`,
       search: `${quiz}/search`,
-      user: (id: number) => `${quiz}/user/${id}`
+      user: (id: string) => `${quiz}/user/${id}`
     },
     answers: {
-      correctAnswersInstantMode: (questionId: number) => `${answer}/${questionId}/question`,
+      correctAnswersInstantMode: (questionId: string) => `${answer}/${questionId}/question`,
       correctAnswersFull: (quizId: number) => `${answer}/${quizId}/quiz`,
     },
     logs: {

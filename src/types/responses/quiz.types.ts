@@ -28,6 +28,7 @@ export interface IQuizDetails {
   description: string;
   instantMode: boolean;
   questions: ISessionQuestion[];
+  creatorId: string;
 }
 
 /**
@@ -41,7 +42,7 @@ export interface IQuizDetails {
  * ```
  */
 export interface ISessionQuestion {
-  id: number;
+  id: string;
   prompt: string;
   answers?: ISessionAnswer[];
   type: question;
@@ -56,11 +57,11 @@ export interface ISessionQuestion {
  * ```
  */
 export interface ISessionAnswer {
-  id: number;
+  id: string;
   value: string;
 }
 
 export interface IGradedAnswer {
-  questionId: number;
+  questionId: string;
   answers: ISessionAnswer[];
 }

@@ -101,7 +101,8 @@ describe('QuizService', () => {
         title: 'some title',
         description: '',
         instantMode: false,
-        questions: []
+        questions: [],
+        creatorId: '1',
       }
 
       service.getById(response.id).subscribe({
@@ -328,7 +329,7 @@ describe('QuizService', () => {
 
   describe('getUserQuizzes', () => {
     it('Correctly returns a response with a given body (response is ok)', (done: DoneFn) => {
-      service.getUserQuizzes(1).subscribe({
+      service.getUserQuizzes('1').subscribe({
         next: (res) => {
           expect(res.quizzes.length).toBe(1);
           done();
@@ -338,7 +339,7 @@ describe('QuizService', () => {
         }
       });
 
-      const req = httpTestingController.expectOne(service.url.user(1));
+      const req = httpTestingController.expectOne(service.url.user('1'));
 
       req.flush({
         quizzes: [{
@@ -358,7 +359,7 @@ describe('QuizService', () => {
     it('Correctly returns a response with a given body (response is an error)', (done: DoneFn) => {
       const response = ['a', 'b']
 
-      service.getUserQuizzes(1).subscribe({
+      service.getUserQuizzes('1').subscribe({
         next: () => {
           done.fail('Expected an error response, not a successful one');
         },
@@ -369,7 +370,7 @@ describe('QuizService', () => {
         }
       });
 
-      const req = httpTestingController.expectOne(service.url.user(1));
+      const req = httpTestingController.expectOne(service.url.user('1'));
 
       req.flush(response, {
         status: HttpStatusCode.NotFound,
@@ -378,7 +379,7 @@ describe('QuizService', () => {
     });
 
     it('Attaches headers successfully', (done: DoneFn) => {
-      service.getUserQuizzes(1, 2).subscribe({
+      service.getUserQuizzes('1', 2).subscribe({
         next: (res) => {
           expect(res.quizzes.length).toBe(1);
           done();
@@ -390,7 +391,7 @@ describe('QuizService', () => {
 
       const req = httpTestingController.expectOne(req => {
         const page = req.params.get('page');
-        return req.url === service.url.user(1) && page === '2';
+        return req.url === service.url.user('1') && page === '2';
       });
 
       req.flush({

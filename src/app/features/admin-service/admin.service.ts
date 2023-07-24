@@ -29,33 +29,25 @@ export class AdminService {
   /**
    * Sends a GET request to ``/administration/moderators`` and returns a list
    * of all users that have the Moderator role (including administrators).
-   * Each user is listed with only one role, which is their highest one.
    * @returns an Observable that resolves to an array of ``IUser``.
    */
   getModerators(): Observable<IUser[]> {
-    return this.http.get<IUserResponse[]>(this.rolesUrl.getUsersOfRole(roles.moderator))
-      .pipe(
-        map(users => users.map(this.mapUserToHighestRole))
-      );
+    return this.http.get<IUser[]>(this.rolesUrl.getUsersOfRole(roles.moderator));
   }
 
   /**
    * Sends a GET request to ``/administration/admins`` and returns a list
    * of all users that have the Administrator role.
-   * Each user is listed with only one role, which is their highest one.
    * @returns an Observable that resolves to an array of ``IUser``.
    */
   getAdmins(): Observable<IUser[]> {
-    return this.http.get<IUserResponse[]>(this.rolesUrl.getUsersOfRole(roles.admin))
-      .pipe(
-        map(users => users.map(this.mapUserToHighestRole))
-      );
+    return this.http.get<IUser[]>(this.rolesUrl.getUsersOfRole(roles.admin))
+      
   }
 
   /**
    * Sends a GET request to ``/administration/users/{username}`` and returns a list
-   * of all users that contain the given ``username`` string. Each user is listed
-   * with their highest role.
+   * of all users that contain the given ``username`` string.
    * @param username the string by which the database will look for users.
    * @returns the first page of users, ordered by their usernames in an ascending order.
    */
@@ -93,15 +85,10 @@ export class AdminService {
       params = params.append('order', order);
     }
 
-    const request = this.http
-      .get<IUserResponse[]>(this.rolesUrl.getUsersOfUsername(username), {
+    return this.http
+      .get<IUser[]>(this.rolesUrl.getUsersOfUsername(username), {
         params
-      })
-      .pipe(
-        map(users => users.map(this.mapUserToHighestRole))
-      );
-
-    return request;
+      });
   }
 
   /**
@@ -112,10 +99,7 @@ export class AdminService {
    * the list of users after the response resolves.
    */
   promoteToModerator(id: string): Observable<IUser[]> {
-    return this.http.put<IUserResponse[]>(this.rolesUrl.promote(id, roles.moderator), {})
-    .pipe(
-      map(users => users.map(this.mapUserToHighestRole))
-    );
+    return this.http.put<IUser[]>(this.rolesUrl.promote(id, roles.moderator), {});
   }
 
   /**
@@ -126,10 +110,7 @@ export class AdminService {
    * the list of users after the response resolves.
    */
   demoteToUser(id: string): Observable<IUser[]> {
-    return this.http.put<IUserResponse[]>(this.rolesUrl.demote(id, roles.moderator), {})
-    .pipe(
-      map(users => users.map(this.mapUserToHighestRole))
-    );
+    return this.http.put<IUser[]>(this.rolesUrl.demote(id, roles.moderator), {});
   }
 
   /**
@@ -162,22 +143,5 @@ export class AdminService {
     }
 
     return this.http.get<ILogActivity[]>(this.logsUrl.getLogs, { params });
-  }
-
-  private mapUserToHighestRole(user: IUserResponse): IUser {
-    const { id, username } = user;
-    if (user.roles.includes(roles.admin)) {
-      return { id, username, role: roles.admin, };
-    }
-
-    if (user.roles.includes(roles.moderator)) {
-      return { id, username, role: roles.moderator, };
-    }
-
-    if (user.roles.includes(roles.user)) {
-      return { id, username, role: roles.user, };
-    }
-
-    throw new Error('User does not have any of the valid roles');
   }
 }

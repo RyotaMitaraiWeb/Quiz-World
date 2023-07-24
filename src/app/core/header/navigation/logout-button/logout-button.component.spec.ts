@@ -122,7 +122,7 @@ describe('LogoutButtonComponent', () => {
       await router.navigate(['/']);
       localStorage.setItem('token', 'a');
       store.dispatch(setUser({
-        id: 1,
+        id: '1',
         username: 'a',
         roles: [],
       }));
@@ -140,7 +140,7 @@ describe('LogoutButtonComponent', () => {
         expect(location.path()).toBe('/login');
         expect(localStorage.getItem('token')).toBeNull();
         store.select('user').subscribe(user => {
-          expect(user.id).toBe(0);
+          expect(user.id).toBe('');
         })
       }));
 
@@ -159,7 +159,7 @@ describe('LogoutButtonComponent', () => {
         expect(location.path()).toBe('/');
         expect(localStorage.getItem('token')).toBe('a');
         store.select('user').subscribe(user => {
-          expect(user.id).toBe(1);
+          expect(user.id).toBe('1');
         })
       }));
     });

@@ -25,14 +25,14 @@ describe('AdminService', () => {
   });
 
   describe('getModerators', () => {
-    it('Returns an array of users and maps all roles to the highest one', (done: DoneFn) => {
+    it('Returns an array of users', (done: DoneFn) => {
       service.getModerators().subscribe({
         next: res => {
           expect(res.length).toBe(2);
-          expect(res[0].id).toBe(1);
-          expect(res[0].role).toBe(roles.moderator);
+          expect(res[0].id).toBe('1');
+          expect(res[0].roles).toBe(roles.user);
 
-          expect(res[1].role).toBe(roles.admin);
+          expect(res[1].roles).toBe(`${roles.admin, roles.moderator}`);
           done();
         },
         error: err => {
@@ -43,14 +43,14 @@ describe('AdminService', () => {
       const request = testController.expectOne(service.rolesUrl.getUsersOfRole(roles.moderator));
       request.flush([
         {
-          id: 1,
+          id: '1',
           username: 'a',
-          roles: [roles.moderator, roles.user],
+          roles: roles.user,
         },
         {
-          id: 2,
+          id: '2',
           username: 'b',
-          roles: [roles.moderator, roles.user, roles.admin]
+          roles: `${roles.admin, roles.moderator}`,
         }
       ] as IUserResponse[], {
         status: HttpStatusCode.Ok,
@@ -60,12 +60,12 @@ describe('AdminService', () => {
   });
 
   describe('getAdmins', () => {
-    it('Returns an array of users and maps all roles to the highest one', (done: DoneFn) => {
+    it('Returns an array of users', (done: DoneFn) => {
       service.getAdmins().subscribe({
         next: res => {
           expect(res.length).toBe(1);
-          expect(res[0].id).toBe(1);
-          expect(res[0].role).toBe(roles.admin);
+          expect(res[0].id).toBe('1');
+          expect(res[0].roles).toBe(`${roles.admin, roles.moderator}`);
 
           done();
         },
@@ -77,9 +77,9 @@ describe('AdminService', () => {
       const request = testController.expectOne(service.rolesUrl.getUsersOfRole(roles.admin));
       request.flush([
         {
-          id: 1,
+          id: '1',
           username: 'a',
-          roles: [roles.moderator, roles.user, roles.admin],
+          roles: `${roles.admin, roles.moderator}`,
         },
 
       ] as IUserResponse[], {
@@ -94,8 +94,8 @@ describe('AdminService', () => {
       service.getUsersByUsername('a').subscribe({
         next: res => {
           expect(res.length).toBe(2);
-          expect(res[0].role).toBe(roles.user);
-          expect(res[1].role).toBe(roles.moderator);
+          expect(res[0].roles).toBe(roles.user);
+          expect(res[1].roles).toBe(roles.moderator);
           done();
         },
         error: err => {
@@ -107,14 +107,14 @@ describe('AdminService', () => {
       const request = testController.expectOne(service.rolesUrl.getUsersOfUsername('a'));
       request.flush([
         {
-          id: 1,
+          id: '1',
           username: 'a',
-          roles: [roles.user],
+          roles: roles.user,
         },
         {
-          id: 2,
+          id: '2',
           username: 'aa',
-          roles: [roles.user, roles.moderator],
+          roles: roles.moderator,
         },
       ] as IUserResponse[],
         {
@@ -146,14 +146,14 @@ describe('AdminService', () => {
 
       request.flush([
         {
-          id: 2,
+          id: '2',
           username: 'ba',
-          roles: [roles.user],
+          roles: roles.user,
         },
         {
-          id: 1,
+          id: '1',
           username: 'aa',
-          roles: [roles.user, roles.moderator],
+          roles: roles.moderator,
         },
       ] as IUserResponse[],
         {
@@ -169,8 +169,8 @@ describe('AdminService', () => {
       service.promoteToModerator('1').subscribe({
         next: res => {
           expect(res.length).toBe(1);
-          expect(res[0].id).toBe(1);
-          expect(res[0].role).toBe(roles.admin);
+          expect(res[0].id).toBe('1');
+          expect(res[0].roles).toBe(`${roles.admin, roles.moderator}`);
 
           done();
         },
@@ -183,9 +183,9 @@ describe('AdminService', () => {
       const request = testController.expectOne(service.rolesUrl.promote('1', roles.moderator));
       request.flush([
         {
-          id: 1,
+          id: '1',
           username: 'a',
-          roles: [roles.moderator, roles.user, roles.admin],
+          roles: `${roles.admin, roles.moderator}`,
         },
 
       ] as IUserResponse[], {
@@ -200,8 +200,8 @@ describe('AdminService', () => {
       service.demoteToUser('1').subscribe({
         next: res => {
           expect(res.length).toBe(1);
-          expect(res[0].id).toBe(1);
-          expect(res[0].role).toBe(roles.user);
+          expect(res[0].id).toBe('1');
+          expect(res[0].roles).toBe(roles.user);
 
           done();
         },
@@ -214,9 +214,9 @@ describe('AdminService', () => {
       const request = testController.expectOne(service.rolesUrl.demote('1', roles.moderator));
       request.flush([
         {
-          id: 1,
+          id: '1',
           username: 'a',
-          roles: [roles.user],
+          roles: roles.user,
         },
 
       ] as IUserResponse[], {

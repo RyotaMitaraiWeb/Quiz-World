@@ -36,7 +36,7 @@ describe('NavigationComponent', () => {
       });
 
       it('Correctly displays links for logged in users', () => {
-        store.dispatch(setUser({ id: 1, username: 'admin', roles: ['User'] }));
+        store.dispatch(setUser({ id: '1', username: 'admin', roles: ['User'] }));
         fixture.detectChanges();
 
         const adminLinks = document.querySelectorAll('.user');
