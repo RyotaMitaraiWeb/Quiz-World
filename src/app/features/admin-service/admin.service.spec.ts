@@ -30,9 +30,9 @@ describe('AdminService', () => {
         next: res => {
           expect(res.length).toBe(2);
           expect(res[0].id).toBe('1');
-          expect(res[0].role).toBe(roles.user);
+          expect(res[0].roles).toBe(roles.user);
 
-          expect(res[1].role).toBe(`${roles.admin, roles.moderator}`);
+          expect(res[1].roles).toBe(`${roles.admin, roles.moderator}`);
           done();
         },
         error: err => {
@@ -65,7 +65,7 @@ describe('AdminService', () => {
         next: res => {
           expect(res.length).toBe(1);
           expect(res[0].id).toBe('1');
-          expect(res[0].role).toBe(`${roles.admin, roles.moderator}`);
+          expect(res[0].roles).toBe(`${roles.admin, roles.moderator}`);
 
           done();
         },
@@ -94,8 +94,8 @@ describe('AdminService', () => {
       service.getUsersByUsername('a').subscribe({
         next: res => {
           expect(res.length).toBe(2);
-          expect(res[0].role).toBe(roles.user);
-          expect(res[1].role).toBe(roles.moderator);
+          expect(res[0].roles).toBe(roles.user);
+          expect(res[1].roles).toBe(roles.moderator);
           done();
         },
         error: err => {
@@ -170,7 +170,7 @@ describe('AdminService', () => {
         next: res => {
           expect(res.length).toBe(1);
           expect(res[0].id).toBe('1');
-          expect(res[0].role).toBe(`${roles.admin, roles.moderator}`);
+          expect(res[0].roles).toBe(`${roles.admin, roles.moderator}`);
 
           done();
         },
@@ -201,7 +201,7 @@ describe('AdminService', () => {
         next: res => {
           expect(res.length).toBe(1);
           expect(res[0].id).toBe('1');
-          expect(res[0].role).toBe(roles.user);
+          expect(res[0].roles).toBe(roles.user);
 
           done();
         },
