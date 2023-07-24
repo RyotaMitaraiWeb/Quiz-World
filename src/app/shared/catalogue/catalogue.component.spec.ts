@@ -221,6 +221,39 @@ describe('CatalogueComponent', () => {
         const items2 = element.querySelectorAll('.quiz-list-item');
         expect(items2.length).toBe(3);
       }));
+
+      it('Displays a special message if there are no quizzes', () => {
+        component.catalogue = {
+          total: 0,
+          quizzes: [],
+        };
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const message = element.querySelector('.no-quizzes');
+        expect(message).not.toBeNull();
+
+        component.catalogue = {
+          total: 1,
+          quizzes: [
+            {
+              id: 1,
+              title: 'a',
+              description: 'a',
+              createdOn: Date.now().toString(),
+              updatedOn: Date.now().toString(),
+              instantMode: true,
+            }
+          ],
+        };
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const message2 = element.querySelector('.no-quizzes');
+        expect(message2).toBeNull();
+      });
     });
 
     describe('interaction', () => {
@@ -262,6 +295,25 @@ describe('CatalogueComponent', () => {
         expect(path.includes('order=desc')).toBeTrue();
 
       }));
+
+      it('Retains the query param string when an update happens', waitForAsync(async () => {
+        component.catalogue = generateQuizzes(7);
+        const menu = await loader.getHarness(MatSelectHarness);
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        spyOn(component, 'getQueryString').and.returnValue('mytitle');
+        await menu.open();
+        fixture.detectChanges();
+
+        const options = await menu.getOptions();
+        await options[1].click();
+        fixture.detectChanges();
+
+        const path = location.path();
+        expect(path.includes('query=mytitle')).toBe(true);
+      }))
     });
   });
 });

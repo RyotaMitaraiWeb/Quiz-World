@@ -125,6 +125,7 @@ export class QuizService {
    * the specified category in an ascending order.
    */
   getQuizzesByTitle(query: string, page: number | string, sort: sort): Observable<IQuizList>;
+  getQuizzesByTitle(query: string, page: number | string, sort: sort, order: order): Observable<IQuizList>;
   getQuizzesByTitle(query: string, page?: number | string, sort?: sort, order?: order): Observable<IQuizList> {
     let params = paramsBuilder(page, sort, order);
     params = params.append('title', query);
