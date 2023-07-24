@@ -29,16 +29,16 @@ describe('SingleChoiceQuestionComponent', () => {
       });
 
       it('Returns true if correctAnswer matches currentAnswer', () => {
-        component.correctAnswers = [ { id: 1, value: 'correct '}];
-        component.form.controls.currentAnswer.setValue(1);
+        component.correctAnswers = [ { id: '1', value: 'correct '}];
+        component.form.controls.currentAnswer.setValue('1');
 
         const result = component.isCorrect;
         expect(result).toBeTrue();
       });
 
       it('Returns false if currentAnswer does not match correctAnswer', () => {
-        component.correctAnswers = [ { id: 1, value: 'correct' }];
-        component.form.controls.currentAnswer.setValue(2);
+        component.correctAnswers = [ { id: '1', value: 'correct' }];
+        component.form.controls.currentAnswer.setValue('2');
 
         const result = component.isCorrect;
         expect(result).toBeFalse();
@@ -48,24 +48,24 @@ describe('SingleChoiceQuestionComponent', () => {
     describe('answerClass', () => {
       it('Returns correct name for an ungraded question', () => {
         component.correctAnswers = null;
-        const result = component.answerClass(0);
+        const result = component.answerClass('0');
 
         expect(result).toBe('not-graded');
       });
 
       it('Returns correct name for a correct answer', () => {
-        component.correctAnswers = [ { value: 'correct', id: 1 }];
-        component.form.controls.currentAnswer.setValue(1);
+        component.correctAnswers = [ { value: 'correct', id: '1' }];
+        component.form.controls.currentAnswer.setValue('1');
 
-        const result = component.answerClass(1);
+        const result = component.answerClass('1');
         expect(result).toBe('correct-answer');
       });
 
       it('Returns correct name for a wrong answer', () => {
-        component.correctAnswers = [ { value: 'correct', id: 1 }];
-        component.form.controls.currentAnswer.setValue(1);
+        component.correctAnswers = [ { value: 'correct', id: '1' }];
+        component.form.controls.currentAnswer.setValue('1');
 
-        const result = component.answerClass(2);
+        const result = component.answerClass('2');
         expect(result).toBe('wrong-answer');
       });
     });
@@ -87,11 +87,11 @@ describe('SingleChoiceQuestionComponent', () => {
         component.correctAnswers = null;
         component.answers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
           {
-            id: 2,
+            id: '2',
             value: 'wrong',
           },
         ];
@@ -111,18 +111,18 @@ describe('SingleChoiceQuestionComponent', () => {
         component.correctAnswers = null;
         component.answers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
           {
-            id: 2,
+            id: '2',
             value: 'wrong',
           },
         ];
   
         fixture.detectChanges();
   
-        component.correctAnswers = [{ value: 'correct', id: 1 }];
+        component.correctAnswers = [{ value: 'correct', id: '1' }];
         fixture.detectChanges();
         
         const correctAnswers = element.querySelectorAll('.correct-answer');
@@ -138,11 +138,11 @@ describe('SingleChoiceQuestionComponent', () => {
         component.correctAnswers = null;
         component.answers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
           {
-            id: 2,
+            id: '2',
             value: 'wrong',
           },
         ];
@@ -154,19 +154,19 @@ describe('SingleChoiceQuestionComponent', () => {
       });
 
       it('Displays correct feedback for a correct answer', () => {
-        component.correctAnswers = [{ id: 1, value: 'correct' }];
+        component.correctAnswers = [{ id: '1', value: 'correct' }];
         component.answers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
           {
-            id: 2,
+            id: '2',
             value: 'wrong',
           },
         ];
 
-        component.form.controls.currentAnswer.setValue(1);
+        component.form.controls.currentAnswer.setValue('1');
 
         fixture.detectChanges();
 
@@ -175,19 +175,19 @@ describe('SingleChoiceQuestionComponent', () => {
       });
 
       it('Displays correct feedback for a wrong answer', () => {
-        component.correctAnswers = [{ id: 1, value: 'correct' }];
+        component.correctAnswers = [{ id: '1', value: 'correct' }];
         component.answers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
           {
-            id: 2,
+            id: '2',
             value: 'wrong',
           },
         ];
 
-        component.form.controls.currentAnswer.setValue(2);
+        component.form.controls.currentAnswer.setValue('2');
 
         fixture.detectChanges();
 

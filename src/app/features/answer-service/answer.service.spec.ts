@@ -25,11 +25,11 @@ describe('AnswerService', () => {
       const response: ISessionAnswer[] = [
         {
           value: 'a',
-          id: 1,
+          id: '1',
         },
       ];
 
-      service.getCorrectAnswersForQuestionById(1).subscribe({
+      service.getCorrectAnswersForQuestionById('1').subscribe({
         next: (res) => {
           expect(res.status).toBe(HttpStatusCode.Ok);
           expect(res.body).toEqual(response);
@@ -40,7 +40,7 @@ describe('AnswerService', () => {
         }
       })
 
-      const req = httpTestingController.expectOne(service.url.correctAnswersInstantMode(1));
+      const req = httpTestingController.expectOne(service.url.correctAnswersInstantMode('1'));
       expect(req.request.method).toBe('GET');
 
       req.flush(response, {
@@ -52,7 +52,7 @@ describe('AnswerService', () => {
     it('Correctly returns data (response is an error)', (done: DoneFn) => {
       const response = ['a', 'b'];
 
-      service.getCorrectAnswersForQuestionById(0).subscribe({
+      service.getCorrectAnswersForQuestionById('').subscribe({
         next: () => {
           done.fail('Expected an error response, not a successful one');
         },
@@ -63,7 +63,7 @@ describe('AnswerService', () => {
         }
       })
 
-      const req = httpTestingController.expectOne(service.url.correctAnswersInstantMode(0));
+      const req = httpTestingController.expectOne(service.url.correctAnswersInstantMode(''));
       expect(req.request.method).toBe('GET');
 
       req.flush(response, {
@@ -77,10 +77,10 @@ describe('AnswerService', () => {
     it('Correctly returns data (response is ok)', (done: DoneFn) => {
       const response: IGradedAnswer[] = [
         {
-          questionId: 1,
+          questionId: '1',
           answers: [{
             value: 'a',
-            id: 1,
+            id: '1',
           }]
         },
       ];

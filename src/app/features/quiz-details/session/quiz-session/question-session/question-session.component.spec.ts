@@ -43,7 +43,7 @@ describe('QuestionSessionComponent', () => {
                 statusText: 'Ok',
                 body: [
                   {
-                    id: 1,
+                    id: '1',
                     value: 'correct answer'
                   }
                 ]
@@ -57,7 +57,7 @@ describe('QuestionSessionComponent', () => {
         component.gradeAnswer(event);
         expect(component.correctAnswers).toEqual([
           {
-            id: 1,
+            id: '1',
             value: 'correct answer',
           }
         ]);
@@ -72,7 +72,7 @@ describe('QuestionSessionComponent', () => {
                 statusText: 'Ok',
                 body: [
                   {
-                    id: 1,
+                    id: '1',
                     value: 'correct answer'
                   }
                 ]
@@ -156,11 +156,11 @@ describe('QuestionSessionComponent', () => {
         fixture.detectChanges();
         component.answers = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
           {
-            id: 2,
+            id: '2',
             value: 'wrong',
           },
         ];
@@ -233,7 +233,7 @@ describe('QuestionSessionComponent', () => {
         component.instantMode = true;
         component.type = questionTypes.text;
         component.form.controls.currentAnswer.setValue('valid');
-        component.form.controls.id.setValue(1);
+        component.form.controls.id.setValue('1');
         fixture.detectChanges();
         expect(component.form.valid).withContext('The form should be valid but is not').toBeTrue();
         component.form.controls.currentAnswer.markAsTouched();
@@ -245,12 +245,12 @@ describe('QuestionSessionComponent', () => {
 
         const responseBody: ISessionAnswer[] = [
           {
-            id: 1,
+            id: '1',
             value: 'correct',
           },
         ];
 
-        const request = testController.expectOne(api.endpoints.answers.correctAnswersInstantMode(1));
+        const request = testController.expectOne(api.endpoints.answers.correctAnswersInstantMode('1'));
 
         request.flush(responseBody, {
           status: HttpStatusCode.Ok,
@@ -265,7 +265,7 @@ describe('QuestionSessionComponent', () => {
         component.instantMode = true;
         component.type = questionTypes.text;
         component.form.controls.currentAnswer.setValue('valid');
-        component.form.controls.id.setValue(1);
+        component.form.controls.id.setValue('1');
         fixture.detectChanges();
         expect(component.form.valid).withContext('The form should be valid but is not').toBeTrue();
         component.form.controls.currentAnswer.markAsTouched();
@@ -281,7 +281,7 @@ describe('QuestionSessionComponent', () => {
           },
         ];
 
-        const request = testController.expectOne(api.endpoints.answers.correctAnswersInstantMode(1));
+        const request = testController.expectOne(api.endpoints.answers.correctAnswersInstantMode('1'));
 
         request.flush(responseBody, {
           status: HttpStatusCode.NotFound,

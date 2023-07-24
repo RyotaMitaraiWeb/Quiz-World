@@ -25,12 +25,12 @@ export class TextQuestionComponent implements IQuestionComponent<string>, OnChan
   @Input({ required: true }) form: FormGroup<
     {
       currentAnswer: FormControl<string | null>;
-      id: FormControl<number | null>;
+      id: FormControl<string | null>;
       type: FormControl<question | null>;
     }
   > = this.fb.group({
     currentAnswer: ['', Validators.required],
-    id: [0],
+    id: [''],
     type: ['text' as question]
   });
 

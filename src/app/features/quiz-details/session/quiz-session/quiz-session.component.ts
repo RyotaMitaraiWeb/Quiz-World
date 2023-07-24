@@ -30,7 +30,7 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
   @Input({ required: true }) instantMode = false;
   @Input({ required: true }) quizId = 0;
 
-  private addControl(value: any, questionId: number, type: question) {
+  private addControl(value: any, questionId: string, type: question) {
     const group = this.fb.group({
       currentAnswer: type === questionTypes.multi ? value : [value, [Validators.required]],
       id: [questionId],
@@ -63,17 +63,17 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
     });
   }
 
-  questionKeys = new Map<number, ISessionAnswer[] | null>();
-  prompts = new Map<number, string>();
+  questionKeys = new Map<string, ISessionAnswer[] | null>();
+  prompts = new Map<string, string>();
 
   form: FormArray<FormGroup<
     {
       currentAnswer: FormControl<any>,
-      id: FormControl<number | null>,
+      id: FormControl<string | null>,
       type: FormControl<question | null>,
     }
   >> = this.fb.array([
-    this.addControl('', 0, questionTypes.single)
+    this.addControl('', '', questionTypes.single)
   ]);
 
   protected getQuestionControlAt(index: number) {

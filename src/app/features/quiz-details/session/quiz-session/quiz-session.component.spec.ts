@@ -14,33 +14,33 @@ const questions: ISessionQuestion[] = [
   {
     prompt: 'question #1',
     type: questionTypes.single,
-    id: 1,
+    id: '1',
     answers: [
       {
         value: 'a',
-        id: 1,
+        id: '1',
       },
       {
         value: 'b',
-        id: 2,
+        id: '2',
       }
     ]
   },
   {
     prompt: 'question #2',
     type: questionTypes.multi,
-    id: 2,
+    id: '2',
     answers: [
       {
-        id: 3,
+        id: '3',
         value: 'a',
       },
       {
-        id: 4,
+        id: '4',
         value: 'b',
       },
       {
-        id: 5,
+        id: '5',
         value: 'c',
       },
     ]
@@ -48,7 +48,7 @@ const questions: ISessionQuestion[] = [
   {
     prompt: 'question #3',
     type: questionTypes.text,
-    id: 3,
+    id: '3',
   }
 ];
 
@@ -91,9 +91,9 @@ describe('QuizSessionComponent', () => {
 
         component.ngOnInit();
 
-        expect(component.questionKeys.get(1)).toBe(null);
-        expect(component.questionKeys.get(2)).toBe(null);
-        expect(component.questionKeys.get(3)).toBe(null);
+        expect(component.questionKeys.get('1')).toBe(null);
+        expect(component.questionKeys.get('2')).toBe(null);
+        expect(component.questionKeys.get('3')).toBe(null);
         expect(component.questionKeys.size).toBe(3);
       });
     });
@@ -107,36 +107,36 @@ describe('QuizSessionComponent', () => {
               statusText: 'Ok',
               body: [
                 {
-                  questionId: 1,
+                  questionId: '1',
                   answers: [
                     {
                       value: 'a',
-                      id: 1,
+                      id: '1',
                     },
                   ]
                 },
                 {
-                  questionId: 2,
+                  questionId: '2',
                   answers: [
                     {
-                      id: 3,
+                      id: '3',
                       value: 'a',
                     },
                     {
-                      id: 4,
+                      id: '4',
                       value: 'b',
                     },
                   ]
                 },
                 {
-                  questionId: 3,
+                  questionId: '3',
                   answers: [
                     {
-                      id: 7,
+                      id: '7',
                       value: 'test',
                     },
                     {
-                      id: 8,
+                      id: '8',
                       value: 'test2'
                     },
                   ],
@@ -149,31 +149,31 @@ describe('QuizSessionComponent', () => {
         component.gradeQuestions(event);
 
         const keys = component.questionKeys;
-        expect(keys.get(1)).toEqual([
+        expect(keys.get('1')).toEqual([
           {
             value: 'a',
-            id: 1,
+            id: '1',
           },
         ]);
 
-        expect(keys.get(2)).toEqual([
+        expect(keys.get('2')).toEqual([
           {
-            id: 3,
+            id: '3',
             value: 'a',
           },
           {
-            id: 4,
+            id: '4',
             value: 'b',
           },
         ]);
 
-        expect(keys.get(3)).toEqual([
+        expect(keys.get('3')).toEqual([
           {
-            id: 7,
+            id: '7',
             value: 'test',
           },
           {
-            id: 8,
+            id: '8',
             value: 'test2'
           }
         ]);
@@ -252,7 +252,7 @@ describe('QuizSessionComponent', () => {
         component.questions = [
           {
             prompt: 'question #1',
-            id: 1,
+            id: '1',
             type: questionTypes.text,
           }
         ];
@@ -279,10 +279,10 @@ describe('QuizSessionComponent', () => {
         const request = httpTestController.expectOne(api.endpoints.answers.correctAnswersFull(1));
         request.flush([
           {
-            questionId: 1,
+            questionId: '1',
             answers: [
               {
-                id: 1,
+                id: '1',
                 value: 'correct',
               }
             ]
@@ -299,7 +299,7 @@ describe('QuizSessionComponent', () => {
         component.questions = [
           {
             prompt: 'question #1',
-            id: 1,
+            id: '1',
             type: questionTypes.text,
           }
         ];

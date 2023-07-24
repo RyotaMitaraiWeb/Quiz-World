@@ -19,18 +19,18 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
   @Input({ required: true }) correctAnswers: ISessionAnswer[] | null = [];
   @Input({ required: true }) prompt: string = '';
   @Input({ required: true }) answers: ISessionAnswer[] = [{
-    id: 0,
+    id: '',
     value: '',
   }];
   @Input({ required: true }) form: FormGroup<
     {
       currentAnswer: FormArray<FormControl<string | null>>;
-      id: FormControl<number | null>;
+      id: FormControl<string | null>;
       type: FormControl<question | null>;
     }
   > = this.fb.group({
     currentAnswer: this.fb.array([] as FormControl<string | null>[]),
-    id: [0],
+    id: [''],
     type: [questionTypes.multi]
   });
 
@@ -67,7 +67,7 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
       return false;
     }
 
-    const superSet: Record<number, number> = {};
+    const superSet: Record<string, number> = {};
     
     for (const answer of this.formattedCorrectAnswers) {
       superSet[answer] = 1;
@@ -111,7 +111,7 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
     return this.isCorrect ? 'correct' : 'wrong';
   }
 
-  private answerIsCorrect(id: number) {
+  private answerIsCorrect(id: string) {
     if (this.formattedCorrectAnswers === null) {
       return null;
     }
@@ -125,7 +125,7 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
    * @param id the ID of the answer
    * @returns a string representing the answer's status.
    */
-  answerClass(id: number) {
+  answerClass(id: string) {
     const result = this.answerIsCorrect(id);
     if (result === null) {
       return 'not-graded';

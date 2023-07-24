@@ -15,7 +15,7 @@ describe('AuthService', () => {
 
   const response: IAuthSuccessResponse = {
     token: 'a',
-    id: 1,
+    id: '1',
     username: 'a',
     roles: [],
   }
@@ -41,7 +41,7 @@ describe('AuthService', () => {
         next: res => {
           expect(res.status).toBe(HttpStatusCode.Created);
           const user = res.body!;
-          expect(user.id).toBe(1);
+          expect(user.id).toBe('1');
           expect(user.token).toBe('a');
           expect(user.username).toBe('a');
           done();
@@ -95,7 +95,7 @@ describe('AuthService', () => {
         next: res => {
           expect(res.status).toBe(HttpStatusCode.Created);
           const user = res.body!;
-          expect(user.id).toBe(1);
+          expect(user.id).toBe('1');
           expect(user.token).toBe('a');
           expect(user.username).toBe('a');
           done();
@@ -275,7 +275,7 @@ describe('AuthService', () => {
         next: res => {
           expect(res.status).toBe(HttpStatusCode.Created);
           const user = res.body!;
-          expect(user.id).toBe(1);
+          expect(user.id).toBe('1');
           expect(user.token).toBe('a');
           expect(user.username).toBe('a');
           done();

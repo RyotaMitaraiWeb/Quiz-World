@@ -40,12 +40,12 @@ export class QuestionSessionComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) form: FormGroup<
     {
       currentAnswer: any;
-      id: FormControl<number | null>;
+      id: FormControl<string | null>;
       type: FormControl<question | null>;
     }
   > = this.fb.group({
     currentAnswer: ['', Validators.required],
-    id: [0],
+    id: [''],
     type: [questionTypes.single]
   });
 
@@ -58,7 +58,7 @@ export class QuestionSessionComponent implements OnChanges, OnDestroy {
 
   private correctAnswersSub: Subscription = new Subscription();
   private get questionId() {
-    return this.form.controls.id.value || 0;
+    return this.form.controls.id.value || '';
   }
 
   /**

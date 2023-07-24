@@ -2,7 +2,7 @@ import { role } from '../auth/roles.types';
 
 export interface IAuthSuccessResponse {
   token: string;
-  id: number;
+  id: string;
   username: string;
   roles: role[]
 }

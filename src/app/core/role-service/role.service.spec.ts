@@ -25,7 +25,7 @@ describe('RoleService', () => {
 
   it('sets userRoles on initialization', waitForAsync(() => {
     store.dispatch(setUser({
-      id: 1,
+      id: '1',
       username: 'a',
       roles: ['User']
     }));

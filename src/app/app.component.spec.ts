@@ -47,7 +47,7 @@ describe('AppComponent', () => {
               status: HttpStatusCode.Created,
               statusText: 'Created',
               body: {
-                id: 1,
+                id: '1',
                 username: 'a',
                 roles: [],
                 token: 'a',
@@ -58,7 +58,7 @@ describe('AppComponent', () => {
 
         component.ngOnInit();
         store.select('user').subscribe(user => {
-          expect(user.id).toBe(1);
+          expect(user.id).toBe('1');
         });
       }));
 
@@ -81,7 +81,7 @@ describe('AppComponent', () => {
         expect(localStorage.removeItem).toHaveBeenCalled();
         expect(store.dispatch).toHaveBeenCalled();
         store.select('user').subscribe(user => {
-          expect(user.id).toBe(0);
+          expect(user.id).toBe('');
         });
       }));
 
@@ -105,7 +105,7 @@ describe('AppComponent', () => {
         expect(store.dispatch).toHaveBeenCalled();
 
         store.select('user').subscribe(user => {
-          expect(user.id).toBe(0);
+          expect(user.id).toBe('');
         });
       }));
     });

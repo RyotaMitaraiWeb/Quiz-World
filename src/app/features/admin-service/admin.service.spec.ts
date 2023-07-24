@@ -29,7 +29,7 @@ describe('AdminService', () => {
       service.getModerators().subscribe({
         next: res => {
           expect(res.length).toBe(2);
-          expect(res[0].id).toBe(1);
+          expect(res[0].id).toBe('1');
           expect(res[0].role).toBe(roles.moderator);
 
           expect(res[1].role).toBe(roles.admin);
@@ -43,12 +43,12 @@ describe('AdminService', () => {
       const request = testController.expectOne(service.rolesUrl.getUsersOfRole(roles.moderator));
       request.flush([
         {
-          id: 1,
+          id: '1',
           username: 'a',
           roles: [roles.moderator, roles.user],
         },
         {
-          id: 2,
+          id: '2',
           username: 'b',
           roles: [roles.moderator, roles.user, roles.admin]
         }
@@ -64,7 +64,7 @@ describe('AdminService', () => {
       service.getAdmins().subscribe({
         next: res => {
           expect(res.length).toBe(1);
-          expect(res[0].id).toBe(1);
+          expect(res[0].id).toBe('1');
           expect(res[0].role).toBe(roles.admin);
 
           done();
@@ -77,7 +77,7 @@ describe('AdminService', () => {
       const request = testController.expectOne(service.rolesUrl.getUsersOfRole(roles.admin));
       request.flush([
         {
-          id: 1,
+          id: '1',
           username: 'a',
           roles: [roles.moderator, roles.user, roles.admin],
         },
@@ -107,12 +107,12 @@ describe('AdminService', () => {
       const request = testController.expectOne(service.rolesUrl.getUsersOfUsername('a'));
       request.flush([
         {
-          id: 1,
+          id: '1',
           username: 'a',
           roles: [roles.user],
         },
         {
-          id: 2,
+          id: '2',
           username: 'aa',
           roles: [roles.user, roles.moderator],
         },
@@ -146,12 +146,12 @@ describe('AdminService', () => {
 
       request.flush([
         {
-          id: 2,
+          id: '2',
           username: 'ba',
           roles: [roles.user],
         },
         {
-          id: 1,
+          id: '1',
           username: 'aa',
           roles: [roles.user, roles.moderator],
         },
@@ -169,7 +169,7 @@ describe('AdminService', () => {
       service.promoteToModerator('1').subscribe({
         next: res => {
           expect(res.length).toBe(1);
-          expect(res[0].id).toBe(1);
+          expect(res[0].id).toBe('1');
           expect(res[0].role).toBe(roles.admin);
 
           done();
@@ -183,7 +183,7 @@ describe('AdminService', () => {
       const request = testController.expectOne(service.rolesUrl.promote('1', roles.moderator));
       request.flush([
         {
-          id: 1,
+          id: '1',
           username: 'a',
           roles: [roles.moderator, roles.user, roles.admin],
         },
@@ -200,7 +200,7 @@ describe('AdminService', () => {
       service.demoteToUser('1').subscribe({
         next: res => {
           expect(res.length).toBe(1);
-          expect(res[0].id).toBe(1);
+          expect(res[0].id).toBe('1');
           expect(res[0].role).toBe(roles.user);
 
           done();
@@ -214,7 +214,7 @@ describe('AdminService', () => {
       const request = testController.expectOne(service.rolesUrl.demote('1', roles.moderator));
       request.flush([
         {
-          id: 1,
+          id: '1',
           username: 'a',
           roles: [roles.user],
         },

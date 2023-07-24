@@ -4,7 +4,7 @@ import { selectUser, selectUserId, selectUserRoles } from './user.selector';
 describe('User selectors', () => {
   it('selectUserId works', () => {
     const result = selectUserId.projector(initialState);
-    expect(result).toBe(0);
+    expect(result).toBe('');
   });
 
   it('selectUserRoles works', () => {
