@@ -221,6 +221,39 @@ describe('CatalogueComponent', () => {
         const items2 = element.querySelectorAll('.quiz-list-item');
         expect(items2.length).toBe(3);
       }));
+
+      it('Displays a special message if there are no quizzes', () => {
+        component.catalogue = {
+          total: 0,
+          quizzes: [],
+        };
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const message = element.querySelector('.no-quizzes');
+        expect(message).not.toBeNull();
+
+        component.catalogue = {
+          total: 1,
+          quizzes: [
+            {
+              id: 1,
+              title: 'a',
+              description: 'a',
+              createdOn: Date.now().toString(),
+              updatedOn: Date.now().toString(),
+              instantMode: true,
+            }
+          ],
+        };
+
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const message2 = element.querySelector('.no-quizzes');
+        expect(message2).toBeNull();
+      });
     });
 
     describe('interaction', () => {
