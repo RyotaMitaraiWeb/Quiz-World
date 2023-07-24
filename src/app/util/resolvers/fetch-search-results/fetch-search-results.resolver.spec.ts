@@ -8,7 +8,7 @@ import { Observable, of } from 'rxjs';
 import { paramsBuilder } from '../../params-builder/params-builder';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe('fetchAllQuizzesResolver', () => {
+describe('fetchSearchQuizzesResolver', () => {
   const executeResolver: ResolveFn<IQuizList> = (...resolverParameters) =>
     TestBed.runInInjectionContext(() => fetchSearchResults(...resolverParameters));
 
@@ -27,7 +27,9 @@ describe('fetchAllQuizzesResolver', () => {
   it('Returns a list of quizzes', (done: DoneFn) => {
     const activatedRoute = new ActivatedRouteSnapshot();
     activatedRoute.queryParams = {
-      ...paramsBuilder(1),
+      page: 1,
+      sort: 'title',
+      order: 'asc',
       query: 'test',
     };
 
@@ -51,6 +53,8 @@ describe('fetchAllQuizzesResolver', () => {
     result.subscribe({
       next: (res) => {
         expect(res.total).toBe(1);
+        expect(quizService.getQuizzesByTitle).toHaveBeenCalledWith('test', 1, 'title', 'asc');
+
         done();
       },
       error: (err) => {
