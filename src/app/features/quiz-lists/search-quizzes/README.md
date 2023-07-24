@@ -1,11 +1,11 @@
-# app-all-quizzes-component
+# app-search-quizzes
 
 ## Usage
 ```html
-<app-all-quizzes></app-all-quizzes>
+<app-search-quizzes></app-search-quizzes>
 ```
 
-Renders an ``<app-catalogue>`` component which will display quizzes from the entire catalogue of quizzes. The initial quizzes are taken from the route's resolved data, which will be supplied in the property ``catalogue``.
+Renders an ``<app-catalogue>`` component which will display quizzes whose title contains the requested title query. The initial quizzes are taken from the route's resolved data, which will be supplied in the property ``catalogue``.
 
 ## Methods and getters
 ```typescript
