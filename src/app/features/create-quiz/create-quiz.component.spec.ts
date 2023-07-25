@@ -10,6 +10,7 @@ import { QuizFormComponent } from '../../shared/quiz-form/quiz-form.component';
 import { Observable, of } from 'rxjs';
 import { HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CreateQuizComponent', () => {
   let component: CreateQuizComponent;
@@ -23,7 +24,8 @@ describe('CreateQuizComponent', () => {
       imports: [
         CreateQuizComponent,
         HttpClientTestingModule,
-        RouterTestingModule
+        RouterTestingModule,
+        NoopAnimationsModule
       ]
     });
     fixture = TestBed.createComponent(CreateQuizComponent);
