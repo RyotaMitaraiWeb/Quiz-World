@@ -13,7 +13,7 @@
     </mat-form-field>
   </section>
   <section class="other-options-field">
-    <mat-checkbox formControlName="instantMode">Instant mode</mat-checkbox>
+    <mat-checkbox class="instant-mode-field" formControlName="instantMode" *ngIf="!edit">Instant mode</mat-checkbox>
   </section>
   <section *ngFor="let question of form.controls.questions.controls; index as i">
     <app-question [form]="question" [index]="i"></app-question>
