@@ -42,3 +42,8 @@ function getUserQuizzes(userId: number, page?: number | string, sort?: sort, ord
 
 ```
 Sends a GET request to ``/quiz/user/{userId}`` and retrieves a paginated and sorted list of quizzes that were created by the user with the given ID. You can pass arguments to control the pagination and sorting. The default options are page 1, sorted by title in an ascending order.
+
+```typescript
+function deleteQuiz(id: number): Observable<HttpResponse<unknown>>
+```
+Sends a DELETE request to ``/quiz/{id}``. The response status code of a successful request is 204.

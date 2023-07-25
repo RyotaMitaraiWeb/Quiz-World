@@ -176,4 +176,16 @@ export class QuizService {
     const params = paramsBuilder(page, sort, order);
     return this.http.get<IQuizList>(this.url.user(userId), { params });
   }
+
+  /**
+   * Sends a DELETE request to ``/quiz/{id}``.
+   * @param id the ID of the quiz
+   * @returns An observable that resolves to the response of the request. The
+   * successful response status code is 204.
+   */
+  deleteQuiz(id: number): Observable<HttpResponse<unknown>> {
+    return this.http.delete(this.url.delete(id), {
+      observe: 'response'
+    });
+  }
 }
