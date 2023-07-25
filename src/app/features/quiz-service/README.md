@@ -47,3 +47,13 @@ Sends a GET request to ``/quiz/user/{userId}`` and retrieves a paginated and sor
 function deleteQuiz(id: number): Observable<HttpResponse<unknown>>
 ```
 Sends a DELETE request to ``/quiz/{id}``. The response status code of a successful request is 204.
+
+```typescript
+function edit(id: number, quiz: IQuizFormSubmission): Observable<HttpResponse<unknown>>
+```
+Sends a PUT request to ``/quiz/{id}``, attaching the ``quiz`` as a request body. The response status code of a successful request is 204.
+
+```typescript
+function getQuizForEdit(id: number): Observable<HttpResponse<IEditQuizForm>>
+```
+Sends a GET request to ``/quiz/{id}/edit``. The server will supply the data for the quiz form if the user is allowed to edit it.

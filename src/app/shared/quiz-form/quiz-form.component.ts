@@ -60,6 +60,10 @@ export class QuizFormComponent implements OnInit {
       );
 
       this.form.controls.questions.push(questionControl);
+
+      if (this.edit) {
+        this.form.controls.instantMode.disable();
+      }
     });
 
     this.form.controls.title.setValue(this.title);
@@ -89,6 +93,7 @@ export class QuizFormComponent implements OnInit {
   @Input() description = '';
   @Input() instantMode = false;
   @Output() submitEvent = new EventEmitter<IQuizFormSubmission>();
+  @Input() edit = false;
 
   form = this.fb.group({
     title: [this.title, [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],

@@ -36,7 +36,8 @@ export const api = {
       delete: (id: string | number) => `${quiz}/${id}`,
       all: `${quiz}/all`,
       search: `${quiz}/search`,
-      user: (id: string) => `${quiz}/user/${id}`
+      user: (id: string) => `${quiz}/user/${id}`,
+      quizForEdit: (id: number) => `${quiz}/${id}/edit`,
     },
     answers: {
       correctAnswersInstantMode: (questionId: string) => `${answer}/${questionId}/question`,

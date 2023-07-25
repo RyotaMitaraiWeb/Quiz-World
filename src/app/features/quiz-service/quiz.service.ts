@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { api } from '../../constants/api.constants';
-import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IEditQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { Observable, Subscriber } from 'rxjs';
 import { ICreatedQuizResponse, IQuizDetails } from '../../../types/responses/quiz.types';
 import { IQuizList, IQuizListItem, order, sort } from '../../../types/others/lists.types';
@@ -187,5 +187,27 @@ export class QuizService {
     return this.http.delete(this.url.delete(id), {
       observe: 'response'
     });
+  }
+
+  /**
+   * Sends a PUT request to ``/quiz/{id}``, passing the provided ``quiz`` as a request body.
+   * @param id the ID of the quiz
+   * @param quiz the state of the new quiz.
+   * @returns An observable that resolves to the response of the request. The
+   * successful response status code is 204.
+   */
+  edit(id: number, quiz: IQuizFormSubmission): Observable<HttpResponse<unknown>> {
+    return this.http.put(this.url.edit(id), quiz, { observe: 'response'});
+  }
+
+  /**
+   * Sends a GET request to ``/quiz/{id}/edit``. The server will supply
+   * the data for the quiz form if the user is allowed to edit it.
+   * @param id the ID of the quiz
+   * @returns an Observable that resolves to the response. The response holds the
+   * quiz data for the edit form if the user is authorized to edit it.
+   */
+  getQuizForEdit(id: number): Observable<HttpResponse<IEditQuizForm>> {
+    return this.http.get<IEditQuizForm>(this.url.quizForEdit(id), { observe: 'response' });
   }
 }

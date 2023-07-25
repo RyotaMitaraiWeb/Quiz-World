@@ -150,6 +150,12 @@ describe('QuizFormComponent', () => {
         expect(q1.controls.wrongAnswers.length).toBe(1);
         expect(q1.controls.wrongAnswers.controls[0].controls.answer.value).toBe('');
       });
+
+      it('Disables the instant mode field if edit is set to true', () => {
+        component.edit = true;
+        component.ngOnInit();
+        expect(component.form.controls.instantMode.disabled).toBeTrue();
+      })
     });
 
     describe('addQuestion', () => {
@@ -295,6 +301,15 @@ describe('QuizFormComponent', () => {
         const checkbox = await loader.getHarness(MatCheckboxHarness);
         const checked = await checkbox.isChecked();
         expect(checked).toBeFalse();
+      });
+
+      it('Does not render the instant mode field if edit is set to true', () => {
+        component.edit = true;
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const field = formEl.querySelector('.instant-mode-field');
+        expect(field).toBeNull();
       });
     });
 

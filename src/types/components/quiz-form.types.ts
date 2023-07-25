@@ -1,3 +1,5 @@
+import { IQuestionSubmission } from './question.types';
+
 /**
  * ```typescript
   interface IQuizFormSubmission {
@@ -31,4 +33,11 @@ export interface IQuizFormSubmission {
     }>[];
     type: string | null;
   }>[];
+}
+
+export interface IEditQuizForm {
+  id: number;
+  title: string;
+  description: string;
+  questions: IQuestionSubmission[];
 }
