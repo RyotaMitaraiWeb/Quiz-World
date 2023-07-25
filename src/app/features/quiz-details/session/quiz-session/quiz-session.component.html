@@ -1,6 +1,6 @@
 <h1>Questions</h1>
 <form action="" (submit)="gradeQuestions($event)">
-  <div *ngFor="let question of (questionKeys | keyvalue); index as i">
+  <section class="question-section" *ngFor="let question of (questionKeys | keyvalue); index as i">
     <app-question-session [prompt]="prompts.get(question.key) || ''"
       [answers]="questions[i].answers"
       [correctAnswers]="question.value"
@@ -8,7 +8,7 @@
       [type]="getQuestionControlAt(i).controls.type.value"
       [form]="getQuestionControlAt(i)"
     ></app-question-session>
-  </div>
+  </section>
   
   <button 
     *ngIf="!instantMode"
