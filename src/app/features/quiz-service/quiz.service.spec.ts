@@ -410,6 +410,60 @@ describe('QuizService', () => {
     });
   });
 
+  describe('deleteQuiz', () => {
+    it('Correctly returns a response with a given body (response is ok)', (done: DoneFn) => {
+      const response: IQuizDetails = {
+        id: 1,
+        title: 'some title',
+        description: '',
+        instantMode: false,
+        questions: [],
+        creatorId: '1',
+      }
+
+      service.deleteQuiz(response.id).subscribe({
+        next: (res) => {
+          expect(res.status).toBe(HttpStatusCode.NoContent);
+          done();
+        },
+        error: () => {
+          done.fail('Expected a successful response, not an error one');
+        }
+      });
+
+      const req = httpTestingController.expectOne(service.url.delete(response.id));
+      expect(req.request.method).toBe('DELETE');
+
+      req.flush(response, {
+        status: HttpStatusCode.NoContent,
+        statusText: 'No Content',
+      });
+    });
+
+    it('Correctly returns a response with a given body (response is an error)', (done: DoneFn) => {
+      const response = ['a', 'b']
+
+      service.deleteQuiz(0).subscribe({
+        next: () => {
+          done.fail('Expected an error response, not a successful one');
+        },
+        error: (err: HttpErrorResponse) => {
+          expect(err.status).toBe(HttpStatusCode.NotFound);
+          expect(err.error).toEqual(response);
+          done();
+        }
+      });
+
+      const req = httpTestingController.expectOne(service.url.delete(0));
+      expect(req.request.method).toBe('DELETE');
+
+      req.flush(response, {
+        status: HttpStatusCode.NotFound,
+        statusText: 'Not Found',
+      });
+    });
+  });
+
   afterEach(() => {
     httpTestingController.verify();
   });
