@@ -3,7 +3,7 @@ import { QuizService } from './quiz.service';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { ICreatedQuizResponse, IQuizDetails } from '../../../types/responses/quiz.types';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IEditQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { IQuizList, IQuizListItem } from '../../../types/others/lists.types';
 describe('QuizService', () => {
   let service: QuizService;
@@ -510,6 +510,59 @@ describe('QuizService', () => {
       });
     });
   });
+
+  describe('getQuizForEdit', () => {
+    it('Correctly returns a response with a given body (response is ok)', (done: DoneFn) => {
+      const response: IEditQuizForm = {
+        id: 1,
+        title: 'some title',
+        description: '',
+        questions: [],
+      }
+
+      service.getQuizForEdit(response.id).subscribe({
+        next: (res) => {
+          expect(res.status).toBe(HttpStatusCode.Ok);
+          expect(res.body?.id).toBe(response.id);
+          expect(res.body?.title).toBe(response.title);
+          done();
+        },
+        error: () => {
+          done.fail('Expected a successful response, not an error one');
+        }
+      });
+
+      const req = httpTestingController.expectOne(service.url.quizForEdit(1));
+      expect(req.request.method).toBe('GET');
+
+      req.flush(response, {
+        status: HttpStatusCode.Ok,
+        statusText: 'Ok',
+      });
+    });
+
+    it('Correctly returns a response with a given body (response is an error)', (done: DoneFn) => {
+      const response = ['a', 'b']
+
+      service.getQuizForEdit(1).subscribe({
+        next: () => {
+          done.fail('Expected an error response, not a successful one');
+        },
+        error: (err: HttpErrorResponse) => {
+          expect(err.status).toBe(HttpStatusCode.Forbidden);
+          done();
+        }
+      });
+
+      const req = httpTestingController.expectOne(service.url.quizForEdit(1));
+      expect(req.request.method).toBe('GET');
+
+      req.flush(response, {
+        status: HttpStatusCode.Forbidden,
+        statusText: 'Forbidden',
+      });
+    });
+  });    
 
   afterEach(() => {
     httpTestingController.verify();
