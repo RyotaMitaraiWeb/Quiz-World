@@ -35,7 +35,7 @@ export interface IQuizFormSubmission {
   }>[];
 }
 
-export interface IEditQuizFormSubmission {
+export interface IEditQuizForm {
   id: number;
   title: string;
   description: string;

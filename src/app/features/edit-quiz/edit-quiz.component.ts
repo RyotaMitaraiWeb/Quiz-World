@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subscription } from 'rxjs';
-import { IEditQuizFormSubmission, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { Subscription, of } from 'rxjs';
+import { IEditQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuizService } from '../quiz-service/quiz.service';
 import { IQuizDetails } from '../../../types/responses/quiz.types';
 import { SharedModule } from '../../shared/shared.module';
+import { questionTypes } from '../../constants/question-types.constants';
 
 @Component({
   selector: 'app-edit-quiz',
@@ -28,7 +29,7 @@ export class EditQuizComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.quizSub = this.getResolvedData().subscribe(data => {
-      this.quiz = data['quiz'];
+      this.quiz = data['quiz'] as any;
     });
   }
 
@@ -45,14 +46,31 @@ export class EditQuizComponent implements OnInit, OnDestroy {
   }
 
   getResolvedData() {
-    return this.activatedRoute.data;
+    return of({
+      quiz: {
+        id: 1,
+        title: 'a',
+        description: 'a',
+        questions: [
+          {
+            prompt: 'question #1',
+            type: questionTypes.text,
+            answers: [{
+              value: 'a',
+              correct: true,
+            }]
+          }
+        ]
+      }
+    }
+    )
   }
 
   ngOnDestroy(): void {
     this.quizSub.unsubscribe();
   }
 
-  quiz: IEditQuizFormSubmission = {
+  quiz: IEditQuizForm = {
     id: 0,
     title: '',
     description: '',
