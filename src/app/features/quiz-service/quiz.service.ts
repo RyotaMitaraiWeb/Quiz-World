@@ -188,4 +188,15 @@ export class QuizService {
       observe: 'response'
     });
   }
+
+  /**
+   * Sends a PUT request to ``/quiz/{id}``, passing the provided ``quiz`` as a request body.
+   * @param id the ID of the quiz
+   * @param quiz the state of the new quiz.
+   * @returns An observable that resolves to the response of the request. The
+   * successful response status code is 204.
+   */
+  edit(id: number, quiz: IQuizFormSubmission): Observable<HttpResponse<unknown>> {
+    return this.http.put(this.url.edit(id), quiz, { observe: 'response'});
+  }
 }
