@@ -9,3 +9,5 @@
 * ``id`` - a number representing the quiz's ID (**Required**)
 
 Renders a link styled as a button which points the user to the edit page of the quiz with the given ID.
+
+**Note:** This component does not have any encapsulation, proceed with caution when styling within this component.

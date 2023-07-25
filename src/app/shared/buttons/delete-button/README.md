@@ -10,6 +10,8 @@
 
 Renders a button which, upon click, will send a DELETE request to delete the quiz.
 
+**Note:** This component does not have any encapsulation, proceed with caution when styling within this component.
+
 ## Methods
 ```typescript
 function deleteQuiz(id: number): void
