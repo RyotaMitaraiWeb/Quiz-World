@@ -7,6 +7,8 @@ import { QuizListItemModule } from './quiz-list-item/quiz-list-item.module';
 import { CatalogueSelectMenuModule } from './catalogue-select-menu/catalogue-select-menu.module';
 import { CataloguePaginatorModule } from './catalogue-paginator/catalogue-paginator.module';
 import { CatalogueModule } from './catalogue/catalogue.module';
+import { EditButtonModule } from './buttons/edit-button/edit-button.module';
+import { DeleteButtonModule } from './buttons/delete-button/delete-button.module';
 
 @NgModule({
   imports: [
@@ -16,6 +18,8 @@ import { CatalogueModule } from './catalogue/catalogue.module';
     ShortenPipe,
     QuizListItemModule,
     CatalogueModule,
+    EditButtonModule,
+    DeleteButtonModule,
   ],
   exports: [
     QuestionModule,
@@ -25,6 +29,8 @@ import { CatalogueModule } from './catalogue/catalogue.module';
     CatalogueSelectMenuModule,
     CataloguePaginatorModule,
     CatalogueModule,
+    DeleteButtonModule,
+    EditButtonModule,
   ],
 })
 export class SharedModule { }
