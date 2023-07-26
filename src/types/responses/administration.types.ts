@@ -11,3 +11,8 @@ export interface IUserResponse {
   id: string;
   roles: string[],
 }
+
+export interface IUserList {
+  total: number;
+  users: IUserResponse[];
+}
