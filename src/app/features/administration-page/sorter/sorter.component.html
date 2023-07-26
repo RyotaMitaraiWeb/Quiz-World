@@ -1,1 +1,15 @@
-<p>sorter works!</p>
+<form>
+  <mat-form-field [formGroup]="form">
+    <mat-label>Sort by</mat-label>
+    <mat-select formControlName="value" (selectionChange)="select($event)">
+      <ng-container *ngFor="let category of labels">
+        <mat-option
+          [value]="category.value"
+          
+        >
+        Date ({{ category.label }})
+        </mat-option>
+      </ng-container>
+    </mat-select>
+  </mat-form-field>
+</form>
