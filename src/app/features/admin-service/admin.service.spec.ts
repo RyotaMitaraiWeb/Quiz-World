@@ -30,9 +30,9 @@ describe('AdminService', () => {
         next: res => {
           expect(res.length).toBe(2);
           expect(res[0].id).toBe('1');
-          expect(res[0].roles).toBe(roles.user);
+          expect(res[0].roles).toEqual([roles.user]);
 
-          expect(res[1].roles).toBe(`${roles.admin, roles.moderator}`);
+          expect(res[1].roles).toEqual([roles.admin, roles.moderator]);
           done();
         },
         error: err => {
@@ -45,12 +45,12 @@ describe('AdminService', () => {
         {
           id: '1',
           username: 'a',
-          roles: roles.user,
+          roles: [roles.user],
         },
         {
           id: '2',
           username: 'b',
-          roles: `${roles.admin, roles.moderator}`,
+          roles: [roles.admin, roles.moderator],
         }
       ] as IUserResponse[], {
         status: HttpStatusCode.Ok,
@@ -65,7 +65,7 @@ describe('AdminService', () => {
         next: res => {
           expect(res.length).toBe(1);
           expect(res[0].id).toBe('1');
-          expect(res[0].roles).toBe(`${roles.admin, roles.moderator}`);
+          expect(res[0].roles).toEqual([roles.admin, roles.moderator]);
 
           done();
         },
@@ -79,7 +79,7 @@ describe('AdminService', () => {
         {
           id: '1',
           username: 'a',
-          roles: `${roles.admin, roles.moderator}`,
+          roles: [roles.admin, roles.moderator],
         },
 
       ] as IUserResponse[], {
@@ -94,8 +94,8 @@ describe('AdminService', () => {
       service.getUsersByUsername('a').subscribe({
         next: res => {
           expect(res.length).toBe(2);
-          expect(res[0].roles).toBe(roles.user);
-          expect(res[1].roles).toBe(roles.moderator);
+          expect(res[0].roles).toEqual([roles.user]);
+          expect(res[1].roles).toEqual([roles.admin, roles.moderator]);
           done();
         },
         error: err => {
@@ -109,12 +109,12 @@ describe('AdminService', () => {
         {
           id: '1',
           username: 'a',
-          roles: roles.user,
+          roles: [roles.user],
         },
         {
           id: '2',
           username: 'aa',
-          roles: roles.moderator,
+          roles: [roles.admin, roles.moderator],
         },
       ] as IUserResponse[],
         {
@@ -148,12 +148,12 @@ describe('AdminService', () => {
         {
           id: '2',
           username: 'ba',
-          roles: roles.user,
+          roles: [roles.user],
         },
         {
           id: '1',
           username: 'aa',
-          roles: roles.moderator,
+          roles: [roles.moderator],
         },
       ] as IUserResponse[],
         {
@@ -170,7 +170,7 @@ describe('AdminService', () => {
         next: res => {
           expect(res.length).toBe(1);
           expect(res[0].id).toBe('1');
-          expect(res[0].roles).toBe(`${roles.admin, roles.moderator}`);
+          expect(res[0].roles).toEqual([roles.admin, roles.moderator]);
 
           done();
         },
@@ -185,7 +185,7 @@ describe('AdminService', () => {
         {
           id: '1',
           username: 'a',
-          roles: `${roles.admin, roles.moderator}`,
+          roles: [roles.admin, roles.moderator],
         },
 
       ] as IUserResponse[], {
@@ -201,7 +201,7 @@ describe('AdminService', () => {
         next: res => {
           expect(res.length).toBe(1);
           expect(res[0].id).toBe('1');
-          expect(res[0].roles).toBe(roles.user);
+          expect(res[0].roles).toEqual([roles.user]);
 
           done();
         },
@@ -216,7 +216,7 @@ describe('AdminService', () => {
         {
           id: '1',
           username: 'a',
-          roles: roles.user,
+          roles: [roles.user],
         },
 
       ] as IUserResponse[], {

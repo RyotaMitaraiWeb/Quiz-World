@@ -71,7 +71,7 @@ describe('UserQuizzesComponent', () => {
           profile: {
             id: '',
             username: '',
-            roles: '',
+            roles: [],
             quizzes:
               {
                 total: 0,
@@ -98,7 +98,7 @@ describe('UserQuizzesComponent', () => {
               {
                 id: '1',
                 username: 'test',
-                roles: roles.user,
+                roles: [roles.user],
                 quizzes: generateQuizzes(10),
               } as IProfile
             }
@@ -133,7 +133,7 @@ describe('UserQuizzesComponent', () => {
               {
                 id: '1',
                 username: 'test',
-                roles: roles.user,
+                roles: [roles.user],
                 quizzes: generateQuizzes(10),
               } as IProfile
             }
@@ -155,7 +155,7 @@ describe('UserQuizzesComponent', () => {
               {
                 id: '1',
                 username: 'test',
-                roles: roles.user,
+                roles: [roles.user],
                 quizzes: generateQuizzes(10),
               } as IProfile
             }
@@ -189,7 +189,7 @@ describe('UserQuizzesComponent', () => {
               {
                 id: '1',
                 username: 'test',
-                roles: roles.user,
+                roles: [roles.user],
                 quizzes: generateQuizzes(10),
               } as IProfile
             }

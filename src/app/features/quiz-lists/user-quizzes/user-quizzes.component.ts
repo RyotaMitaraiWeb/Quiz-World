@@ -37,7 +37,7 @@ export class UserQuizzesComponent implements OnInit, OnDestroy {
   user: IUser = {
     id: '',
     username: '',
-    roles: '',
+    roles: [],
   }
 
   catalogue: IQuizList = {

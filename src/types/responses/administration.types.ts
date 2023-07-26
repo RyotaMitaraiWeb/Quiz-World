@@ -3,11 +3,11 @@ import { role } from '../auth/roles.types';
 export interface IUser {
   username: string;
   id: string;
-  roles: string,
+  roles: string[],
 }
 
 export interface IUserResponse {
   username: string;
   id: string;
-  roles: string,
+  roles: string[],
 }
