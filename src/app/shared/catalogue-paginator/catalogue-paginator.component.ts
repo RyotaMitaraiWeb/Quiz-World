@@ -17,6 +17,8 @@ export class CataloguePaginatorComponent {
   @Input() page = 1;
   @Input({ required: true }) total = 0;
 
+  @Input() pageSize = 7;
+
   changePage(event: PageEvent) {
     const value = event.pageIndex;
     
