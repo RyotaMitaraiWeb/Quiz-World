@@ -45,6 +45,10 @@ export class AdminService {
       
   }
 
+  getUsers(): Observable<IUserList> {
+    return this.http.get<IUserList>(this.rolesUrl.getUsersOfRole(roles.user));
+  }
+
   /**
    * Sends a GET request to ``/administration/users/{username}`` and returns a list
    * of all users that contain the given ``username`` string.
