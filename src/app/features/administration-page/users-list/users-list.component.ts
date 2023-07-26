@@ -17,5 +17,5 @@ import { IUserResponse } from '../../../../types/responses/administration.types'
 export class UsersListComponent {
   @Input({ required: true }) data: IUserResponse[] | Observable<IUserResponse[]> = [];
 
-  protected displayedColumns = ['username', 'roles'];
+  protected displayedColumns = ['index', 'username', 'roles', 'roleButtons'];
 }
