@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AdministrationPageComponent } from './administration-page.component';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('AdministrationPageComponent', () => {
   let component: AdministrationPageComponent;
@@ -8,7 +9,7 @@ describe('AdministrationPageComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AdministrationPageComponent]
+      imports: [AdministrationPageComponent, NoopAnimationsModule]
     });
     fixture = TestBed.createComponent(AdministrationPageComponent);
     component = fixture.componentInstance;
