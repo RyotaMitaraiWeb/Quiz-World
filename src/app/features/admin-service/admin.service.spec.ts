@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { AdminService } from './admin.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { AppStoreModule } from '../../store/app-store.module';
-import { IUser, IUserList, IUserResponse } from '../../../types/responses/administration.types';
+import { ILogsList, IUser, IUserList, IUserResponse } from '../../../types/responses/administration.types';
 import { roles } from '../../constants/roles.constants';
 import { HttpStatusCode } from '@angular/common/http';
 import { ILogActivity } from '../../../types/administration/logs.types';
@@ -86,7 +86,7 @@ describe('AdminService', () => {
             username: 'a',
             roles: [roles.admin, roles.moderator],
           },
-  
+
         ]
       } as IUserList, {
         status: HttpStatusCode.Ok,
@@ -201,7 +201,7 @@ describe('AdminService', () => {
             username: 'a',
             roles: [roles.admin, roles.moderator],
           },
-  
+
         ]
       } as IUserList, {
         status: HttpStatusCode.Ok,
@@ -235,7 +235,7 @@ describe('AdminService', () => {
             username: 'a',
             roles: [roles.user],
           },
-  
+
         ]
       } as IUserList, {
         status: HttpStatusCode.Ok,
@@ -248,8 +248,8 @@ describe('AdminService', () => {
     it('Retrieves a list of logs', (done: DoneFn) => {
       service.getActivityLogs().subscribe({
         next: res => {
-          expect(res.length).toBe(1);
-          expect(res[0].message).toBe('a');
+          expect(res.logs.length).toBe(1);
+          expect(res.logs[0].message).toBe('a');
           done();
         },
         error: err => {
@@ -260,11 +260,15 @@ describe('AdminService', () => {
 
       const request = testController.expectOne(service.logsUrl.getLogs);
       request.flush(
-        [
-          {
-            message: 'a',
-          },
-        ] as ILogActivity[],
+        {
+          total: 10,
+          logs: [
+            {
+              message: 'a',
+              date: Date.now().toString(),
+            },
+          ]
+        } as ILogsList,
         {
           status: HttpStatusCode.Ok,
           statusText: 'Ok',

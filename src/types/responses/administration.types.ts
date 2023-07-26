@@ -1,3 +1,4 @@
+import { ILogActivity } from '../administration/logs.types';
 import { role } from '../auth/roles.types';
 
 export interface IUser {
@@ -15,4 +16,9 @@ export interface IUserResponse {
 export interface IUserList {
   total: number;
   users: IUserResponse[];
+}
+
+export interface ILogsList {
+  total: number;
+  logs: ILogActivity[];
 }

@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RoleService } from '../../core/role-service/role.service';
 import { Observable, map } from 'rxjs';
-import { IUser, IUserList, IUserResponse } from '../../../types/responses/administration.types';
+import { ILogsList, IUser, IUserList, IUserResponse } from '../../../types/responses/administration.types';
 import { api } from '../../constants/api.constants';
 import { role } from '../../../types/auth/roles.types';
 import { roles } from '../../constants/roles.constants';
@@ -118,21 +118,21 @@ export class AdminService {
    * 
    * @returns a list of log activities on page 1, sorted by title in an ascending order.
    */
-  getActivityLogs(): Observable<ILogActivity[]>;
+  getActivityLogs(): Observable<ILogsList>;
   /**
    * Retrieves a list of moderator and admin activities.
    * @param page the page of the query
    * @returns a list of log activities on the specified page, sorted by date in an ascending order.
    */
-  getActivityLogs(page: number | string): Observable<ILogActivity[]>;
+  getActivityLogs(page: number | string): Observable<ILogsList>;
   /**
    * Retrieves a list of moderator and admin activities.
    * @param page the page of the query
    * @param order the order by which the result will be sorted.
    * @returns a list of log activities on the specified page, sorted by date in the specified order.
    */
-  getActivityLogs(page: number | string, order: order): Observable<ILogActivity[]>;
-  getActivityLogs(page?: number | string, order?: order): Observable<ILogActivity[]> {
+  getActivityLogs(page: number | string, order: order): Observable<ILogsList>;
+  getActivityLogs(page?: number | string, order?: order): Observable<ILogsList> {
     let params = new HttpParams();
     if (page) {
       params = params.append('page', page);
@@ -142,6 +142,6 @@ export class AdminService {
       params = params.append('order', order);
     }
 
-    return this.http.get<ILogActivity[]>(this.logsUrl.getLogs, { params });
+    return this.http.get<ILogsList>(this.logsUrl.getLogs, { params });
   }
 }
