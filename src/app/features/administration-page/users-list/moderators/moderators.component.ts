@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersListComponent } from '../users-list.component';
-import { Observable, Subscription, of } from 'rxjs';
+import { Observable, Subscription, map, of } from 'rxjs';
 import { AdminService } from '../../../admin-service/admin.service';
-import { IUserResponse } from '../../../../../types/responses/administration.types';
+import { IUser, IUserResponse } from '../../../../../types/responses/administration.types';
 import { order } from '../../../../../types/others/lists.types';
 
 @Component({
@@ -22,10 +22,21 @@ export class ModeratorsComponent implements OnInit {
   constructor(private readonly adminService: AdminService) { }
 
   ngOnInit(): void {
-    this.moderators = this.adminService.getModerators();
+    this.modSub = this.adminService.getModerators()
+    .subscribe({
+      next: (userList) => {
+        this.total = userList.total;
+        this.moderators = userList.users.map((u, i) => ({ index: i + 1, roleButtons: u.roles, ...u}) as IUser)
+      },
+      error: (err) => {
+        console.warn(err);
+        
+      }
+    })
   }
 
-  moderators: Observable<IUserResponse[]> = of([] as IUserResponse[]);
+  moderators: IUser[] = [];
+  total = 0;
 
   updatePage(page: number) {
 
