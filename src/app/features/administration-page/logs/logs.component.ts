@@ -6,6 +6,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { SorterComponent } from '../sorter/sorter.component';
 import { MatTableModule } from '@angular/material/table';
 import { IIndexedLogActivity } from '../../../../types/administration/logs.types';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-logs',
@@ -24,8 +25,20 @@ export class LogsComponent implements OnInit {
     private readonly adminService: AdminService
   ) { }
 
+  private logsSub = new Subscription();
+
   ngOnInit() {
-    
+    this.logsSub = this.adminService.getActivityLogs().subscribe({
+      next: res => {
+        this.total = res.total;
+        this.logs = res.logs.map((l, i) => (
+          {
+            index: i,
+            ...l
+          }
+        ));
+      }
+    });
   }
 
   logs: IIndexedLogActivity[] = [
@@ -41,8 +54,34 @@ export class LogsComponent implements OnInit {
 
   total = 0;
 
-  updateLogs() {
+  updatePage(page: number) {
+    this.page = page;
+    this.logsSub = this.adminService.getActivityLogs().subscribe({
+      next: res => {
+        this.total = res.total;
+        this.logs = res.logs.map((l, i) => (
+          {
+            index: i,
+            ...l
+          }
+        ));
+      }
+    });
+  }
 
+  updateOrder(order: order) {
+    this.order = order;
+    this.logsSub = this.adminService.getActivityLogs().subscribe({
+      next: res => {
+        this.total = res.total;
+        this.logs = res.logs.map((l, i) => (
+          {
+            index: i,
+            ...l
+          }
+        ));
+      }
+    });
   }
 
   protected readonly displayedColumns = ['index', 'message', 'date'];

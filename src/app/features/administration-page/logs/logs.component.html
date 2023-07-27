@@ -1,4 +1,4 @@
-<app-sorter></app-sorter>
+<app-sorter (updateOrderEvent)="updateOrder($event)"></app-sorter>
 
 <table mat-table [dataSource]="logs">
   <ng-container matColumnDef="index">
@@ -20,4 +20,4 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </table>
 
-<app-catalogue-paginator [total]="total" [page]="page"></app-catalogue-paginator>
+<app-catalogue-paginator [total]="total" [page]="page" [pageSize]="20" (pageEvent)="updatePage($event)"></app-catalogue-paginator>
