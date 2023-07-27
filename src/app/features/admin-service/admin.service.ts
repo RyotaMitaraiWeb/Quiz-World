@@ -8,6 +8,7 @@ import { role } from '../../../types/auth/roles.types';
 import { roles } from '../../constants/roles.constants';
 import { order, sort } from '../../../types/others/lists.types';
 import { ILogActivity } from '../../../types/administration/logs.types';
+import { paramsBuilder } from '../../util/params-builder/params-builder';
 
 /**
  * An injectable service that makes HTTP calls relating to administration,
@@ -80,17 +81,10 @@ export class AdminService {
    */
   getUsersByUsername(username: string, page: number | string, order: order): Observable<IUserList>;
   getUsersByUsername(username: string, page?: number | string, order?: order): Observable<IUserList> {
-    let params = new HttpParams();
-    if (page) {
-      params = params.append('page', page);
-    }
-
-    if (order) {
-      params = params.append('order', order);
-    }
+    const params = paramsBuilder(page, undefined, order).append('username', username);
 
     return this.http
-      .get<IUserList>(this.rolesUrl.getUsersOfUsername(username), {
+      .get<IUserList>(this.rolesUrl.getUsersOfUsername(), {
         params
       });
   }

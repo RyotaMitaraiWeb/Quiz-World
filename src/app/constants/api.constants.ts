@@ -54,7 +54,7 @@ export const api = {
       /**
        * Use query string ``username`` to filter users.
        */
-      getUsersOfUsername: (username: string) => `${roles}/users`,
+      getUsersOfUsername: () => `${roles}/users`,
     }
   }
 };
