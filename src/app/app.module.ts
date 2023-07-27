@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './routing/app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreModule } from './core/core.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppStoreModule } from './store/app-store.module';
-import { TokenInterceptor } from './util/interceptors/token-interceptor/token.interceptor';
-import { UnauthorizedRedirectInterceptor } from './util/interceptors/unauthorized-redirect/unauthorized-redirect.interceptor';
+import { TokenInterceptor } from './routing/interceptors/token-interceptor/token.interceptor';
+import { UnauthorizedRedirectInterceptor } from './routing/interceptors/unauthorized-redirect/unauthorized-redirect.interceptor';
 import { CreateQuizModule } from './features/create-quiz/create-quiz.module';
 import { EditQuizModule } from './features/edit-quiz/edit-quiz.module';
 import { AdministrationPageModule } from './features/administration-page/administration-page.module';

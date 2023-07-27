@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { IAuthSuccessResponse } from '../../../types/responses/auth.types';
 import { IAuthBody } from '../../../types/auth/general.types';
 import { api } from '../../constants/api.constants';
-import { SkipUnauthorizedRedirectionHeader } from '../../util/interceptors/unauthorized-redirect/unauthorized-redirect.interceptor';
+import { SkipUnauthorizedRedirectionHeader } from '../../routing/interceptors/unauthorized-redirect/unauthorized-redirect.interceptor';
 
 @Injectable({
   providedIn: 'root'
