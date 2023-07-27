@@ -110,7 +110,7 @@ describe('AdminService', () => {
         },
       });
 
-      const request = testController.expectOne(service.rolesUrl.getUsersOfUsername('a'));
+      const request = testController.expectOne(`${service.rolesUrl.getUsersOfUsername()}?username=a`);
       request.flush({
         total: 10,
         users: [
