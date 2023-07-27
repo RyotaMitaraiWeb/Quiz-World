@@ -6,6 +6,7 @@ import { QuizService } from '../../quiz-service/quiz.service';
 import { IProfile, IQuizList, order, sort } from '../../../../types/others/lists.types';
 import { Observable, Subscription } from 'rxjs';
 import { IUser } from '../../../../types/responses/administration.types';
+import { IUserProfile } from '../../../../types/components/profile.types';
 
 @Component({
   selector: 'app-all-quizzes',
@@ -34,10 +35,10 @@ export class UserQuizzesComponent implements OnInit, OnDestroy {
     });
   }
 
-  user: IUser = {
+  user: IUserProfile = {
     id: '',
     username: '',
-    roles: '',
+    roles: [],
   }
 
   catalogue: IQuizList = {

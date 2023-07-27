@@ -9,6 +9,10 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AppStoreModule } from './store/app-store.module';
 import { TokenInterceptor } from './util/interceptors/token-interceptor/token.interceptor';
 import { UnauthorizedRedirectInterceptor } from './util/interceptors/unauthorized-redirect/unauthorized-redirect.interceptor';
+import { CreateQuizModule } from './features/create-quiz/create-quiz.module';
+import { EditQuizModule } from './features/edit-quiz/edit-quiz.module';
+import { AdministrationPageModule } from './features/administration-page/administration-page.module';
+import { ModeratorsModule } from './features/administration-page/users-list/moderators/moderators.module';
 
 @NgModule({
     declarations: [
@@ -34,6 +38,10 @@ import { UnauthorizedRedirectInterceptor } from './util/interceptors/unauthorize
         AppStoreModule,
         CoreModule,
         HttpClientModule,
+        CreateQuizModule,
+        EditQuizModule,
+        AdministrationPageModule,
+        ModeratorsModule,
     ]
 })
 export class AppModule { }

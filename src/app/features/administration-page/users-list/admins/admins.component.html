@@ -1,0 +1,3 @@
+<app-sorter (updateOrderEvent)="updateOrder($event)"></app-sorter>
+<app-users-list [data]="admins"></app-users-list>
+<app-catalogue-paginator [total]="total" [pageSize]="20" (pageEvent)="updatePage($event)"></app-catalogue-paginator>

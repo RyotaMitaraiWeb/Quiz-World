@@ -2,12 +2,13 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { RoleService } from '../../core/role-service/role.service';
 import { Observable, map } from 'rxjs';
-import { IUser, IUserResponse } from '../../../types/responses/administration.types';
+import { ILogsList, IUser, IUserList, IUserResponse } from '../../../types/responses/administration.types';
 import { api } from '../../constants/api.constants';
 import { role } from '../../../types/auth/roles.types';
 import { roles } from '../../constants/roles.constants';
 import { order, sort } from '../../../types/others/lists.types';
 import { ILogActivity } from '../../../types/administration/logs.types';
+import { paramsBuilder } from '../../util/params-builder/params-builder';
 
 /**
  * An injectable service that makes HTTP calls relating to administration,
@@ -29,20 +30,24 @@ export class AdminService {
   /**
    * Sends a GET request to ``/administration/moderators`` and returns a list
    * of all users that have the Moderator role (including administrators).
-   * @returns an Observable that resolves to an array of ``IUser``.
+   * @returns an Observable that resolves to a ``IUserList``.
    */
-  getModerators(): Observable<IUser[]> {
-    return this.http.get<IUser[]>(this.rolesUrl.getUsersOfRole(roles.moderator));
+  getModerators(): Observable<IUserList> {
+    return this.http.get<IUserList>(this.rolesUrl.getUsersOfRole(roles.moderator));
   }
 
   /**
    * Sends a GET request to ``/administration/admins`` and returns a list
    * of all users that have the Administrator role.
-   * @returns an Observable that resolves to an array of ``IUser``.
+   * @returns an Observable that resolves to a ``IUserList``.
    */
-  getAdmins(): Observable<IUser[]> {
-    return this.http.get<IUser[]>(this.rolesUrl.getUsersOfRole(roles.admin))
+  getAdmins(): Observable<IUserList> {
+    return this.http.get<IUserList>(this.rolesUrl.getUsersOfRole(roles.admin))
       
+  }
+
+  getUsers(): Observable<IUserList> {
+    return this.http.get<IUserList>(this.rolesUrl.getUsersOfRole(roles.user));
   }
 
   /**
@@ -51,7 +56,7 @@ export class AdminService {
    * @param username the string by which the database will look for users.
    * @returns the first page of users, ordered by their usernames in an ascending order.
    */
-  getUsersByUsername(username: string): Observable<IUser[]>;
+  getUsersByUsername(username: string): Observable<IUserList>;
   /**
    * Sends a GET request to ``/administration/users/{username}`` and returns a list
    * of all users that contain the given ``username`` string. Each user is listed
@@ -62,7 +67,7 @@ export class AdminService {
    * @returns a list of users for the given page, ordered by their usernames in 
    * an ascending order
    */
-  getUsersByUsername(username: string, page: number | string): Observable<IUser[]>;
+  getUsersByUsername(username: string, page: number | string): Observable<IUserList>;
   /**
    * Sends a GET request to ``/administration/users/{username}`` and returns a list
    * of all users that contain the given ``username`` string. Each user is listed
@@ -74,19 +79,12 @@ export class AdminService {
    * @returns a list of users for the given page, ordered by their usernames in 
    * the specified order.
    */
-  getUsersByUsername(username: string, page: number | string, order: order): Observable<IUser[]>;
-  getUsersByUsername(username: string, page?: number | string, order?: order): Observable<IUser[]> {
-    let params = new HttpParams();
-    if (page) {
-      params = params.append('page', page);
-    }
-
-    if (order) {
-      params = params.append('order', order);
-    }
+  getUsersByUsername(username: string, page: number | string, order: order): Observable<IUserList>;
+  getUsersByUsername(username: string, page?: number | string, order?: order): Observable<IUserList> {
+    const params = paramsBuilder(page, undefined, order).append('username', username);
 
     return this.http
-      .get<IUser[]>(this.rolesUrl.getUsersOfUsername(username), {
+      .get<IUserList>(this.rolesUrl.getUsersOfUsername(), {
         params
       });
   }
@@ -95,22 +93,22 @@ export class AdminService {
    * Sends a PUT request to ``/administration/promote/{id}``. In order for this
    * request to work, the user must be of role ``user``.
    * @param id the ID of the user to be promoted to a Moderator
-   * @returns an Observable of type ``IUser[]``. You can use this to update
+   * @returns an Observable of type ``IUserList``. You can use this to update
    * the list of users after the response resolves.
    */
-  promoteToModerator(id: string): Observable<IUser[]> {
-    return this.http.put<IUser[]>(this.rolesUrl.promote(id, roles.moderator), {});
+  promoteToModerator(id: string): Observable<IUserList> {
+    return this.http.put<IUserList>(this.rolesUrl.promote(id, roles.moderator), {});
   }
 
   /**
    * Sends a PUT request to ``/administration/demote/{id}``. In order for this
    * request to work, the user must be of role ``moderator``.
    * @param id the ID of the moderator to be demoted to user.
-   * @returns an Observable of type ``IUser[]``. You can use this to update
+   * @returns an Observable of type ``IUserList``. You can use this to update
    * the list of users after the response resolves.
    */
-  demoteToUser(id: string): Observable<IUser[]> {
-    return this.http.put<IUser[]>(this.rolesUrl.demote(id, roles.moderator), {});
+  demoteToUser(id: string): Observable<IUserList> {
+    return this.http.put<IUserList>(this.rolesUrl.demote(id, roles.moderator), {});
   }
 
   /**
@@ -118,21 +116,21 @@ export class AdminService {
    * 
    * @returns a list of log activities on page 1, sorted by title in an ascending order.
    */
-  getActivityLogs(): Observable<ILogActivity[]>;
+  getActivityLogs(): Observable<ILogsList>;
   /**
    * Retrieves a list of moderator and admin activities.
    * @param page the page of the query
    * @returns a list of log activities on the specified page, sorted by date in an ascending order.
    */
-  getActivityLogs(page: number | string): Observable<ILogActivity[]>;
+  getActivityLogs(page: number | string): Observable<ILogsList>;
   /**
    * Retrieves a list of moderator and admin activities.
    * @param page the page of the query
    * @param order the order by which the result will be sorted.
    * @returns a list of log activities on the specified page, sorted by date in the specified order.
    */
-  getActivityLogs(page: number | string, order: order): Observable<ILogActivity[]>;
-  getActivityLogs(page?: number | string, order?: order): Observable<ILogActivity[]> {
+  getActivityLogs(page: number | string, order: order): Observable<ILogsList>;
+  getActivityLogs(page?: number | string, order?: order): Observable<ILogsList> {
     let params = new HttpParams();
     if (page) {
       params = params.append('page', page);
@@ -142,6 +140,6 @@ export class AdminService {
       params = params.append('order', order);
     }
 
-    return this.http.get<ILogActivity[]>(this.logsUrl.getLogs, { params });
+    return this.http.get<ILogsList>(this.logsUrl.getLogs, { params });
   }
 }

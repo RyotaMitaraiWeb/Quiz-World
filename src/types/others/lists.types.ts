@@ -1,3 +1,5 @@
+import { role } from '../auth/roles.types';
+
 export type order = 'asc' | 'desc';
 export type sort = 'title' | 'createdOn' | 'updatedOn';
 
@@ -18,6 +20,6 @@ export interface IQuizList {
 export interface IProfile {
   id: string;
   username: string;
-  roles: string;
+  roles: role[];
   quizzes: IQuizList;
 }

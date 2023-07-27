@@ -1,0 +1,23 @@
+<app-sorter (updateOrderEvent)="updateOrder($event)"></app-sorter>
+
+<table mat-table [dataSource]="logs">
+  <ng-container matColumnDef="index">
+    <th mat-header-cell *matHeaderCellDef>#</th>
+    <td mat-cell *matCellDef="let log">{{ log.index }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="message">
+    <th mat-header-cell *matHeaderCellDef>Activity</th>
+    <td mat-cell *matCellDef="let log">{{ log.message }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="date">
+    <th mat-header-cell *matHeaderCellDef>Date</th>
+    <td mat-cell *matCellDef="let log">{{ log.date | date: 'dd/MM/yyyy' }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<app-catalogue-paginator [total]="total" [page]="page" [pageSize]="20" (pageEvent)="updatePage($event)"></app-catalogue-paginator>
