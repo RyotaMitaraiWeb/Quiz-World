@@ -3,7 +3,7 @@ import { ResolveFn } from '@angular/router';
 import { QuizService } from '../../../features/quiz-service/quiz.service';
 import { IQuizList, order, sort } from '../../../../types/others/lists.types';
 import { Observable } from 'rxjs';
-import { paramsBuilder } from '../../params-builder/params-builder';
+import { paramsBuilder } from '../../../util/params-builder/params-builder';
 
 /**
  * Retrieves a catalogue of all quizzes whose title contains the given ``query`` so that they can be loaded before navigating

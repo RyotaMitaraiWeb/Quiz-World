@@ -1,16 +1,16 @@
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, ActivatedRouteSnapshot, Params, ResolveFn, RouterState, RouterStateSnapshot } from '@angular/router';
 
-import { fetchSearchResults } from './fetch-search-results.resolver';
+import { fetchAllQuizzesResolver } from './fetch-all-quizzes.resolver';
 import { QuizService } from '../../../features/quiz-service/quiz.service';
 import { IQuizList } from '../../../../types/others/lists.types';
 import { Observable, of } from 'rxjs';
-import { paramsBuilder } from '../../params-builder/params-builder';
+import { paramsBuilder } from '../../../util/params-builder/params-builder';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
-describe('fetchSearchQuizzesResolver', () => {
+describe('fetchAllQuizzesResolver', () => {
   const executeResolver: ResolveFn<IQuizList> = (...resolverParameters) =>
-    TestBed.runInInjectionContext(() => fetchSearchResults(...resolverParameters));
+    TestBed.runInInjectionContext(() => fetchAllQuizzesResolver(...resolverParameters));
 
   let quizService: QuizService;
   beforeEach(() => {
@@ -26,14 +26,9 @@ describe('fetchSearchQuizzesResolver', () => {
 
   it('Returns a list of quizzes', (done: DoneFn) => {
     const activatedRoute = new ActivatedRouteSnapshot();
-    activatedRoute.queryParams = {
-      page: 1,
-      sort: 'title',
-      order: 'asc',
-      query: 'test',
-    };
+    activatedRoute.queryParams = paramsBuilder(1);
 
-    spyOn(quizService, 'getQuizzesByTitle').and.returnValue(
+    spyOn(quizService, 'getAllQuizzes').and.returnValue(
       of({
         total: 1,
         quizzes: [
@@ -47,14 +42,12 @@ describe('fetchSearchQuizzesResolver', () => {
           }
         ]
       } as IQuizList)
-    );
+    )
     
     const result = executeResolver(activatedRoute, {} as RouterStateSnapshot) as Observable<IQuizList>;
     result.subscribe({
       next: (res) => {
         expect(res.total).toBe(1);
-        expect(quizService.getQuizzesByTitle).toHaveBeenCalledWith('test', 1, 'title', 'asc');
-
         done();
       },
       error: (err) => {

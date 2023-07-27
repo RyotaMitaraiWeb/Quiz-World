@@ -5,7 +5,7 @@ import { fetchUserQuizzesResolver } from './fetch-user-quizzes.resolver';
 import { QuizService } from '../../../features/quiz-service/quiz.service';
 import { IQuizList } from '../../../../types/others/lists.types';
 import { Observable, of } from 'rxjs';
-import { paramsBuilder } from '../../params-builder/params-builder';
+import { paramsBuilder } from '../../../util/params-builder/params-builder';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('fetchUserQuizzesResolver', () => {
