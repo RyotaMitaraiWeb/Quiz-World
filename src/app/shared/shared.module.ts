@@ -9,6 +9,7 @@ import { CataloguePaginatorModule } from './catalogue-paginator/catalogue-pagina
 import { CatalogueModule } from './catalogue/catalogue.module';
 import { EditButtonModule } from './buttons/edit-button/edit-button.module';
 import { DeleteButtonModule } from './buttons/delete-button/delete-button.module';
+import { SheetComponent } from './sheet/sheet.component';
 
 @NgModule({
   imports: [
@@ -20,6 +21,7 @@ import { DeleteButtonModule } from './buttons/delete-button/delete-button.module
     CatalogueModule,
     EditButtonModule,
     DeleteButtonModule,
+    SheetComponent
   ],
   exports: [
     QuestionModule,
@@ -31,6 +33,7 @@ import { DeleteButtonModule } from './buttons/delete-button/delete-button.module
     CatalogueModule,
     DeleteButtonModule,
     EditButtonModule,
+    SheetComponent
   ],
 })
 export class SharedModule { }
