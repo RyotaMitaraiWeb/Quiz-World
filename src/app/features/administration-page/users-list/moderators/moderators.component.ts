@@ -3,8 +3,10 @@ import { CommonModule } from '@angular/common';
 import { UsersListComponent } from '../users-list.component';
 import { Observable, Subscription, map, of } from 'rxjs';
 import { AdminService } from '../../../admin-service/admin.service';
-import { IUser, IUserResponse } from '../../../../../types/responses/administration.types';
+import { IUser } from '../../../../../types/responses/administration.types';
 import { order } from '../../../../../types/others/lists.types';
+import { SharedModule } from '../../../../shared/shared.module';
+import { SorterComponent } from '../../sorter/sorter.component';
 
 @Component({
   selector: 'app-moderators',
@@ -12,6 +14,8 @@ import { order } from '../../../../../types/others/lists.types';
   imports: [
     CommonModule,
     UsersListComponent,
+    SharedModule,
+    SorterComponent
   ],
   templateUrl: './moderators.component.html',
   styleUrls: ['./moderators.component.scss']
@@ -38,11 +42,34 @@ export class ModeratorsComponent implements OnInit {
   moderators: IUser[] = [];
   total = 0;
 
-  updatePage(page: number) {
+  order: order = 'asc';
+  page = 0;
 
+  updatePage(page: number) {
+    this.page = page;
+    this.modSub = this.adminService.getModerators().subscribe({
+      next: (userList) => {
+        this.total = userList.total;
+        this.moderators = userList.users.map((u, i) => ({ index: i + 1, roleButtons: u.roles, ...u}) as IUser)
+      },
+      error: (err) => {
+        console.warn(err);
+        
+      }
+    });
   }
 
   updateOrder(order: order) {
-    
+    this.order = order;
+    this.modSub = this.adminService.getModerators().subscribe({
+      next: (userList) => {
+        this.total = userList.total;
+        this.moderators = userList.users.map((u, i) => ({ index: i + 1, roleButtons: u.roles, ...u}) as IUser)
+      },
+      error: (err) => {
+        console.warn(err);
+        
+      }
+    });
   }
 }

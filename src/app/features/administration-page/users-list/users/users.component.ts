@@ -6,6 +6,7 @@ import { AdminService } from '../../../admin-service/admin.service';
 import { Subscription } from 'rxjs';
 import { SharedModule } from '../../../../shared/shared.module';
 import { UsersListComponent } from '../users-list.component';
+import { SorterComponent } from '../../sorter/sorter.component';
 
 @Component({
   selector: 'app-users',
@@ -13,6 +14,8 @@ import { UsersListComponent } from '../users-list.component';
   imports: [
     CommonModule,
     UsersListComponent,
+    SharedModule,
+    SorterComponent,
   ],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
@@ -38,12 +41,34 @@ export class UsersComponent {
 
   users: IUser[] = [];
   total = 0;
+  order: order = 'asc';
+  page = 0;
 
   updatePage(page: number) {
-
+    this.page = page;
+    this.usersSub = this.adminService.getUsers().subscribe({
+      next: (userList) => {
+        this.total = userList.total;
+        this.users = userList.users.map((u, i) => ({ index: i + 1, roleButtons: u.roles, ...u}) as IUser)
+      },
+      error: (err) => {
+        console.warn(err);
+        
+      }
+    });
   }
 
   updateOrder(order: order) {
-    
+    this.order = order;
+    this.usersSub = this.adminService.getUsers().subscribe({
+      next: (userList) => {
+        this.total = userList.total;
+        this.users = userList.users.map((u, i) => ({ index: i + 1, roleButtons: u.roles, ...u}) as IUser)
+      },
+      error: (err) => {
+        console.warn(err);
+        
+      }
+    });
   }
 }
