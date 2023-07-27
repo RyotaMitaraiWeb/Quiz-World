@@ -16,12 +16,14 @@ import { selectUserRoles } from '../../../store/user/user.selector';
 import { IAuthSuccessResponse } from '../../../../types/responses/auth.types';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
     CommonModule,
+    SharedModule,
     ReactiveFormsModule,
     MatInputModule,
     MatButtonModule,
