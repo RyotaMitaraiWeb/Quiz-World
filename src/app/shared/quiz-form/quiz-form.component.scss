@@ -1,0 +1,44 @@
+.quiz-form {
+  .title-field {
+    mat-form-field {
+      width: 50vw;
+    }
+
+    text-align: center;
+  }
+
+  .description-field {
+    text-align: center;
+    mat-form-field {
+      width: 70vw;
+    }
+  }
+
+  .other-options-field {
+    text-align: center;
+  }
+
+  .question-fields {
+    margin-bottom: 1.5em;
+  }
+
+  .remove-question-btn {
+    margin-left: auto;
+    display: block;
+  }
+
+  .add-question-btn {
+    margin-bottom: 1.5em;
+    font-size: 16pt;
+    padding: 24px;
+  }
+
+  #submit {
+    display: block;
+    margin: 0 auto;
+    width: 60vw;
+    font-size: 24pt;
+    padding-top: 24px;
+    padding-bottom: 36px;
+  }
+}

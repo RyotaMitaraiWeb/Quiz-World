@@ -1,0 +1,31 @@
+.text-question.question {
+  width: 100%;
+
+  mat-form-field {
+    width: 45vw;
+
+    &.prompt-field {
+      text-align: center;
+    }
+  }
+  
+  h4 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+
+    &.correct-answers-heading {
+      color: green;
+    }
+
+    &.wrong-answers-heading {
+      color: red;
+    }
+  }
+
+  .correct-answer {
+    mat-form-field {
+      margin-right: 10px;
+    }
+  }
+}

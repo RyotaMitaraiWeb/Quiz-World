@@ -1,14 +1,20 @@
 <article class="question wrapper">
-  <h1 class="question-index">Question #{{ index + 1 }}</h1>
-  <h2 class="question-type">{{ questionLabels[type].label }}</h2>
-  <mat-form-field>
-    <mat-select [(value)]="type" (valueChange)="onChangeQuestionType($event)">
-      <mat-option [value]="types.single">Single-choice</mat-option>
-      <mat-option [value]="types.multi">Multiple-choice</mat-option>
-      <mat-option [value]="types.text">Text</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <app-single-choice [form]="form" *ngIf="form.controls.type.value === types.single"></app-single-choice>
-  <app-multiple-choice [form]="form" *ngIf="form.controls.type.value === types.multi"></app-multiple-choice>
-  <app-text *ngIf="form.controls.type.value === types.text" [form]="form"></app-text>
+  <mat-card>
+    <mat-card-header class="question-header">
+      <mat-card-title class="question-index">Question #{{index + 1 }}</mat-card-title>
+      <mat-card-subtitle class="question-type">{{ questionLabels[type].label }}</mat-card-subtitle>
+      <mat-form-field class="question-select">
+        <mat-select [(value)]="type" (valueChange)="onChangeQuestionType($event)">
+          <mat-option [value]="types.single">Single-choice</mat-option>
+          <mat-option [value]="types.multi">Multiple-choice</mat-option>
+          <mat-option [value]="types.text">Text</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </mat-card-header>
+    <mat-card-content class="answer-form">
+      <app-single-choice [form]="form" *ngIf="form.controls.type.value === types.single"></app-single-choice>
+      <app-multiple-choice [form]="form" *ngIf="form.controls.type.value === types.multi"></app-multiple-choice>
+      <app-text *ngIf="form.controls.type.value === types.text" [form]="form"></app-text>
+    </mat-card-content>
+  </mat-card>
 </article>

@@ -1,0 +1,14 @@
+.question.wrapper {
+
+  .question-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .question-select {
+      width: 40vw;
+    }
+  }
+}

@@ -1,14 +1,16 @@
-<div [formGroup]="form">
-  <mat-form-field>
-    <input required matInput class="prompt" formControlName="prompt">
-    <mat-error *ngIf="form.controls.prompt.errors?.['required']">Please fill this field!</mat-error>
-    <mat-error *ngIf="form.controls.prompt.errors?.['maxlength']">This field is too long!</mat-error>
-  </mat-form-field>
-  <h4>Correct Answers</h4>
+<div class="text-question question" [formGroup]="form">
+  <div class="prompt-field">
+    <mat-form-field>
+      <textarea cdkTextareaAutosize required matInput class="prompt" formControlName="prompt"></textarea>
+      <mat-error *ngIf="form.controls.prompt.errors?.['required']">Please fill this field!</mat-error>
+      <mat-error *ngIf="form.controls.prompt.errors?.['maxlength']">This field is too long!</mat-error>
+    </mat-form-field>
+  </div>
+  <h4 class="correct-answers-heading">Correct Answers</h4>
   <div class="correct-answer">
     <div *ngFor="let answer of answersManager.form.controls; index as i" formArrayName="correctAnswers">
       <mat-form-field [formGroupName]="i">
-        <input required maxlength="100" class="correct-answer-field" matInput formControlName="answer">
+        <textarea cdkTextareaAutosize required maxlength="100" class="correct-answer-field" matInput formControlName="answer"></textarea>
         <mat-error *ngIf="answersManager.getErrorsAt(i)?.['required']">Please fill this field!</mat-error>
         <mat-error *ngIf="answersManager.getErrorsAt(i)?.['maxlength']">This field is too long!</mat-error>
       </mat-form-field>

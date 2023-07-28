@@ -10,6 +10,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { IQuestion } from '../../../../../types/components/question.types';
 import { AnswersManager } from '../../../../util/AnswersManager/AnswersManager';
 import { questionTypes } from '../../../../constants/question-types.constants';
+import { MatDividerModule } from '@angular/material/divider';
 
 
 @Component({
@@ -22,7 +23,8 @@ import { questionTypes } from '../../../../constants/question-types.constants';
     MatInputModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDividerModule,
   ],
   templateUrl: './multiple-choice.component.html',
   styleUrls: ['./multiple-choice.component.scss']

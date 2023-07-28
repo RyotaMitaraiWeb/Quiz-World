@@ -1,0 +1,32 @@
+.multiple-choice-question.question {
+  width: 100%;
+
+  .correct-answer, .wrong-answers {
+    mat-form-field {
+      margin-right: 10px;
+    }
+  }
+
+  mat-form-field {
+    width: 45vw;
+  }
+
+  mat-divider {
+    margin: 20px auto;
+    width: 95%;
+  }
+
+  h4 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+
+    &.correct-answers-heading {
+      color: green;
+    }
+
+    &.wrong-answers-heading {
+      color: red;
+    }
+  }
+}

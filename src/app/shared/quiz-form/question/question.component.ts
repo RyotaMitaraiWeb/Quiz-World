@@ -7,6 +7,7 @@ import { MultipleChoiceComponent } from './multiple-choice/multiple-choice.compo
 import { TextComponent } from './text/text.component';
 import { FormBuilder, Validators } from '@angular/forms';
 import { questionTypes } from '../../../constants/question-types.constants';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-question',
@@ -19,6 +20,7 @@ import { questionTypes } from '../../../constants/question-types.constants';
     MultipleChoiceComponent,
     TextComponent,
     MatSelectModule,
+    MatCardModule,
   ],
 })
 export class QuestionComponent implements OnInit {
