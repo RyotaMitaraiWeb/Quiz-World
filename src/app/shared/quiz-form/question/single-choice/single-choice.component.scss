@@ -8,6 +8,14 @@
 
   mat-form-field {
     width: 45vw;
+    &.prompt-field {
+      width: 100%;
+      font-size: 1.2rem;
+    }
+  }
+
+  .answer-field {
+    margin-bottom: 1.5em;
   }
   
   h4 {
@@ -25,6 +33,7 @@
   }
 
   .correct-answer, .wrong-answers {
+    text-align: center;
     mat-form-field {
       margin-right: 10px;
     }

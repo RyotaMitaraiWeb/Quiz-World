@@ -2,13 +2,23 @@
   width: 100%;
 
   .correct-answer, .wrong-answers {
+    text-align: center;
     mat-form-field {
       margin-right: 10px;
     }
   }
 
+  .answer-field {
+    margin-bottom: 1.5em;
+  }
+
   mat-form-field {
     width: 45vw;
+
+    &.prompt-field {
+      font-size: 1.2rem;
+      width: 100%;
+    }
   }
 
   mat-divider {

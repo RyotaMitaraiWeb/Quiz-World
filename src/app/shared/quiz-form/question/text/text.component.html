@@ -1,6 +1,7 @@
 <div class="text-question question" [formGroup]="form">
   <div class="prompt-field">
-    <mat-form-field>
+    <mat-form-field hintLabel="Prompt must be between 1 and 100 characters">
+      <mat-label>Prompt</mat-label>
       <textarea cdkTextareaAutosize required matInput class="prompt" formControlName="prompt"></textarea>
       <mat-error *ngIf="form.controls.prompt.errors?.['required']">Please fill this field!</mat-error>
       <mat-error *ngIf="form.controls.prompt.errors?.['maxlength']">This field is too long!</mat-error>
@@ -9,8 +10,17 @@
   <h4 class="correct-answers-heading">Correct Answers</h4>
   <div class="correct-answer">
     <div *ngFor="let answer of answersManager.form.controls; index as i" formArrayName="correctAnswers">
-      <mat-form-field [formGroupName]="i">
-        <textarea cdkTextareaAutosize required maxlength="100" class="correct-answer-field" matInput formControlName="answer"></textarea>
+      <mat-form-field [formGroupName]="i" hintLabel="The answer must be between 1 and 100 characters">
+        <textarea
+        cdkTextareaAutosize
+        required
+        maxlength="100"
+        class="correct-answer-field"
+        matInput
+        formControlName="answer"
+        [placeholder]="'Correct answer #' + (i + 1)"
+        >
+        </textarea>
         <mat-error *ngIf="answersManager.getErrorsAt(i)?.['required']">Please fill this field!</mat-error>
         <mat-error *ngIf="answersManager.getErrorsAt(i)?.['maxlength']">This field is too long!</mat-error>
       </mat-form-field>

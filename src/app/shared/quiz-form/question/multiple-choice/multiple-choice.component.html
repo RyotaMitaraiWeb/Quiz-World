@@ -1,6 +1,7 @@
 <div [formGroup]="form" class="multiple-choice-question question">
   <section>
-    <mat-form-field class="prompt-field">
+    <mat-form-field class="prompt-field" hintLabel="Prompt must be between 1 and 100 characters">
+      <mat-label>Prompt</mat-label>
       <textarea cdkTextareaAutosize required matInput class="prompt" formControlName="prompt"></textarea>
       <mat-error *ngIf="form.controls.prompt.errors?.['required']">Please fill this field!</mat-error>
       <mat-error *ngIf="form.controls.prompt.errors?.['maxlength']">This field is too long!</mat-error>
@@ -11,9 +12,18 @@
     <div class="correct-answer left">
       <div *ngFor="let answer of form.controls.correctAnswers.controls; index as i" formArrayName="correctAnswers">
         <mat-checkbox disabled checked></mat-checkbox>
-        <mat-form-field [formGroupName]="i">
-          <textarea cdkTextareaAutosize required maxlength="100" class="correct-answer-field" matInput
-            formControlName="answer"></textarea>
+        <mat-form-field [formGroupName]="i" 
+          hintLabel="The answer must be between 1 and 100 characters">
+          <textarea 
+            cdkTextareaAutosize
+            required
+            maxlength="100" 
+            class="correct-answer-field"
+            matInput
+            formControlName="answer"
+            [placeholder]="'Correct answer #' + (i + 1)"
+          >
+          </textarea>
           <mat-error *ngIf="correctAnswersManager.getErrorsAt(i)?.['required']">Please fill this field!</mat-error>
           <mat-error *ngIf="correctAnswersManager.getErrorsAt(i)?.['maxlength']">This field is too long!</mat-error>
         </mat-form-field>
@@ -34,9 +44,9 @@
     <div class="wrong-answers">
       <div *ngFor="let answer of form.controls.wrongAnswers.controls; index as i" formArrayName="wrongAnswers">
         <mat-checkbox disabled></mat-checkbox>
-        <mat-form-field [formGroupName]="i">
+        <mat-form-field [formGroupName]="i" hintLabel="The answer must be between 1 and 100 characters">
           <textarea cdkTextareaAutosize required maxlength="100" class="wrong-answer-field" matInput
-            formControlName="answer"></textarea>
+            formControlName="answer" [placeholder]="'Wrong answer #' + (i + 1)"></textarea>
           <mat-error *ngIf="wrongAnswersManager.getErrorsAt(i)?.['required']">Please fill this field!</mat-error>
           <mat-error *ngIf="wrongAnswersManager.getErrorsAt(i)?.['maxlength']">This field is too long!</mat-error>
         </mat-form-field>
