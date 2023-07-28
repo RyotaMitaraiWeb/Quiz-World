@@ -10,7 +10,7 @@
   <h4 class="correct-answers-heading">Correct Answers</h4>
   <section>
     <div class="correct-answer left">
-      <div *ngFor="let answer of form.controls.correctAnswers.controls; index as i" formArrayName="correctAnswers">
+      <div class="answer-field" *ngFor="let answer of form.controls.correctAnswers.controls; index as i" formArrayName="correctAnswers">
         <mat-checkbox disabled checked></mat-checkbox>
         <mat-form-field [formGroupName]="i" 
           hintLabel="The answer must be between 1 and 100 characters">
@@ -42,7 +42,7 @@
   <h4 class="wrong-answers-heading">Wrong answers</h4>
   <section>
     <div class="wrong-answers">
-      <div *ngFor="let answer of form.controls.wrongAnswers.controls; index as i" formArrayName="wrongAnswers">
+      <div class="answer-field" *ngFor="let answer of form.controls.wrongAnswers.controls; index as i" formArrayName="wrongAnswers">
         <mat-checkbox disabled></mat-checkbox>
         <mat-form-field [formGroupName]="i" hintLabel="The answer must be between 1 and 100 characters">
           <textarea cdkTextareaAutosize required maxlength="100" class="wrong-answer-field" matInput
