@@ -1,10 +1,14 @@
 <article class="quiz-list-item">
   <mat-card>
     <mat-card-header>
-      <mat-card-title class="title">{{ quiz.title }}</mat-card-title>
-      <mat-chip-listbox *ngIf="quiz.instantMode" class="instant-mode">
-        <mat-chip>Instant Mode</mat-chip>
-      </mat-chip-listbox>
+      <mat-card-title class="title">
+        {{ quiz.title }}
+
+        <mat-chip-listbox *ngIf="quiz.instantMode" class="instant-mode">
+          <mat-chip>Instant Mode</mat-chip>
+        </mat-chip-listbox>
+      </mat-card-title>
+      
       <mat-card-subtitle>Created on: <span class="creation-date">{{ quiz.createdOn | date: 'dd/MM/yyyy' }}</span></mat-card-subtitle>
       <mat-card-subtitle *ngIf="quiz.updatedOn">
         Last updated: <span class="update-date">{{ quiz.updatedOn | date: 'dd/MM/yyyy' }}</span>

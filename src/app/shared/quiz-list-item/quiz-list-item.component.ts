@@ -7,6 +7,7 @@ import { ShortenPipe } from '../pipes/shorten/shorten.pipe';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-quiz-list-item',
@@ -18,6 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
     MatChipsModule,
     MatButtonModule,
     RouterModule,
+    MatIconModule,
   ],
   templateUrl: './quiz-list-item.component.html',
   styleUrls: ['./quiz-list-item.component.scss']
