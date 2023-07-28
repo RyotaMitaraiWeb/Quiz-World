@@ -1,4 +1,9 @@
 .question.wrapper {
+  mat-card {
+    background-color: #fbfbfb;
+    -webkit-box-shadow: 5px 2px 15px 5px rgba(0, 0, 0, 0.36);
+    box-shadow: 5px 2px 15px 5px rgba(0, 0, 0, 0.36);
+  }
 
   .question-header {
     display: flex;
