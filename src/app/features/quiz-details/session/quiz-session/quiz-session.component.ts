@@ -4,10 +4,10 @@ import { IGradedAnswer, ISessionAnswer, ISessionQuestion } from '../../../../../
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AnswerService } from '../../../answer-service/answer.service';
 import { QuestionSessionModule } from './question-session/question-session.module';
-import { question } from '../../../../../types/components/question.types';
+import { question, shortQuestionType } from '../../../../../types/components/question.types';
 import { MatButtonModule } from '@angular/material/button';
 import { Subscription, delay } from 'rxjs';
-import { questionTypes } from '../../../../constants/question-types.constants';
+import { questionTypes, shortQuestionTypes } from '../../../../constants/question-types.constants';
 
 @Component({
   selector: 'app-quiz-session',
@@ -30,14 +30,14 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
   @Input({ required: true }) instantMode = false;
   @Input({ required: true }) quizId = 0;
 
-  private addControl(value: any, questionId: string, type: question) {
+  private addControl(value: any, questionId: string, type: shortQuestionType) {
     const group = this.fb.group({
-      currentAnswer: type === questionTypes.multi ? value : [value, [Validators.required]],
+      currentAnswer: type === shortQuestionTypes[questionTypes.multi] ? value : [value, [Validators.required]],
       id: [questionId],
       type: [type]
     });
 
-    if (type === questionTypes.multi) {
+    if (type === shortQuestionTypes[questionTypes.multi]) {
       group.setErrors({ required: true });
     }
 
@@ -48,9 +48,9 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
     this.form.removeAt(0);
 
     this.questions.forEach(q => {
-      if (q.type === questionTypes.text) {
+      if (q.type === shortQuestionTypes[questionTypes.text]) {
         this.form.push(this.addControl('', q.id, q.type));
-      } else if (q.type === questionTypes.multi) {
+      } else if (q.type === shortQuestionTypes[questionTypes.multi]) {
         this.form.push(this.addControl(
           this.fb.array([]), q.id, q.type
         ));
@@ -70,10 +70,10 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
     {
       currentAnswer: FormControl<any>,
       id: FormControl<string | null>,
-      type: FormControl<question | null>,
+      type: FormControl<shortQuestionType | null>,
     }
   >> = this.fb.array([
-    this.addControl('', '', questionTypes.single)
+    this.addControl('', '', shortQuestionTypes[questionTypes.single])
   ]);
 
   protected getQuestionControlAt(index: number) {

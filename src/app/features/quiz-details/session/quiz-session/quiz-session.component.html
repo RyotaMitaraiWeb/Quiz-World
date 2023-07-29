@@ -1,5 +1,4 @@
-<h1>Questions</h1>
-<form action="" (submit)="gradeQuestions($event)">
+<form class="quiz-session" action="" (submit)="gradeQuestions($event)">
   <section class="question-section" *ngFor="let question of (questionKeys | keyvalue); index as i">
     <app-question-session [prompt]="prompts.get(question.key) || ''"
       [answers]="questions[i].answers"

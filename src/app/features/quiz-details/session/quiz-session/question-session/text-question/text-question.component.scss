@@ -1,0 +1,19 @@
+.text-question.question {
+  width: 70%;
+  margin: 0 auto;
+
+  mat-card-header {
+    margin-bottom: 1.5em;
+    overflow-wrap: anywhere;
+
+    mat-card-title {
+      font-size: 2rem;
+    }
+  }
+
+  mat-form-field {
+    width: 100%;
+    font-size: 1.2rem;
+    margin-bottom: 1.5em;
+  }
+}

@@ -1,4 +1,51 @@
+.single-choice-question.question {
+  width: 70%;
+  margin: 0 auto;
+
+  mat-card-header {
+    margin-bottom: 1.5em;
+    overflow-wrap: anywhere;
+
+    mat-card-title {
+      font-size: 2rem;
+    }
+  }
+
+  mat-card-content {
+    margin-bottom: 1.5em;
+  }
+
+  mat-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+
+    mat-radio-button {
+      border: 1px solid gray;
+      border-radius: 10px;
+      width: 95%;
+      // height: 100px;
+      cursor: pointer;
+      // display: flex;
+      // align-items: center;
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: rgba(227, 227, 227, 0.3);
+      }
+    }
+  }
+}
+
 ::ng-deep label {
+  width: 100%; // Make label take up the remainder of the horizontal whitespace
+  display: block;
+  padding: 20px; // Padding needed for label to fill up the container vertically
+  cursor: pointer;
+  overflow-wrap: anywhere;
+  font-size: 1.1rem;
+
   &.correct {
     color: green;
   }
@@ -6,4 +53,9 @@
   &.wrong {
     color: red;
   }
+}
+
+// Needed to allow the label to fill up the remaining whitespace.
+::ng-deep .mdc-form-field {
+  width: 100%;
 }
