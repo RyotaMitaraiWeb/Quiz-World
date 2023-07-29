@@ -1,4 +1,4 @@
-import { question } from '../components/question.types';
+import { question, shortQuestionType } from '../components/question.types';
 
 /**
  * ```typescript
@@ -45,7 +45,7 @@ export interface ISessionQuestion {
   id: string;
   prompt: string;
   answers?: ISessionAnswer[];
-  type: question;
+  type: shortQuestionType;
 }
 
 /**
