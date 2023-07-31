@@ -107,7 +107,7 @@ describe('QuizSessionComponent', () => {
               statusText: 'Ok',
               body: [
                 {
-                  questionId: '1',
+                  id: '1',
                   answers: [
                     {
                       value: 'a',
@@ -116,7 +116,7 @@ describe('QuizSessionComponent', () => {
                   ]
                 },
                 {
-                  questionId: '2',
+                  id: '2',
                   answers: [
                     {
                       id: '3',
@@ -129,7 +129,7 @@ describe('QuizSessionComponent', () => {
                   ]
                 },
                 {
-                  questionId: '3',
+                  id: '3',
                   answers: [
                     {
                       id: '7',
@@ -279,7 +279,7 @@ describe('QuizSessionComponent', () => {
         const request = httpTestController.expectOne(api.endpoints.answers.correctAnswersFull(1));
         request.flush([
           {
-            questionId: '1',
+            id: '1',
             answers: [
               {
                 id: '1',

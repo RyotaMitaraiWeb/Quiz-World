@@ -6,8 +6,8 @@
     </mat-card-header>
     <mat-card-content>
       <mat-radio-group required [name]="checkboxName">
-        <mat-checkbox *ngFor="let answer of answers; index as i" [value]="answer.id" [ngClass]="answerClass(answer.id)"
-          (change)="updateAnswers($event)" [checked]="this.currentAnswers?.includes(answer.id)">
+        <mat-checkbox *ngFor="let answer of answers; index as i;" [value]="answer.id" [ngClass]="answerClass(answer.id)"
+          (change)="updateAnswers($event)" [checked]="this.currentAnswers?.includes(answer.id)" [disabled]="form.disabled">
           {{ answer.value }}
         </mat-checkbox>
       </mat-radio-group>

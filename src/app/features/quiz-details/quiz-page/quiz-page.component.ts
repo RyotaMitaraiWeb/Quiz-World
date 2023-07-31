@@ -66,7 +66,8 @@ export class QuizPageComponent implements OnInit, OnDestroy {
     description: '',
     instantMode: false,
     questions: [],
-    creatorId: ''
+    creatorId: '',
+    version: 0,
   }
 
   ngOnDestroy(): void {

@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DoCheck, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IGradedAnswer, ISessionAnswer } from '../../../../../../types/responses/quiz.types';
 import { question, shortQuestionType } from '../../../../../../types/components/question.types';
@@ -32,6 +32,7 @@ export class QuestionSessionComponent implements OnChanges, OnDestroy {
       private readonly fb: FormBuilder,
     ) { }
 
+  @Input({ required: true }) version = 0;
   @Input({ required: true }) prompt: string = '';
   @Input({ required: true }) answers: ISessionAnswer[] | undefined = [];
   @Input({ required: true }) correctAnswers: ISessionAnswer[] | null = null;
@@ -50,8 +51,9 @@ export class QuestionSessionComponent implements OnChanges, OnDestroy {
   });
 
   ngOnChanges(changes: SimpleChanges) {
-    const change = changes['correctAnswers'];
-    if (change) {
+    const change = changes['correctAnswers'];    
+    
+    if (!change.firstChange) {
       this.correctAnswers = change.currentValue;
     }
   }
@@ -76,10 +78,11 @@ export class QuestionSessionComponent implements OnChanges, OnDestroy {
     event.preventDefault();
     if (this.instantMode && this.form.enabled) {
       this.correctAnswersSub = this.answerService
-      .getCorrectAnswersForQuestionById(this.questionId)
+      .getCorrectAnswersForQuestionById(this.questionId, this.version)
       .subscribe({
         next: res => {
           const value = res.body!;
+          
           this.correctAnswers = value;
           this.form.disable();          
         },

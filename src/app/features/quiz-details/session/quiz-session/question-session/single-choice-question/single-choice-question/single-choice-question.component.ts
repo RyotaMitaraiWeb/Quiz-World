@@ -59,7 +59,7 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
 
   ngOnChanges(changes: SimpleChanges): void {
     const change = changes['correctAnswers'];
-
+    
     if (change) {
       this.correctAnswers = change.currentValue;
     }
@@ -114,5 +114,9 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
 
   private get currentAnswer(): string {
     return this.form.controls.currentAnswer.value || '';
+  }
+
+  protected track(_index: number, answer: ISessionAnswer) {
+    return answer.id;
   }
 }

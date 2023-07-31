@@ -25,7 +25,12 @@
   </mat-tab>
   <mat-tab label="Questions">
     <h1 id="questions">Questions</h1>
-    <app-quiz-session id="ses" [quizId]="quiz.id" [questions]="quiz.questions" [instantMode]="quiz.instantMode">
+    <app-quiz-session id="ses"
+      [quizId]="quiz.id"
+      [questions]="quiz.questions"
+      [instantMode]="quiz.instantMode"
+      [version]="quiz.version"
+    >
     </app-quiz-session>
   </mat-tab>
 </mat-tab-group>

@@ -104,8 +104,11 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
 
   ngOnChanges(changes: SimpleChanges) {
     const change = changes['correctAnswers'];
+    
     if (change) {
       this.correctAnswers = change.currentValue;
+      console.log(this.form.disabled);
+      
     }
   }
 
@@ -177,5 +180,9 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
    */
   get currentAnswers(): (string | null)[] | null {    
     return this.form.controls.currentAnswer.value;
+  }
+
+  protected track(_index: number, answer: ISessionAnswer) {
+    return answer.id;
   }
 }
