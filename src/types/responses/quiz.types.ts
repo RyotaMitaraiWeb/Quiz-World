@@ -29,6 +29,7 @@ export interface IQuizDetails {
   instantMode: boolean;
   questions: ISessionQuestion[];
   creatorId: string;
+  version: number;
 }
 
 /**
@@ -62,6 +63,6 @@ export interface ISessionAnswer {
 }
 
 export interface IGradedAnswer {
-  questionId: string;
+  id: string;
   answers: ISessionAnswer[];
 }
