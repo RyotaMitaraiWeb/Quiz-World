@@ -71,4 +71,16 @@ export class TextQuestionComponent implements IQuestionComponent<string>, OnChan
   ngOnChanges(changes: SimpleChanges): void {
     this.correctAnswers = changes['correctAnswers'].currentValue;
   }
+
+  protected get gradedAnswerClass() {
+    if (this.isCorrect) {
+      return 'correct-answer';
+    }
+
+    if (this.isCorrect === false)  {
+      return 'wrong-answer';
+    }
+
+    return 'ungraded';
+  }
 }
