@@ -77,7 +77,7 @@ describe('AnswerService', () => {
     it('Correctly returns data (response is ok)', (done: DoneFn) => {
       const response: IGradedAnswer[] = [
         {
-          questionId: '1',
+          id: '1',
           answers: [{
             value: 'a',
             id: '1',
