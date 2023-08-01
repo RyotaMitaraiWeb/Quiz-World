@@ -173,7 +173,7 @@ describe('AllQuizzesComponent', () => {
         expect(items.length).toBe(7);
 
         const title = items[0].querySelector('.title')?.textContent;
-        expect(title).toBe('6');
+        expect(title?.includes('6')).toBeTrue();
       }));
     });
   });

@@ -103,6 +103,7 @@ describe('QuizService', () => {
         instantMode: false,
         questions: [],
         creatorId: '1',
+        version: 1,
       }
 
       service.getById(response.id).subscribe({
@@ -419,6 +420,7 @@ describe('QuizService', () => {
         instantMode: false,
         questions: [],
         creatorId: '1',
+        version: 1,
       }
 
       service.deleteQuiz(response.id).subscribe({

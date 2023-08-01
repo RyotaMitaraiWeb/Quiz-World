@@ -86,28 +86,28 @@ describe('TextQuestionComponent', () => {
         component.prompt = 'question #2';
         fixture.detectChanges();
 
-        const h1 = element.querySelector('h1');
-        expect(h1?.textContent).toBe('question #2');
+        const prompt = element.querySelector('mat-card-title');
+        expect(prompt?.textContent?.includes('question #2')).toBeTrue();
       });
 
       it('Prompt\'s class changes according to whether the user has answered correctly or wrongly or has not answered yet', () => {
         component.prompt = 'question #2';
         fixture.detectChanges();
 
-        const unanswered = element.querySelector('h1.unanswered');
+        const unanswered = element.querySelector('.unanswered');
         expect(unanswered).not.toBeNull();
 
         component.correctAnswers = [{ value: 'correct', id: '1' }];
         component.form.controls.currentAnswer.setValue('wrong');
         fixture.detectChanges();
 
-        const wrong = element.querySelector('h1.wrong');
+        const wrong = element.querySelector('.wrong');
         expect(wrong).not.toBeNull();
 
         component.form.controls.currentAnswer.setValue('correct');
         fixture.detectChanges();
 
-        const correct = element.querySelector('h1.correct');
+        const correct = element.querySelector('.correct');
         expect(correct).not.toBeNull();
       });
     });

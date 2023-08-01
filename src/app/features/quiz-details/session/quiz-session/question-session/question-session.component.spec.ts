@@ -7,7 +7,7 @@ import { ISessionAnswer } from '../../../../../../types/responses/quiz.types';
 import { HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { AnswerService } from '../../../../answer-service/answer.service';
 import { Observable } from 'rxjs';
-import { questionTypes } from '../../../../../constants/question-types.constants';
+import { questionTypes, shortQuestionTypes } from '../../../../../constants/question-types.constants';
 
 describe('QuestionSessionComponent', () => {
   let component: QuestionSessionComponent;
@@ -52,7 +52,7 @@ describe('QuestionSessionComponent', () => {
           })
         );
 
-        component.type = questionTypes.single;
+        component.type = shortQuestionTypes[questionTypes.single];
         component.instantMode = true;
         component.gradeAnswer(event);
         expect(component.correctAnswers).toEqual([
@@ -81,14 +81,14 @@ describe('QuestionSessionComponent', () => {
           })
         );
 
-        component.type = questionTypes.single;
+        component.type = shortQuestionTypes[questionTypes.single];
         component.instantMode = true;
         component.gradeAnswer(event);
         expect(component.form.disabled).toBeTrue();
       });
 
       it('Does nothing if not in instant mode', () => {
-        component.type = questionTypes.single;
+        component.type = shortQuestionTypes[questionTypes.single];
         component.instantMode = false;
         component.gradeAnswer(event);
         expect(component.correctAnswers).toBeNull();
@@ -96,7 +96,7 @@ describe('QuestionSessionComponent', () => {
       });
 
       it('Does nothing if form is disabled', () => {
-        component.type = questionTypes.single;
+        component.type = shortQuestionTypes[questionTypes.single];
         component.instantMode = true;
         component.form.disable();
         component.gradeAnswer(event);
@@ -120,7 +120,7 @@ describe('QuestionSessionComponent', () => {
           })
         );
 
-        component.type = questionTypes.single;
+        component.type = shortQuestionTypes[questionTypes.single];
         component.instantMode = true;
         component.gradeAnswer(event);
         expect(component.correctAnswers).toBeNull();
@@ -144,7 +144,7 @@ describe('QuestionSessionComponent', () => {
 
     describe('Rendering', () => {
       it('Renders a text question successfully', () => {
-        component.type = questionTypes.text;
+        component.type = shortQuestionTypes[questionTypes.text];
         fixture.detectChanges();
 
         const textQuestion = element.querySelector('.text-question');
@@ -152,7 +152,7 @@ describe('QuestionSessionComponent', () => {
       });
 
       it('Renders a single-choice question successfully', () => {
-        component.type = questionTypes.single;
+        component.type = shortQuestionTypes[questionTypes.single];
         fixture.detectChanges();
         component.answers = [
           {
@@ -190,7 +190,7 @@ describe('QuestionSessionComponent', () => {
 
       it('is disabled when the form is invalid', () => {
         component.instantMode = true;
-        component.type = questionTypes.text;
+        component.type = shortQuestionTypes[questionTypes.text];
         fixture.detectChanges();
 
         component.form.controls.currentAnswer.setValue('');
@@ -203,7 +203,7 @@ describe('QuestionSessionComponent', () => {
 
       it('is disabled when the form is disabled', () => {
         component.instantMode = true;
-        component.type = questionTypes.text;
+        component.type = shortQuestionTypes[questionTypes.text];
         component.form.controls.currentAnswer.setValue('valid');
         fixture.detectChanges();
         expect(component.form.valid).withContext('The form should be valid but is not').toBeTrue();
@@ -218,7 +218,7 @@ describe('QuestionSessionComponent', () => {
 
       it('is enabled if the form is valid and not disabled', () => {
         component.instantMode = true;
-        component.type = questionTypes.text;
+        component.type = shortQuestionTypes[questionTypes.text];
         component.form.controls.currentAnswer.setValue('valid');
         fixture.detectChanges();
         expect(component.form.valid).withContext('The form should be valid but is not').toBeTrue();
@@ -231,7 +231,8 @@ describe('QuestionSessionComponent', () => {
 
       it('A successful request from clicking the button disables the button', () => {
         component.instantMode = true;
-        component.type = questionTypes.text;
+        component.type = shortQuestionTypes[questionTypes.text];
+        component.version = 1;
         component.form.controls.currentAnswer.setValue('valid');
         component.form.controls.id.setValue('1');
         fixture.detectChanges();
@@ -250,7 +251,7 @@ describe('QuestionSessionComponent', () => {
           },
         ];
 
-        const request = testController.expectOne(api.endpoints.answers.correctAnswersInstantMode('1'));
+        const request = testController.expectOne(api.endpoints.answers.correctAnswersInstantMode('1') + '?version=1');
 
         request.flush(responseBody, {
           status: HttpStatusCode.Ok,
@@ -263,7 +264,8 @@ describe('QuestionSessionComponent', () => {
 
       it('An unsuccessful request from clicking the button does NOT disable the button', () => {
         component.instantMode = true;
-        component.type = questionTypes.text;
+        component.type = shortQuestionTypes[questionTypes.text];
+        component.version = 1;
         component.form.controls.currentAnswer.setValue('valid');
         component.form.controls.id.setValue('1');
         fixture.detectChanges();
@@ -281,7 +283,7 @@ describe('QuestionSessionComponent', () => {
           },
         ];
 
-        const request = testController.expectOne(api.endpoints.answers.correctAnswersInstantMode('1'));
+        const request = testController.expectOne(api.endpoints.answers.correctAnswersInstantMode('1')  + '?version=1');
 
         request.flush(responseBody, {
           status: HttpStatusCode.NotFound,
