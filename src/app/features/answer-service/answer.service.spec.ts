@@ -22,12 +22,12 @@ describe('AnswerService', () => {
 
   describe('getCorrectAnswersForQuestionById', () => {
     it('Correctly returns data (response is ok)', (done: DoneFn) => {
-      const response: ISessionAnswer[] = [
+      const response: IGradedAnswer = 
         {
-          value: 'a',
+          
           id: '1',
-        },
-      ];
+          answers: [] as ISessionAnswer[],
+        };
 
       service.getCorrectAnswersForQuestionById('1', 1).subscribe({
         next: (res) => {

@@ -83,7 +83,7 @@ export class QuestionSessionComponent implements OnChanges, OnDestroy {
         next: res => {
           const value = res.body!;
           
-          this.correctAnswers = value;
+          this.correctAnswers = value.answers;
           this.form.disable();          
         },
         error: (err: HttpErrorResponse) => {

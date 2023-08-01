@@ -18,9 +18,9 @@ export class AnswerService {
    * @param questionId the ID of the question
    * @returns an Observable of the response which holds the response body of type JSON.
    */
-  getCorrectAnswersForQuestionById(questionId: string, version: number): Observable<HttpResponse<ISessionAnswer[]>> {
+  getCorrectAnswersForQuestionById(questionId: string, version: number): Observable<HttpResponse<IGradedAnswer>> {
     const params = new HttpParams().append('version', version.toString());
-    return this.http.get<ISessionAnswer[]>(this.url.correctAnswersInstantMode(questionId), {
+    return this.http.get<IGradedAnswer>(this.url.correctAnswersInstantMode(questionId), {
       observe: 'response',
       responseType: 'json',
       params
