@@ -29,10 +29,6 @@
       border: 1px solid gray;
       border-radius: 10px;
       width: 95%;
-      // height: 100px;
-      cursor: pointer;
-      // display: flex;
-      // align-items: center;
       transition: background-color 0.2s;
 
       &:hover {
@@ -59,11 +55,13 @@
     color: green;
     font-weight: bold;
     opacity: 0.7;
+    cursor: initial;
   }
 
   &.wrong-answer label {
     color: red;
     opacity: 0.7;
+    cursor: initial;
   }
 }
 
