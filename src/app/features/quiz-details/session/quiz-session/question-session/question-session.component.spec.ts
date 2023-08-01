@@ -41,12 +41,17 @@ describe('QuestionSessionComponent', () => {
               new HttpResponse({
                 status: HttpStatusCode.Ok,
                 statusText: 'Ok',
-                body: [
-                  {
-                    id: '1',
-                    value: 'correct answer'
-                  }
-                ]
+                body:
+                {
+                  id: '1',
+                  answers: [
+                    {
+                      id: '1',
+                      value: 'correct answer',
+                    }
+                  ],
+                }
+
               })
             )
           })
@@ -70,12 +75,14 @@ describe('QuestionSessionComponent', () => {
               new HttpResponse({
                 status: HttpStatusCode.Ok,
                 statusText: 'Ok',
-                body: [
+                body:
                   {
                     id: '1',
-                    value: 'correct answer'
+                    answers: [
+                      { id: '1', value: 'correct answer' }
+                    ],
                   }
-                ]
+                
               })
             )
           })
@@ -283,7 +290,7 @@ describe('QuestionSessionComponent', () => {
           },
         ];
 
-        const request = testController.expectOne(api.endpoints.answers.correctAnswersInstantMode('1')  + '?version=1');
+        const request = testController.expectOne(api.endpoints.answers.correctAnswersInstantMode('1') + '?version=1');
 
         request.flush(responseBody, {
           status: HttpStatusCode.NotFound,
