@@ -13,6 +13,7 @@ import { AllQuizzesComponent } from '../features/quiz-lists/all-quizzes/all-quiz
 import { fetchAllQuizzesResolver } from './resolvers/fetch-all-quizzes/fetch-all-quizzes.resolver';
 import { SearchQuizzesComponent } from '../features/quiz-lists/search-quizzes/search-quizzes.component';
 import { fetchSearchResults } from './resolvers/fetch-search-results/fetch-search-results.resolver';
+import { fetchQuizForEditResolver } from './resolvers/fetch-quiz-for-edit/fetch-quiz-for-edit.resolver';
 
 const routes: Routes = [
   {
@@ -31,12 +32,16 @@ const routes: Routes = [
       {
         path: 'all',
         component: AllQuizzesComponent,
-        resolve: [fetchAllQuizzesResolver]
+        resolve: {
+          catalogue: fetchAllQuizzesResolver
+        }
       },
       {
         path: 'search',
         component: SearchQuizzesComponent,
-        resolve: [fetchSearchResults]
+        resolve: {
+          catalogue: fetchSearchResults
+        }
       },
       {
         path: 'create',
@@ -46,12 +51,16 @@ const routes: Routes = [
       {
         path: ':id',
         component: QuizPageComponent,
-        resolve: [fetchQuizResolver],
+        resolve: {
+          quiz: fetchQuizResolver
+        },
       },
       {
         path: ':id/edit',
         component: EditQuizComponent,
-        canActivate: [canEditQuizGuard],
+        resolve: {
+          quiz: fetchQuizForEditResolver
+        }
       },
       
     ]
