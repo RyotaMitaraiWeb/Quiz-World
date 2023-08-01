@@ -3,10 +3,12 @@
     <h1>Log into your account</h1>
     <form (submit)="login($event)" [formGroup]="form">
       <mat-form-field>
+        <mat-label>Username</mat-label>
         <input required matInput name="username" id="username" formControlName="username" />
         <mat-error *ngIf="controlError('username')?.['required']">Username is required!</mat-error>
       </mat-form-field>
       <mat-form-field>
+        <mat-label>Password</mat-label>
         <input required matInput name="password" id="password" [type]="passwordFieldType" formControlName="password" />
         <button matPrefix [matTooltip]="passwordFieldAriaLabel" matTooltipPosition="above" mat-icon-button
           [attr.aria-label]="passwordFieldAriaLabel" (click)="togglePasswordVisibility($event)">
