@@ -1,15 +1,21 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IQuestionComponent, question } from '../../../../../../../../types/components/question.types';
+import { IQuestionComponent, question, shortQuestionType } from '../../../../../../../../types/components/question.types';
 import { ISessionAnswer } from '../../../../../../../../types/responses/quiz.types';
 import { MatRadioModule } from '@angular/material/radio';
-import { questionTypes } from '../../../../../../../constants/question-types.constants';
+import { questionTypes, shortQuestionTypes } from '../../../../../../../constants/question-types.constants';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-single-choice-question',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatRadioModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatRadioModule,
+    MatCardModule,
+  ],
   templateUrl: './single-choice-question.component.html',
   styleUrls: ['./single-choice-question.component.scss']
 })
@@ -43,17 +49,17 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
     {
       currentAnswer: FormControl<string | null>;
       id: FormControl<string | null>;
-      type: FormControl<question | null>;
+      type: FormControl<shortQuestionType | null>;
     }
   > = this.fb.group({
     currentAnswer: [null as string | null, [Validators.required]],
     id: [''],
-    type: [questionTypes.single]
+    type: [shortQuestionTypes[questionTypes.single]]
   });
 
   ngOnChanges(changes: SimpleChanges): void {
     const change = changes['correctAnswers'];
-
+    
     if (change) {
       this.correctAnswers = change.currentValue;
     }
@@ -66,7 +72,6 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
 
     return this.isCorrect ? 'correct' : 'wrong';
   }
-
 
   /**
    * Returns a boolean value that indicates whether the user has answered correctly
@@ -109,5 +114,9 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
 
   private get currentAnswer(): string {
     return this.form.controls.currentAnswer.value || '';
+  }
+
+  protected track(_index: number, answer: ISessionAnswer) {
+    return answer.id;
   }
 }

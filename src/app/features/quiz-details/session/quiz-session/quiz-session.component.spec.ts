@@ -8,12 +8,12 @@ import { HttpErrorResponse, HttpResponse, HttpStatusCode } from '@angular/common
 import { IGradedAnswer, ISessionQuestion } from '../../../../../types/responses/quiz.types';
 import { api } from '../../../../constants/api.constants';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { questionTypes } from '../../../../constants/question-types.constants';
+import { questionTypes, shortQuestionTypes } from '../../../../constants/question-types.constants';
 
 const questions: ISessionQuestion[] = [
   {
     prompt: 'question #1',
-    type: questionTypes.single,
+    type: shortQuestionTypes[questionTypes.single],
     id: '1',
     answers: [
       {
@@ -28,7 +28,7 @@ const questions: ISessionQuestion[] = [
   },
   {
     prompt: 'question #2',
-    type: questionTypes.multi,
+    type: shortQuestionTypes[questionTypes.multi],
     id: '2',
     answers: [
       {
@@ -47,7 +47,7 @@ const questions: ISessionQuestion[] = [
   },
   {
     prompt: 'question #3',
-    type: questionTypes.text,
+    type: shortQuestionTypes[questionTypes.text],
     id: '3',
   }
 ];
@@ -81,9 +81,9 @@ describe('QuizSessionComponent', () => {
         component.ngOnInit();
 
         expect(component.form.length).toBe(3);
-        expect(component.form.controls[0].controls.type.value).toBe(questionTypes.single);
-        expect(component.form.controls[1].controls.type.value).toBe(questionTypes.multi);
-        expect(component.form.controls[2].controls.type.value).toBe(questionTypes.text);
+        expect(component.form.controls[0].controls.type.value).toBe(shortQuestionTypes[questionTypes.single]);
+        expect(component.form.controls[1].controls.type.value).toBe(shortQuestionTypes[questionTypes.multi]);
+        expect(component.form.controls[2].controls.type.value).toBe(shortQuestionTypes[questionTypes.text]);
       });
 
       it('Correctly sets the questionKeys map', () => {
@@ -107,7 +107,7 @@ describe('QuizSessionComponent', () => {
               statusText: 'Ok',
               body: [
                 {
-                  questionId: '1',
+                  id: '1',
                   answers: [
                     {
                       value: 'a',
@@ -116,7 +116,7 @@ describe('QuizSessionComponent', () => {
                   ]
                 },
                 {
-                  questionId: '2',
+                  id: '2',
                   answers: [
                     {
                       id: '3',
@@ -129,7 +129,7 @@ describe('QuizSessionComponent', () => {
                   ]
                 },
                 {
-                  questionId: '3',
+                  id: '3',
                   answers: [
                     {
                       id: '7',
@@ -249,11 +249,12 @@ describe('QuizSessionComponent', () => {
       it('Clicking the button updates the questions\' status', waitForAsync(() => {
         component.instantMode = false;
         component.quizId = 1;
+        component.version = 1;
         component.questions = [
           {
             prompt: 'question #1',
             id: '1',
-            type: questionTypes.text,
+            type: shortQuestionTypes[questionTypes.text],
           }
         ];
 
@@ -276,10 +277,10 @@ describe('QuizSessionComponent', () => {
           expect(feedbacks.length).toBe(1);
         });
        
-        const request = httpTestController.expectOne(api.endpoints.answers.correctAnswersFull(1));
+        const request = httpTestController.expectOne(api.endpoints.answers.correctAnswersFull(1) + '?version=1');
         request.flush([
           {
-            questionId: '1',
+            id: '1',
             answers: [
               {
                 id: '1',
@@ -300,7 +301,7 @@ describe('QuizSessionComponent', () => {
           {
             prompt: 'question #1',
             id: '1',
-            type: questionTypes.text,
+            type: shortQuestionTypes[questionTypes.text],
           }
         ];
 

@@ -1,10 +1,19 @@
 <section class="question text-question">
-  <h1 [ngClass]="promptClass">{{ prompt }}</h1>
-  <mat-form-field [formGroup]="form">
-    <input matInput formControlName="currentAnswer" required class="text-question-field">
-  </mat-form-field>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title [ngClass]="promptClass">{{ prompt }}</mat-card-title>
+      <mat-card-subtitle>Type in the correct answer (case and space insensitive)</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field [formGroup]="form" [ngClass]="gradedAnswerClass">
+        <input placeholder="Your answer" matInput formControlName="currentAnswer" required class="text-question-field">
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-footer>
+      <p *ngIf="isCorrect" class="correct answer-feedback">Correct! The answers are: {{
+        formattedCorrectAnswers?.join(', ') }}</p>
+      <p *ngIf="isCorrect === false" class="wrong answer-feedback">Wrong! The answers are: {{
+        formattedCorrectAnswers?.join(', ') }}</p>
+    </mat-card-footer>
+  </mat-card>
 </section>
-
-<p>{{ isCorrect }}</p>
-<p *ngIf="isCorrect" class="correct-answer answer-feedback">Correct! The answers are: {{ formattedCorrectAnswers?.join(', ') }}</p>
-<p *ngIf="isCorrect === false" class="wrong-answer answer-feedback">Wrong! The answers are: {{ formattedCorrectAnswers?.join(', ') }}</p>

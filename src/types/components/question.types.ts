@@ -37,6 +37,7 @@ export interface IQuestionSubmission extends IQuestion {
  * can have multiple correct answers
  */
 export type question = 'SingleChoice' | 'MultipleChoice' | 'Text';
+export type shortQuestionType = 'single' | 'multi' | 'text';
 
 export interface IQuestionComponent<T> {
   correctAnswers: ISessionAnswer[] | null;

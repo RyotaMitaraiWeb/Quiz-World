@@ -1,4 +1,4 @@
-import { question } from '../components/question.types';
+import { question, shortQuestionType } from '../components/question.types';
 
 /**
  * ```typescript
@@ -29,6 +29,7 @@ export interface IQuizDetails {
   instantMode: boolean;
   questions: ISessionQuestion[];
   creatorId: string;
+  version: number;
 }
 
 /**
@@ -45,7 +46,7 @@ export interface ISessionQuestion {
   id: string;
   prompt: string;
   answers?: ISessionAnswer[];
-  type: question;
+  type: shortQuestionType;
 }
 
 /**
@@ -62,6 +63,6 @@ export interface ISessionAnswer {
 }
 
 export interface IGradedAnswer {
-  questionId: string;
+  id: string;
   answers: ISessionAnswer[];
 }

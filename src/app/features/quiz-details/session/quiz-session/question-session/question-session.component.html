@@ -1,14 +1,15 @@
-<app-text-question *ngIf="type === types.text" [correctAnswers]="correctAnswers" 
-[form]="form" [prompt]="prompt">
-</app-text-question>
+<div class="question-container">
+  <app-text-question *ngIf="type === types['Text']" [correctAnswers]="correctAnswers" [form]="form" [prompt]="prompt">
+  </app-text-question>
 
-<app-single-choice-question *ngIf="type === types.single" [correctAnswers]="correctAnswers"
-  [form]="form" [answers]="answers!" [prompt]="prompt"></app-single-choice-question>
+  <app-single-choice-question *ngIf="type === types['SingleChoice']" [correctAnswers]="correctAnswers" [form]="form"
+    [answers]="answers!" [prompt]="prompt"></app-single-choice-question>
 
-<app-multiple-choice-question *ngIf="type === types.multi"
-  [correctAnswers]="correctAnswers" [form]="form" [answers]="answers!" [prompt]="prompt">
-</app-multiple-choice-question>
+  <app-multiple-choice-question *ngIf="type === types['MultipleChoice']" [correctAnswers]="correctAnswers" [form]="form"
+    [answers]="answers!" [prompt]="prompt">
+  </app-multiple-choice-question>
 
 
-<button mat-raised-button color="primary" class="grade-btn" *ngIf="instantMode"
-  [disabled]="form.invalid || form.disabled" (click)="gradeAnswer($event)">Check your answer</button>
+  <button mat-raised-button color="primary" class="grade-btn" *ngIf="instantMode"
+    [disabled]="form.invalid || form.disabled" (click)="gradeAnswer($event)">Check your answer</button>
+</div>

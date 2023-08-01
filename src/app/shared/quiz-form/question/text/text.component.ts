@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,10 +17,10 @@ import { questionTypes } from '../../../../constants/question-types.constants';
     MatIconModule,
     MatInputModule,
     MatButtonModule,
-    MatTooltipModule
+    MatTooltipModule,
   ],
   templateUrl: './text.component.html',
-  styleUrls: ['./text.component.scss']
+  styleUrls: ['./text.component.scss'],
 })
 export class TextComponent {
   constructor(private readonly fb: FormBuilder) {

@@ -7,7 +7,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { of } from 'rxjs';
 import { IQuizDetails } from '../../../../types/responses/quiz.types';
-import { questionTypes } from '../../../constants/question-types.constants';
+import { questionTypes, shortQuestionTypes } from '../../../constants/question-types.constants';
 import { AppStoreModule } from '../../../store/app-store.module';
 import { Store } from '@ngrx/store';
 import { IAppStore } from '../../../../types/store/store.types';
@@ -23,11 +23,12 @@ function generateQuiz(): IQuizDetails {
     description: 'test',
     instantMode: true,
     creatorId: '1',
+    version: 1,
     questions: [
       {
         id: '1',
         prompt: 'question #1',
-        type: questionTypes.single,
+        type: shortQuestionTypes[questionTypes.single],
         answers: [
           {
             value: 'a',
@@ -42,7 +43,7 @@ function generateQuiz(): IQuizDetails {
       {
         id: '2',
         prompt: 'question #2',
-        type: questionTypes.multi,
+        type: shortQuestionTypes[questionTypes.multi],
         answers: [
           {
             value: 'a',
@@ -61,7 +62,7 @@ function generateQuiz(): IQuizDetails {
       {
         id: '3',
         prompt: 'question #3',
-        type: questionTypes.text,
+        type: shortQuestionTypes[questionTypes.text],
       }
     ],
   }
@@ -99,6 +100,7 @@ describe('QuizPageComponent', () => {
             description: '',
             instantMode: true,
             creatorId: '',
+            version: 1,
             questions: [],
           } as IQuizDetails
         }

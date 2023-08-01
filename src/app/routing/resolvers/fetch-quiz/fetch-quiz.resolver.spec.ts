@@ -6,7 +6,7 @@ import { IQuizDetails } from '../../../../types/responses/quiz.types';
 import { QuizService } from '../../../features/quiz-service/quiz.service';
 import { Observable, of } from 'rxjs';
 import { HttpResponse, HttpStatusCode } from '@angular/common/http';
-import { questionTypes } from '../../../constants/question-types.constants';
+import { questionTypes, shortQuestionTypes } from '../../../constants/question-types.constants';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('fetchQuizResolver', () => {
@@ -43,10 +43,11 @@ describe('fetchQuizResolver', () => {
               title: 'a',
               description: 'a',
               instantMode: false,
+              version: 1,
               questions: [
                 {
                   id: '1',
-                  type: questionTypes.text,
+                  type: shortQuestionTypes[questionTypes.text],
                   prompt: 'a',
                   answers: []
                 }

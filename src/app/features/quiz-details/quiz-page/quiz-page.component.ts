@@ -11,6 +11,7 @@ import { RoleService } from '../../../core/role-service/role.service';
 import { selectUser } from '../../../store/user/user.selector';
 import { MatChipsModule } from '@angular/material/chips';
 import { QuizSessionComponent } from '../session/quiz-session/quiz-session.component';
+import { MatCardModule } from '@angular/material/card';
 @Component({
   selector: 'app-quiz-page',
   standalone: true,
@@ -19,6 +20,7 @@ import { QuizSessionComponent } from '../session/quiz-session/quiz-session.compo
     SharedModule,
     MatTabsModule,
     MatChipsModule,
+    MatCardModule,
     QuizSessionComponent,
   ],
   templateUrl: './quiz-page.component.html',
@@ -34,9 +36,7 @@ export class QuizPageComponent implements OnInit, OnDestroy {
   private quizSub = new Subscription();
   private user = this.store.select(selectUser);
 
-  protected get canEdit(): Observable<boolean> {
-    console.log(this.roleService.isModerator());
-    
+  protected get canEdit(): Observable<boolean> {    
     return this.user.pipe(
       map(u => this.roleService.isModerator() || this.quiz.creatorId === u.id));
   }
@@ -66,7 +66,8 @@ export class QuizPageComponent implements OnInit, OnDestroy {
     description: '',
     instantMode: false,
     questions: [],
-    creatorId: ''
+    creatorId: '',
+    version: 0,
   }
 
   ngOnDestroy(): void {

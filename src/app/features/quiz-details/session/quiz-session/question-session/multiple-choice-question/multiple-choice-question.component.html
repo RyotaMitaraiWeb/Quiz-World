@@ -1,14 +1,20 @@
-<section class="question single-choice-question">
-  <h1 [ngClass]="promptClass">{{ prompt }}</h1>
-  <mat-radio-group required [name]="checkboxName">
-    <mat-checkbox *ngFor="let answer of answers; index as i" [value]="answer.id.toString()"
-      [ngClass]="answerClass(answer.id)" (change)="updateAnswers($event)"
-      [checked]="this.currentAnswers.includes(answer.id.toString())"
-    >
-      {{ answer.value }}
-    </mat-checkbox>
-  </mat-radio-group>
+<section class="question multiple-choice-question">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title [ngClass]="promptClass">{{ prompt }}</mat-card-title>
+      <mat-card-subtitle>Select all that apply</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-radio-group required [name]="checkboxName">
+        <mat-checkbox *ngFor="let answer of answers; index as i; trackBy: track" [value]="answer.id" [ngClass]="answerClass(answer.id)"
+          (change)="updateAnswers($event)" [checked]="this.currentAnswers?.includes(answer.id)" [disabled]="form.disabled">
+          {{ answer.value }}
+        </mat-checkbox>
+      </mat-radio-group>
+    </mat-card-content>
+    <mat-card-footer>
+      <p *ngIf="isCorrect" class="correct answer-feedback">Correct!</p>
+      <p *ngIf="isCorrect === false" class="wrong answer-feedback">Wrong!</p>
+    </mat-card-footer>
+  </mat-card>
 </section>
-
-<p *ngIf="isCorrect" class="correct answer-feedback">Correct!</p>
-<p *ngIf="isCorrect === false" class="wrong answer-feedback">Wrong!</p>

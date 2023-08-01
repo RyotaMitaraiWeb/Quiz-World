@@ -2,15 +2,22 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
-import { IQuestionComponent, question } from '../../../../../../../types/components/question.types';
+import { IQuestionComponent, question, shortQuestionType } from '../../../../../../../types/components/question.types';
 import { ISessionAnswer } from '../../../../../../../types/responses/quiz.types';
 import { MatRadioModule } from '@angular/material/radio';
-import { questionTypes } from '../../../../../../constants/question-types.constants';
+import { questionTypes, shortQuestionTypes } from '../../../../../../constants/question-types.constants';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-multiple-choice-question',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatCheckboxModule, MatRadioModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatCardModule,
+  ],
   templateUrl: './multiple-choice-question.component.html',
   styleUrls: ['./multiple-choice-question.component.scss']
 })
@@ -26,18 +33,18 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
     {
       currentAnswer: FormArray<FormControl<string | null>>;
       id: FormControl<string | null>;
-      type: FormControl<question | null>;
+      type: FormControl<shortQuestionType | null>;
     }
   > = this.fb.group({
     currentAnswer: this.fb.array([] as FormControl<string | null>[]),
     id: [''],
-    type: [questionTypes.multi]
+    type: [shortQuestionTypes[questionTypes.multi]]
   });
 
   protected checkboxName = Date.now().toString();
 
   protected get formattedCorrectAnswers() {
-    if (this.correctAnswers === null) {
+    if (this.correctAnswers === null) {      
       return null;
     }
 
@@ -63,7 +70,7 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
       return null;
     }
 
-    if (this.formattedCorrectAnswers.length !== this.currentAnswers.length) {
+    if (this.formattedCorrectAnswers.length !== this.currentAnswers?.length) {
       return false;
     }
 
@@ -74,16 +81,15 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
     }
 
     for (const answer of this.currentAnswers) {
-      const index = Number(answer);
-      if (!index) {
-        throw new Error('A non-numerical string or the number zero was discovered in the current answers')
+      if (!answer) {
+        throw new Error('Empty string discovered')
       }
 
-      if (!superSet[index]) {
+      if (!superSet[answer]) {
         return false;
       }
 
-      superSet[index] = 2;
+      superSet[answer] = 2;
     }
 
     for (const answer in superSet) {
@@ -98,8 +104,11 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
 
   ngOnChanges(changes: SimpleChanges) {
     const change = changes['correctAnswers'];
+    
     if (change) {
       this.correctAnswers = change.currentValue;
+      console.log(this.form.disabled);
+      
     }
   }
 
@@ -114,7 +123,7 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
   private answerIsCorrect(id: string) {
     if (this.formattedCorrectAnswers === null) {
       return null;
-    }
+    }    
 
     return this.formattedCorrectAnswers.includes(id);
   }
@@ -145,7 +154,7 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
    * @param event the check event from the ``<mat-checkbox>`` that was interacted with.
    * @throws if ``event.source.value`` cannot be found within the form.
    */
-  updateAnswers(event: MatCheckboxChange): void {
+  updateAnswers(event: MatCheckboxChange): void {    
     const value = event.source.value;
     const checked = event.checked;
 
@@ -160,7 +169,7 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
       }
 
       this.form.controls.currentAnswer.removeAt(index);
-      if (this.currentAnswers.length === 0) {
+      if (this.currentAnswers?.length === 0) {
         this.form.controls.currentAnswer.setErrors({ required: true });
       }
     }    
@@ -169,7 +178,11 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
   /**
    * Retrieves the IDs of all answers that have been checked.
    */
-  get currentAnswers(): (string | null)[] {
+  get currentAnswers(): (string | null)[] | null {    
     return this.form.controls.currentAnswer.value;
+  }
+
+  protected track(_index: number, answer: ISessionAnswer) {
+    return answer.id;
   }
 }

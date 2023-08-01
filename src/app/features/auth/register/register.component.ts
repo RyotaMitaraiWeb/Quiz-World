@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 import { IAuthBody } from '../../../../types/auth/general.types';
 import { setUser } from '../../../store/user/user.action';
 import { HttpErrorResponse } from '@angular/common/http';
+import { SharedModule } from '../../../shared/shared.module';
 
 @Component({
   selector: 'app-register',
@@ -25,6 +26,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
+    SharedModule,
   ],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']

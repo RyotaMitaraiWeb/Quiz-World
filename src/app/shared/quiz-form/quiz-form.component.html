@@ -1,13 +1,15 @@
-<form [formGroup]="form" (submit)="onSubmit($event)">
+<form class="quiz-form" [formGroup]="form" (submit)="onSubmit($event)">
   <section class="title-field">
-    <mat-form-field>
+    <mat-form-field hintLabel="The title must be between 10 and 100 characters.">
+      <mat-label>Title</mat-label>
       <input required matInput formControlName="title" id="title" maxlength="100">
       <mat-error *ngIf="form.controls.title.errors?.['required']">Please fill this field!</mat-error>
       <mat-error *ngIf="form.controls.title.errors?.['minlength']">Title is too short!</mat-error>
     </mat-form-field>
   </section>
   <section class="description-field">
-    <mat-form-field>
+    <mat-form-field hintLabel="Description must be between 1 and 500 characters.">
+      <mat-label>Description</mat-label>
       <textarea cdkTextareaAutosize matInput required formControlName="description" id="description" maxlength="300"></textarea>
       <mat-error *ngIf="form.controls.description.errors?.['required']">Please fill this field!</mat-error>
     </mat-form-field>
@@ -15,7 +17,7 @@
   <section class="other-options-field">
     <mat-checkbox class="instant-mode-field" formControlName="instantMode" *ngIf="!edit">Instant mode</mat-checkbox>
   </section>
-  <section *ngFor="let question of form.controls.questions.controls; index as i">
+  <section class="question-fields" *ngFor="let question of form.controls.questions.controls; index as i">
     <app-question [form]="question" [index]="i"></app-question>
     <button class="remove-question-btn" (click)="removeQuestionAt(i, $event)" mat-raised-button color="warn">
       <mat-icon>remove_circle</mat-icon>

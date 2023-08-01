@@ -1,11 +1,13 @@
 <app-catalogue-select-menu [selectedValue]="sortOrder"
   (selectEvent)="changeSortAndOrder($event)"></app-catalogue-select-menu>
 
-<ng-container *ngIf="catalogue.quizzes.length; else empty">
-  <app-quiz-list-item 
-  *ngFor="let quiz of catalogue.quizzes"
-  [quiz]="quiz"></app-quiz-list-item>
-</ng-container>
+<div class="catalogue" *ngIf="catalogue.quizzes.length; else empty">
+  <ng-container>
+    <app-quiz-list-item 
+    *ngFor="let quiz of catalogue.quizzes"
+    [quiz]="quiz"></app-quiz-list-item>
+  </ng-container>
+</div>
 
 <app-catalogue-paginator [total]="catalogue.total" [page]="page" (pageEvent)="changePage($event)"></app-catalogue-paginator>
 

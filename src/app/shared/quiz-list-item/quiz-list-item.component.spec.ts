@@ -56,7 +56,7 @@ describe('QuizListItemComponent', () => {
       const instantMode = element.querySelector('.instant-mode');
       const link = element.querySelector('.quiz-link') as HTMLAnchorElement;
 
-      expect(title?.textContent).toBe('a');
+      expect(title?.textContent?.trim()).toBe('a');
       expect(description?.textContent).toBe('a');
 
       expect(updatedOn).toBeNull();

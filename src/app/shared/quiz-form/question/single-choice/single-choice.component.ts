@@ -11,6 +11,7 @@ import { IAnswer } from '../../../../../types/components/answer.types';
 import { IQuestion } from '../../../../../types/components/question.types';
 import { AnswersManager } from '../../../../util/AnswersManager/AnswersManager';
 import { questionTypes } from '../../../../constants/question-types.constants';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-single-choice',
@@ -23,6 +24,7 @@ import { questionTypes } from '../../../../constants/question-types.constants';
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
+    MatDividerModule
   ],
   templateUrl: './single-choice.component.html',
   styleUrls: ['./single-choice.component.scss']

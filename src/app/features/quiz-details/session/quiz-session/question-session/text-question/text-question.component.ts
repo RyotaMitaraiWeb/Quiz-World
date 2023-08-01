@@ -1,14 +1,21 @@
 import { Component, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IQuestionComponent, question } from '../../../../../../../types/components/question.types';
+import { IQuestionComponent, question, shortQuestionType } from '../../../../../../../types/components/question.types';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { ISessionAnswer } from '../../../../../../../types/responses/quiz.types';
+import { MatCardModule } from '@angular/material/card';
+import { shortQuestionTypes } from '../../../../../../constants/question-types.constants';
 
 @Component({
   selector: 'app-text-question',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatInputModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatCardModule,
+  ],
   templateUrl: './text-question.component.html',
   styleUrls: ['./text-question.component.scss']
 })
@@ -26,12 +33,12 @@ export class TextQuestionComponent implements IQuestionComponent<string>, OnChan
     {
       currentAnswer: FormControl<string | null>;
       id: FormControl<string | null>;
-      type: FormControl<question | null>;
+      type: FormControl<shortQuestionType | null>;
     }
   > = this.fb.group({
     currentAnswer: ['', Validators.required],
     id: [''],
-    type: ['text' as question]
+    type: [shortQuestionTypes.Text]
   });
 
   /**
@@ -63,5 +70,17 @@ export class TextQuestionComponent implements IQuestionComponent<string>, OnChan
 
   ngOnChanges(changes: SimpleChanges): void {
     this.correctAnswers = changes['correctAnswers'].currentValue;
+  }
+
+  protected get gradedAnswerClass() {
+    if (this.isCorrect) {
+      return 'correct-answer';
+    }
+
+    if (this.isCorrect === false)  {
+      return 'wrong-answer';
+    }
+
+    return 'ungraded';
   }
 }
