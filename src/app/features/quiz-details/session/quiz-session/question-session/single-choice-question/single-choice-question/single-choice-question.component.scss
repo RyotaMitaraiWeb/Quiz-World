@@ -17,6 +17,10 @@
 
   mat-card-footer {
     padding: 10px;
+
+    p {
+      animation: appear 0.5s;
+    }
   }
 
   mat-radio-group {
@@ -38,6 +42,17 @@
   }
 }
 
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
 ::ng-deep label {
   width: 100%; // Make label take up the remainder of the horizontal whitespace
   display: block;
@@ -51,6 +66,7 @@
   label {
     transition: color 0.2s, opacity 0.2s;
   }
+  
   &.correct-answer label {
     color: green;
     font-weight: bold;

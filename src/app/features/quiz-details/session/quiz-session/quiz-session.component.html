@@ -1,5 +1,5 @@
 <form class="quiz-session" action="" (submit)="gradeQuestions($event)">
-  <section class="question-section" *ngFor="let question of (questionKeys | keyvalue); index as i;">
+  <section class="question-section" *ngFor="let question of (questionKeys | keyvalue); index as i; trackBy: track">
     <app-question-session [prompt]="prompts.get(question.key) || ''"
       [answers]="questions[i].answers"
       [correctAnswers]="question.value"

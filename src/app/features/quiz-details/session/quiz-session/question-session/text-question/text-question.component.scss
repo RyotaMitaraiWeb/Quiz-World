@@ -8,12 +8,17 @@
 
     mat-card-title {
       font-size: 2rem;
+      transition: color 0.2s;
     }
   }
 
   mat-card-footer {
     overflow-wrap: anywhere;
     padding: 10px;
+
+    p {
+      animation: appear 0.5s
+    }
   }
 
   mat-form-field {
@@ -25,7 +30,21 @@
   }
 }
 
+@keyframes appear {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
 ::ng-deep .question.text-question {
+  input {
+    transition: color 0.1s, opacity 0.2s;
+  }
+
   .correct-answer input {
     color: green;
     font-weight: bold;
