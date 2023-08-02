@@ -1,11 +1,11 @@
 <form class="quiz-session" action="" (submit)="gradeQuestions($event)">
-  <section class="question-section" *ngFor="let question of (questionKeys | keyvalue); index as i; trackBy: track">
+  <section class="question-section" *ngFor="let question of (prompts | keyvalue); index as i; trackBy: track">
     <app-question-session [prompt]="prompts.get(question.key) || ''"
-      [answers]="questions[i].answers"
-      [correctAnswers]="question.value"
+      [answers]="questionAnswersKeys.get(question.key)?.answers"
+      [correctAnswers]="questionKeys.get(question.key) || null"
       [instantMode]="instantMode"
-      [type]="getQuestionControlAt(i).controls.type.value"
-      [form]="getQuestionControlAt(i)"
+      [type]="questionAnswersKeys.get(question.key)?.type || null"
+      [form]="formsKeys.get(question.key)!"
       [version]="version"
     ></app-question-session>
   </section>

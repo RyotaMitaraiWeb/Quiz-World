@@ -9,7 +9,7 @@ import { ViewChild } from '@angular/core';
 import { QuizFormComponent } from '../../shared/quiz-form/quiz-form.component';
 import { Observable, of } from 'rxjs';
 import { HttpResponse, HttpStatusCode } from '@angular/common/http';
-import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('CreateQuizComponent', () => {
@@ -55,7 +55,7 @@ describe('CreateQuizComponent', () => {
 
         spyOn(router, 'navigate').and.stub();
 
-        component.createQuiz({} as IQuizFormSubmission);
+        component.createQuiz({} as IQuizForm);
         expect(router.navigate).toHaveBeenCalledWith(['/quiz', '1']);
       }));
 
@@ -71,7 +71,7 @@ describe('CreateQuizComponent', () => {
 
         spyOn(router, 'navigate').and.stub();
 
-        component.createQuiz({} as IQuizFormSubmission);
+        component.createQuiz({} as IQuizForm);
         expect(router.navigate).not.toHaveBeenCalled();
       }));
     });

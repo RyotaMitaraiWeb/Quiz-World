@@ -7,7 +7,7 @@ import { QuizService } from '../quiz-service/quiz.service';
 import { Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { HttpResponse, HttpStatusCode } from '@angular/common/http';
-import { IEditQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IEditQuizForm, IQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { questionTypes } from '../../constants/question-types.constants';
 
@@ -74,7 +74,7 @@ describe('EditQuizComponent', () => {
         spyOn(router, 'navigate').and.stub();
 
 
-        component.editQuiz({} as IQuizFormSubmission);
+        component.editQuiz({} as IQuizForm);
         expect(router.navigate).toHaveBeenCalledWith(['/quiz', '1']);
       }));
 
@@ -90,7 +90,7 @@ describe('EditQuizComponent', () => {
 
         spyOn(router, 'navigate').and.stub();
 
-        component.editQuiz({} as IQuizFormSubmission);
+        component.editQuiz({} as IQuizForm);
         expect(router.navigate).not.toHaveBeenCalled();
       }));
     });

@@ -3,7 +3,7 @@ import { QuizService } from './quiz.service';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { ICreatedQuizResponse, IQuizDetails } from '../../../types/responses/quiz.types';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { IEditQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IEditQuizForm, IQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { IQuizList, IQuizListItem } from '../../../types/others/lists.types';
 describe('QuizService', () => {
   let service: QuizService;
@@ -28,7 +28,7 @@ describe('QuizService', () => {
         id: 1,
       };
 
-      const body: IQuizFormSubmission = {
+      const body: IQuizForm = {
         title: 'a',
         description: 'b',
         instantMode: false,
@@ -65,7 +65,7 @@ describe('QuizService', () => {
 
     it('Correctly returns a response with a given body (response is an error)', (done: DoneFn) => {
       const res = ['a', 'b'];
-      const body: IQuizFormSubmission = {
+      const body: IQuizForm = {
         title: 'a',
         description: 'b',
         instantMode: false,
@@ -470,7 +470,7 @@ describe('QuizService', () => {
     it('Correctly returns a response (response is ok)', (done: DoneFn) => {
     
 
-      service.edit(1, {} as IQuizFormSubmission).subscribe({
+      service.edit(1, {} as IQuizForm).subscribe({
         next: (res) => {
           expect(res.status).toBe(HttpStatusCode.NoContent);
           done();

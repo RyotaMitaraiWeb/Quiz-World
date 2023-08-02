@@ -50,28 +50,51 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
     this.form.removeAt(0);
 
     this.questions.forEach(q => {
+      let form;
       if (q.type === shortQuestionTypes[questionTypes.text]) {
-        this.form.push(this.addControl('', q.id, q.type));
+        form = this.addControl('', q.id, q.type);
+        // this.form.push(this.addControl('', q.id, q.type));
       } else if (q.type === shortQuestionTypes[questionTypes.multi]) {
-        this.form.push(this.addControl(
+        form = this.addControl(
           this.fb.array([]), q.id, q.type
-        ));
+        );
+        // form = this.form.push(this.addControl(
+        //   this.fb.array([]), q.id, q.type
+        // ));
       } else {
-        this.form.push(this.addControl(null, q.id, q.type));
+        form = this.addControl(null, q.id, q.type);
+        // this.form.push(this.addControl(null, q.id, q.type));
       }
 
+      this.form.push(form);
+      this.formsKeys.set(q.id, form);
       this.questionKeys.set(q.id, null);
-      this.prompts.set(q.id, q.prompt);
-    });
 
-    console.log(this.questionKeys);
-    console.log(this.prompts);
+      this.prompts.set(q.id, q.prompt);
+
+      this.questionAnswersKeys.set(q.id, {
+        answers: q.answers,
+        type: q.type,
+      });
+    });
     
+    console.log(this.prompts);
     
   }
 
   questionKeys = new Map<string, ISessionAnswer[] | null>();
   prompts = new Map<string, string>();
+  questionAnswersKeys = new Map<string, {
+    answers: ISessionAnswer[] | undefined;
+    type: shortQuestionType | null,
+  }>();
+  formsKeys = new Map<string, FormGroup<
+  {
+    currentAnswer: FormControl<any>,
+    id: FormControl<string | null>,
+    type: FormControl<shortQuestionType | null>,
+  }
+>>();
 
   form: FormArray<FormGroup<
     {
@@ -132,7 +155,7 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
     this.gradeSub.unsubscribe();
   }
 
-  protected track(_index: number, item: KeyValue<string, ISessionAnswer[] | null>) {
+  protected track(_index: number, item: KeyValue<string, string | null>) {
     return item.key;
   }
 }
