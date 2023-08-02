@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription, of } from 'rxjs';
-import { IEditQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IEditQuizForm, IQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuizService } from '../quiz-service/quiz.service';
 import { IQuizDetails } from '../../../types/responses/quiz.types';
@@ -29,11 +29,13 @@ export class EditQuizComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.quizSub = this.getResolvedData().subscribe(data => {
-      this.quiz = data['quiz'] as any;
+      this.quiz = data['quiz'];
+      console.log(this.quiz);
+      
     });
   }
 
-  editQuiz(quiz: IQuizFormSubmission): void {
+  editQuiz(quiz: IQuizForm): void {
     this.editSub = this.quizService.edit(this.quiz.id, quiz).subscribe({
       next: () => {
         this.router.navigate(['/quiz', this.quiz.id.toString()])
@@ -46,24 +48,7 @@ export class EditQuizComponent implements OnInit, OnDestroy {
   }
 
   getResolvedData() {
-    return of({
-      quiz: {
-        id: 1,
-        title: 'a',
-        description: 'a',
-        questions: [
-          {
-            prompt: 'question #1',
-            type: questionTypes.text,
-            answers: [{
-              value: 'a',
-              correct: true,
-            }]
-          }
-        ]
-      }
-    }
-    )
+    return this.activatedRoute.data;
   }
 
   ngOnDestroy(): void {
@@ -75,7 +60,6 @@ export class EditQuizComponent implements OnInit, OnDestroy {
     title: '',
     description: '',
     questions: [],
-    
   }
 
 }

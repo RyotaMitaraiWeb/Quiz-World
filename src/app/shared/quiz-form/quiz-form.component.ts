@@ -4,12 +4,13 @@ import { QuestionModule } from './question/question.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IQuestionSubmission } from '../../../types/components/question.types';
+import { IQuestion, IQuestionSubmission } from '../../../types/components/question.types';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { questionTypes } from '../../constants/question-types.constants';
+import { IAnswer } from '../../../types/components/answer.types';
 
 @Component({
   selector: 'app-quiz-form',
@@ -34,6 +35,9 @@ export class QuizFormComponent implements OnInit {
     while (this.form.controls.questions.controls.length) {
       this.form.controls.questions.removeAt(0);
     }
+
+    console.log(this.questions);
+    
 
     this.questions.forEach(q => {      
       const correctAnswersFormArray = this.fb.array([this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]);
@@ -92,7 +96,7 @@ export class QuizFormComponent implements OnInit {
   @Input() title = '';
   @Input() description = '';
   @Input() instantMode = false;
-  @Output() submitEvent = new EventEmitter<IQuizFormSubmission>();
+  @Output() submitEvent = new EventEmitter<IQuizForm>();
   @Input() edit = false;
 
   form = this.fb.group({
@@ -156,7 +160,45 @@ export class QuizFormComponent implements OnInit {
   onSubmit(event: Event) {
     event.preventDefault();
     const value = this.form.value as IQuizFormSubmission;
-    this.submitEvent.emit(value);
+    const questions = value.questions.map(q => {
+      const correctAnswers = q.correctAnswers;
+      const wrongAnswers = q.wrongAnswers;
+
+      const answers: IAnswer[] = [];
+
+      if (correctAnswers) {
+        correctAnswers.forEach(ca => {
+          answers.push({
+            value: ca.answer || '',
+            correct: true,
+          });
+        });
+      }
+
+      if (wrongAnswers) {
+        wrongAnswers.forEach(wa => {
+          answers.push({
+            value: wa.answer || '',
+            correct: false,
+          });
+        });
+      }
+
+      return {
+        prompt: q.prompt || '',
+        type: q.type || '',
+        answers,
+      };
+    });
+
+    const quiz: IQuizForm = {
+      title: value.title,
+      description: value.description,
+      instantMode: value.instantMode,
+      questions
+    }
+
+    this.submitEvent.emit(quiz);
   }
 
   protected get hasMoreThanOneQuestion() {

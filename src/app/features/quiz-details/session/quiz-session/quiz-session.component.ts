@@ -46,7 +46,7 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
     return group;
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.form.removeAt(0);
 
     this.questions.forEach(q => {
@@ -63,6 +63,11 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
       this.questionKeys.set(q.id, null);
       this.prompts.set(q.id, q.prompt);
     });
+
+    console.log(this.questionKeys);
+    console.log(this.prompts);
+    
+    
   }
 
   questionKeys = new Map<string, ISessionAnswer[] | null>();
