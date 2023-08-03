@@ -2,7 +2,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, Valid
 
 export class SingleChoiceAnswersManager {
   private readonly fb: FormBuilder;
-  private readonly _form: FormArray<FormGroup<{
+  form: FormArray<FormGroup<{
     value: FormControl<string | null>;
     correct: FormControl<boolean | null>;
   }>>
@@ -21,14 +21,7 @@ export class SingleChoiceAnswersManager {
     correct: FormControl<boolean | null>;
   }>>) {
     this.fb = fb;
-    this._form = form;
-  }
-
-  get form(): FormArray<FormGroup<{
-    value: FormControl<string | null>;
-    correct: FormControl<boolean | null>;
-  }>> {
-    return this._form;
+    this.form = form;
   }
 
   /**
@@ -36,8 +29,8 @@ export class SingleChoiceAnswersManager {
    * @param value the initial value of the field, defaults to an empty string.
    */
   addField(value = ''): void {
-    if (this._form.controls.length < this.maximumAmountOfAnswers) {
-      this._form.controls.push(
+    if (this.form.controls.length < this.maximumAmountOfAnswers) {
+      this.form.controls.push(
         this.fb.group(
           {
             value: [value, [Validators.required, Validators.maxLength(100)]],
@@ -63,7 +56,7 @@ export class SingleChoiceAnswersManager {
       return null;
     }
 
-    return this._form.controls[i];
+    return this.form.controls[i];
   }
 
   /**
@@ -83,7 +76,7 @@ export class SingleChoiceAnswersManager {
       if (i === -1) {
         throw new Error('You cannot remove the only wrong answer!');
       } else {
-        this._form.removeAt(i);
+        this.form.removeAt(i);
       }
     }
   }
@@ -110,7 +103,7 @@ export class SingleChoiceAnswersManager {
    */
   private getActualIndex(index: number) {
     let i = 0;
-    return this._form.controls.findIndex((form) => {
+    return this.form.controls.findIndex((form) => {
       const isCorrect = form.controls.correct.value;
       if (isCorrect) {
         return false;
@@ -124,7 +117,7 @@ export class SingleChoiceAnswersManager {
    * Returns an array of all wrong answer controls.
    */
   get wrongAnswers() {
-    return this._form.controls.filter(c => !c.controls.correct.value);
+    return this.form.controls.filter(c => !c.controls.correct.value);
   }
 
   /**
@@ -143,7 +136,7 @@ export class SingleChoiceAnswersManager {
       throw new Error(`Field at index ${index} does not exist!`);
     }
 
-    return this._form.controls[i].controls.value.errors;
+    return this.form.controls[i].controls.value.errors;
   }
 
   /**
@@ -156,13 +149,13 @@ export class SingleChoiceAnswersManager {
   }
 
   get canAddWrongAnswerFields(): boolean {
-    return this._form.length > 1;
+    return this.form.length < this.maximumAmountOfAnswers;
   }
   
   /**
    * Returns the correct answer control.
    */
   get correctAnswer() {
-    return this._form.controls.find(form => form.controls.correct.value)!;
+    return this.form.controls.find(form => form.controls.correct.value)!;
   }
 }
