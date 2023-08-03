@@ -9,7 +9,7 @@
   </div>
   <h4 class="correct-answers-heading">Correct Answers</h4>
   <div class="correct-answer">
-    <div *ngFor="let answer of answersManager.form.controls; index as i" formArrayName="correctAnswers">
+    <div *ngFor="let answer of answerControls; index as i" formArrayName="answers">
       <mat-form-field [formGroupName]="i" hintLabel="The answer must be between 1 and 100 characters">
         <textarea
         cdkTextareaAutosize
@@ -17,26 +17,31 @@
         maxlength="100"
         class="correct-answer-field"
         matInput
-        formControlName="answer"
+        formControlName="value"
         [placeholder]="'Correct answer #' + (i + 1)"
         >
         </textarea>
-        <mat-error *ngIf="answersManager.getErrorsAt(i)?.['required']">Please fill this field!</mat-error>
-        <mat-error *ngIf="answersManager.getErrorsAt(i)?.['maxlength']">This field is too long!</mat-error>
+        <mat-error *ngIf="getErrorsAt(i)?.['required']">Please fill this field!</mat-error>
+        <mat-error *ngIf="getErrorsAt(i)?.['maxlength']">This field is too long!</mat-error>
       </mat-form-field>
       <button 
         aria-label="Remove this field"
         mat-mini-fab
         color="warn"
-        class="remove-field-btn correct"
+        [ngClass]="deleteButtonIsVisible ? 'remove-field-btn' : 'invisible'"
         matTooltip="Remove this field"
         matTooltipPosition="above"
-        (click)="removeField($event, i)"
+        (click)="removeFieldAt(i, $event)"
       >
         <mat-icon aria-hidden="true">delete</mat-icon>
       </button>
     </div>
-    <button mat-raised-button color="accent" class="add-field-btn correct" (click)="addField($event)">
+    <button 
+      mat-raised-button color="accent"
+      class="add-field-btn" 
+      (click)="addField($event)"
+      *ngIf="canAddField"
+    >
       <mat-icon>add</mat-icon>
       Add new correct answer
     </button>
