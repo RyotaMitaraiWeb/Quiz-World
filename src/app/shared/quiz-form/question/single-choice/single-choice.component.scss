@@ -1,6 +1,10 @@
 .single-choice-question.question {
   width: 100%;
 
+  .invisible {
+    visibility: hidden;
+  }
+  
   mat-divider {
     margin: 20px auto;
     width: 95%;

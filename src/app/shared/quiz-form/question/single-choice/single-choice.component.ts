@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter, OnChanges, SimpleChanges, AfterViewChecked, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatInputModule } from '@angular/material/input';
@@ -6,12 +6,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-import { FormArray, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IAnswer } from '../../../../../types/components/answer.types';
-import { IQuestion } from '../../../../../types/components/question.types';
-import { AnswersManager } from '../../../../util/AnswersManager/AnswersManager';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { questionTypes } from '../../../../constants/question-types.constants';
 import { MatDividerModule } from '@angular/material/divider';
+import { SingleChoiceAnswersManager } from '../../../../util/AnswersManager/managers/SingleChoice/SingleChoiceAnswersManager';
+import { AnswersManagersFactoryService } from '../../../../features/answers-managers-factory/answers-managers-factory.service';
 
 @Component({
   selector: 'app-single-choice',
@@ -30,14 +29,17 @@ import { MatDividerModule } from '@angular/material/divider';
   styleUrls: ['./single-choice.component.scss']
 })
 export class SingleChoiceComponent implements OnInit {
-  correctAnswersManager!: AnswersManager;
-  wrongAnswersManager!: AnswersManager;
+  private readonly manager: SingleChoiceAnswersManager;
 
-  constructor(private readonly fb: FormBuilder) { }
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly factory: AnswersManagersFactoryService,
+    ) {
+      this.manager = factory.createManager('single', this.form.controls.answers);
+    }
 
   ngOnInit(): void {
-    this.correctAnswersManager = new AnswersManager(this.form.controls.correctAnswers, this.fb);
-    this.wrongAnswersManager = new AnswersManager(this.form.controls.wrongAnswers, this.fb);
+    this.manager.form = this.form.controls.answers;
   }
   /**
    * Bind this to the ``name`` of the disabled radio button for the correct answer.
@@ -48,22 +50,50 @@ export class SingleChoiceComponent implements OnInit {
 
   @Input({ required: true }) form = this.fb.group({
     prompt: ['', [Validators.required, Validators.maxLength(100)]],
-    correctAnswers: this.fb.array([
-      this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
-    ]),
-    wrongAnswers: this.fb.array([
-      this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
+    answers: this.fb.array([
+      this.fb.group(
+        {
+          value: ['', [Validators.required, Validators.maxLength(100)]],
+          correct: [true],
+        }
+      ),
+      this.fb.group(
+        {
+          value: ['', [Validators.required, Validators.maxLength(100)]],
+          correct: [false],
+        }
+      )
     ]),
     type: [questionTypes.single]
   });
 
-  addNewWrongAnswerField(event: Event) {
-    event.preventDefault();
-    this.wrongAnswersManager.addField();
+  protected get correctAnswer() {
+    return this.manager.correctAnswer;
   }
 
-  removeWrongAnswerFieldAt(event: Event, index: number) {
+  protected get wrongAnswers() {
+    return this.manager.wrongAnswers;
+  }
+
+  protected getErrorsAt(index: number) {
+    return this.manager.getErrorsAt(index);
+  }
+
+  protected addField(event: Event) {
     event.preventDefault();
-    this.wrongAnswersManager.removeFieldAt(index);
+    this.manager.addField();
+  }
+
+  protected removeFieldAt(index: number, event: Event) {
+    event.preventDefault();
+    this.manager.removeFieldAt(index);
+  }
+
+  protected get canAddFields() {
+    return this.manager.canAddWrongAnswerFields;
+  }
+
+  protected get canRemoveFields() {
+    return this.manager.canRemoveWrongAnswerFields;
   }
 }

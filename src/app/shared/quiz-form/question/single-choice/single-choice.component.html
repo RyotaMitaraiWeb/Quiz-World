@@ -6,41 +6,47 @@
     <mat-error *ngIf="form.controls.prompt.errors?.['maxlength']">This field is too long!</mat-error>
   </mat-form-field>
   <h4 class="correct-answers-heading">Correct Answer</h4>
-  <section class="correct-answer" formArrayName="correctAnswers">
+  <section class="correct-answer" formArrayName="answers">
     <mat-radio-button disabled checked [name]="uniqueName"></mat-radio-button>
     <mat-form-field [formGroupName]="0" hintLabel="The answer must be between 1 and 100 characters">
       <textarea placeholder="Correct answer" cdkTextareaAutosize required maxlength="100" matInput
-        class="correct-answer-field" formControlName="answer"></textarea>
-      <mat-error *ngIf="correctAnswersManager.getErrorsAt(0)?.['required']">Please fill this field!</mat-error>
-      <mat-error *ngIf="correctAnswersManager.getErrorsAt(0)?.['maxlength']">This field is too long!</mat-error>
+        class="correct-answer-field" formControlName="value"></textarea>
+      <mat-error *ngIf="correctAnswer.controls.value.errors?.['required']">Please fill this field!</mat-error>
+      <mat-error *ngIf="correctAnswer.controls.value.errors?.['maxlength']">This field is too long!</mat-error>
     </mat-form-field>
   </section>
   <mat-divider [inset]="true"></mat-divider>
   <h4 class="wrong-answers-heading">Wrong answers</h4>
   <section class="wrong-answers">
-    <div class="answer-field" *ngFor="let answer of form.controls.wrongAnswers.controls; index as i"
-      formArrayName="wrongAnswers">
+    <div class="answer-field" *ngFor="let answer of wrongAnswers; index as i"
+      formArrayName="answers">
       <mat-radio-button disabled></mat-radio-button>
-      <mat-form-field [formGroupName]="i" hintLabel="The answer must be between 1 and 100 characters">
+      <mat-form-field [formGroupName]="(i + 1)" hintLabel="The answer must be between 1 and 100 characters">
         <textarea 
           cdkTextareaAutosize
           required
           maxlength="100"
           class="wrong-answer-field"
           matInput
-          formControlName="answer"
+          formControlName="value"
           [placeholder]="'Wrong answer #' + (i + 1)"
         >
         </textarea>
-        <mat-error *ngIf="wrongAnswersManager.getErrorsAt(0)?.['required']">Please fill this field!</mat-error>
-        <mat-error *ngIf="wrongAnswersManager.getErrorsAt(0)?.['maxlength']">This field is too long!</mat-error>
+        <mat-error *ngIf="getErrorsAt(i)?.['required']">Please fill this field!</mat-error>
+        <mat-error *ngIf="getErrorsAt(i)?.['maxlength']">This field is too long!</mat-error>
       </mat-form-field>
-      <button aria-label="Remove this field" mat-mini-fab color="warn" class="remove-field-btn"
-        matTooltip="Remove this field" matTooltipPosition="above" (click)="removeWrongAnswerFieldAt($event, i)">
+      <button aria-label="Remove this field" mat-mini-fab color="warn" [ngClass]="canRemoveFields ? 'remove-field-btn' : 'invisible'"
+        matTooltip="Remove this field" matTooltipPosition="above" (click)="removeFieldAt(i, $event)">
         <mat-icon aria-hidden="true">delete</mat-icon>
       </button>
     </div>
-    <button mat-raised-button color="accent" class="add-field-btn" (click)="addNewWrongAnswerField($event)">
+    <button 
+      mat-raised-button 
+      color="accent" 
+      class="add-field-btn" 
+      (click)="addField($event)"
+      *ngIf="canAddFields"
+    >
       <mat-icon>add</mat-icon>
       Add new wrong answer
     </button>
