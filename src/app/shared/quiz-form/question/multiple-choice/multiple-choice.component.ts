@@ -7,10 +7,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { IQuestion } from '../../../../../types/components/question.types';
 import { AnswersManager } from '../../../../util/AnswersManager/AnswersManager';
 import { questionTypes } from '../../../../constants/question-types.constants';
 import { MatDividerModule } from '@angular/material/divider';
+import { AnswersManagersFactoryService } from '../../../../features/answers-managers-factory/answers-managers-factory.service';
+import { MultipleChoiceAnswersManager } from '../../../../util/AnswersManager/managers/MultipleChoice/MultipleChoiceAnswersManager';
 
 
 @Component({
@@ -30,44 +31,80 @@ import { MatDividerModule } from '@angular/material/divider';
   styleUrls: ['./multiple-choice.component.scss']
 })
 export class MultipleChoiceComponent {
-  correctAnswersManager!: AnswersManager;
-  wrongAnswersManager!: AnswersManager;
 
-  constructor(private readonly fb: FormBuilder) { }
+  private readonly manager: MultipleChoiceAnswersManager;
+
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly factory: AnswersManagersFactoryService
+  ) {
+    this.manager = factory.createManager('multi', this.form.controls.answers);
+  }
 
   ngOnInit(): void {
-    this.correctAnswersManager = new AnswersManager(this.form.controls.correctAnswers, this.fb);
-    this.wrongAnswersManager = new AnswersManager(this.form.controls.wrongAnswers, this.fb);
+    this.manager.form = this.form.controls.answers;
   }
 
   @Input({ required: true }) form = this.fb.group({
     prompt: ['', [Validators.required, Validators.maxLength(100)]],
-    correctAnswers: this.fb.array([
-      this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
-    ]),
-    wrongAnswers: this.fb.array([
-      this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
+    answers: this.fb.array([
+      this.fb.group({ 
+        value: ['', [Validators.required, Validators.maxLength(100)]],
+        correct: [true],
+      }),
+      this.fb.group({ 
+        value: ['', [Validators.required, Validators.maxLength(100)]],
+        correct: [false],
+      }),
     ]),
     type: [questionTypes.multi]
   });
 
-  addNewWrongAnswerField(event: Event) {
+  protected addNewWrongAnswerField(event: Event) {
     event.preventDefault();
-    this.wrongAnswersManager.addField();
+    this.manager.addField('', false);
   }
 
-  removeWrongAnswerFieldAt(event: Event, index: number) {
+  protected removeWrongAnswerFieldAt(event: Event, index: number) {
     event.preventDefault();
-    this.wrongAnswersManager.removeFieldAt(index);
+    this.manager.removeFieldAt(index, false);
   }
 
-  addNewCorrectAnswerField(event: Event) {
+  protected addNewCorrectAnswerField(event: Event) {
     event.preventDefault();
-    this.correctAnswersManager.addField();
+    this.manager.addField('', true);
   }
 
-  removeCorrectAnswerFieldAt(event: Event, index: number) {
+  protected removeCorrectAnswerFieldAt(event: Event, index: number) {
     event.preventDefault();
-    this.correctAnswersManager.removeFieldAt(index);
+    this.manager.removeFieldAt(index, true);
+  }
+
+  protected getErrorsAt(index: number, correct: boolean) {
+    return this.manager.getErrorsAt(index, correct);
+  }
+
+  protected get correctAnswers() {
+    return this.manager.getAnswersOfCorrectness(true);
+  }
+
+  protected get wrongAnswers() {
+    return this.manager.getAnswersOfCorrectness(false);
+  }
+
+  protected actualIndex(index: number, correct: boolean) {
+    return this.manager.getActualIndex(index, correct);
+  }
+
+  protected get canAddFields() {
+    return this.manager.canAddAnswersField;
+  }
+
+  protected get canRemoveCorrectAnswersFields() {
+    return this.manager.canRemoveCorrectAnswersFields;
+  }
+
+  protected get canRemoveWrongAnswersFields() {
+    return this.manager.canRemoveWrongAnswersField;
   }
 }

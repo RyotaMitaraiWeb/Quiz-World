@@ -10,9 +10,9 @@
   <h4 class="correct-answers-heading">Correct Answers</h4>
   <section>
     <div class="correct-answer left">
-      <div class="answer-field" *ngFor="let answer of form.controls.correctAnswers.controls; index as i" formArrayName="correctAnswers">
+      <div class="answer-field" *ngFor="let answer of correctAnswers; index as i" formArrayName="answers">
         <mat-checkbox disabled checked></mat-checkbox>
-        <mat-form-field [formGroupName]="i" 
+        <mat-form-field [formGroupName]="actualIndex(i, true)" 
           hintLabel="The answer must be between 1 and 100 characters">
           <textarea 
             cdkTextareaAutosize
@@ -20,19 +20,31 @@
             maxlength="100" 
             class="correct-answer-field"
             matInput
-            formControlName="answer"
+            formControlName="value"
             [placeholder]="'Correct answer #' + (i + 1)"
           >
           </textarea>
-          <mat-error *ngIf="correctAnswersManager.getErrorsAt(i)?.['required']">Please fill this field!</mat-error>
-          <mat-error *ngIf="correctAnswersManager.getErrorsAt(i)?.['maxlength']">This field is too long!</mat-error>
+          <mat-error *ngIf="getErrorsAt(i, true)?.['required']">Please fill this field!</mat-error>
+          <mat-error *ngIf="getErrorsAt(i, true)?.['maxlength']">This field is too long!</mat-error>
         </mat-form-field>
-        <button aria-label="Remove this field" mat-mini-fab color="warn" class="remove-field-btn correct"
-          matTooltip="Remove this field" matTooltipPosition="above" (click)="removeCorrectAnswerFieldAt($event, i)">
+        <button
+          aria-label="Remove this field"
+          mat-mini-fab color="warn"
+          [ngClass]="canRemoveCorrectAnswersFields ? 'remove-field-btn correct' : 'invisible'"
+          matTooltip="Remove this field"
+          matTooltipPosition="above"
+          (click)="removeCorrectAnswerFieldAt($event, i)"
+        >
           <mat-icon aria-hidden="true">delete</mat-icon>
         </button>
       </div>
-      <button mat-raised-button color="accent" class="add-field-btn correct" (click)="addNewCorrectAnswerField($event)">
+      <button 
+        mat-raised-button
+        color="accent"
+        class="add-field-btn correct"
+        (click)="addNewCorrectAnswerField($event)"
+        *ngIf="canAddFields"
+      >
         <mat-icon>add</mat-icon>
         Add new correct answer
       </button>
@@ -42,20 +54,39 @@
   <h4 class="wrong-answers-heading">Wrong answers</h4>
   <section>
     <div class="wrong-answers">
-      <div class="answer-field" *ngFor="let answer of form.controls.wrongAnswers.controls; index as i" formArrayName="wrongAnswers">
+      <div class="answer-field" *ngFor="let answer of wrongAnswers; index as i" formArrayName="answers">
         <mat-checkbox disabled></mat-checkbox>
-        <mat-form-field [formGroupName]="i" hintLabel="The answer must be between 1 and 100 characters">
-          <textarea cdkTextareaAutosize required maxlength="100" class="wrong-answer-field" matInput
-            formControlName="answer" [placeholder]="'Wrong answer #' + (i + 1)"></textarea>
-          <mat-error *ngIf="wrongAnswersManager.getErrorsAt(i)?.['required']">Please fill this field!</mat-error>
-          <mat-error *ngIf="wrongAnswersManager.getErrorsAt(i)?.['maxlength']">This field is too long!</mat-error>
+        <mat-form-field [formGroupName]="actualIndex(i, false)" hintLabel="The answer must be between 1 and 100 characters">
+          <textarea 
+            cdkTextareaAutosize
+            required
+            maxlength="100"
+            class="wrong-answer-field"
+            matInput
+            formControlName="value"
+            [placeholder]="'Wrong answer #' + (i + 1)"
+          >
+          </textarea>
+          <mat-error *ngIf="getErrorsAt(i, false)?.['required']">Please fill this field!</mat-error>
+          <mat-error *ngIf="getErrorsAt(i, false)?.['maxlength']">This field is too long!</mat-error>
         </mat-form-field>
-        <button aria-label="Remove this field" mat-mini-fab color="warn" class="remove-field-btn wrong"
-          matTooltip="Remove this field" matTooltipPosition="above" (click)="removeWrongAnswerFieldAt($event, i)">
+        <button 
+          aria-label="Remove this field"
+          mat-mini-fab color="warn"
+          [ngClass]="canRemoveWrongAnswersFields ? 'remove-field-btn wrong' : 'invisible'"
+          matTooltip="Remove this field" 
+          matTooltipPosition="above" (click)="removeWrongAnswerFieldAt($event, i)"
+        >
           <mat-icon aria-hidden="true">delete</mat-icon>
         </button>
       </div>
-      <button mat-raised-button color="accent" class="add-field-btn wrong" (click)="addNewWrongAnswerField($event)">
+      <button
+        mat-raised-button
+        color="accent"
+        class="add-field-btn wrong"
+        (click)="addNewWrongAnswerField($event)"
+        *ngIf="canAddFields"
+      >
         <mat-icon>add</mat-icon>
         Add new wrong answer
       </button>
