@@ -74,7 +74,7 @@ describe('EditQuizComponent', () => {
         spyOn(router, 'navigate').and.stub();
 
 
-        component.editQuiz({} as IQuizForm);
+        component.editQuiz({} as IQuizFormSubmission);
         expect(router.navigate).toHaveBeenCalledWith(['/quiz', '1']);
       }));
 
@@ -90,7 +90,7 @@ describe('EditQuizComponent', () => {
 
         spyOn(router, 'navigate').and.stub();
 
-        component.editQuiz({} as IQuizForm);
+        component.editQuiz({} as IQuizFormSubmission);
         expect(router.navigate).not.toHaveBeenCalled();
       }));
     });

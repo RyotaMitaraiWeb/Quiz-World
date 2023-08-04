@@ -24,7 +24,7 @@ export class CreateQuizComponent implements OnDestroy {
     private readonly router: Router,
   ) { }
 
-  createQuiz(quiz: IQuizForm): void {
+  createQuiz(quiz: IQuizFormSubmission): void {
     this.quizSub = this.quizService.create(quiz).subscribe({
       next: (res) => {
         const body = res.body;

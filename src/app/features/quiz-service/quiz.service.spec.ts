@@ -28,7 +28,7 @@ describe('QuizService', () => {
         id: 1,
       };
 
-      const body: IQuizForm = {
+      const body: IQuizFormSubmission = {
         title: 'a',
         description: 'b',
         instantMode: false,
@@ -65,7 +65,7 @@ describe('QuizService', () => {
 
     it('Correctly returns a response with a given body (response is an error)', (done: DoneFn) => {
       const res = ['a', 'b'];
-      const body: IQuizForm = {
+      const body: IQuizFormSubmission = {
         title: 'a',
         description: 'b',
         instantMode: false,
@@ -470,7 +470,7 @@ describe('QuizService', () => {
     it('Correctly returns a response (response is ok)', (done: DoneFn) => {
     
 
-      service.edit(1, {} as IQuizForm).subscribe({
+      service.edit(1, {} as IQuizFormSubmission).subscribe({
         next: (res) => {
           expect(res.status).toBe(HttpStatusCode.NoContent);
           done();

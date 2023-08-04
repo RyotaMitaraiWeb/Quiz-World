@@ -35,7 +35,7 @@ export class EditQuizComponent implements OnInit, OnDestroy {
     });
   }
 
-  editQuiz(quiz: IQuizForm): void {
+  editQuiz(quiz: IQuizFormSubmission): void {
     this.editSub = this.quizService.edit(this.quiz.id, quiz).subscribe({
       next: () => {
         this.router.navigate(['/quiz', this.quiz.id.toString()])
