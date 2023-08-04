@@ -1,8 +1,8 @@
-import { FormBuilder, FormArray, FormGroup, FormControl, ValidationErrors } from '@angular/forms';
+import { FormBuilder, FormArray, FormGroup, FormControl, ValidationErrors, Validators } from '@angular/forms';
 
 export class MultipleChoiceAnswersManager {
   private readonly fb: FormBuilder;
-  private readonly form: FormArray<FormGroup<{
+ form: FormArray<FormGroup<{
     value: FormControl<string | null>;
     correct: FormControl<boolean | null>;
   }>>;
@@ -36,7 +36,7 @@ export class MultipleChoiceAnswersManager {
     if (this.canAddAnswersField) {
       this.form.push(
         this.fb.group({
-          value,
+          value: [value, [Validators.required, Validators.maxLength(100)]],
           correct
         })
       );
@@ -127,7 +127,7 @@ export class MultipleChoiceAnswersManager {
    * @param correct 
    * @returns 
    */
-  private getActualIndex(index: number, correct: boolean) {
+  getActualIndex(index: number, correct: boolean) {
     let i = 0;
     return this.form.controls.findIndex((form) => {
       const matchesCorrectness = form.controls.correct.value === correct;
