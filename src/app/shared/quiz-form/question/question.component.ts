@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { question } from '../../../../types/components/question.types';
 import { SingleChoiceComponent } from './single-choice/single-choice.component';
@@ -36,11 +36,11 @@ export class QuestionComponent implements OnInit {
 
   @Input() form = this.fb.group({
     prompt: ['', [Validators.required, Validators.maxLength(100)]],
-    correctAnswers: this.fb.array([
-      this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
-    ]),
-    wrongAnswers: this.fb.array([
-      this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })
+    answers: this.fb.array([
+      this.fb.group({
+        value: ['', [Validators.required, Validators.maxLength(100)]],
+        correct: [true]
+      })
     ]),
     type: [questionTypes.single]
   });
@@ -58,12 +58,10 @@ export class QuestionComponent implements OnInit {
   /**
    * Handles the transfer of answers when the question type is changed. The following
    * happens with the answers:
-   * * if the question is changed to a text one, all wrong answers are removed and 
-   * the wrong answers control is disabled
+   * * if the question is changed to a text one, all wrong answers are removed
    * * if the question is changed to a single-choice one, all correct answers are
    * removed, with the exception of the first one
-   * * if the question is changed to any type other than a text one, the wrong answers
-   * control will be enabled and, if the question does not currently have a wrong answer,
+   * * if the question is changed to any type other than a text one and the question does not currently have a wrong answer,
    * an empty wrong answer will be added to the wrong answers control.
    * @param value the new question type
    */
@@ -71,13 +69,23 @@ export class QuestionComponent implements OnInit {
     this.form.controls.type.setValue(value);
 
     if (value === questionTypes.text) {
-      while (this.form.controls.wrongAnswers.length) {
-        this.form.controls.wrongAnswers.removeAt(0);
+      for (let i = 0; i < this.form.controls.answers.length; i++) {
+        const form = this.form.controls.answers.controls[i];
+        if (!form.controls.correct.value) {
+          this.form.controls.answers.removeAt(i);
+          i--;
+        }
       }
     } else {
-      this.form.controls.wrongAnswers.enable();
-      if (this.form.controls.wrongAnswers.length === 0) {
-        this.form.controls.wrongAnswers.push(this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] }));
+      const wrongAnswers = this.form.controls.answers.controls.find(c => !c.value.correct);
+
+      if (!wrongAnswers) {
+        this.form.controls.answers.push(this.fb.group(
+          {
+            value: ['', [Validators.required, Validators.maxLength(100)]],
+            correct: [false],
+          }
+        ));
       }
     }
 
@@ -87,8 +95,18 @@ export class QuestionComponent implements OnInit {
   }
 
   private removeAllCorrectAnswersExceptTheFirstOne() {
-    while (this.form.controls.correctAnswers.length > 1) {
-      this.form.controls.correctAnswers.removeAt(1);
+    let correctAnswerHasBeenFound = true;
+    for (let i = 0; i < this.form.controls.answers.length; i++) {
+      const form = this.form.controls.answers.controls[i];
+
+      if (form.controls.correct.value) {
+        if (correctAnswerHasBeenFound) {
+          correctAnswerHasBeenFound = !correctAnswerHasBeenFound;
+        } else {
+          this.form.controls.answers.removeAt(i);
+          i--;
+        }
+      }
     }
   }
 
