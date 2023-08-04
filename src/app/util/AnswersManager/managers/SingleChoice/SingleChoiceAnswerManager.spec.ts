@@ -113,7 +113,7 @@ describe('SingleChoiceAnswersManager', () => {
 
       expect(errors).not.toBeNull();
 
-      form.controls[1].setErrors(null);
+      form.controls[1].controls.value.setErrors(null);
 
       const noErrors = manager.getErrorsAt(0);
 
