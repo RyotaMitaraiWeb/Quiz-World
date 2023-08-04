@@ -28,7 +28,7 @@
         aria-label="Remove this field"
         mat-mini-fab
         color="warn"
-        [ngClass]="deleteButtonIsVisible ? 'remove-field-btn' : 'invisible'"
+        [ngClass]="deleteButtonIsVisible ? 'remove-field-btn visible' : 'remove-field-btn invisible'"
         matTooltip="Remove this field"
         matTooltipPosition="above"
         (click)="removeFieldAt(i, $event)"

@@ -30,7 +30,7 @@
         <button
           aria-label="Remove this field"
           mat-mini-fab color="warn"
-          [ngClass]="canRemoveCorrectAnswersFields ? 'remove-field-btn correct' : 'invisible'"
+          [ngClass]="canRemoveCorrectAnswersFields ? 'remove-field-btn visible correct' : 'remove-field-btn invisible'"
           matTooltip="Remove this field"
           matTooltipPosition="above"
           (click)="removeCorrectAnswerFieldAt($event, i)"
@@ -73,7 +73,7 @@
         <button 
           aria-label="Remove this field"
           mat-mini-fab color="warn"
-          [ngClass]="canRemoveWrongAnswersFields ? 'remove-field-btn wrong' : 'invisible'"
+          [ngClass]="canRemoveWrongAnswersFields ? 'remove-field-btn visible wrong' : 'remove-field-btn invisible'"
           matTooltip="Remove this field" 
           matTooltipPosition="above" (click)="removeWrongAnswerFieldAt($event, i)"
         >

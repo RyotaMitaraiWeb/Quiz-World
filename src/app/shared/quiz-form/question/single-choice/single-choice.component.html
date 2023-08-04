@@ -44,13 +44,19 @@
         <mat-error *ngIf="getErrorsAt(i)?.['required']">Please fill this field!</mat-error>
         <mat-error *ngIf="getErrorsAt(i)?.['maxlength']">This field is too long!</mat-error>
       </mat-form-field>
-      <button aria-label="Remove this field" mat-mini-fab color="warn" [ngClass]="canRemoveFields ? 'remove-field-btn' : 'invisible'"
-        matTooltip="Remove this field" matTooltipPosition="above" (click)="removeFieldAt(i, $event)">
+      <button 
+        aria-label="Remove this field"
+        mat-mini-fab color="warn"
+        [ngClass]="canRemoveFields ? 'remove-field-btn visible' : 'remove-field-btn invisible'"
+        matTooltip="Remove this field" 
+        matTooltipPosition="above" 
+        (click)="removeFieldAt(i, $event)"
+      >
         <mat-icon aria-hidden="true">delete</mat-icon>
       </button>
     </div>
     <button 
-      mat-raised-button 
+      mat-raised-button
       color="accent" 
       class="add-field-btn" 
       (click)="addField($event)"
