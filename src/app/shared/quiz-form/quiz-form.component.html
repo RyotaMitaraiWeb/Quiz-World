@@ -29,5 +29,5 @@
     Add a new question
   </button>
 
-  <button mat-raised-button color="primary" id="submit" [disabled]="form.invalid">Submit</button>
+  <button mat-raised-button color="primary" id="submit" [disabled]="!form.valid">Submit</button>
 </form>

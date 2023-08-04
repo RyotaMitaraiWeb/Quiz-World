@@ -1,16 +1,15 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { QuestionModule } from './question/question.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { IQuestion, IQuestionSubmission } from '../../../types/components/question.types';
+import { IQuestionSubmission } from '../../../types/components/question.types';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { IQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { questionTypes } from '../../constants/question-types.constants';
-import { IAnswer } from '../../../types/components/answer.types';
 
 @Component({
   selector: 'app-quiz-form',
@@ -27,7 +26,10 @@ import { IAnswer } from '../../../types/components/answer.types';
   ],
 })
 export class QuizFormComponent implements OnInit {
-  constructor(private readonly fb: FormBuilder) { }
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly cdr: ChangeDetectorRef
+    ) { }
 
   @ViewChild('autosize') protected autosize!: CdkTextareaAutosize;
 
@@ -36,43 +38,34 @@ export class QuizFormComponent implements OnInit {
       this.form.controls.questions.removeAt(0);
     }
 
-    console.log(this.questions);
-    
-
-    this.questions.forEach(q => {      
-      const correctAnswersFormArray = this.fb.array([this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]);
-      const wrongAnswersFormArray = this.fb.array([this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]);
-
-      correctAnswersFormArray.removeAt(0);
-      wrongAnswersFormArray.removeAt(0);
-
-      q.answers.forEach(a => {
-        if (a.correct) {
-          correctAnswersFormArray.push(this.fb.group({ answer: [a.value, [Validators.required, Validators.maxLength(100)]] }));
-        } else {
-          wrongAnswersFormArray.push(this.fb.group({ answer: [a.value, [Validators.required, Validators.maxLength(100)]] }));
-        }
-      });
-
-      const questionControl = this.fb.group(
-        {
-          prompt: [q.prompt, [Validators.required, Validators.maxLength(100)]],
-          correctAnswers: correctAnswersFormArray,
-          wrongAnswers: wrongAnswersFormArray,
-          type: q.type,
-        }
-      );
-
-      this.form.controls.questions.push(questionControl);
-
-      if (this.edit) {
-        this.form.controls.instantMode.disable();
-      }
-    });
+    if (this.edit) {
+      this.form.controls.instantMode.disable();
+    }
 
     this.form.controls.title.setValue(this.title);
     this.form.controls.description.setValue(this.description);
     this.form.controls.instantMode.setValue(this.instantMode);
+
+    this.questions.forEach(q => {
+      const answersFormArray = q.answers.map(a => 
+            this.fb.group(
+              {
+                value: [a.value, [Validators.required, Validators.maxLength(100)]],
+                correct: [a.correct]
+              }
+            )
+          
+      );
+
+      const group = this.fb.group({
+        prompt: [q.prompt, [Validators.required, Validators.maxLength(100)]],
+        answers: this.fb.array(answersFormArray),
+        type: [q.type]
+      });
+
+      this.form.controls.questions.push(group);
+    });
+
   }
 
   @Input() questions: IQuestionSubmission[] = [
@@ -96,26 +89,46 @@ export class QuizFormComponent implements OnInit {
   @Input() title = '';
   @Input() description = '';
   @Input() instantMode = false;
-  @Output() submitEvent = new EventEmitter<IQuizForm>();
+  @Output() submitEvent = new EventEmitter<IQuizFormSubmission>();
   @Input() edit = false;
 
   form = this.fb.group({
     title: [this.title, [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
     description: [this.description, [Validators.required, Validators.maxLength(300)]],
     questions: this.fb.array(
-      [this.fb.group(
-        {
-          prompt: ['', [Validators.required, Validators.maxLength(100)]],
-          correctAnswers: this.fb.array([this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          wrongAnswers: this.fb.array([this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          type: [questionTypes.single],
-        }
-      )]
+      [
+        this.fb.group(
+          {
+            prompt: ['', [Validators.required, Validators.maxLength(100)]],
+            answers: this.fb.array(
+              [
+                this.fb.group({
+                  value: ['', [Validators.required, Validators.maxLength(100)]],
+                  correct: [true],
+                }),
+                this.fb.group({
+                  value: ['', [Validators.required, Validators.maxLength(100)]],
+                  correct: [false],
+                })
+              ]
+            ),
+            type: [questionTypes.single],
+          }
+        )]
     ),
     instantMode: [this.instantMode],
   });
 
-  
+  /*
+    Fixes "Expression ___ has changed after it was checked"
+    which is caused when adding a new question to a valid form.
+    Will look into seeing if this can be done without invoking change detection
+    manually.
+  */
+  ngAfterViewChecked() {
+    this.cdr.detectChanges();
+  }
+
   /**
    * Adds an empty single-choice question to the questions control of the form.
    * @param event 
@@ -126,12 +139,22 @@ export class QuizFormComponent implements OnInit {
       this.fb.group(
         {
           prompt: ['', [Validators.required, Validators.maxLength(100)]],
-          correctAnswers: this.fb.array([this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          wrongAnswers: this.fb.array([this.fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
+          answers: this.fb.array(
+            [
+              this.fb.group({
+                value: ['', [Validators.required, Validators.maxLength(100)]],
+                correct: [true],
+              }),
+              this.fb.group({
+                value: ['', [Validators.required, Validators.maxLength(100)]],
+                correct: [false],
+              })
+            ]
+          ),
           type: [questionTypes.single],
         }
       )
-    )
+    );    
   }
 
   /**
@@ -145,7 +168,7 @@ export class QuizFormComponent implements OnInit {
     if (index < 0 || index >= this.form.controls.questions.length) {
       throw new Error('Field does not exist!');
     }
-    
+
     if (this.hasMoreThanOneQuestion) {
       this.form.controls.questions.removeAt(index);
     } else {
@@ -160,45 +183,8 @@ export class QuizFormComponent implements OnInit {
   onSubmit(event: Event) {
     event.preventDefault();
     const value = this.form.value as IQuizFormSubmission;
-    const questions = value.questions.map(q => {
-      const correctAnswers = q.correctAnswers;
-      const wrongAnswers = q.wrongAnswers;
 
-      const answers: IAnswer[] = [];
-
-      if (correctAnswers) {
-        correctAnswers.forEach(ca => {
-          answers.push({
-            value: ca.answer || '',
-            correct: true,
-          });
-        });
-      }
-
-      if (wrongAnswers) {
-        wrongAnswers.forEach(wa => {
-          answers.push({
-            value: wa.answer || '',
-            correct: false,
-          });
-        });
-      }
-
-      return {
-        prompt: q.prompt || '',
-        type: q.type || '',
-        answers,
-      };
-    });
-
-    const quiz: IQuizForm = {
-      title: value.title,
-      description: value.description,
-      instantMode: value.instantMode,
-      questions
-    }
-
-    this.submitEvent.emit(quiz);
+    this.submitEvent.emit(value);
   }
 
   protected get hasMoreThanOneQuestion() {
