@@ -14,6 +14,15 @@
       <mat-error *ngIf="correctAnswer.controls.value.errors?.['required']">Please fill this field!</mat-error>
       <mat-error *ngIf="correctAnswer.controls.value.errors?.['maxlength']">This field is too long!</mat-error>
     </mat-form-field>
+    <!--
+      the button below is only there to make the
+      correct and wrong answer fields evenly aligned,
+      it is not supposed to be visible or functional
+    -->
+    <button aria-label="Remove this field" mat-mini-fab color="warn" class="remove-field-btn invisible"
+        matTooltip="Remove this field" matTooltipPosition="above">
+        <mat-icon aria-hidden="true">delete</mat-icon>
+      </button>
   </section>
   <mat-divider [inset]="true"></mat-divider>
   <h4 class="wrong-answers-heading">Wrong answers</h4>
