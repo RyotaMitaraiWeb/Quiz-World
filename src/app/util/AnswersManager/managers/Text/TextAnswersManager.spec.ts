@@ -58,8 +58,6 @@ describe('TextAnswersManager', () => {
           }
         ));
       }
-
-      console.log(form.length);
       
       manager.removeFieldAt(1);
       expect(form.length).toBe(13);

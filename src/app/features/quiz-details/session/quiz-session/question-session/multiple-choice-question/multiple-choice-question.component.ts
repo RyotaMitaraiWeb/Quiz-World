@@ -106,9 +106,7 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
     const change = changes['correctAnswers'];
     
     if (change) {
-      this.correctAnswers = change.currentValue;
-      console.log(this.form.disabled);
-      
+      this.correctAnswers = change.currentValue;      
     }
   }
 

@@ -111,8 +111,6 @@ describe('SingleChoiceComponent', () => {
         expect(correctAnswer.value).toBe('correct');
 
         const wrongAnswers = questionEl.querySelectorAll('.wrong-answer-field') as NodeListOf<HTMLTextAreaElement>;
-
-        console.log(component.form);
         
         expect(wrongAnswers.length).toBe(3);
         expect(wrongAnswers[1].value).toBe('wrong');
@@ -186,31 +184,21 @@ describe('SingleChoiceComponent', () => {
         fixture.detectChanges();
 
         const addBtn = questionEl.querySelector('.add-field-btn') as HTMLButtonElement;
-        console.log(addBtn);
         
         addBtn.click();
 
-        fixture.detectChanges();
-
-        console.log(questionEl.querySelectorAll('.wrong-answer-field'));
-        
+        fixture.detectChanges();        
 
         const secondField = questionEl.querySelectorAll('.wrong-answer-field')[1] as HTMLTextAreaElement;
 
         secondField.value = 'a';
 
         fixture.detectChanges();
-        
-        console.log(form.controls.questions.controls[0].controls.answers.value);
-        
+                
         const removeBtn = questionEl.querySelector('.remove-field-btn.visible') as HTMLButtonElement;
         removeBtn.click();
 
         fixture.detectChanges();
-
-        console.log(form.controls.questions.controls[0].controls.answers.value);
-        
-        console.log(questionEl);
         
 
         const remainingField = questionEl.querySelector('.wrong-answer-field') as HTMLInputElement;

@@ -29,9 +29,7 @@ export class EditQuizComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.quizSub = this.getResolvedData().subscribe(data => {
-      this.quiz = data['quiz'];
-      console.log(this.quiz);
-      
+      this.quiz = data['quiz'];      
     });
   }
 
