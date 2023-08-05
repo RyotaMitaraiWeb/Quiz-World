@@ -7,7 +7,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AnswersManager } from '../../../../util/AnswersManager/AnswersManager';
 import { questionTypes } from '../../../../constants/question-types.constants';
 import { MatDividerModule } from '@angular/material/divider';
 import { AnswersManagersFactoryService } from '../../../../features/answers-managers-factory/answers-managers-factory.service';
