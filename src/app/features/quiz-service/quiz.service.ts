@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { api } from '../../constants/api.constants';
-import { IEditQuizForm, IQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IEditQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { Observable, Subscriber } from 'rxjs';
 import { ICreatedQuizResponse, IQuizDetails } from '../../../types/responses/quiz.types';
 import { IQuizList, IQuizListItem, order, sort } from '../../../types/others/lists.types';

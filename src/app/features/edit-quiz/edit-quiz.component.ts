@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription, of } from 'rxjs';
-import { IEditQuizForm, IQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IEditQuizForm,IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuizService } from '../quiz-service/quiz.service';
 import { IQuizDetails } from '../../../types/responses/quiz.types';
