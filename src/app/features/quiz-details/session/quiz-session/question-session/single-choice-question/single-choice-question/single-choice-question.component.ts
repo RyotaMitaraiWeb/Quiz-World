@@ -6,6 +6,8 @@ import { ISessionAnswer } from '../../../../../../../../types/responses/quiz.typ
 import { MatRadioModule } from '@angular/material/radio';
 import { questionTypes, shortQuestionTypes } from '../../../../../../../constants/question-types.constants';
 import { MatCardModule } from '@angular/material/card';
+import { GradeService } from '../../../../../../grade-services/grade.service';
+import { SingleChoiceGraderService } from '../../../../../../grade-services/single-choice-grader-service/single-choice-grader.service';
 
 @Component({
   selector: 'app-single-choice-question',
@@ -17,11 +19,18 @@ import { MatCardModule } from '@angular/material/card';
     MatCardModule,
   ],
   templateUrl: './single-choice-question.component.html',
-  styleUrls: ['./single-choice-question.component.scss']
+  styleUrls: ['./single-choice-question.component.scss'],
+  providers: [
+    {
+      provide: GradeService,
+      useClass: SingleChoiceGraderService,
+    }
+  ]
 })
-export class SingleChoiceQuestionComponent implements IQuestionComponent<number>, OnChanges {
+export class SingleChoiceQuestionComponent implements OnChanges {
   constructor(
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private readonly grader: GradeService<string, string>,
   ) { }
 
   @Input({ required: true }) prompt: string = '';
@@ -32,18 +41,6 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
   }];
 
   protected radioName = Date.now().toString();
-  
-  /**
-   * Returns the ID of the correct answer or ``null`` if ``correctAnswers`` is ``null``
-   * (aka the question has not been graded)
-  */
-  get correctAnswer(): string | null {
-    if (this.correctAnswers === null) {
-      return null;
-    }
-
-    return this.correctAnswers[0].id;
-  }
 
   @Input({ required: true }) form: FormGroup<
     {
@@ -66,11 +63,7 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
   }
 
   protected get promptClass(): "unanswered" | "correct" | "wrong" {
-    if (this.isCorrect === null) {
-      return 'unanswered';
-    }
-
-    return this.isCorrect ? 'correct' : 'wrong';
+    return this.grader.generatePromptClass(this.isCorrect);
   }
 
   /**
@@ -80,21 +73,8 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
    * A user is considered to have answered correctly if they have chosen the correct
    * radio button (aka the answer's ``id`` matches the correct answer's ``id``).
    */
-  get isCorrect(): boolean | null {
-    if (this.correctAnswer === null) {
-      return null;
-    }
-
-    
-    return this.correctAnswer === this.currentAnswer;
-  }
-
-  private answerIsCorrect(id: string): boolean | null {
-    if (this.correctAnswer === null) {
-      return null;
-    }
-
-    return this.correctAnswer === id;
+  protected get isCorrect(): boolean | null {
+    return this.grader.grade(this.currentAnswer, this.correctAnswers);
   }
 
   /**
@@ -103,13 +83,8 @@ export class SingleChoiceQuestionComponent implements IQuestionComponent<number>
    * @param id the ID of the answer
    * @returns a string representing the answer's status.
    */
-  answerClass(id: string): "not-graded" | "correct-answer" | "wrong-answer" {
-    const result = this.answerIsCorrect(id);
-    if (result === null) {
-      return 'not-graded';
-    }
-
-    return result ? 'correct-answer' : 'wrong-answer';
+  protected answerClass(id: string): "not-graded" | "correct-answer" | "wrong-answer" {
+    return this.grader.generateGradedAnswerClass(id, this.correctAnswers);
   }
 
   private get currentAnswer(): string {

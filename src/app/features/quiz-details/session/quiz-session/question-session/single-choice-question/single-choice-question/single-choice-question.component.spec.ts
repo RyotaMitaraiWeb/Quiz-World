@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SingleChoiceQuestionComponent } from './single-choice-question.component';
+import { GradeService } from '../../../../../../grade-services/grade.service';
+import { SingleChoiceGraderService } from '../../../../../../grade-services/single-choice-grader-service/single-choice-grader.service';
 
 describe('SingleChoiceQuestionComponent', () => {
   let component: SingleChoiceQuestionComponent;
@@ -10,7 +12,13 @@ describe('SingleChoiceQuestionComponent', () => {
   describe('Unit tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [SingleChoiceQuestionComponent]
+        imports: [SingleChoiceQuestionComponent],
+        providers: [
+          {
+            provide: GradeService,
+            useClass: SingleChoiceGraderService,
+          }
+        ]
       });
       fixture = TestBed.createComponent(SingleChoiceQuestionComponent);
       component = fixture.componentInstance;
@@ -19,55 +27,6 @@ describe('SingleChoiceQuestionComponent', () => {
 
     it('should create', () => {
       expect(component).toBeTruthy();
-    });
-
-    describe('isCorrect getter', () => {
-      it('Returns null if correctAnswer is null', () => {
-        component.correctAnswers = null;
-        const result = component.isCorrect;
-        expect(result).toBeNull();
-      });
-
-      it('Returns true if correctAnswer matches currentAnswer', () => {
-        component.correctAnswers = [ { id: '1', value: 'correct '}];
-        component.form.controls.currentAnswer.setValue('1');
-
-        const result = component.isCorrect;
-        expect(result).toBeTrue();
-      });
-
-      it('Returns false if currentAnswer does not match correctAnswer', () => {
-        component.correctAnswers = [ { id: '1', value: 'correct' }];
-        component.form.controls.currentAnswer.setValue('2');
-
-        const result = component.isCorrect;
-        expect(result).toBeFalse();
-      });
-    });
-
-    describe('answerClass', () => {
-      it('Returns correct name for an ungraded question', () => {
-        component.correctAnswers = null;
-        const result = component.answerClass('0');
-
-        expect(result).toBe('not-graded');
-      });
-
-      it('Returns correct name for a correct answer', () => {
-        component.correctAnswers = [ { value: 'correct', id: '1' }];
-        component.form.controls.currentAnswer.setValue('1');
-
-        const result = component.answerClass('1');
-        expect(result).toBe('correct-answer');
-      });
-
-      it('Returns correct name for a wrong answer', () => {
-        component.correctAnswers = [ { value: 'correct', id: '1' }];
-        component.form.controls.currentAnswer.setValue('1');
-
-        const result = component.answerClass('2');
-        expect(result).toBe('wrong-answer');
-      });
     });
   });
 
