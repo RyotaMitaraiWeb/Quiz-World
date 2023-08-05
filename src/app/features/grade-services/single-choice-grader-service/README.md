@@ -4,7 +4,7 @@
 ```typescript
 function formatCorrectAnswers(correctAnswers: ISessionAnswer[] | null): string[] | null
 ```
-Returns an array containing the answer ID as the only value or ``null`` if ``correctAnswers`` is ``null``.
+Returns an array containing the correct answers' IDs or ``null`` if ``correctAnswers`` is ``null``.
 
 ```typescript
 function grade(answers: string, correctAnswers: ISessionAnswer[] | null): boolean | null

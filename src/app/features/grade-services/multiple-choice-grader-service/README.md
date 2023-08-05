@@ -7,7 +7,7 @@ function formatCorrectAnswers(correctAnswers: ISessionAnswer[] | null): string[]
 Returns an array containing the answer ID as the only value or ``null`` if ``correctAnswers`` is ``null``.
 
 ```typescript
-function grade(answers: string, correctAnswers: ISessionAnswer[] | null): boolean | null
+function grade(answers: string[], correctAnswers: ISessionAnswer[] | null): boolean | null
 ```
 Returns ``null`` if the question has not been graded or a boolean value that
 indicates whether the question has been answered correctly.
