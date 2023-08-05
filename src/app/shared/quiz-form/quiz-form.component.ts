@@ -43,7 +43,6 @@ export class QuizFormComponent implements OnInit {
 
     this.form.controls.title.setValue(this.title);
     this.form.controls.description.setValue(this.description);
-    this.form.controls.instantMode.setValue(this.instantMode);
 
     this.questions.forEach(q => {
       const answersFormArray = q.answers.map(a =>
@@ -87,7 +86,6 @@ export class QuizFormComponent implements OnInit {
 
   @Input() title = '';
   @Input() description = '';
-  @Input() instantMode = false;
   @Output() submitEvent = new EventEmitter<IQuizFormSubmission>();
   @Input() edit = false;
 
@@ -115,7 +113,7 @@ export class QuizFormComponent implements OnInit {
           }
         )]
     ),
-    instantMode: [this.instantMode],
+    instantMode: [false],
   });
 
   /**
