@@ -187,6 +187,15 @@ describe('QuizFormComponent', () => {
         expect(question.prompt.value).toBe('');
         expect(question.answers.length).toBe(2);
       });
+
+      it('Does not add a question if there are 100 questions', () => {
+        for (let i = 1; i <= 99; i++) {
+          component.addQuestion(event);
+        }
+
+        component.addQuestion(event);
+        expect(component.form.controls.questions.length).toBe(100);
+      });
     });
 
     describe('removeQuestionAt', () => {
@@ -294,7 +303,6 @@ describe('QuizFormComponent', () => {
             ]
           }
         ];
-        component.instantMode = true;
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -307,10 +315,6 @@ describe('QuizFormComponent', () => {
 
         const descriptionField = formEl.querySelector('#description') as HTMLTextAreaElement;
         expect(descriptionField.value).toBe('some description');
-
-        const checkbox = await loader.getHarness(MatCheckboxHarness);
-        const checked = await checkbox.isChecked();
-        expect(checked).toBeTrue();
       });
 
       it('Renders the form correctly if no props are passed', async () => {
@@ -359,6 +363,22 @@ describe('QuizFormComponent', () => {
         const questions2 = formEl.querySelectorAll('.question.wrapper');
         expect(questions2.length).toBe(3);
       });
+
+      it('Does not render add question button if there are 100 questions', () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const btn = formEl.querySelector('.add-question-btn') as HTMLButtonElement;
+
+        for (let i = 1; i <= 99; i++) {
+          btn.click();
+        }
+
+        fixture.detectChanges();
+
+        const unmountedButton = formEl.querySelector('.add-question-btn');
+        expect(unmountedButton).toBeNull();
+      });
     });
 
     describe('Removing fields', () => {
@@ -379,6 +399,14 @@ describe('QuizFormComponent', () => {
 
         const questions = formEl.querySelectorAll('.question.wrapper');
         expect(questions.length).toBe(2);
+      });
+
+      it('Does not show the remove button if there is only one question', () => {
+        component.ngOnInit();
+        fixture.detectChanges();        
+
+        const btn = formEl.querySelector('.remove-question-btn');
+        expect(btn).toBeNull();
       });
     });
 
@@ -558,8 +586,8 @@ describe('QuizFormComponent', () => {
           .questions.controls[0].controls.answers.controls[0]
           .controls.value.setValue('a');
 
-          
-          
+
+
         component.form.controls
           .questions.controls[0].controls.answers.controls[1]
           .controls.value.setValue('a');

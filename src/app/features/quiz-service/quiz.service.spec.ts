@@ -3,7 +3,7 @@ import { QuizService } from './quiz.service';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { ICreatedQuizResponse, IQuizDetails } from '../../../types/responses/quiz.types';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { IEditQuizForm, IQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IEditQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { IQuizList, IQuizListItem } from '../../../types/others/lists.types';
 describe('QuizService', () => {
   let service: QuizService;
