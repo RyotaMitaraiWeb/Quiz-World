@@ -30,14 +30,14 @@ export class SingleChoiceAnswersManager {
    */
   addField(value = ''): void {
     if (this.form.controls.length < this.maximumAmountOfAnswers) {
-      this.form.controls.push(
+      this.form.push(
         this.fb.group(
           {
             value: [value, [Validators.required, Validators.maxLength(100)]],
             correct: [false],
           }
         )
-      )
+      );
     }
   }
 
@@ -101,7 +101,7 @@ export class SingleChoiceAnswersManager {
    * @returns the actual index of the wrong answer control or ``-1`` if a wrong answer cannot be found at
    * the given ``index``.
    */
-  private getActualIndex(index: number) {
+  getActualIndex(index: number) {
     let i = 0;
     return this.form.controls.findIndex((form) => {
       const isCorrect = form.controls.correct.value;

@@ -81,7 +81,7 @@ export class SingleChoiceComponent implements OnInit {
 
   protected addField(event: Event) {
     event.preventDefault();
-    this.manager.addField();
+    this.manager.addField();    
   }
 
   protected removeFieldAt(index: number, event: Event) {
@@ -95,5 +95,9 @@ export class SingleChoiceComponent implements OnInit {
 
   protected get canRemoveFields() {
     return this.manager.canRemoveWrongAnswerFields;
+  }
+
+  protected getActualIndex(index: number) {    
+    return this.manager.getActualIndex(index);
   }
 }

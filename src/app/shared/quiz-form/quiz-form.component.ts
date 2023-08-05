@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { QuestionModule } from './question/question.module';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { IQuestionSubmission } from '../../../types/components/question.types';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -23,13 +23,12 @@ import { questionTypes } from '../../constants/question-types.constants';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-  ],
+  ]
 })
 export class QuizFormComponent implements OnInit {
   constructor(
-    private readonly fb: FormBuilder,
-    private readonly cdr: ChangeDetectorRef
-    ) { }
+    private readonly fb: FormBuilder
+  ) { }
 
   @ViewChild('autosize') protected autosize!: CdkTextareaAutosize;
 
@@ -47,14 +46,14 @@ export class QuizFormComponent implements OnInit {
     this.form.controls.instantMode.setValue(this.instantMode);
 
     this.questions.forEach(q => {
-      const answersFormArray = q.answers.map(a => 
-            this.fb.group(
-              {
-                value: [a.value, [Validators.required, Validators.maxLength(100)]],
-                correct: [a.correct]
-              }
-            )
-          
+      const answersFormArray = q.answers.map(a =>
+        this.fb.group(
+          {
+            value: [a.value, [Validators.required, Validators.maxLength(100)]],
+            correct: [a.correct]
+          }
+        )
+
       );
 
       const group = this.fb.group({
@@ -119,16 +118,6 @@ export class QuizFormComponent implements OnInit {
     instantMode: [this.instantMode],
   });
 
-  /*
-    Fixes "Expression ___ has changed after it was checked"
-    which is caused when adding a new question to a valid form.
-    Will look into seeing if this can be done without invoking change detection
-    manually.
-  */
-  ngAfterViewChecked() {
-    this.cdr.detectChanges();
-  }
-
   /**
    * Adds an empty single-choice question to the questions control of the form.
    * @param event 
@@ -154,7 +143,7 @@ export class QuizFormComponent implements OnInit {
           type: [questionTypes.single],
         }
       )
-    );    
+    );
   }
 
   /**

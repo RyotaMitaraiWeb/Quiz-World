@@ -30,7 +30,8 @@
     <div class="answer-field" *ngFor="let answer of wrongAnswers; index as i"
       formArrayName="answers">
       <mat-radio-button disabled></mat-radio-button>
-      <mat-form-field [formGroupName]="(i + 1)" hintLabel="The answer must be between 1 and 100 characters">
+      <mat-form-field [formGroupName]="getActualIndex(i)" 
+        hintLabel="The answer must be between 1 and 100 characters">
         <textarea 
           cdkTextareaAutosize
           required
