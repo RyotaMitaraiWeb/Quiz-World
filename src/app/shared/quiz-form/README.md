@@ -12,7 +12,6 @@ class QuizFormComponent {
   @Input() questions: IQuestionSubmission[];
   @Input() title = '';
   @Input() description = '';
-  @Input() instantMode = false;
   @Input() edit = false;
 }
 ```
@@ -21,7 +20,6 @@ Passing the props is needed only when editing a particular quiz form; when the c
 * ``questions`` - a list of questions to be populated in the form, defaults to an array of one element: a single-choice question with an empty prompt, correct answer, and wrong answer.
 * ``title`` - the title of the form, defaults to an empty string.
 * ``description`` - the description of the form, defaults to an empty string.
-* ``instantMode`` - whether the form is in instant mode, defaults to an empty string
 * ``edit`` - whether the form is editing a quiz or not (default ``false``). When in edit mode, the user is unable to change whether the quiz is instant mode or not; this will disable the respective field and won't render the field in the template.
 
 ### Output events
@@ -43,7 +41,7 @@ The submit button updates reactively updates its disabled status.
 ```typescript
 function addQuestion(event: Event): void
 ```
-Adds an empty single-choice question to the questions control of the form.
+Adds an empty single-choice question to the questions control of the form. Does nothing if there are 100 questions.
 
 ```typescript
 function removeQuestionAt(index: number, event: Event): void
