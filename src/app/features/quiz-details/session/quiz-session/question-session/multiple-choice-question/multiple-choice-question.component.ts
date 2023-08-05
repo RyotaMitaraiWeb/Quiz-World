@@ -7,6 +7,8 @@ import { ISessionAnswer } from '../../../../../../../types/responses/quiz.types'
 import { MatRadioModule } from '@angular/material/radio';
 import { questionTypes, shortQuestionTypes } from '../../../../../../constants/question-types.constants';
 import { MatCardModule } from '@angular/material/card';
+import { GradeService } from '../../../../../grade-services/grade.service';
+import { MultipleChoiceGraderService } from '../../../../../grade-services/multiple-choice-grader-service/multiple-choice-grader.service';
 
 @Component({
   selector: 'app-multiple-choice-question',
@@ -19,10 +21,19 @@ import { MatCardModule } from '@angular/material/card';
     MatCardModule,
   ],
   templateUrl: './multiple-choice-question.component.html',
-  styleUrls: ['./multiple-choice-question.component.scss']
+  styleUrls: ['./multiple-choice-question.component.scss'],
+  providers: [
+    {
+      provide: GradeService,
+      useClass: MultipleChoiceGraderService
+    }
+  ]
 })
-export class MultipleChoiceQuestionComponent implements IQuestionComponent<number>, OnChanges {
-  constructor(private readonly fb: FormBuilder) { }
+export class MultipleChoiceQuestionComponent implements OnChanges {
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly grader: GradeService<string, string[]>,
+    ) { }
   @Input({ required: true }) correctAnswers: ISessionAnswer[] | null = [];
   @Input({ required: true }) prompt: string = '';
   @Input({ required: true }) answers: ISessionAnswer[] = [{
@@ -43,14 +54,6 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
 
   protected checkboxName = Date.now().toString();
 
-  protected get formattedCorrectAnswers() {
-    if (this.correctAnswers === null) {      
-      return null;
-    }
-
-    return this.correctAnswers.map(ca => ca.id);
-  }
-
   /**
    * Returns ``null`` if the question has not been graded or a boolean value that
    * indicates whether the question has been answered correctly.
@@ -65,41 +68,9 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
    * ``[1, 2, 3]`` and the user answers look like ``[1, 2, 3, 3]``, this will still
    * return ``false``.
    */
-  get isCorrect(): boolean | null {    
-    if (this.formattedCorrectAnswers === null) {
-      return null;
-    }
-
-    if (this.formattedCorrectAnswers.length !== this.currentAnswers?.length) {
-      return false;
-    }
-
-    const superSet: Record<string, number> = {};
-    
-    for (const answer of this.formattedCorrectAnswers) {
-      superSet[answer] = 1;
-    }
-
-    for (const answer of this.currentAnswers) {
-      if (!answer) {
-        throw new Error('Empty string discovered')
-      }
-
-      if (!superSet[answer]) {
-        return false;
-      }
-
-      superSet[answer] = 2;
-    }
-
-    for (const answer in superSet) {
-      const index = Number(answer);
-      if (superSet[index] === 1) {
-        return false;
-      } 
-    }
-
-    return true;
+  protected get isCorrect(): boolean | null {    
+    const answers = this.currentAnswers?.map(a => a || '') || [];
+    return this.grader.grade(answers, this.correctAnswers)
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -111,19 +82,7 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
   }
 
   protected get promptClass() {
-    if (this.isCorrect === null) {
-      return 'unanswered';
-    }
-
-    return this.isCorrect ? 'correct' : 'wrong';
-  }
-
-  private answerIsCorrect(id: string) {
-    if (this.formattedCorrectAnswers === null) {
-      return null;
-    }    
-
-    return this.formattedCorrectAnswers.includes(id);
+    return this.grader.generatePromptClass(this.isCorrect);
   }
 
   /**
@@ -132,13 +91,8 @@ export class MultipleChoiceQuestionComponent implements IQuestionComponent<numbe
    * @param id the ID of the answer
    * @returns a string representing the answer's status.
    */
-  answerClass(id: string) {
-    const result = this.answerIsCorrect(id);
-    if (result === null) {
-      return 'not-graded';
-    }
-
-    return result ? 'correct-answer' : 'wrong-answer';
+  protected answerClass(id: string) {
+    return this.grader.generateGradedAnswerClass(id, this.correctAnswers);
   }
 
   /**

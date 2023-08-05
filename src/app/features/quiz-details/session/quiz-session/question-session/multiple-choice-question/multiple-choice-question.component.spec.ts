@@ -18,7 +18,7 @@ describe('MultipleChoiceQuestionComponent', () => {
   let element: HTMLElement;
   const fb = new FormBuilder();
 
-  describe('Unit tests', () => {
+  describe('Integration tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
@@ -35,85 +35,6 @@ describe('MultipleChoiceQuestionComponent', () => {
 
     it('should create', () => {
       expect(component).toBeTruthy();
-    });
-
-    describe('isCorrect getter', () => {
-      it('Returns null if correctAnswers is null', () => {
-        component.correctAnswers = null;
-        const result = component.isCorrect;
-        expect(result).toBeNull();
-      });
-
-      it('Returns false if the correct and current answers are of different lengths', () => {
-        setAnswers(1, 2, 3, 4);
-        
-        component.correctAnswers = [
-          { id: '1', value: 'a' }, { id: '2', value: 'b' },
-          { id: '3', value: 'c' },
-        ];
-
-        const result = component.isCorrect;
-        expect(result).toBeFalse();
-
-        setAnswers(3, 1);
-        const result2 = component.isCorrect;
-        expect(result2).toBeFalse();
-
-        setAnswers(1, 2, 3, 4);
-        const result3 = component.isCorrect;
-        expect(result3).toBeFalse();
-      });
-
-      it('Returns false if the correct and current answers do not match', () => {
-        setAnswers(2, 1, 4);
-        component.correctAnswers = [
-          { id: '1', value: 'a' }, { id: '2', value: 'b' },
-          { id: '3', value: 'c' },
-        ];
-
-        const result = component.isCorrect;
-        expect(result).toBeFalse();
-      });
-
-      it('Returns true if the correct and current answers match', () => {
-        setAnswers(2, 1, 3);
-        component.correctAnswers = [
-          { id: '1', value: 'a' }, { id: '2', value: 'b' },
-          { id: '3', value: 'c' },
-        ];
-
-        const result = component.isCorrect;
-        expect(result).toBeTrue();
-
-        setAnswers(3, 2, 1);
-        expect(component.isCorrect).toBeTrue();
-      });
-    });
-
-    describe('answerClass', () => {
-      it('Returns correct name for an ungraded question', () => {
-        component.correctAnswers = null;
-        const result = component.answerClass('');
-
-        expect(result).toBe('not-graded');
-      });
-
-      it('Returns correct name for a correct answer', () => {
-        component.correctAnswers = [{ value: 'correct', id: '1' }, { value: 'correct2', id: '2' }];
-
-        const result = component.answerClass('1');
-        expect(result).toBe('correct-answer');
-
-        const result2 = component.answerClass('2');
-        expect(result2).toBe('correct-answer');
-      });
-
-      it('Returns correct name for a wrong answer', () => {
-        component.correctAnswers = [{ value: 'correct', id: '1' }];
-
-        const result = component.answerClass('2');
-        expect(result).toBe('wrong-answer');
-      });
     });
 
     describe('updateAnswers', () => {
