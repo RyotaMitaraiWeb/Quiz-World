@@ -16,14 +16,24 @@ describe('SingleChoiceComponent', () => {
     title: ['', [Validators.required, Validators.maxLength(100)]],
     description: ['', [Validators.maxLength(300)]],
     questions: fb.array(
-      [fb.group(
-        {
-          prompt: ['', [Validators.required, Validators.maxLength(100)]],
-          correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          type: [questionTypes.single],
-        }
-      )]
+      [fb.group({
+        prompt: ['', [Validators.required, Validators.maxLength(100)]],
+        answers: fb.array([
+          fb.group(
+            {
+              value: ['', [Validators.required, Validators.maxLength(100)]],
+              correct: [true],
+            }
+          ),
+          fb.group(
+            {
+              value: ['', [Validators.required, Validators.maxLength(100)]],
+              correct: [false],
+            }
+          )
+        ]),
+        type: [questionTypes.single]
+      })]
     ),
     instantMode: [false, [Validators.required]],
   });
@@ -41,18 +51,6 @@ describe('SingleChoiceComponent', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
     });
-
-    describe('addNewWrongAnswerField', () => {
-      it('Adds a new field to the form', () => {
-        component.ngOnInit();
-
-        component.addNewWrongAnswerField(event);
-        const form = component.form.get('wrongAnswers') as FormArray;
-        expect(form.controls.length).toBe(2);
-
-        expect(form.controls[1].value).toEqual({ answer: ''});
-      });
-    });
   });
 
   describe('Component tests', () => {
@@ -68,14 +66,24 @@ describe('SingleChoiceComponent', () => {
         title: ['', [Validators.required, Validators.maxLength(100)]],
         description: ['', [Validators.maxLength(300)]],
         questions: fb.array(
-          [fb.group(
-            {
-              prompt: ['', [Validators.required, Validators.maxLength(100)]],
-              correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              type: [questionTypes.single],
-            }
-          )]
+          [fb.group({
+            prompt: ['', [Validators.required, Validators.maxLength(100)]],
+            answers: fb.array([
+              fb.group(
+                {
+                  value: ['', [Validators.required, Validators.maxLength(100)]],
+                  correct: [true],
+                }
+              ),
+              fb.group(
+                {
+                  value: ['', [Validators.required, Validators.maxLength(100)]],
+                  correct: [false],
+                }
+              )
+            ]),
+            type: [questionTypes.single]
+          })]
         ),
         instantMode: [false, [Validators.required]],
       });
@@ -83,10 +91,9 @@ describe('SingleChoiceComponent', () => {
 
     describe('Data populating', () => {
       it('Renders a passed form properly', () => {
-        form.controls.questions.controls[0].controls.correctAnswers.push(fb.group({ answer: 'correct'}));
-        form.controls.questions.controls[0].controls.wrongAnswers.setValue([{ answer: 'wrong1' }]);
-        form.controls.questions.controls[0].controls.wrongAnswers.push(fb.group({ answer: 'wrong2'}));
-        form.controls.questions.controls[0].controls.type.setValue(questionTypes.single);
+        form.controls.questions.controls[0].controls.answers.controls[0].setValue({ value: 'correct', correct: true });
+        form.controls.questions.controls[0].controls.answers.push(fb.group({ value: ['wrong'], correct: [false]}));
+        form.controls.questions.controls[0].controls.answers.push(fb.group({ value: ['wrong2'], correct: [false]}));        form.controls.questions.controls[0].controls.type.setValue(questionTypes.single);
 
         component.form = form.controls.questions.controls[0];
         component.ngOnInit();
@@ -96,16 +103,18 @@ describe('SingleChoiceComponent', () => {
         const questionDe = fixture.debugElement;
         const questionEl = questionDe.nativeElement as HTMLElement;
 
-        const prompt = questionEl.querySelector('.prompt') as HTMLInputElement;
+        const prompt = questionEl.querySelector('.prompt') as HTMLTextAreaElement;
         expect(prompt.value).toBe('');
 
-        const correctAnswer = questionEl.querySelector('.correct-answer-field') as HTMLInputElement;
-        expect(correctAnswer.value).toBe('');
+        const correctAnswer = questionEl.querySelector('.correct-answer-field') as HTMLTextAreaElement;
+        
+        expect(correctAnswer.value).toBe('correct');
 
-        const wrongAnswers = questionEl.querySelectorAll('.wrong-answer-field') as NodeListOf<HTMLInputElement>;
-        expect(wrongAnswers.length).toBe(2);
-        expect(wrongAnswers[0].value).toBe('wrong1');
-        expect(wrongAnswers[1].value).toBe('wrong2');
+        const wrongAnswers = questionEl.querySelectorAll('.wrong-answer-field') as NodeListOf<HTMLTextAreaElement>;
+        
+        expect(wrongAnswers.length).toBe(3);
+        expect(wrongAnswers[1].value).toBe('wrong');
+        expect(wrongAnswers[2].value).toBe('wrong2');
       });
     });
 
@@ -175,20 +184,22 @@ describe('SingleChoiceComponent', () => {
         fixture.detectChanges();
 
         const addBtn = questionEl.querySelector('.add-field-btn') as HTMLButtonElement;
+        
         addBtn.click();
 
-        fixture.detectChanges();
+        fixture.detectChanges();        
 
-        const secondField = questionEl.querySelectorAll('.wrong-answer-field')[1] as HTMLInputElement;
+        const secondField = questionEl.querySelectorAll('.wrong-answer-field')[1] as HTMLTextAreaElement;
 
         secondField.value = 'a';
 
         fixture.detectChanges();
-
-        const removeBtn = questionEl.querySelector('.remove-field-btn') as HTMLButtonElement;
+                
+        const removeBtn = questionEl.querySelector('.remove-field-btn.visible') as HTMLButtonElement;
         removeBtn.click();
 
         fixture.detectChanges();
+        
 
         const remainingField = questionEl.querySelector('.wrong-answer-field') as HTMLInputElement;
         expect(remainingField.value).toBe('a');

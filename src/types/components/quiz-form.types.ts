@@ -36,17 +36,6 @@ export interface IQuizFormSubmission {
   }>[];
 }
 
-export interface IQuizForm {
-  title: string;
-  description: string;
-  instantMode?: boolean;
-  questions: {
-    prompt: string;
-    type: string;
-    answers: IAnswer[],
-  }[];
-}
-
 export interface IEditQuizForm {
   id: number;
   title: string;

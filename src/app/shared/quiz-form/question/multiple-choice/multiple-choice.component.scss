@@ -1,6 +1,10 @@
 .multiple-choice-question.question {
   width: 100%;
 
+  .invisible {
+    visibility: hidden;
+  }
+
   .correct-answer, .wrong-answers {
     text-align: center;
     mat-form-field {

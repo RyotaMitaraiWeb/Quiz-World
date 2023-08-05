@@ -22,8 +22,12 @@ describe('TextComponent', () => {
       [fb.group(
         {
           prompt: ['', [Validators.required, Validators.maxLength(100)]],
-          correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
+          answers: fb.array([
+            fb.group({
+              value: ['', Validators.required, Validators.maxLength(100)],
+              correct: [true],
+            })
+          ]),
           type: [questionTypes.text],
         }
       )]
@@ -47,8 +51,12 @@ describe('TextComponent', () => {
           [fb.group(
             {
               prompt: ['', [Validators.required, Validators.maxLength(100)]],
-              correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
+              answers: fb.array([
+                fb.group({
+                  value: ['', Validators.required, Validators.maxLength(100)],
+                  correct: [true],
+                })
+              ]),
               type: [questionTypes.text],
             }
           )]
@@ -61,27 +69,7 @@ describe('TextComponent', () => {
       expect(component).toBeTruthy();
     });
 
-    describe('addField', () => {
-      it('Adds a new field to the form', () => {
-        component.ngOnInit();
-
-        component.addField(event);
-        const form = component.form.get('correctAnswers') as FormArray;
-        expect(form.controls.length).toBe(2);
-
-        expect(form.controls[1].value).toEqual({ answer: '' });
-      });
-
-      describe('ngOnInit', () => {
-        it('Disables the wrong answers field', () => {
-          component.form = form.controls.questions.controls[0];
-          
-          expect(component.form.controls.wrongAnswers.disabled).toBe(false);
-          component.ngOnInit();
-          expect(component.form.controls.wrongAnswers.disabled).toBe(true);
-        });
-      })
-    });
+    
   });
 
   describe('Component tests', () => {
@@ -105,43 +93,17 @@ describe('TextComponent', () => {
           [fb.group(
             {
               prompt: ['', [Validators.required, Validators.maxLength(100)]],
-              correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              type: [questionTypes.single],
+              answers: fb.array([
+                fb.group({
+                  value: ['', Validators.required, Validators.maxLength(100)],
+                  correct: [true],
+                })
+              ]),
+              type: [questionTypes.text],
             }
           )]
         ),
         instantMode: [false, [Validators.required]],
-      });
-    });
-
-    describe('Data populating', () => {
-      it('Renders correctly a passed form (wrong answers are removed)', async () => {
-        form.controls.questions.setValue([
-          {
-            prompt: 'question 1',
-            correctAnswers: [
-              { answer: 'correct' },
-            ],
-            wrongAnswers: [
-              { answer: 'wrong' }
-            ],
-            type: questionTypes.text,
-          },
-        ]);
-
-        form.controls.questions.controls[0].controls.correctAnswers.push(fb.group({ answer: 'correct2' }));
-
-        component.form = form.controls.questions.controls[0];
-        component.ngOnInit();
-        fixture.detectChanges();
-
-        const fields = await loader.getAllHarnesses(MatInputHarness);
-        expect(fields.length).toBe(3);
-
-        expect(await fields[0].getValue()).toBe('question 1');
-        expect(await fields[1].getValue()).toBe('correct');
-        expect(await fields[2].getValue()).toBe('correct2');
       });
     });
 
@@ -175,7 +137,7 @@ describe('TextComponent', () => {
           component.ngOnInit();
           fixture.detectChanges();
 
-          const addBtn = questionEl.querySelector('.add-field-btn.correct') as HTMLElement;
+          const addBtn = questionEl.querySelector('.add-field-btn') as HTMLElement;
           addBtn.click();
 
           fixture.detectChanges();
@@ -191,7 +153,7 @@ describe('TextComponent', () => {
           component.ngOnInit();
           fixture.detectChanges();
 
-          const addBtn = questionEl.querySelector('.add-field-btn.correct') as HTMLButtonElement;
+          const addBtn = questionEl.querySelector('.add-field-btn') as HTMLButtonElement;
           addBtn.click();
 
           fixture.detectChanges();
@@ -202,7 +164,7 @@ describe('TextComponent', () => {
 
           fixture.detectChanges();
 
-          const removeBtn = questionEl.querySelector('.remove-field-btn.correct') as HTMLButtonElement;
+          const removeBtn = questionEl.querySelector('.remove-field-btn') as HTMLButtonElement;
           removeBtn.click();
 
           fixture.detectChanges();

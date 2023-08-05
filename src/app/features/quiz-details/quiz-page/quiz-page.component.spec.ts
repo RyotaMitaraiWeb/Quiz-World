@@ -194,8 +194,6 @@ describe('QuizPageComponent', () => {
         component.ngOnInit();
         fixture.detectChanges();
         await fixture.whenStable();
-
-        console.log(element.querySelector('.actions'));
         
         const deleteBtn = element.querySelector('.delete-button');
         const editBtn = element.querySelector('.edit-button');

@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { api } from '../../constants/api.constants';
-import { IEditQuizForm, IQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IEditQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { Observable, Subscriber } from 'rxjs';
 import { ICreatedQuizResponse, IQuizDetails } from '../../../types/responses/quiz.types';
 import { IQuizList, IQuizListItem, order, sort } from '../../../types/others/lists.types';
@@ -24,7 +24,7 @@ export class QuizService {
    * the **response** (this allows you to perform different actions for different responses)
    * and is of type *json*
    */
-  create(quiz: IQuizForm): Observable<HttpResponse<ICreatedQuizResponse>> {
+  create(quiz: IQuizFormSubmission): Observable<HttpResponse<ICreatedQuizResponse>> {
     return this.http.post<ICreatedQuizResponse>(this.url.create, quiz, {
       observe: 'response',
       responseType: 'json'
@@ -196,7 +196,7 @@ export class QuizService {
    * @returns An observable that resolves to the response of the request. The
    * successful response status code is 204.
    */
-  edit(id: number, quiz: IQuizForm): Observable<HttpResponse<unknown>> {
+  edit(id: number, quiz: IQuizFormSubmission): Observable<HttpResponse<unknown>> {
     return this.http.put(this.url.edit(id), quiz, { observe: 'response'});
   }
 

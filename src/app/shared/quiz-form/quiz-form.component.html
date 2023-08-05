@@ -19,12 +19,22 @@
   </section>
   <section class="question-fields" *ngFor="let question of form.controls.questions.controls; index as i">
     <app-question [form]="question" [index]="i"></app-question>
-    <button class="remove-question-btn" (click)="removeQuestionAt(i, $event)" mat-raised-button color="warn">
+    <button
+      class="remove-question-btn"
+      (click)="removeQuestionAt(i, $event)"
+      *ngIf="form.controls.questions.length > 1"
+      mat-raised-button color="warn"
+    >
       <mat-icon>remove_circle</mat-icon>
       Remove this question
     </button>
   </section>
-  <button mat-raised-button color="primary" (click)="addQuestion($event)" class="add-question-btn">
+  <button 
+    mat-raised-button color="primary"
+    (click)="addQuestion($event)"
+    class="add-question-btn"
+    *ngIf="form.controls.questions.length < 100"
+    >
     <mat-icon>add</mat-icon>
     Add a new question
   </button>

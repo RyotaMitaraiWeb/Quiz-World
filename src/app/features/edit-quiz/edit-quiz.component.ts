@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription, of } from 'rxjs';
-import { IEditQuizForm, IQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IEditQuizForm,IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuizService } from '../quiz-service/quiz.service';
 import { IQuizDetails } from '../../../types/responses/quiz.types';
@@ -29,13 +29,11 @@ export class EditQuizComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.quizSub = this.getResolvedData().subscribe(data => {
-      this.quiz = data['quiz'];
-      console.log(this.quiz);
-      
+      this.quiz = data['quiz'];      
     });
   }
 
-  editQuiz(quiz: IQuizForm): void {
+  editQuiz(quiz: IQuizFormSubmission): void {
     this.editSub = this.quizService.edit(this.quiz.id, quiz).subscribe({
       next: () => {
         this.router.navigate(['/quiz', this.quiz.id.toString()])

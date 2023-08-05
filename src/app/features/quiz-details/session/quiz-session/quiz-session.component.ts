@@ -76,10 +76,7 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
         answers: q.answers,
         type: q.type,
       });
-    });
-    
-    console.log(this.prompts);
-    
+    });    
   }
 
   questionKeys = new Map<string, ISessionAnswer[] | null>();

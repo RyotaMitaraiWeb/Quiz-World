@@ -269,7 +269,6 @@ describe('CatalogueComponent', () => {
         fixture.detectChanges();
 
         await fixture.whenStable();
-        console.log(element);
         
         const path = location.path();
         expect(path.includes('page=2')).toBeTrue();

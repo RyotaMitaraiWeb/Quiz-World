@@ -16,19 +16,30 @@ describe('QuizFormComponent', () => {
   const event = new Event('click');
   const fb = new FormBuilder();
   let form = fb.group({
-    title: ['', [Validators.required, Validators.maxLength(100)]],
-    description: ['', [Validators.maxLength(300)]],
+    title: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
+    description: ['', [Validators.required, Validators.maxLength(300)]],
     questions: fb.array(
-      [fb.group(
-        {
-          prompt: ['', [Validators.required, Validators.maxLength(100)]],
-          correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-          type: [questionTypes.single],
-        }
-      )]
+      [
+        fb.group(
+          {
+            prompt: ['', [Validators.required, Validators.maxLength(100)]],
+            answers: fb.array(
+              [
+                fb.group({
+                  value: ['', [Validators.required, Validators.maxLength(100)]],
+                  correct: [true],
+                }),
+                fb.group({
+                  value: ['', [Validators.required, Validators.maxLength(100)]],
+                  correct: [false],
+                })
+              ]
+            ),
+            type: [questionTypes.single],
+          }
+        )]
     ),
-    instantMode: [false, [Validators.required]],
+    instantMode: [false],
   });
 
   describe('Unit tests', () => {
@@ -41,19 +52,30 @@ describe('QuizFormComponent', () => {
       fixture.detectChanges();
 
       form = fb.group({
-        title: ['', [Validators.required, Validators.maxLength(100)]],
-        description: ['', [Validators.maxLength(300)]],
+        title: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
+        description: ['', [Validators.required, Validators.maxLength(300)]],
         questions: fb.array(
-          [fb.group(
-            {
-              prompt: ['', [Validators.required, Validators.maxLength(100)]],
-              correctAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              wrongAnswers: fb.array([fb.group({ answer: ['', [Validators.required, Validators.maxLength(100)]] })]),
-              type: [questionTypes.single],
-            }
-          )]
+          [
+            fb.group(
+              {
+                prompt: ['', [Validators.required, Validators.maxLength(100)]],
+                answers: fb.array(
+                  [
+                    fb.group({
+                      value: ['', [Validators.required, Validators.maxLength(100)]],
+                      correct: [true],
+                    }),
+                    fb.group({
+                      value: ['', [Validators.required, Validators.maxLength(100)]],
+                      correct: [false],
+                    })
+                  ]
+                ),
+                type: [questionTypes.single],
+              }
+            )]
         ),
-        instantMode: [false, [Validators.required]],
+        instantMode: [false],
       });
     });
 
@@ -109,6 +131,7 @@ describe('QuizFormComponent', () => {
         ];
 
         component.ngOnInit();
+
         const questions = component.form.controls.questions;
         expect(questions.length).toBe(2);
 
@@ -118,20 +141,14 @@ describe('QuizFormComponent', () => {
         expect(q1.controls.prompt.value).toBe('question1');
         expect(q1.controls.type.value).toBe(questionTypes.single);
 
-        expect(q1.controls.correctAnswers.length).toBe(1);
-        expect(q1.controls.correctAnswers.controls[0].controls.answer.value).toBe('a');
+        expect(q1.controls.answers.length).toBe(2);
+        expect(q1.controls.answers.controls[0].controls.value.value).toBe('a');
+        expect(q1.controls.answers.controls[0].controls.correct.value).toBeTrue();
 
-        expect(q1.controls.wrongAnswers.length).toBe(1);
-        expect(q1.controls.wrongAnswers.controls[0].controls.answer.value).toBe('b');
+        expect(q1.controls.answers.controls[1].controls.value.value).toBe('b');
+        expect(q1.controls.answers.controls[1].controls.correct.value).toBeFalse();
 
-        expect(q2.controls.correctAnswers.length).toBe(2);
-        expect(q2.controls.correctAnswers.controls[0].controls.answer.value).toBe('a');
-        expect(q2.controls.correctAnswers.controls[1].controls.answer.value).toBe('c');
-
-        expect(q2.controls.wrongAnswers.length).toBe(3);
-        expect(q2.controls.wrongAnswers.controls[0].controls.answer.value).toBe('b');
-        expect(q2.controls.wrongAnswers.controls[1].controls.answer.value).toBe('d');
-        expect(q2.controls.wrongAnswers.controls[2].controls.answer.value).toBe('e');
+        expect(q2.controls.answers.length).toBe(5);
       });
 
       it('populates form correctly if no questions are passed', () => {
@@ -144,11 +161,13 @@ describe('QuizFormComponent', () => {
         expect(q1.controls.prompt.value).toBe('');
         expect(q1.controls.type.value).toBe(questionTypes.single);
 
-        expect(q1.controls.correctAnswers.length).toBe(1);
-        expect(q1.controls.correctAnswers.controls[0].controls.answer.value).toBe('');
+        expect(q1.controls.answers.length).toBe(2);
 
-        expect(q1.controls.wrongAnswers.length).toBe(1);
-        expect(q1.controls.wrongAnswers.controls[0].controls.answer.value).toBe('');
+        expect(q1.controls.answers.controls[0].controls.value.value).toBe('');
+        expect(q1.controls.answers.controls[0].controls.correct.value).toBeTrue();
+
+        expect(q1.controls.answers.controls[1].controls.value.value).toBe('');
+        expect(q1.controls.answers.controls[1].controls.correct.value).toBeFalse();
       });
 
       it('Disables the instant mode field if edit is set to true', () => {
@@ -166,8 +185,16 @@ describe('QuizFormComponent', () => {
         const question = component.form.controls.questions.controls[1].controls;
         expect(question.type.value).toBe(questionTypes.single);
         expect(question.prompt.value).toBe('');
-        expect(question.correctAnswers.length).toBe(1);
-        expect(question.wrongAnswers.length).toBe(1);
+        expect(question.answers.length).toBe(2);
+      });
+
+      it('Does not add a question if there are 100 questions', () => {
+        for (let i = 1; i <= 99; i++) {
+          component.addQuestion(event);
+        }
+
+        component.addQuestion(event);
+        expect(component.form.controls.questions.length).toBe(100);
       });
     });
 
@@ -182,8 +209,18 @@ describe('QuizFormComponent', () => {
           fb.group(
             {
               prompt: ['question prompt', [Validators.required, Validators.maxLength(100)]],
-              correctAnswers: fb.array([fb.group({ answer: ['b', [Validators.required, Validators.maxLength(100)]] })]),
-              wrongAnswers: fb.array([fb.group({ answer: ['c', [Validators.required, Validators.maxLength(100)]] })]),
+              answers: fb.array(
+                [
+                  fb.group({
+                    value: ['', [Validators.required, Validators.maxLength(100)]],
+                    correct: [true],
+                  }),
+                  fb.group({
+                    value: ['', [Validators.required, Validators.maxLength(100)]],
+                    correct: [false],
+                  })
+                ]
+              ),
               type: [questionTypes.single],
             }
           )
@@ -266,7 +303,6 @@ describe('QuizFormComponent', () => {
             ]
           }
         ];
-        component.instantMode = true;
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -279,10 +315,6 @@ describe('QuizFormComponent', () => {
 
         const descriptionField = formEl.querySelector('#description') as HTMLTextAreaElement;
         expect(descriptionField.value).toBe('some description');
-
-        const checkbox = await loader.getHarness(MatCheckboxHarness);
-        const checked = await checkbox.isChecked();
-        expect(checked).toBeTrue();
       });
 
       it('Renders the form correctly if no props are passed', async () => {
@@ -331,6 +363,22 @@ describe('QuizFormComponent', () => {
         const questions2 = formEl.querySelectorAll('.question.wrapper');
         expect(questions2.length).toBe(3);
       });
+
+      it('Does not render add question button if there are 100 questions', () => {
+        component.ngOnInit();
+        fixture.detectChanges();
+
+        const btn = formEl.querySelector('.add-question-btn') as HTMLButtonElement;
+
+        for (let i = 1; i <= 99; i++) {
+          btn.click();
+        }
+
+        fixture.detectChanges();
+
+        const unmountedButton = formEl.querySelector('.add-question-btn');
+        expect(unmountedButton).toBeNull();
+      });
     });
 
     describe('Removing fields', () => {
@@ -351,6 +399,14 @@ describe('QuizFormComponent', () => {
 
         const questions = formEl.querySelectorAll('.question.wrapper');
         expect(questions.length).toBe(2);
+      });
+
+      it('Does not show the remove button if there is only one question', () => {
+        component.ngOnInit();
+        fixture.detectChanges();        
+
+        const btn = formEl.querySelector('.remove-question-btn');
+        expect(btn).toBeNull();
       });
     });
 
@@ -406,12 +462,12 @@ describe('QuizFormComponent', () => {
         component.form.controls.title.setValue('1234567890112');
         component.form.controls.questions.controls[0].controls.prompt.setValue('a');
         component.form.controls
-          .questions.controls[0].controls.correctAnswers.controls[0]
-          .controls.answer.setValue('a');
+          .questions.controls[0].controls.answers.controls[0]
+          .controls.value.setValue('a');
 
         component.form.controls
-          .questions.controls[0].controls.wrongAnswers.controls[0]
-          .controls.answer.setValue('a');
+          .questions.controls[0].controls.answers.controls[1]
+          .controls.value.setValue('a');
         fixture.detectChanges();
 
         component.form.markAllAsTouched();
@@ -429,12 +485,12 @@ describe('QuizFormComponent', () => {
 
         component.form.controls.description.setValue('a');
         component.form.controls
-          .questions.controls[0].controls.correctAnswers.controls[0]
-          .controls.answer.setValue('a');
+          .questions.controls[0].controls.answers.controls[0]
+          .controls.value.setValue('a');
 
         component.form.controls
-          .questions.controls[0].controls.wrongAnswers.controls[0]
-          .controls.answer.setValue('a');
+          .questions.controls[0].controls.answers.controls[1]
+          .controls.value.setValue('a');
         fixture.detectChanges();
 
         component.form.markAllAsTouched();
@@ -451,12 +507,12 @@ describe('QuizFormComponent', () => {
 
         component.form.controls.title.setValue('1234567890112');
         component.form.controls
-          .questions.controls[0].controls.correctAnswers.controls[0]
-          .controls.answer.setValue('a');
+          .questions.controls[0].controls.answers.controls[0]
+          .controls.value.setValue('a');
 
         component.form.controls
-          .questions.controls[0].controls.wrongAnswers.controls[0]
-          .controls.answer.setValue('a');
+          .questions.controls[0].controls.answers.controls[1]
+          .controls.value.setValue('a');
         fixture.detectChanges();
 
         component.form.markAllAsTouched();
@@ -475,12 +531,12 @@ describe('QuizFormComponent', () => {
         component.form.controls.description.setValue('a');
         component.form.controls.questions.controls[0].controls.prompt.setValue('a');
         component.form.controls
-          .questions.controls[0].controls.correctAnswers.controls[0]
-          .controls.answer.setValue('');
+          .questions.controls[0].controls.answers.controls[0]
+          .controls.value.setValue('');
 
         component.form.controls
-          .questions.controls[0].controls.wrongAnswers.controls[0]
-          .controls.answer.setValue('a');
+          .questions.controls[0].controls.answers.controls[1]
+          .controls.value.setValue('a');
         fixture.detectChanges();
 
         component.form.markAllAsTouched();
@@ -498,12 +554,12 @@ describe('QuizFormComponent', () => {
         component.form.controls.title.setValue('1234567890112');
         component.form.controls.questions.controls[0].controls.prompt.setValue('a');
         component.form.controls
-          .questions.controls[0].controls.correctAnswers.controls[0]
-          .controls.answer.setValue('a');
+          .questions.controls[0].controls.answers.controls[0]
+          .controls.value.setValue('a');
 
         component.form.controls
-          .questions.controls[0].controls.wrongAnswers.controls[0]
-          .controls.answer.setValue('a');
+          .questions.controls[0].controls.answers.controls[1]
+          .controls.value.setValue('a');
         fixture.detectChanges();
 
         component.form.markAllAsTouched();
@@ -527,17 +583,18 @@ describe('QuizFormComponent', () => {
         component.form.controls.title.setValue('1234567890112');
         component.form.controls.questions.controls[0].controls.prompt.setValue('a');
         component.form.controls
-          .questions.controls[0].controls.correctAnswers.controls[0]
-          .controls.answer.setValue('a');
+          .questions.controls[0].controls.answers.controls[0]
+          .controls.value.setValue('a');
+
+
 
         component.form.controls
-          .questions.controls[0].controls.wrongAnswers.controls[0]
-          .controls.answer.setValue('a');
+          .questions.controls[0].controls.answers.controls[1]
+          .controls.value.setValue('a');
         fixture.detectChanges();
 
         component.form.markAllAsTouched();
         fixture.detectChanges();
-
         const submit = formEl.querySelector('#submit') as HTMLButtonElement;
         expect(submit.disabled).toBeFalse();
 
@@ -556,12 +613,12 @@ describe('QuizFormComponent', () => {
         component.form.controls.questions.controls[0].controls.prompt.setValue('a');
         component.form.controls.title.setValue('1234567890112');
         component.form.controls
-          .questions.controls[0].controls.correctAnswers.controls[0]
-          .controls.answer.setValue('a');
+          .questions.controls[0].controls.answers.controls[0]
+          .controls.value.setValue('a');
 
         component.form.controls
-          .questions.controls[0].controls.wrongAnswers.controls[0]
-          .controls.answer.setValue('a');
+          .questions.controls[0].controls.answers.controls[1]
+          .controls.value.setValue('a');
         fixture.detectChanges();
 
         component.form.markAllAsTouched();

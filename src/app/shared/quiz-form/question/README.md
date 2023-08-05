@@ -20,17 +20,17 @@ class QuestionComponent {
 }
 ```
 
-* ``index`` - the order at which this question appears, defaults to 0
-* ``form`` - the question control associated with the given instance of the class (in the context of editing), defaults to a single-choice question with an empty prompt, correct answer, and wrong answer.
+* ``index`` - the order in which this question appears, defaults to 0
+* ``form`` - the question control associated with the given instance of the class, defaults to a single-choice question with an empty prompt, correct answer, and wrong answer.
 
 This component can dynamically render a mini form for managing a question. Based on the ``form``'s ``type``, the component will render an ``<app-text>``, ``<app-single-choice>``, or ``<app-multiple-choice>`` component. In addition, a dropdown menu is provided, which can be used to change the question's type after render.
 
 ### Answer transfer during type switch
 When changing the question's type via the dropdown menu, the following happens in regards to whether an answer will be "saved" or not:
 
-* when changing the type to a text question, all wrong answers are deleted and the wrong answers control is disabled
+* when changing the type to a text question, all wrong answers are deleted.
 * when changing the type to a single-choice question, all correct answers bar the first one are deleted.
-* when changing the type to any category other than a text question, the wrong answers control will be enabled and an empty wrong answer will be added to it if there were none.
+* when changing the type to any category other than a text question, an empty wrong answer will be added if there are no wrong answer fields.
 
 The prompt field always remains unchanged in any type changes.
 

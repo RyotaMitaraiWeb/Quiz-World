@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { QuizService } from '../quiz-service/quiz.service';
 import { Router } from '@angular/router';
-import { IQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
+import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { SharedModule } from '../../shared/shared.module';
 
 @Component({
@@ -24,7 +24,7 @@ export class CreateQuizComponent implements OnDestroy {
     private readonly router: Router,
   ) { }
 
-  createQuiz(quiz: IQuizForm): void {
+  createQuiz(quiz: IQuizFormSubmission): void {
     this.quizSub = this.quizService.create(quiz).subscribe({
       next: (res) => {
         const body = res.body;
