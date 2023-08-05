@@ -122,26 +122,28 @@ export class QuizFormComponent implements OnInit {
    */
   addQuestion(event: Event) {
     event.preventDefault();
-    this.form.controls.questions.push(
-      this.fb.group(
-        {
-          prompt: ['', [Validators.required, Validators.maxLength(100)]],
-          answers: this.fb.array(
-            [
-              this.fb.group({
-                value: ['', [Validators.required, Validators.maxLength(100)]],
-                correct: [true],
-              }),
-              this.fb.group({
-                value: ['', [Validators.required, Validators.maxLength(100)]],
-                correct: [false],
-              })
-            ]
-          ),
-          type: [questionTypes.single],
-        }
-      )
-    );
+    if (this.form.controls.questions.length < 100) {
+      this.form.controls.questions.push(
+        this.fb.group(
+          {
+            prompt: ['', [Validators.required, Validators.maxLength(100)]],
+            answers: this.fb.array(
+              [
+                this.fb.group({
+                  value: ['', [Validators.required, Validators.maxLength(100)]],
+                  correct: [true],
+                }),
+                this.fb.group({
+                  value: ['', [Validators.required, Validators.maxLength(100)]],
+                  correct: [false],
+                })
+              ]
+            ),
+            type: [questionTypes.single],
+          }
+        )
+      );
+    }
   }
 
   /**
