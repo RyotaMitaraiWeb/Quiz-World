@@ -1,5 +1,5 @@
 <app-catalogue-select-menu [selectedValue]="sortOrder"
-  (selectEvent)="changeSortAndOrder($event)"></app-catalogue-select-menu>
+  (selectEvent)="changeSortAndOrder($event)" [options]="options"></app-catalogue-select-menu>
 
 <div class="catalogue" *ngIf="catalogue.quizzes.length; else empty">
   <ng-container>

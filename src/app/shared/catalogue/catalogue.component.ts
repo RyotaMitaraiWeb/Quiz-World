@@ -2,10 +2,11 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { CommonModule, Location } from '@angular/common';
 import { IQuizList, order, sort } from '../../../types/others/lists.types';
 import { HttpParams } from '@angular/common/http';
-import { ISort } from '../../../types/components/catalogue-select-menu.types';
 import { CataloguePaginatorModule } from '../catalogue-paginator/catalogue-paginator.module';
 import { CatalogueSelectMenuComponent } from '../catalogue-select-menu/catalogue-select-menu.component';
 import { QuizListItemComponent } from '../quiz-list-item/quiz-list-item.component';
+import { ActivatedRoute, RouteReuseStrategy, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-catalogue',
   standalone: true,
@@ -16,12 +17,25 @@ import { QuizListItemComponent } from '../quiz-list-item/quiz-list-item.componen
     QuizListItemComponent,
   ],
   templateUrl: './catalogue.component.html',
-  styleUrls: ['./catalogue.component.scss']
+  styleUrls: ['./catalogue.component.scss'],
+  // providers: [{
+  //   provide: RouteReuseStrategy,
+  // }],
 })
-export class CatalogueComponent implements OnInit {
+export class CatalogueComponent implements OnInit, OnDestroy {
   constructor(
     private readonly location: Location,
-  ) { }
+    private readonly router: Router,
+    private readonly route: ActivatedRoute,
+  ) {
+
+  }
+
+  ngOnDestroy(): void {
+    this.routeSub.unsubscribe();
+  }
+
+  private routeSub = new Subscription();
 
   @Output() updateQuizzesEvent = new EventEmitter<
     {
@@ -29,23 +43,36 @@ export class CatalogueComponent implements OnInit {
       sort: sort,
       order: order,
     }
-  >
-
-  ngOnInit(): void {
-    this.page = Number(this.getQueryString('page')) || 1;
-    this.sort = this.getQueryString('sort') as sort || 'title';
-    this.order = this.getQueryString('order') as order || 'asc';
-  }
+  >;
 
   /**
-   * Returns the given query string from the URL.
-   * @param query 
-   * @returns the query string or null if the query string is absent from the URL.
+   * On initial load, the quizzes are supplied via a resolver, so
+   * no need to emit an update on load.
    */
-  getQueryString(query: string): string | null {
-    const url: URL = new URL(window.top?.location.href || '');
-    const params: URLSearchParams = url.searchParams;
-    return params.get(query);
+  private initial = true;
+
+  ngOnInit(): void {
+    this.getQueryParams().subscribe(params => {
+      this.page = Number(params['page']) || 1;
+      this.sort = params['sort'] || 'title';
+      this.order = params['order'] || 'asc';
+
+      if (!this.initial) {
+        this.updateQuizzesEvent.emit(
+          {
+            page: this.page,
+            sort: this.sort,
+            order: this.order,
+          }
+        )
+      } else {
+        this.initial = false;
+      }
+    })
+  }
+
+  getQueryParams() {
+    return this.route.queryParams;
   }
 
   @Input({ required: true }) catalogue: IQuizList = {
@@ -57,6 +84,15 @@ export class CatalogueComponent implements OnInit {
   sort: sort = 'title';
   order: order = 'asc';
 
+  protected options = {
+    'Title (Ascending)': 'title-asc',
+    'Title (Descending)': 'title-desc',
+    'Date of creation (Ascending)': 'createdOn-asc',
+    'Date of creation (Descending)': 'createdOn-desc',
+    'Last updated (Ascending)': 'updatedOn-asc',
+    'Last updated (Descending)': 'updatedOn-desc',
+  };
+
   protected get sortOrder() { return `${this.sort}-${this.order}` }
 
   /**
@@ -65,13 +101,25 @@ export class CatalogueComponent implements OnInit {
    * the respective quizzes
    * @param value the new sort category and order
    */
-  changeSortAndOrder(value: ISort): void {
-    this.sort = value.sort;
-    this.order = value.order;
+  changeSortAndOrder(value: string): void {
+    const query = value.split('-') as [sort, order];
 
-    this.updateURL();
+    this.sort = query[0];
+    this.order = query[1];
 
-    this.updateQuizzesEvent.emit({ page: this.page, sort: this.sort, order: this.order });
+    // const url = this.updateURL();
+    // history.pushState({}, '', url);
+
+    this.router.navigate(['.'], {
+      relativeTo: this.route,
+      queryParamsHandling: 'merge',
+      queryParams: {
+        page: this.page,
+        order: this.order,
+        sort: this.sort,
+      },
+      skipLocationChange: false,
+    });
   }
 
   /**
@@ -83,32 +131,15 @@ export class CatalogueComponent implements OnInit {
   changePage(page: number): void {
     this.page = page;
 
-    this.updateURL();
-
-    this.updateQuizzesEvent.emit({ page: this.page, sort: this.sort, order: this.order });
-  }
-
-  /**
-   * Updates the URL with the current pagination/sorting orders.
-   * If there is a search query in the URL, it will be preserved.
-   */
-  private updateURL(): void {
-    let params = new HttpParams().appendAll(
-      {
-        page: this.page.toString(),
-        sort: this.sort,
+    this.router.navigate(['.'], {
+      relativeTo: this.route,
+      queryParamsHandling: 'merge',
+      queryParams: {
+        page: this.page,
         order: this.order,
+        sort: this.sort,
       },
-    );
-
-    const searchQuery = this.getQueryString('query');
-    if (searchQuery) {
-      params = params.append('query', searchQuery);
-    }
-
-    this.location.replaceState(
-      location.pathname,
-      params.toString()
-    );
+      skipLocationChange: false,
+    });
   }
 }

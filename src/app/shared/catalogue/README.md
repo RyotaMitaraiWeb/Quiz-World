@@ -6,7 +6,7 @@
 ```
 
 ### @Input() properties
-* ``catalogue`` - an object of type ``IQuizList``. The component will use the data inside it to render the quizzes and the correct page. (**Required**)
+* ``catalogue`` - an object of type ``IQuizList``. The component will use the data inside it to render the quizzes and the correct page. (**Required**).
 
 ### @Output() properties
 * ``updateQuizzesEvent`` - this event is emitted every time the user changes the page or selects a new sorting category / order. The event passes an object containing the requested page, sort category, and order.
@@ -15,16 +15,16 @@ Renders an ``app-catalogue-select-menu``, a list of ``app-quiz-list-item`` eleme
 
 ## Methods
 ```typescript
-function getQueryString(query: string): string | null
+function getQueryParameters(): Observable<Params>;
 ```
-Returns the value of the given ``query`` from the URL or ``null`` if the query is missing.
+Returns the query parameters from the activated route.
 
 ```typescript
-function changeSortAndOrder(value: ISort): void
+function changeSortAndOrder(value: string): void
 ```
-Updates the ``sort`` and ``order`` properties to the passed ``value``'s respective properties and updates the URL's query strings to reflect that. In addition, this method will emit, ``updateQuizzesEvent`` passing the current page and the new values as arguments. If there is a search query in the URL, it will be preserved.
+``value`` in this case is passed in the format ``{category}-{order}``. This method will take the respective values and update the ``sort`` and ``order`` properties accordingly. This method will navigate to the same URL, updating any changed query parameters (which on its own emits ``updateQuizzesEvent``).
 
 ```typescript
 function changePage(page: number): void
 ```
-Updates the ``page`` property to the passed argument and updates the URL's query strings to reflect that. In addition, this method will emit, ``updateQuizzesEvent`` passing the new page and the current sorting options as arguments. If there is a search query in the URL, it will be preserved.
+Updates the ``page`` property to the passed argument and updates the URL's query strings to reflect that. This method will navigate to the same URL, updating any changed query parameters (which on its own emits ``updateQuizzesEvent``).

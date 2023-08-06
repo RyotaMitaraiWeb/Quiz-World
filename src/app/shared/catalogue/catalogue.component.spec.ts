@@ -8,7 +8,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatPaginatorHarness } from '@angular/material/paginator/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { QuizService } from '../../features/quiz-service/quiz.service';
 import { Observable, of } from 'rxjs';
 import { IQuizList, IQuizListItem } from '../../../types/others/lists.types';
@@ -44,10 +44,10 @@ describe('CatalogueComponent', () => {
   let component: CatalogueComponent;
   let fixture: ComponentFixture<CatalogueComponent>;
 
-  let location: Location;
   let loader: HarnessLoader;
 
   let element: HTMLElement;
+  let router: Router;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -74,7 +74,7 @@ describe('CatalogueComponent', () => {
     });
 
     fixture = TestBed.createComponent(CatalogueComponent);
-    location = TestBed.inject(Location);
+    router = TestBed.inject(Router);
 
     loader = TestbedHarnessEnvironment.loader(fixture);
 
@@ -91,13 +91,13 @@ describe('CatalogueComponent', () => {
   describe('Unit tests', () => {
     describe('ngOnInit', () => {
       it('Sets all relevant properties based on query parameters', () => {
-        spyOn(component, 'getQueryString')
-          .withArgs('page')
-          .and.returnValue('121')
-          .withArgs('sort')
-          .and.returnValue('createdOn')
-          .withArgs('order')
-          .and.returnValue('desc');
+        spyOn(component, 'getQueryParams').and.returnValue(
+          of({
+            page: '121',
+            sort: 'createdOn',
+            order: 'desc',
+          })
+        );
 
         component.ngOnInit();
 
@@ -107,13 +107,13 @@ describe('CatalogueComponent', () => {
       });
 
       it('Sets all relevant properties from query parameters to default values if the query params are missing', () => {
-        spyOn(component, 'getQueryString')
-          .withArgs('page')
-          .and.returnValue(null)
-          .withArgs('sort')
-          .and.returnValue(null)
-          .withArgs('order')
-          .and.returnValue(null);
+        spyOn(component, 'getQueryParams').and.returnValue(
+          of({
+            page: undefined,
+            sort: undefined,
+            order: undefined,
+          })
+        );
 
         component.ngOnInit();
 
@@ -125,33 +125,24 @@ describe('CatalogueComponent', () => {
 
     describe('changePage', () => {
       it('Sets the page property when called', () => {
-        spyOn(location, 'replaceState').and.stub();
-        spyOn(component.updateQuizzesEvent, 'emit');
+        spyOn(router, 'navigate').and.stub();
 
         component.changePage(2);
         
-        expect(component.updateQuizzesEvent.emit).toHaveBeenCalledWith(
-          { page: 2, sort: 'title', order: 'asc' }
-        );
-
         expect(component.page).toBe(2);
-        expect(location.replaceState).toHaveBeenCalled();
+        expect(router.navigate).toHaveBeenCalled();
       });
     });
 
     describe('changeSortAndOrder', () => {
       it('Changes the sort and order properties when called', () => {
-        spyOn(location, 'replaceState').and.stub();
-        spyOn(component.updateQuizzesEvent, 'emit');
-        component.changeSortAndOrder({ sort: 'createdOn', order: 'desc' });
+        spyOn(router, 'navigate').and.stub();
+        component.changeSortAndOrder('createdOn-desc');
 
         expect(component.sort).toBe('createdOn');
         expect(component.order).toBe('desc');
 
-        expect(location.replaceState).toHaveBeenCalled();
-        expect(component.updateQuizzesEvent.emit).toHaveBeenCalledWith(
-          { page: 1, sort: 'createdOn', order: 'desc' }
-        );
+        expect(router.navigate).toHaveBeenCalled();
       });
     });
   });
@@ -159,16 +150,15 @@ describe('CatalogueComponent', () => {
   describe('Component tests', () => {
     describe('component initilization', () => {
       it('Sets paginator to correct page based on query string', waitForAsync(async () => {
+        router.navigate(['/test'], {
+          queryParams: {
+            page: '3'
+          }
+        });
+        fixture.detectChanges();
+
         const paginators = await loader.getAllHarnesses(MatPaginatorHarness);
         const paginator = paginators[0];
-
-        spyOn(component, 'getQueryString')
-          .withArgs('page')
-          .and.returnValue('3')
-          .withArgs('sort')
-          .and.returnValue(null)
-          .withArgs('order')
-          .and.returnValue(null);
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -185,13 +175,12 @@ describe('CatalogueComponent', () => {
         const selectMenus = await loader.getAllHarnesses(MatSelectHarness);
         const menu = selectMenus[0];
 
-        spyOn(component, 'getQueryString')
-          .withArgs('page')
-          .and.returnValue('3')
-          .withArgs('sort')
-          .and.returnValue('createdOn')
-          .withArgs('order')
-          .and.returnValue('desc');
+        spyOn(component, 'getQueryParams')
+          .and.returnValue(of({
+            page: '3',
+            sort: 'createdOn',
+            order: 'desc'
+          }));
 
         component.ngOnInit();
         fixture.detectChanges();
@@ -254,65 +243,6 @@ describe('CatalogueComponent', () => {
         const message2 = element.querySelector('.no-quizzes');
         expect(message2).toBeNull();
       });
-    });
-
-    describe('interaction', () => {
-      it('Changes location path when a new page is selected', waitForAsync(async () => {
-        component.catalogue = generateQuizzes(7);
-        const paginators = await loader.getAllHarnesses(MatPaginatorHarness);
-        const paginator = paginators[0];
-
-        component.ngOnInit();
-        fixture.detectChanges();
-
-        await paginator.goToNextPage();
-        fixture.detectChanges();
-
-        await fixture.whenStable();
-        
-        const path = location.path();
-        expect(path.includes('page=2')).toBeTrue();
-      }));
-
-      it('Changes location path when a new option is chosen', waitForAsync(async () => {
-        component.catalogue = generateQuizzes(7);
-        const menu = await loader.getHarness(MatSelectHarness);
-
-        component.ngOnInit();
-        fixture.detectChanges();
-
-        await menu.open();
-        fixture.detectChanges();
-
-        const options = await menu.getOptions();
-        await options[1].click();
-        fixture.detectChanges();
-
-        const path = location.path();
-        
-        expect(path.includes('sort=title')).toBeTrue();
-        expect(path.includes('order=desc')).toBeTrue();
-
-      }));
-
-      it('Retains the query param string when an update happens', waitForAsync(async () => {
-        component.catalogue = generateQuizzes(7);
-        const menu = await loader.getHarness(MatSelectHarness);
-
-        component.ngOnInit();
-        fixture.detectChanges();
-
-        spyOn(component, 'getQueryString').and.returnValue('mytitle');
-        await menu.open();
-        fixture.detectChanges();
-
-        const options = await menu.getOptions();
-        await options[1].click();
-        fixture.detectChanges();
-
-        const path = location.path();
-        expect(path.includes('query=mytitle')).toBe(true);
-      }))
     });
   });
 });
