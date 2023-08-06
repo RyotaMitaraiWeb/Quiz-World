@@ -43,23 +43,6 @@ Certain elements in this component have dynamic class names, which allows you to
 * Each checkbox text has a class name of ``not-graded``, ``wrong-answer``, or ``correct-answer``. The checkbox text has a class name of ``not-graded`` when the question has not been graded yet.
 
 ## Methods and getters
-```typescript
-get isCorrect(): boolean | null
-```
-Returns ``null`` if ``correctAnswers`` is ``null`` (which means that the question has not been graded yet) or a boolean value that indicates whether the user has answered correctly or not. The user has answered correctly if they have given all correct answers and have not given any wrong answer. The order of the answers does not matter.
-
-This getter uses a superset algorithm to compare the user's answer to the correct answers. This algorithm asymptotically takes O(n) time on average.
-
-**Note:** this getter has an early exit for if the correct answers' amount
-is different from the user's answers'. If the correct answers looks like
-``[1, 2, 3]`` and the user answers look like ``[1, 2, 3, 3]``, this will still
-return ``false``, even though all of the user's answers are technically correct.
-
-
-```typescript
-function answerClass(id: number): "not-graded" | "correct-answer" | "wrong-answer";
-```
-Returns a string that indicates whether the answer with the given ID is correct or wrong, which can be used as a class name within the template. If the question has not been graded (aka ``correctAnswers`` is ``null``), the method will return ``not-graded``.
 
 ```typescript
 function updateAnswers(event: MatCheckboxChange): void
