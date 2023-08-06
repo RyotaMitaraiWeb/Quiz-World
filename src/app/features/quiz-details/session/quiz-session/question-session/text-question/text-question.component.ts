@@ -6,6 +6,8 @@ import { MatInputModule } from '@angular/material/input';
 import { ISessionAnswer } from '../../../../../../../types/responses/quiz.types';
 import { MatCardModule } from '@angular/material/card';
 import { shortQuestionTypes } from '../../../../../../constants/question-types.constants';
+import { TextGraderService } from '../../../../../grade-services/text-grader-service/text-grader.service';
+import { GradeService } from '../../../../../grade-services/grade.service';
 
 @Component({
   selector: 'app-text-question',
@@ -17,10 +19,19 @@ import { shortQuestionTypes } from '../../../../../../constants/question-types.c
     MatCardModule,
   ],
   templateUrl: './text-question.component.html',
-  styleUrls: ['./text-question.component.scss']
+  styleUrls: ['./text-question.component.scss'],
+  providers: [
+    {
+      provide: GradeService,
+      useClass: TextGraderService,
+    }
+  ]
 })
-export class TextQuestionComponent implements IQuestionComponent<string>, OnChanges {
-  constructor(private readonly fb: FormBuilder) { }
+export class TextQuestionComponent implements OnChanges {
+  constructor(
+    private readonly fb: FormBuilder,
+    private readonly grader: GradeService<string, string>,
+    ) { }
 
   @Input({ required: true }) correctAnswers: ISessionAnswer[] | null = null;
   @Input({ required: true }) prompt: string = '';
@@ -47,13 +58,8 @@ export class TextQuestionComponent implements IQuestionComponent<string>, OnChan
    * answered correctly or not. The user has answered correctly if they have
    * typed a correct answer. The grading is case insensitive (canada === CANADA === cANadA)
    */
-  get isCorrect(): boolean | null {
-    if (this.formattedCorrectAnswers === null) {
-      return null;
-    }
-
-    return this.formattedCorrectAnswers.
-      findIndex(ca => ca.toLowerCase() === this.currentAnswer.toLowerCase()) !== -1;
+  protected get isCorrect(): boolean | null {
+    return this.grader.grade(this.currentAnswer, this.correctAnswers);
   }
 
   private get currentAnswer(): string {
@@ -61,11 +67,7 @@ export class TextQuestionComponent implements IQuestionComponent<string>, OnChan
   }
 
   protected get promptClass(): "unanswered" | "correct" | "wrong" {
-    if (this.isCorrect === null) {
-      return 'unanswered';
-    }
-
-    return this.isCorrect ? 'correct' : 'wrong';
+    return this.grader.generatePromptClass(this.isCorrect);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -73,14 +75,6 @@ export class TextQuestionComponent implements IQuestionComponent<string>, OnChan
   }
 
   protected get gradedAnswerClass() {
-    if (this.isCorrect) {
-      return 'correct-answer';
-    }
-
-    if (this.isCorrect === false)  {
-      return 'wrong-answer';
-    }
-
-    return 'ungraded';
+    return this.grader.generateGradedAnswerClass(this.currentAnswer, this.correctAnswers);
   }
 }

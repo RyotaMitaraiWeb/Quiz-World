@@ -22,51 +22,6 @@ describe('TextQuestionComponent', () => {
     it('should create', () => {
       expect(component).toBeTruthy();
     });
-
-    describe('isCorrect getter', () => {
-      it('Returns null if the correctAnswers property is null', () => {
-        component.correctAnswers = null;
-        const result = component.isCorrect;
-        expect(result).toBeNull();
-      });
-
-      it('Returns false if the correct answers property does not include the user\'s answer', () => {
-        component.correctAnswers = [
-          {
-            id: '1',
-            value: 'correct',
-          }
-        ];
-
-        component.form.controls.currentAnswer.setValue('wrong');
-        const result = component.isCorrect;
-        expect(result).toBeFalse();
-      });
-
-      it('Returns true if the correct answers property includes the user\'s answer (case insensitive)', () => {
-        component.correctAnswers = [
-          {
-            id: '1',
-            value: 'correct',
-          }
-        ];
-
-        component.form.controls.currentAnswer.setValue('cORRecT');
-        const result = component.isCorrect;
-        expect(result).toBeTrue();
-      });
-    });
-
-    describe('ngOnChanges', () => {
-      it('Sets the correctAnswers property to whatever changes have come', () => {
-        const changes = new SimpleChange(null, [{ id: '1', value: 'correct' }], true);
-        component.ngOnChanges({
-          correctAnswers: changes,
-        });
-
-        expect(component.correctAnswers).toEqual([{ id: '1', value: 'correct' }]);
-      });
-    });
   });
 
   describe('Component tests', () => {

@@ -34,9 +34,3 @@ Certain elements in this component have dynamic class names, which allows you to
 
 * Question prompt heading, which has a class name of ``unanswered``, ``correct``, or ``wrong`` depending on the question's status.
 
-## Getters
-```typescript
-get isCorrect(): boolean | null
-```
-Returns ``null`` if ``correctAnswers`` is ``null`` (which means that the question has not been graded yet) or a boolean value that indicates whether the user has answered correctly or not. The user has answered correctly if they have typed a correct answer. The grading is case insensitive (so if the answer to the question is Canada, then canada, CANADA, and cANadA would all be considered correct).
-
