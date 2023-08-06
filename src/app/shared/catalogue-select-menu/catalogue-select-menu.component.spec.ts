@@ -39,10 +39,7 @@ describe('CatalogueSelectMenuComponent', () => {
         change.value = 'title-asc';
         component.select(change);
 
-        expect(component.selectEvent.emit).toHaveBeenCalledOnceWith({
-          sort: 'title',
-          order: 'asc',
-        });
+        expect(component.selectEvent.emit).toHaveBeenCalledOnceWith('title-asc');
       });
 
       it('Sets the selectedValue property to the correct value', () => {
@@ -50,20 +47,6 @@ describe('CatalogueSelectMenuComponent', () => {
         component.select(change);
 
         expect(component.selectedValue).toBe('title-desc');
-      });
-    });
-
-    describe('constructQuery', () => {
-      it('constructs an object from the provided string', () => {
-        const result = component.constructQuery('title-asc');
-        expect(result).toEqual({
-          sort: 'title',
-          order: 'asc'
-        });
-      });
-
-      it('throws an error if it cannot parse the value', () => {
-        expect(() => component.constructQuery('nodash')).toThrow();
       });
     });
   });
@@ -85,6 +68,15 @@ describe('CatalogueSelectMenuComponent', () => {
   
     describe('Render', () => {
       it('Renders the correct amount of options', async () => {
+        component.options = {
+          'Title (Ascending)': 'title-asc',
+          'Title (Descending)': 'title-desc',
+          'Date of creation (Ascending)': 'createdOn-asc',
+          'Date of creation (Descending)': 'createdOn-desc',
+          'Last updated (Ascending)': 'updatedOn-asc',
+          'Last updated (Descending)': 'updatedOn-desc',
+        };
+        fixture.detectChanges();
         const select = await loader.getHarness(MatSelectHarness);
         await select.open();
         const options = await select.getOptions();
@@ -93,6 +85,14 @@ describe('CatalogueSelectMenuComponent', () => {
 
       it('Changes selected option based on the selectedValue property', async () => {
         component.selectedValue = 'title-desc';
+        component.options = {
+          'Title (Ascending)': 'title-asc',
+          'Title (Descending)': 'title-desc',
+          'Date of creation (Ascending)': 'createdOn-asc',
+          'Date of creation (Descending)': 'createdOn-desc',
+          'Last updated (Ascending)': 'updatedOn-asc',
+          'Last updated (Descending)': 'updatedOn-desc',
+        };
         component.ngOnInit();
         fixture.detectChanges();
 
@@ -100,17 +100,28 @@ describe('CatalogueSelectMenuComponent', () => {
         await select.open();
         fixture.detectChanges();
         
-        const value = await select.getValueText();
+        const value = await select.getValueText();        
         expect(value).toBe('Title (Descending)');
       });
     });
 
     describe('Changing an option', () => {
       it('Changes the selectedValue property when an option is clicked', async () => {
+        component.options = {
+          'Title (Ascending)': 'title-asc',
+          'Title (Descending)': 'title-desc',
+          'Date of creation (Ascending)': 'createdOn-asc',
+          'Date of creation (Descending)': 'createdOn-desc',
+          'Last updated (Ascending)': 'updatedOn-asc',
+          'Last updated (Descending)': 'updatedOn-desc',
+        };
+        fixture.detectChanges();
+
         const select = await loader.getHarness(MatSelectHarness);
         await select.open();
         fixture.detectChanges();
         const options = await select.getOptions();
+        
         const option = options[1];
         await option.click();
         fixture.detectChanges();

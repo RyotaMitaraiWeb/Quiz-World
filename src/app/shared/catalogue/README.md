@@ -20,9 +20,9 @@ function getQueryString(query: string): string | null
 Returns the value of the given ``query`` from the URL or ``null`` if the query is missing.
 
 ```typescript
-function changeSortAndOrder(value: ISort): void
+function changeSortAndOrder(value: string): void
 ```
-Updates the ``sort`` and ``order`` properties to the passed ``value``'s respective properties and updates the URL's query strings to reflect that. In addition, this method will emit, ``updateQuizzesEvent`` passing the current page and the new values as arguments. If there is a search query in the URL, it will be preserved.
+``value`` in this case is passed in the format ``{category}-{order}``. This method will take the respective values and update the ``sort`` and ``order`` properties accordingly. In addition, this method will emit ``updateQuizzesEvent``, passing the current page and the new values as arguments. If there is a search query in the URL, it will be preserved.
 
 ```typescript
 function changePage(page: number): void

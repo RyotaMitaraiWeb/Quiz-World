@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { IQuizList, order, sort } from '../../../types/others/lists.types';
 import { HttpParams } from '@angular/common/http';
-import { ISort } from '../../../types/components/catalogue-select-menu.types';
 import { CataloguePaginatorModule } from '../catalogue-paginator/catalogue-paginator.module';
 import { CatalogueSelectMenuComponent } from '../catalogue-select-menu/catalogue-select-menu.component';
 import { QuizListItemComponent } from '../quiz-list-item/quiz-list-item.component';
@@ -57,6 +56,15 @@ export class CatalogueComponent implements OnInit {
   sort: sort = 'title';
   order: order = 'asc';
 
+  protected options = {
+    'Title (Ascending)': 'title-asc',
+    'Title (Descending)': 'title-desc',
+    'Date of creation (Ascending)': 'createdOn-asc',
+    'Date of creation (Descending)': 'createdOn-desc',
+    'Last updated (Ascending)': 'updatedOn-asc',
+    'Last updated (Descending)': 'updatedOn-desc',
+  };
+
   protected get sortOrder() { return `${this.sort}-${this.order}` }
 
   /**
@@ -65,9 +73,11 @@ export class CatalogueComponent implements OnInit {
    * the respective quizzes
    * @param value the new sort category and order
    */
-  changeSortAndOrder(value: ISort): void {
-    this.sort = value.sort;
-    this.order = value.order;
+  changeSortAndOrder(value: string): void {
+    const query = value.split('-') as [sort, order];
+
+    this.sort = query[0];
+    this.order = query[1];
 
     this.updateURL();
 

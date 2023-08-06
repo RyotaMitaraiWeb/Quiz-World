@@ -143,7 +143,7 @@ describe('CatalogueComponent', () => {
       it('Changes the sort and order properties when called', () => {
         spyOn(location, 'replaceState').and.stub();
         spyOn(component.updateQuizzesEvent, 'emit');
-        component.changeSortAndOrder({ sort: 'createdOn', order: 'desc' });
+        component.changeSortAndOrder('createdOn-desc');
 
         expect(component.sort).toBe('createdOn');
         expect(component.order).toBe('desc');
