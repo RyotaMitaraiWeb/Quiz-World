@@ -28,9 +28,9 @@ export class QuestionSessionComponent implements OnChanges, OnDestroy {
   protected types = shortQuestionTypes;
 
   constructor(
-      private readonly answerService: AnswerService,
-      private readonly fb: FormBuilder,
-    ) { }
+    private readonly answerService: AnswerService,
+    private readonly fb: FormBuilder,
+  ) { }
 
   @Input({ required: true }) version = 0;
   @Input({ required: true }) prompt: string = '';
@@ -51,8 +51,8 @@ export class QuestionSessionComponent implements OnChanges, OnDestroy {
   });
 
   ngOnChanges(changes: SimpleChanges) {
-    const change = changes['correctAnswers'];    
-    
+    const change = changes['correctAnswers'];
+
     if (!change.firstChange) {
       this.correctAnswers = change.currentValue;
     }
@@ -78,18 +78,18 @@ export class QuestionSessionComponent implements OnChanges, OnDestroy {
     event.preventDefault();
     if (this.instantMode && this.form.enabled) {
       this.correctAnswersSub = this.answerService
-      .getCorrectAnswersForQuestionById(this.questionId, this.version)
-      .subscribe({
-        next: res => {
-          const value = res.body!;
-          
-          this.correctAnswers = value.answers;
-          this.form.disable();          
-        },
-        error: (err: HttpErrorResponse) => {
-          console.warn(err);
-        }
-      });
+        .getCorrectAnswersForQuestionById(this.questionId, this.version)
+        .subscribe({
+          next: res => {
+            const value = res.body!;            
+            this.correctAnswers = value.answers;
+            
+            this.form.disable();
+          },
+          error: (err: HttpErrorResponse) => {
+            console.warn(err);
+          }
+        });
     }
   }
 

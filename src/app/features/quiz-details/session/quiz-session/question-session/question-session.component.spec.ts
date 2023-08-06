@@ -1,9 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { QuestionSessionComponent } from './question-session.component';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { api } from '../../../../../constants/api.constants';
-import { ISessionAnswer } from '../../../../../../types/responses/quiz.types';
+import { IGradedAnswer, ISessionAnswer } from '../../../../../../types/responses/quiz.types';
 import { HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { AnswerService } from '../../../../answer-service/answer.service';
 import { Observable } from 'rxjs';
@@ -236,7 +236,7 @@ describe('QuestionSessionComponent', () => {
         expect(button.disabled).toBeFalse();
       });
 
-      it('A successful request from clicking the button disables the button', () => {
+      it('A successful request from clicking the button disables the button', waitForAsync(async () => {
         component.instantMode = true;
         component.type = shortQuestionTypes[questionTypes.text];
         component.version = 1;
@@ -249,14 +249,21 @@ describe('QuestionSessionComponent', () => {
 
         const button = element.querySelector('.grade-btn') as HTMLButtonElement;
         button.click();
-        fixture.detectChanges();
+        fixture.whenStable().then(() => {
+          fixture.detectChanges();
+          expect(button.disabled).toBeTrue();
+        });
 
-        const responseBody: ISessionAnswer[] = [
+        const responseBody: IGradedAnswer = 
           {
             id: '1',
-            value: 'correct',
-          },
-        ];
+            answers: [
+              {
+                value: 'correct',
+                id: '1',
+              }
+            ]
+          };
 
         const request = testController.expectOne(api.endpoints.answers.correctAnswersInstantMode('1') + '?version=1');
 
@@ -264,10 +271,7 @@ describe('QuestionSessionComponent', () => {
           status: HttpStatusCode.Ok,
           statusText: 'Ok',
         });
-
-        fixture.detectChanges();
-        expect(button.disabled).toBeTrue();
-      });
+      }));
 
       it('An unsuccessful request from clicking the button does NOT disable the button', () => {
         component.instantMode = true;
