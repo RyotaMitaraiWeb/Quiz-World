@@ -12,7 +12,6 @@ import { UnauthorizedRedirectInterceptor } from './routing/interceptors/unauthor
 import { CreateQuizModule } from './features/create-quiz/create-quiz.module';
 import { EditQuizModule } from './features/edit-quiz/edit-quiz.module';
 import { AdministrationPageModule } from './features/administration-page/administration-page.module';
-import { ModeratorsModule } from './features/administration-page/users-list/moderators/moderators.module';
 
 @NgModule({
     declarations: [
@@ -41,7 +40,7 @@ import { ModeratorsModule } from './features/administration-page/users-list/mode
         CreateQuizModule,
         EditQuizModule,
         AdministrationPageModule,
-        ModeratorsModule,
+        
     ]
 })
 export class AppModule { }

@@ -4,33 +4,31 @@ such as promoting and demoting users and obtaining logs.
 
 ## Methods
 ```typescript
-function getModerators(): Observable<IUser[]>
+function getUsersOfRole(role: string, page: number, order: order): Observable<IUserList>;
+function getUsersOfRole(role: string, page: number): Observable<IUserList>;
+function getUsersOfRole(role: string): Observable<IUserList>;
+function getUsersOfRole(role: string, page?: number, order?: order): Observable<IUserList>
 ```
-Sends a GET request to ``/administration/moderators`` and returns a list of all users that have the Moderator role (including administrators). Each user is listed with only one role, which is their highest one.
-
-```typescript
-function getAdmins(): Observable<IUser[]>
-```
-Sends a GET request to ``/administration/admins`` and returns a list of all users that have the Administrator role. Each user is listed with only one role, which is their highest one.
+Sends a GET request to ``/roles/users/{role}`` and returns a list of all users that have the specified ``role``. ``page`` and ``order`` determine how to paginate and order it. Users are ordered by their usernames. Default values are ``1`` and ``desc``.
 
 ```typescript
 function getUsersByUsername(username: string): Observable<IUser[]>;
 function getUsersByUsername(username: string, page: number | string): Observable<IUser[]>;
 function getUsersByUsername(username: string, page: number | string, order: order): Observable<IUser[]>;
 ```
-Sends a GET request to ``/administration/users/{username}`` and returns a list of all users that contain the given ``username`` string. Each user is listed with their highest role. Optionally, you can pass a page to specify how the result should be paginated, and how the result will be ordered. The list is ordered based entirely on the username. The default options are page 1 and an ascending order.
+Sends a GET request to ``/roles/users/{username}`` and returns a list of all users whose username contains the given ``username``. Optionally, you can pass a page to specify how the result should be paginated, and how the result will be ordered. The list is ordered based entirely on the username. The default options are page 1 and an ascending order.
 
 When passing page as a string, ensure that it is a numerical one.
 
 ```typescript
-function promoteToModerator(id: number): Observable<IUser[]>
+function addRoleToUser(id: string, role: string): Observable<IUserList>
 ```
-Sends a PUT request to ``/administration/promote/{id}``. In order for this request to work, the user must be of role ``user`` (and nothing else). The method returns an updated list of users.
+Sends a PUT request to ``/roles/promote/{id}/role`` and returns an updated list of users.
 
 ```typescript
-function demoteToUser(id: number): Observable<IUser[]>
+function removeRoleFromUser(id: string, role: string): Observable<IUserList>
 ```
-Sends a PUT request to ``/administration/demote/{id}``. In order for this request to work, the user must be of role ``moderator`` (and nothing higher). The method returns an updated list of users.
+Sends a PUT request to ``/roles/demote/{id}/role`` and returns an updated list of users.
 
 
 ```typescript

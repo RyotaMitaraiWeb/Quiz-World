@@ -10,6 +10,7 @@ import { CatalogueModule } from './catalogue/catalogue.module';
 import { EditButtonModule } from './buttons/edit-button/edit-button.module';
 import { DeleteButtonModule } from './buttons/delete-button/delete-button.module';
 import { SheetComponent } from './sheet/sheet.component';
+import { ChangeRoleButtonModule } from './buttons/roles/change-role-button/change-role-button.module';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { SheetComponent } from './sheet/sheet.component';
     CatalogueModule,
     DeleteButtonModule,
     EditButtonModule,
-    SheetComponent
+    SheetComponent,
+    ChangeRoleButtonModule,
   ],
 })
 export class SharedModule { }

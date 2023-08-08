@@ -1,4 +1,4 @@
-<app-admin-tabs activeRoute="moderators"></app-admin-tabs>
+<app-admin-tabs activeRoute="usernames"></app-admin-tabs>
 <app-catalogue-select-menu 
   [options]="options"
   selectedValue="asc"
@@ -6,11 +6,15 @@
 >
 </app-catalogue-select-menu>
 
+<mat-form-field>
+  <mat-label>Search by username</mat-label>
+  <input matInput placeholder="Insert username here" (change)="changeUsername($event)">
+</mat-form-field>
+
 <app-users-list 
-  [data]="(userList$ | async)?.users || defaultUsers"
+[data]="(userList$ | async)?.users || defaultUsers"
   (updateUsersEvent)="updateUsers()"
->
-</app-users-list>
+></app-users-list>
 
 <app-catalogue-paginator 
   [page]="page"

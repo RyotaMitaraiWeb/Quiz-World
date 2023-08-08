@@ -17,7 +17,7 @@ export interface IUserResponse {
 
 export interface IUserList {
   total: number;
-  users: IUserResponse[];
+  users: IUser[];
 }
 
 export interface ILogsList {

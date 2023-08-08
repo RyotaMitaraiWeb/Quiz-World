@@ -28,26 +28,36 @@ export class AdminService {
   rolesUrl = api.endpoints.roles;
 
   /**
-   * Sends a GET request to ``/administration/moderators`` and returns a list
-   * of all users that have the Moderator role (including administrators).
-   * @returns an Observable that resolves to a ``IUserList``.
+   * Sends a GET request to ``roles/users/${role}``, retrieving a paginated and
+   * ordered list of users that have the given role.
+   * @param role the requested role
+   * @param page the page of the query
+   * @param order the order in which the users will be sorted.
+   * @returns A paginated list of users, ordered by their usernames.
    */
-  getModerators(): Observable<IUserList> {
-    return this.http.get<IUserList>(this.rolesUrl.getUsersOfRole(roles.moderator));
-  }
-
+  getUsersOfRole(role: string, page: number, order: order): Observable<IUserList>;
   /**
-   * Sends a GET request to ``/administration/admins`` and returns a list
-   * of all users that have the Administrator role.
-   * @returns an Observable that resolves to a ``IUserList``.
+   * Sends a GET request to ``roles/users/${role}``, retrieving a paginated and
+   * ordered list of users that have the given role.
+   * @param role the requested role
+   * @param page the page of the query
+   * @returns A paginated list of users, ordered by their usernames in
+   * an ascending order.
    */
-  getAdmins(): Observable<IUserList> {
-    return this.http.get<IUserList>(this.rolesUrl.getUsersOfRole(roles.admin))
-      
-  }
-
-  getUsers(): Observable<IUserList> {
-    return this.http.get<IUserList>(this.rolesUrl.getUsersOfRole(roles.user));
+  getUsersOfRole(role: string, page: number): Observable<IUserList>;
+  /**
+   * Sends a GET request to ``roles/users/${role}``, retrieving a paginated and
+   * ordered list of users that have the given role.
+   * @param role the requested role
+   * @returns A list of users on page 1, ordered by their usernames in
+   * an ascending order.
+   */
+  getUsersOfRole(role: string): Observable<IUserList>;
+  getUsersOfRole(role: string, page?: number, order?: order): Observable<IUserList> {
+    const params = paramsBuilder(page, undefined, order);
+    return this.http.get<IUserList>(this.rolesUrl.getUsersOfRole(role), {
+      params
+    });
   }
 
   /**
@@ -90,25 +100,23 @@ export class AdminService {
   }
 
   /**
-   * Sends a PUT request to ``/administration/promote/{id}``. In order for this
-   * request to work, the user must be of role ``user``.
-   * @param id the ID of the user to be promoted to a Moderator
-   * @returns an Observable of type ``IUserList``. You can use this to update
-   * the list of users after the response resolves.
+   * Sends a PUT request to ``/roles/promote/{id}/role``.
+   * @param id the user's ID.
+   * @param role the role to be given to the user
+   * @returns if successful, an Observable that resolves to an updated list of users
    */
-  promoteToModerator(id: string): Observable<IUserList> {
-    return this.http.put<IUserList>(this.rolesUrl.promote(id, roles.moderator), {});
+  addRoleToUser(id: string, role: string): Observable<IUserList> {
+    return this.http.put<IUserList>(this.rolesUrl.promote(id, role), {});
   }
 
   /**
-   * Sends a PUT request to ``/administration/demote/{id}``. In order for this
-   * request to work, the user must be of role ``moderator``.
-   * @param id the ID of the moderator to be demoted to user.
-   * @returns an Observable of type ``IUserList``. You can use this to update
-   * the list of users after the response resolves.
+   * Sends a PUT request to ``/roles/demote/{id}/role``.
+   * @param id the user's ID.
+   * @param role the role to be given to the user
+   * @returns if successful, an Observable that resolves to an updated list of users
    */
-  demoteToUser(id: string): Observable<IUserList> {
-    return this.http.put<IUserList>(this.rolesUrl.demote(id, roles.moderator), {});
+  removeRoleFromUser(id: string, role: string): Observable<IUserList> {
+    return this.http.put<IUserList>(this.rolesUrl.demote(id, role), {});
   }
 
   /**

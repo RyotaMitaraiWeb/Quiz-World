@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsersComponent } from './users.component';
+import { ChangeRoleButtonComponent } from './change-role-button.component';
 
 
 
@@ -8,10 +8,10 @@ import { UsersComponent } from './users.component';
   declarations: [],
   imports: [
     CommonModule,
-    UsersComponent,
+    ChangeRoleButtonComponent,
   ],
   exports: [
-    UsersComponent,
+    ChangeRoleButtonComponent,
   ]
 })
-export class UsersModule { }
+export class ChangeRoleButtonModule { }
