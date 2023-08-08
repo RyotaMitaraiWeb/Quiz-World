@@ -2,4 +2,17 @@
   .space {
     flex: 1 1 0
   }
+
+  .toolbar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    padding-right: 16px;
+    margin: 0;
+
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+  }
 }

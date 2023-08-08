@@ -18,7 +18,7 @@ export const fetchSearchResults: ResolveFn<IQuizList> = (route, state): Observab
   const page = Number(route.queryParamMap.get('page'));
   const sort = route.queryParamMap.get('sort') as sort;
   const order = route.queryParamMap.get('order') as order;
-  const search = route.queryParamMap.get('query') || '';
+  const search = route.queryParamMap.get('search') || '';
 
   const params = paramsBuilder(page, sort, order);
 

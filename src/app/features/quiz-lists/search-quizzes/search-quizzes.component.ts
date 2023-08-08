@@ -36,7 +36,7 @@ export class SearchQuizzesComponent implements OnInit, OnDestroy {
   get titleQuery(): string {
     const url: URL = new URL(window.top?.location.href || '');
     const params: URLSearchParams = url.searchParams;
-    return params.get('query') || '';
+    return params.get('search') || '';
   }
   
   ngOnInit(): void {

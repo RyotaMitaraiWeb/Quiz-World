@@ -128,7 +128,7 @@ export class QuizService {
   getQuizzesByTitle(query: string, page: number | string, sort: sort, order: order): Observable<IQuizList>;
   getQuizzesByTitle(query: string, page?: number | string, sort?: sort, order?: order): Observable<IQuizList> {
     let params = paramsBuilder(page, sort, order);
-    params = params.append('title', query);
+    params = params.append('search', query);
 
     return this.http.get<IQuizList>(this.url.search, { params });
   }
