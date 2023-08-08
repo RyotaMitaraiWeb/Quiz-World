@@ -35,7 +35,7 @@ export class LogsComponent implements OnInit {
         this.total = res.total;
         this.logs = res.logs.map((l, i) => (
           {
-            index: i + 1,
+            index: this.calculateIndex(i),
             ...l
           }
         ));
@@ -51,34 +51,42 @@ export class LogsComponent implements OnInit {
     }
   ]
 
-  page = 0;
+  page = 1;
   order: order = 'asc';
 
   total = 0;
 
+  protected options: Record<string, order> = {
+    'Date (Ascending)': 'asc',
+    'Date (Descending)': 'desc',
+  };
+
   updatePage(page: number) {
     this.page = page;
-    this.logsSub = this.adminService.getActivityLogs().subscribe({
+    this.logsSub = this.adminService.getActivityLogs(this.page, this.order).subscribe({
       next: res => {
         this.total = res.total;
         this.logs = res.logs.map((l, i) => (
           {
-            index: i + 1,
+            index: this.calculateIndex(i),
             ...l
           }
         ));
+
+        console.log(this.logs);
+        
       }
     });
   }
 
-  updateOrder(order: order) {
-    this.order = order;
-    this.logsSub = this.adminService.getActivityLogs().subscribe({
+  updateOrder(order: string) {    
+    this.order = order as order;
+    this.logsSub = this.adminService.getActivityLogs(this.page, this.order).subscribe({
       next: res => {
         this.total = res.total;
         this.logs = res.logs.map((l, i) => (
           {
-            index: i + 1,
+            index: this.calculateIndex(i),
             ...l
           }
         ));
@@ -90,5 +98,9 @@ export class LogsComponent implements OnInit {
 
   ngOnDestroy() {
     this.logsSub.unsubscribe();
+  }
+
+  private calculateIndex(index: number) {
+    return (index + 1) + ((this.page - 1) * 20);
   }
 }

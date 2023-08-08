@@ -1,6 +1,7 @@
 <app-admin-tabs activeRoute="logs"></app-admin-tabs>
 
-<app-sorter (updateOrderEvent)="updateOrder($event)"></app-sorter>
+<!-- <app-sorter (updateOrderEvent)="updateOrder($event)"></app-sorter> -->
+<app-catalogue-select-menu selectedValue="asc" [options]="options" (selectEvent)="updateOrder($event)"></app-catalogue-select-menu>
 
 <table mat-table [dataSource]="logs">
   <ng-container matColumnDef="index">
