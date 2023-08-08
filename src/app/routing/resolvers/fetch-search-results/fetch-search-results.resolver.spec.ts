@@ -30,7 +30,7 @@ describe('fetchSearchQuizzesResolver', () => {
       page: 1,
       sort: 'title',
       order: 'asc',
-      query: 'test',
+      search: 'test',
     };
 
     spyOn(quizService, 'getQuizzesByTitle').and.returnValue(
