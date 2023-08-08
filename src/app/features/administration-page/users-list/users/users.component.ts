@@ -9,6 +9,7 @@ import { SharedModule } from '../../../../shared/shared.module';
 import { ActivatedRoute } from '@angular/router';
 import { order } from '../../../../../types/others/lists.types';
 import { AdminTabsComponent } from '../../tabs/admin-tabs.component';
+import { role } from '../../../../../types/auth/roles.types';
 
 @Component({
   selector: 'app-users',
@@ -51,22 +52,22 @@ export class UsersComponent implements OnInit {
       );
   }
 
-  changePage(page: number) {
-    this.page = page;
+  protected updateUsers() {
     this.userList$ = this.adminService
       .getUsersOfRole(roles.user, this.page, this.order)
       .pipe(
-        map(this.mapToList)
+        map(this.mapToList),
       );
+  }
+
+  changePage(page: number) {
+    this.page = page;
+    this.updateUsers();
   }
 
   changeOrder(order: string) {
     this.order = order as order;
-    this.userList$ = this.adminService
-      .getUsersOfRole(roles.user, this.page, this.order)
-      .pipe(
-        map(this.mapToList)
-      );
+    this.updateUsers();
   }
 
   private mapToList(list: IUserList) {

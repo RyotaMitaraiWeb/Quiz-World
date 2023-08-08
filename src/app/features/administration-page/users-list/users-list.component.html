@@ -22,6 +22,7 @@
         [userId]="user.id"
         [userHasRole]="user.roles.includes('Moderator')"
         [color]="user.roles.includes('Moderator') ? 'warn' : 'primary'"
+        (updateUsersEvent)="updateUsersEvent.emit($event)"
       >
       {{ user.roles.includes('Moderator') ? 'Demote from Moderator' : 'Promote to Moderator' }}
       </app-change-role-button>

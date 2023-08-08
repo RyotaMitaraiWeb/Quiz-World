@@ -53,22 +53,22 @@ export class AdminsComponent implements OnInit {
       );
   }
 
-  changePage(page: number) {
-    this.page = page;
+  protected updateUsers() {
     this.userList$ = this.adminService
       .getUsersOfRole(roles.admin, this.page, this.order)
       .pipe(
-        map(this.mapToList)
+        map(this.mapToList),
       );
+  }
+
+  changePage(page: number) {
+    this.page = page;
+    this.updateUsers();
   }
 
   changeOrder(order: string) {
     this.order = order as order;
-    this.userList$ = this.adminService
-      .getUsersOfRole(roles.admin, this.page, this.order)
-      .pipe(
-        map(this.mapToList)
-      );
+    this.updateUsers();
   }
 
   private mapToList(list: IUserList) {

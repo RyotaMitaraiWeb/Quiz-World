@@ -45,6 +45,14 @@ export class ModeratorsComponent implements OnInit {
 
   protected defaultUsers: IUser[] = [];
 
+  protected updateUsers() {
+    this.userList$ = this.adminService
+      .getUsersOfRole(roles.moderator, this.page, this.order)
+      .pipe(
+        map(this.mapToList),
+      );
+  }
+
   ngOnInit(): void {
     this.userList$ = this.adminService
       .getUsersOfRole(roles.moderator)
@@ -55,20 +63,12 @@ export class ModeratorsComponent implements OnInit {
 
   changePage(page: number) {
     this.page = page;
-    this.userList$ = this.adminService
-      .getUsersOfRole(roles.moderator, this.page, this.order)
-      .pipe(
-        map(this.mapToList)
-      );
+    this.updateUsers();
   }
 
   changeOrder(order: string) {
     this.order = order as order;
-    this.userList$ = this.adminService
-      .getUsersOfRole(roles.moderator, this.page, this.order)
-      .pipe(
-        map(this.mapToList)
-      );
+    this.updateUsers();
   }
 
   private mapToList(list: IUserList) {

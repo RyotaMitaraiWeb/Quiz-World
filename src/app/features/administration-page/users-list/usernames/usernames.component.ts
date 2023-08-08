@@ -48,6 +48,10 @@ export class UsernamesComponent {
 
   changePage(page: number) {
     this.page = page;
+    this.updateUsers();
+  }
+
+  protected updateUsers() {
     this.userList$ = this.adminService
       .getUsersByUsername(this.username)
       .pipe(
@@ -57,21 +61,13 @@ export class UsernamesComponent {
 
   changeOrder(order: string) {
     this.order = order as order;
-    this.userList$ = this.adminService
-      .getUsersByUsername(this.username)
-      .pipe(
-        map(this.mapToList)
-      );
+    this.updateUsers();
   }
 
   changeUsername(event: Event) {
     const username = (event.target as HTMLInputElement).value;
     this.username = username;
-    this.userList$ = this.adminService
-      .getUsersByUsername(this.username)
-      .pipe(
-        map(this.mapToList)
-      );
+    this.updateUsers();
   }
 
   private mapToList(list: IUserList) {
