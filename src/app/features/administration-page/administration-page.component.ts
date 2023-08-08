@@ -3,11 +3,8 @@ import { CommonModule } from '@angular/common';
 import { SorterComponent } from './sorter/sorter.component';
 import { SharedModule } from '../../shared/shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
-import { LogsModule } from './logs/logs.module';
 import { LogsComponent } from './logs/logs.component';
-import { ModeratorsComponent } from './users-list/moderators/moderators.component';
-import { UsersComponent } from './users-list/users/users.component';
-import { AdminsComponent } from './users-list/admins/admins.component';
+import { AdminTabsComponent } from './tabs/admin-tabs.component';
 
 @Component({
   selector: 'app-administration-page',
@@ -16,11 +13,9 @@ import { AdminsComponent } from './users-list/admins/admins.component';
     CommonModule,
     LogsComponent,
     SorterComponent,
-    ModeratorsComponent,
-    UsersComponent,
-    AdminsComponent,
     SharedModule,
     MatTabsModule,
+    AdminTabsComponent,
   ],
   templateUrl: './administration-page.component.html',
   styleUrls: ['./administration-page.component.scss']

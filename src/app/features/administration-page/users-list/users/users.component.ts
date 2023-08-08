@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IUser } from '../../../../../types/responses/administration.types';
-import { order } from '../../../../../types/others/lists.types';
-import { AdminService } from '../../../admin-service/admin.service';
-import { Subscription } from 'rxjs';
-import { SharedModule } from '../../../../shared/shared.module';
 import { UsersListComponent } from '../users-list.component';
-import { SorterComponent } from '../../sorter/sorter.component';
+import { AdminService } from '../../../admin-service/admin.service';
+import { Observable, map, of, tap } from 'rxjs';
+import { IUser, IUserList, IUserResponse } from '../../../../../types/responses/administration.types';
+import { roles } from '../../../../constants/roles.constants';
+import { SharedModule } from '../../../../shared/shared.module';
+import { ActivatedRoute } from '@angular/router';
+import { order } from '../../../../../types/others/lists.types';
+import { AdminTabsComponent } from '../../tabs/admin-tabs.component';
 
 @Component({
   selector: 'app-users',
@@ -15,60 +17,62 @@ import { SorterComponent } from '../../sorter/sorter.component';
     CommonModule,
     UsersListComponent,
     SharedModule,
-    SorterComponent,
+    AdminTabsComponent,
   ],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss']
 })
-export class UsersComponent {
-  private usersSub = new Subscription();
+export class UsersComponent implements OnInit {
+  constructor(
+    private readonly adminService: AdminService,
+    private readonly route: ActivatedRoute,
+    ) {
 
-  constructor(private readonly adminService: AdminService) { }
+  }
+
+  order: order = 'asc';
+  page = 1;
+
+
+  userList$ = of<IUserList>({ total: 0, users: []});
+
+  protected options: Record<string, order> = {
+    'Username (Ascending)': 'asc',
+    'Username (Descending)': 'desc',
+  }
+
+  protected defaultUsers: IUser[] = [];
 
   ngOnInit(): void {
-    this.usersSub = this.adminService.getUsers()
-    .subscribe({
-      next: (userList) => {
-        this.total = userList.total;
-        this.users = userList.users.map((u, i) => ({ index: i + 1, roleButtons: u.roles, ...u}) as IUser)
-      },
-      error: (err) => {
-        console.warn(err);
-        
-      }
-    })
+    this.userList$ = this.adminService
+      .getUsersOfRole(roles.user)
+      .pipe(
+        map(this.mapToList),
+      );
   }
 
-  users: IUser[] = [];
-  total = 0;
-  order: order = 'asc';
-  page = 0;
-
-  updatePage(page: number) {
+  changePage(page: number) {
     this.page = page;
-    this.usersSub = this.adminService.getUsers().subscribe({
-      next: (userList) => {
-        this.total = userList.total;
-        this.users = userList.users.map((u, i) => ({ index: i + 1, roleButtons: u.roles, ...u}) as IUser)
-      },
-      error: (err) => {
-        console.warn(err);
-        
-      }
-    });
+    this.userList$ = this.adminService
+      .getUsersOfRole(roles.user, this.page, this.order)
+      .pipe(
+        map(this.mapToList)
+      );
   }
 
-  updateOrder(order: order) {
-    this.order = order;
-    this.usersSub = this.adminService.getUsers().subscribe({
-      next: (userList) => {
-        this.total = userList.total;
-        this.users = userList.users.map((u, i) => ({ index: i + 1, roleButtons: u.roles, ...u}) as IUser)
-      },
-      error: (err) => {
-        console.warn(err);
-        
-      }
-    });
+  changeOrder(order: string) {
+    this.order = order as order;
+    this.userList$ = this.adminService
+      .getUsersOfRole(roles.user, this.page, this.order)
+      .pipe(
+        map(this.mapToList)
+      );
+  }
+
+  private mapToList(list: IUserList) {
+    return {
+      total: list.total,
+      users: list.users.map((u, i) => ({ ...u, index: i + 1, roleButtons: u.roles }))
+    };
   }
 }

@@ -13,6 +13,12 @@ import { fetchAllQuizzesResolver } from './resolvers/fetch-all-quizzes/fetch-all
 import { SearchQuizzesComponent } from '../features/quiz-lists/search-quizzes/search-quizzes.component';
 import { fetchSearchResults } from './resolvers/fetch-search-results/fetch-search-results.resolver';
 import { fetchQuizForEditResolver } from './resolvers/fetch-quiz-for-edit/fetch-quiz-for-edit.resolver';
+import { AdministrationPageComponent } from '../features/administration-page/administration-page.component';
+import { UsersComponent } from '../features/administration-page/users-list/users/users.component';
+import { ModeratorsComponent } from '../features/administration-page/users-list/moderators/moderators.component';
+import { AdminsComponent } from '../features/administration-page/users-list/admins/admins.component';
+import { UsernamesComponent } from '../features/administration-page/users-list/usernames/usernames.component';
+import { LogsComponent } from '../features/administration-page/logs/logs.component';
 
 const routes: Routes = [
   {
@@ -63,7 +69,44 @@ const routes: Routes = [
       },
       
     ]
-  }
+  },
+  {
+    path: 'administration',
+    children: [
+      {
+        path: 'users',
+        component: UsersComponent,
+        data: {
+          activeRoute: 'users',
+        }
+      },
+      {
+        path: 'moderators',
+        component: ModeratorsComponent,
+        data: {
+          activeRoute: 'moderators',
+        }
+      },
+      {
+        path: 'admins',
+        component: AdminsComponent,
+        data: {
+          activeRoute: 'admins',
+        },
+      },
+      {
+        path: 'usernames',
+        component: UsernamesComponent,
+        data: {
+          activeRoute: 'usernames',
+        }
+      },
+      {
+        path: 'logs',
+        component: LogsComponent,
+      }
+    ]
+  },
 ];
 
 @NgModule({

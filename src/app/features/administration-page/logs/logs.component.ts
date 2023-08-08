@@ -7,6 +7,7 @@ import { SorterComponent } from '../sorter/sorter.component';
 import { MatTableModule } from '@angular/material/table';
 import { IIndexedLogActivity } from '../../../../types/administration/logs.types';
 import { Subscription } from 'rxjs';
+import { AdminTabsComponent } from '../tabs/admin-tabs.component';
 
 @Component({
   selector: 'app-logs',
@@ -16,6 +17,7 @@ import { Subscription } from 'rxjs';
     SharedModule,
     SorterComponent,
     MatTableModule,
+    AdminTabsComponent
   ],
   templateUrl: './logs.component.html',
   styleUrls: ['./logs.component.scss']
@@ -33,7 +35,7 @@ export class LogsComponent implements OnInit {
         this.total = res.total;
         this.logs = res.logs.map((l, i) => (
           {
-            index: i,
+            index: i + 1,
             ...l
           }
         ));
@@ -61,7 +63,7 @@ export class LogsComponent implements OnInit {
         this.total = res.total;
         this.logs = res.logs.map((l, i) => (
           {
-            index: i,
+            index: i + 1,
             ...l
           }
         ));
@@ -76,7 +78,7 @@ export class LogsComponent implements OnInit {
         this.total = res.total;
         this.logs = res.logs.map((l, i) => (
           {
-            index: i,
+            index: i + 1,
             ...l
           }
         ));
@@ -85,4 +87,8 @@ export class LogsComponent implements OnInit {
   }
 
   protected readonly displayedColumns = ['index', 'message', 'date'];
+
+  ngOnDestroy() {
+    this.logsSub.unsubscribe();
+  }
 }
