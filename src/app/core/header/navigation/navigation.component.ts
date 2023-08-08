@@ -8,6 +8,7 @@ import { role } from '../../../../types/auth/roles.types';
 import { MatIconModule } from '@angular/material/icon';
 import { LogoutButtonModule } from './logout-button/logout-button.module';
 import { RoleService } from '../../role-service/role.service';
+import { MenuButtonComponent } from './menu-button/menu-button.component';
 
 @Component({
   selector: 'app-navigation',
@@ -17,6 +18,7 @@ import { RoleService } from '../../role-service/role.service';
     RouterModule,
     MatIconModule,
     LogoutButtonModule,
+    MenuButtonComponent
   ],
   templateUrl: './navigation.component.html',
   styleUrls: ['./navigation.component.scss']
@@ -35,11 +37,5 @@ export class NavigationComponent {
     return this.roleService.isGuest();
   }
 
-  /**
-   * Tracks the current viewport. This is used in place of CSS media queries for
-   * testability.
-   */
-  getInnerWidth() {
-    return window.innerWidth;
-  }
+
 }

@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { restartUser } from '../../../../store/user/user.action';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
+import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-logout-button',
@@ -15,6 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
   imports: [CommonModule, MatIconModule],
   templateUrl: './logout-button.component.html',
   styleUrls: ['./logout-button.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class LogoutButtonComponent implements OnDestroy {
   constructor(

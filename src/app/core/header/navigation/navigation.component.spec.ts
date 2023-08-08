@@ -43,23 +43,5 @@ describe('NavigationComponent', () => {
         expect(adminLinks.length).toBe(2);
       });
     });
-
-    describe('Media screen', () => {
-      it('Does not render if viewport is <= 500px', () => {
-        spyOn(component, 'getInnerWidth').and.returnValue(500);
-        fixture.detectChanges();
-        const nav = document.querySelector('#nav');
-
-        expect(nav).toBeNull();
-      });
-
-      it('Renders if viewport is > 500px', () => {
-        spyOn(component, 'getInnerWidth').and.returnValue(501);
-        fixture.detectChanges();
-        const nav = document.querySelector('#nav');
-
-        expect(nav).toBeTruthy();
-      });
-    });
   });
 });

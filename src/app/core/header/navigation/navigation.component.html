@@ -1,4 +1,4 @@
-<nav id="nav" *ngIf="getInnerWidth() > 500">
+<nav id="nav">
   <ul class="links">
     <li *ngIf="isGuest" class="guest">
       <mat-icon>account_box</mat-icon>
@@ -14,6 +14,9 @@
     </li>
     <li *ngIf="!isGuest" class="user">
       <app-logout-button></app-logout-button>
+    </li>
+    <li class="menu">
+      <app-menu-button></app-menu-button>
     </li>
   </ul>
 </nav>
