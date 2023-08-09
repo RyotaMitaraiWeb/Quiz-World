@@ -20,6 +20,7 @@ export const api = {
       usernameExists: (username: string) => `${auth}/username/${username}`,
       /**Endpoint to check if the user has a valid session upon app load */
       session: `${auth}/session`,
+      profile: (id: string) => `${auth}/${id}`
     },
     /**
      * Endpoints related to actions with quizzes (``api/quiz``)

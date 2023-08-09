@@ -19,6 +19,10 @@ import { ModeratorsComponent } from '../features/administration-page/users-list/
 import { AdminsComponent } from '../features/administration-page/users-list/admins/admins.component';
 import { UsernamesComponent } from '../features/administration-page/users-list/usernames/usernames.component';
 import { LogsComponent } from '../features/administration-page/logs/logs.component';
+import { ProfileComponent } from '../features/profile/profile.component';
+import { fetchProfileResolver } from './resolvers/fetch-profile/fetch-profile.resolver';
+import { UserQuizzesComponent } from '../features/quiz-lists/user-quizzes/user-quizzes.component';
+import { fetchUserQuizzesResolver } from './resolvers/fetch-user-quizzes/fetch-user-quizzes.resolver';
 
 const routes: Routes = [
   {
@@ -30,6 +34,18 @@ const routes: Routes = [
     path: 'register',
     component: RegisterComponent,
     canActivate: [isGuestGuard]
+  },
+  {
+    path: 'profile',
+    children: [
+      {
+        path: ':id',
+        component: ProfileComponent,
+        resolve: {
+          profile: fetchProfileResolver
+        }
+      }
+    ]
   },
   {
     path: 'quiz',
@@ -52,6 +68,18 @@ const routes: Routes = [
         path: 'create',
         component: CreateQuizComponent,
         canActivate: [isLoggedInGuard],
+      },
+      {
+        path: 'user',
+        children: [
+          {
+            path: ':id',
+            component: UserQuizzesComponent,
+            resolve: {
+              catalogue: fetchUserQuizzesResolver
+            }
+          },
+        ]
       },
       {
         path: ':id',

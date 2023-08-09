@@ -25,21 +25,18 @@ export class UserQuizzesComponent implements OnInit, OnDestroy {
   ) { }
   
   private catalogueSub = new Subscription();
+  private idSub = new Subscription();
 
   ngOnInit(): void {
     this.catalogueSub = this.getResolvedData().subscribe(data => {
-      const profile = data['profile'] as IProfile;
-      this.catalogue = profile.quizzes;
-      const { id, username, roles } = profile;
-      this.user = { id, username, roles };
+      const catalogue = data['catalogue'] as IQuizList;
+      this.catalogue = catalogue;
     });
+
+    this.id = this.activatedRoute.snapshot.paramMap.get('id') || '';
   }
 
-  user: IUserProfile = {
-    id: '',
-    username: '',
-    roles: [],
-  }
+  id = '';
 
   catalogue: IQuizList = {
     total: 0,
@@ -58,7 +55,9 @@ export class UserQuizzesComponent implements OnInit, OnDestroy {
    * Updates the catalogue property with the fetched data.
    */
   updateQuizzes({ page, sort, order }: { page: number, sort: sort, order: order } ): void {
-    this.catalogueSub = this.quizService.getUserQuizzes(this.user.id, page, sort, order).subscribe(data => {
+    console.log(page);
+    
+    this.catalogueSub = this.quizService.getUserQuizzes(this.id, page, sort, order).subscribe(data => {
       this.catalogue = data
     });
   }

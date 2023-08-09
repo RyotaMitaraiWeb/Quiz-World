@@ -5,6 +5,7 @@ import { IAuthSuccessResponse } from '../../../types/responses/auth.types';
 import { IAuthBody } from '../../../types/auth/general.types';
 import { api } from '../../constants/api.constants';
 import { SkipUnauthorizedRedirectionHeader } from '../../routing/interceptors/unauthorized-redirect/unauthorized-redirect.interceptor';
+import { IUserState } from '../../../types/store/user.types';
 
 @Injectable({
   providedIn: 'root'
@@ -82,6 +83,12 @@ export class AuthService {
       headers: {
         [SkipUnauthorizedRedirectionHeader]: 'true',
       },
+    });
+  }
+
+  getProfile(userId: string): Observable<HttpResponse<IUserState>> {
+    return this.http.get<IUserState>(this.url.profile(userId), {
+      observe: 'response',
     });
   }
 }
