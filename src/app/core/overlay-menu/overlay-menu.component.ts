@@ -6,6 +6,7 @@ import { IAppStore } from '../../../types/store/store.types';
 import { RoleService } from '../role-service/role.service';
 import { LogoutButtonComponent } from '../header/navigation/logout-button/logout-button.component';
 import { closeMenu } from '../../store/menu/menu.action';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-overlay-menu',
@@ -14,6 +15,7 @@ import { closeMenu } from '../../store/menu/menu.action';
     CommonModule,
     RouterModule,
     LogoutButtonComponent,
+    MatIconModule,
   ],
   templateUrl: './overlay-menu.component.html',
   styleUrls: ['./overlay-menu.component.scss'],

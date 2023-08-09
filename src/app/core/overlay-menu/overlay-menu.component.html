@@ -1,10 +1,16 @@
 <nav [ngClass]="disappear ? 'overlay-menu invisible-menu' : 'overlay-menu'" *ngIf="open | async">
   <ul [ngClass]="disappear ? 'disappear' : ''">
     <li>
-      <a routerLink="/">Home</a>
+      <a routerLink="/">
+        <mat-icon>home</mat-icon>
+        Home
+      </a>
     </li>
     <li>
-      <a routerLink="/quiz/all">Browse all quizzes</a>
+      <a routerLink="/quiz/all">
+        <mat-icon>border_all</mat-icon>
+        Browse all quizzes
+      </a>
     </li>
     <li *ngIf="isGuest()">
       <a routerLink="/register">Register</a>
@@ -13,7 +19,10 @@
       <a routerLink="/login">Login</a>
     </li>
     <li *ngIf="!isGuest()">
-      <a routerLink="/quiz/create">Create a quiz</a>
+      <a routerLink="/quiz/create">
+        <mat-icon>add</mat-icon>
+        Create a quiz
+      </a>
     </li>
     <li *ngIf="!isGuest()">
       <app-logout-button></app-logout-button>

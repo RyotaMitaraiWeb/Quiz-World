@@ -57,6 +57,10 @@
         padding: 15px;
         font-size: 1.1rem;
         transition: background-color 0.1s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        
         &:hover {
           background-color: gray;
         }
