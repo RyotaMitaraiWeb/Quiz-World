@@ -34,7 +34,7 @@ export class OverlayMenuComponent {
     setTimeout(() => {
       this.store.dispatch(closeMenu());
       this.disappear = false;
-    }, 800);
+    }, 500);
   }
 
   protected isGuest() {
