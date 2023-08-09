@@ -68,16 +68,7 @@ describe('UserQuizzesComponent', () => {
     spyOn(component, 'getResolvedData').and.returnValue(
       of(
         {
-          profile: {
-            id: '',
-            username: '',
-            roles: [],
-            quizzes:
-              {
-                total: 0,
-                quizzes: []
-              }
-          } as IProfile
+          catalogue: generateQuizzes(10)
         }
       )
     );
@@ -94,20 +85,13 @@ describe('UserQuizzesComponent', () => {
         component.getResolvedData = jasmine.createSpy().and.returnValue(
           of(
             {
-              profile:
-              {
-                id: '1',
-                username: 'test',
-                roles: [roles.user],
-                quizzes: generateQuizzes(10),
-              } as IProfile
+              catalogue: generateQuizzes(10)
             }
           )
         );
   
         component.ngOnInit();
         expect(component.catalogue.total).toBe(10);
-        expect(component.user.id).toBe('1');
       }));
     });
   
@@ -124,40 +108,12 @@ describe('UserQuizzesComponent', () => {
   });
 
   describe('Component tests', () => {
-    describe('initilization', () => {
-      it('Displays correct heading', waitForAsync(() => {
-        component.getResolvedData = jasmine.createSpy().and.returnValue(
-          of(
-            {
-              profile:
-              {
-                id: '1',
-                username: 'test',
-                roles: [roles.user],
-                quizzes: generateQuizzes(10),
-              } as IProfile
-            }
-          )
-        );
-        
-        component.ngOnInit();
-        fixture.detectChanges();
-        const h1 = element.querySelector('h1');
-        expect(h1?.textContent).toBe('test\'s quizzes');
-      }));
-    });
     describe('interaction', () => {
       it('Reacts correctly to change in quiz list items due to page change', waitForAsync(async () => {
         component.getResolvedData = jasmine.createSpy().and.returnValue(
           of(
             {
-              profile:
-              {
-                id: '1',
-                username: 'test',
-                roles: [roles.user],
-                quizzes: generateQuizzes(10),
-              } as IProfile
+              catalogue: generateQuizzes(10)
             }
           )
         );
@@ -185,13 +141,7 @@ describe('UserQuizzesComponent', () => {
         component.getResolvedData = jasmine.createSpy().and.returnValue(
           of(
             {
-              profile:
-              {
-                id: '1',
-                username: 'test',
-                roles: [roles.user],
-                quizzes: generateQuizzes(10),
-              } as IProfile
+              catalogue: generateQuizzes(10)
             }
           )
         );
