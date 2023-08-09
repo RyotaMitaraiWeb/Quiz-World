@@ -1,7 +1,17 @@
 <div class="text-question question" [formGroup]="form">
   <div class="prompt-field">
-    <mat-form-field [hintLabel]="form.controls.prompt.value?.length + '/ 100'">
-      <textarea placeholder="Prompt" cdkTextareaAutosize required matInput class="prompt" formControlName="prompt"></textarea>
+    <mat-form-field 
+      [hintLabel]="form.controls.prompt.value?.length + ' / ' + questionValidationRules.prompt.maxlength">
+      <textarea 
+        placeholder="Prompt"
+        cdkTextareaAutosize
+        required
+        matInput
+        class="prompt"
+        formControlName="prompt"
+        [maxLength]="questionValidationRules.prompt.maxlength"
+      >
+      </textarea>
       <mat-error *ngIf="form.controls.prompt.errors?.['required']">Please fill this field!</mat-error>
       <mat-error *ngIf="form.controls.prompt.errors?.['maxlength']">This field is too long!</mat-error>
     </mat-form-field>
@@ -9,11 +19,11 @@
   <h4 class="correct-answers-heading">Correct Answers</h4>
   <div class="correct-answer">
     <div *ngFor="let answer of answerControls; index as i" formArrayName="answers">
-      <mat-form-field [formGroupName]="i" [hintLabel]="'' + form.controls.answers.controls[i].controls.value.value?.length + '/ 100'">
+      <mat-form-field [formGroupName]="i" [hintLabel]="form.controls.answers.controls[i].controls.value.value?.length + ' / ' + questionValidationRules.answer.maxlength">
         <textarea
         cdkTextareaAutosize
         required
-        maxlength="100"
+        [maxlength]="questionValidationRules.answer.maxlength"
         class="correct-answer-field"
         matInput
         formControlName="value"

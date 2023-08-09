@@ -1,4 +1,5 @@
 import { FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { validationRules } from '../../../../constants/validationRules.constants';
 
 export class SingleChoiceAnswersManager {
   private readonly fb: FormBuilder;
@@ -33,7 +34,7 @@ export class SingleChoiceAnswersManager {
       this.form.push(
         this.fb.group(
           {
-            value: [value, [Validators.required, Validators.maxLength(100)]],
+            value: [value, [Validators.required, Validators.maxLength(validationRules.quiz.question.answers.value.maxlength)]],
             correct: [false],
           }
         )

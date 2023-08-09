@@ -1,4 +1,5 @@
 import { FormBuilder, FormArray, FormGroup, FormControl, ValidationErrors, Validators } from '@angular/forms';
+import { validationRules } from '../../../../constants/validationRules.constants';
 
 export class TextAnswersManager {
   private readonly fb: FormBuilder;
@@ -27,7 +28,7 @@ export class TextAnswersManager {
   addField(value = ''): void {
     if (this.form.length < this.maximumAmountOfAnswers) {
       this.form.push(this.fb.group({
-        value: [value, [Validators.required, Validators.maxLength(100)]],
+        value: [value, [Validators.required, Validators.maxLength(validationRules.quiz.question.answers.value.maxlength)]],
         correct: [true],
       }))
     }

@@ -11,6 +11,7 @@ import { questionTypes } from '../../../../constants/question-types.constants';
 import { MatDividerModule } from '@angular/material/divider';
 import { AnswersManagersFactoryService } from '../../../../features/answers-managers-factory/answers-managers-factory.service';
 import { MultipleChoiceAnswersManager } from '../../../../util/AnswersManager/managers/MultipleChoice/MultipleChoiceAnswersManager';
+import { validationRules } from '../../../../constants/validationRules.constants';
 
 
 @Component({
@@ -44,15 +45,20 @@ export class MultipleChoiceComponent {
     this.manager.form = this.form.controls.answers;
   }
 
+  protected questionValidationRules = {
+    answer: validationRules.quiz.question.answers.value,
+    prompt: validationRules.quiz.question.prompt,
+  }
+
   @Input({ required: true }) form = this.fb.group({
-    prompt: ['', [Validators.required, Validators.maxLength(100)]],
+    prompt: ['', [Validators.required, Validators.maxLength(this.questionValidationRules.prompt.maxlength)]],
     answers: this.fb.array([
-      this.fb.group({ 
-        value: ['', [Validators.required, Validators.maxLength(100)]],
+      this.fb.group({
+        value: ['', [Validators.required, Validators.maxLength(this.questionValidationRules.answer.maxlength)]],
         correct: [true],
       }),
       this.fb.group({ 
-        value: ['', [Validators.required, Validators.maxLength(100)]],
+        value: ['', [Validators.required, Validators.maxLength(this.questionValidationRules.answer.maxlength)]],
         correct: [false],
       }),
     ]),

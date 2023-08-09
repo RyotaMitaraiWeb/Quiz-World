@@ -11,6 +11,7 @@ import { questionTypes } from '../../../../constants/question-types.constants';
 import { MatDividerModule } from '@angular/material/divider';
 import { SingleChoiceAnswersManager } from '../../../../util/AnswersManager/managers/SingleChoice/SingleChoiceAnswersManager';
 import { AnswersManagersFactoryService } from '../../../../features/answers-managers-factory/answers-managers-factory.service';
+import { validationRules } from '../../../../constants/validationRules.constants';
 
 @Component({
   selector: 'app-single-choice',
@@ -34,9 +35,14 @@ export class SingleChoiceComponent implements OnInit {
   constructor(
     private readonly fb: FormBuilder,
     private readonly factory: AnswersManagersFactoryService,
-    ) {
-      this.manager = factory.createManager('single', this.form.controls.answers);
-    }
+  ) {
+    this.manager = factory.createManager('single', this.form.controls.answers);
+  }
+
+  protected questionValidationRules = {
+    answer: validationRules.quiz.question.answers.value,
+    prompt: validationRules.quiz.question.prompt,
+  }
 
   ngOnInit(): void {
     this.manager.form = this.form.controls.answers;
@@ -49,17 +55,16 @@ export class SingleChoiceComponent implements OnInit {
   protected uniqueName = Date.now().toString();
 
   @Input({ required: true }) form = this.fb.group({
-    prompt: ['', [Validators.required, Validators.maxLength(100)]],
+    prompt: ['', [Validators.required, Validators.maxLength(this.questionValidationRules.prompt.maxlength)]],
     answers: this.fb.array([
-      this.fb.group(
-        {
-          value: ['', [Validators.required, Validators.maxLength(100)]],
-          correct: [true],
-        }
+      this.fb.group({
+        value: ['', [Validators.required, Validators.maxLength(this.questionValidationRules.answer.maxlength)]],
+        correct: [true],
+      }
       ),
       this.fb.group(
         {
-          value: ['', [Validators.required, Validators.maxLength(100)]],
+          value: ['', [Validators.required, Validators.maxLength(this.questionValidationRules.answer.maxlength)]],
           correct: [false],
         }
       )
@@ -81,7 +86,7 @@ export class SingleChoiceComponent implements OnInit {
 
   protected addField(event: Event) {
     event.preventDefault();
-    this.manager.addField();    
+    this.manager.addField();
   }
 
   protected removeFieldAt(index: number, event: Event) {
@@ -97,7 +102,7 @@ export class SingleChoiceComponent implements OnInit {
     return this.manager.canRemoveWrongAnswerFields;
   }
 
-  protected getActualIndex(index: number) {    
+  protected getActualIndex(index: number) {
     return this.manager.getActualIndex(index);
   }
 }

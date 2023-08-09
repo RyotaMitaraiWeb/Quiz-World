@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { questionTypes } from '../../constants/question-types.constants';
+import { validationRules } from '../../constants/validationRules.constants';
 
 @Component({
   selector: 'app-quiz-form',
@@ -30,6 +31,11 @@ export class QuizFormComponent implements OnInit {
     private readonly fb: FormBuilder
   ) { }
 
+  protected quizValidationRules = {
+    title: validationRules.quiz.title,
+    description: validationRules.quiz.description,
+  };
+
   @ViewChild('autosize') protected autosize!: CdkTextareaAutosize;
 
   ngOnInit(): void {
@@ -48,7 +54,7 @@ export class QuizFormComponent implements OnInit {
       const answersFormArray = q.answers.map(a =>
         this.fb.group(
           {
-            value: [a.value, [Validators.required, Validators.maxLength(100)]],
+            value: [a.value, [Validators.required, Validators.maxLength(validationRules.quiz.question.answers.value.maxlength)]],
             correct: [a.correct]
           }
         )
@@ -56,7 +62,7 @@ export class QuizFormComponent implements OnInit {
       );
 
       const group = this.fb.group({
-        prompt: [q.prompt, [Validators.required, Validators.maxLength(100)]],
+        prompt: [q.prompt, [Validators.required, Validators.maxLength(validationRules.quiz.question.prompt.maxlength)]],
         answers: this.fb.array(answersFormArray),
         type: [q.type]
       });
@@ -90,21 +96,21 @@ export class QuizFormComponent implements OnInit {
   @Input() edit = false;
 
   form = this.fb.group({
-    title: [this.title, [Validators.required, Validators.minLength(10), Validators.maxLength(100)]],
-    description: [this.description, [Validators.required, Validators.maxLength(300)]],
+    title: [this.title, [Validators.required, Validators.minLength(this.quizValidationRules.title.minlength), Validators.maxLength(this.quizValidationRules.title.maxlength)]],
+    description: [this.description, [Validators.required, Validators.maxLength(500)]],
     questions: this.fb.array(
       [
         this.fb.group(
           {
-            prompt: ['', [Validators.required, Validators.maxLength(100)]],
+            prompt: ['', [Validators.required, Validators.maxLength(validationRules.quiz.question.prompt.maxlength)]],
             answers: this.fb.array(
               [
                 this.fb.group({
-                  value: ['', [Validators.required, Validators.maxLength(100)]],
+                  value: ['', [Validators.required, Validators.maxLength(validationRules.quiz.question.answers.value.maxlength)]],
                   correct: [true],
                 }),
                 this.fb.group({
-                  value: ['', [Validators.required, Validators.maxLength(100)]],
+                  value: ['', [Validators.required, Validators.maxLength(validationRules.quiz.question.answers.value.maxlength)]],
                   correct: [false],
                 })
               ]
@@ -126,15 +132,15 @@ export class QuizFormComponent implements OnInit {
       this.form.controls.questions.push(
         this.fb.group(
           {
-            prompt: ['', [Validators.required, Validators.maxLength(100)]],
+            prompt: ['', [Validators.required, Validators.maxLength(validationRules.quiz.question.prompt.maxlength)]],
             answers: this.fb.array(
               [
                 this.fb.group({
-                  value: ['', [Validators.required, Validators.maxLength(100)]],
+                  value: ['', [Validators.required, Validators.maxLength(validationRules.quiz.question.answers.value.maxlength)]],
                   correct: [true],
                 }),
                 this.fb.group({
-                  value: ['', [Validators.required, Validators.maxLength(100)]],
+                  value: ['', [Validators.required, Validators.maxLength(validationRules.quiz.question.answers.value.maxlength)]],
                   correct: [false],
                 })
               ]

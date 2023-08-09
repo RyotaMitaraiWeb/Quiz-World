@@ -8,6 +8,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { questionTypes, shortQuestionTypes } from '../../../../constants/question-types.constants';
 import { AnswersManagersFactoryService } from '../../../../features/answers-managers-factory/answers-managers-factory.service';
 import { TextAnswersManager } from '../../../../util/AnswersManager/managers/Text/TextAnswersManager';
+import { validationRules } from '../../../../constants/validationRules.constants';
 
 @Component({
   selector: 'app-text',
@@ -33,15 +34,20 @@ export class TextComponent {
 
   private readonly manager: TextAnswersManager;
 
+  protected questionValidationRules = {
+    answer: validationRules.quiz.question.answers.value,
+    prompt: validationRules.quiz.question.prompt,
+  }
+
   ngOnInit() {
     this.manager.form = this.form.controls.answers;
   }
 
   @Input({ required: true }) form = this.fb.group({
-    prompt: ['', [Validators.required, Validators.maxLength(100)]],
+    prompt: ['', [Validators.required, Validators.maxLength(this.questionValidationRules.prompt.maxlength)]],
     answers: this.fb.array([
       this.fb.group({
-        value: ['', [Validators.required, Validators.maxLength(100)]],
+        value: ['', [Validators.required, Validators.maxLength(this.questionValidationRules.answer.maxlength)]],
         correct: [true],
       })
     ]),

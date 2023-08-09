@@ -8,6 +8,7 @@ import { TextComponent } from './text/text.component';
 import { FormBuilder, Validators } from '@angular/forms';
 import { questionTypes } from '../../../constants/question-types.constants';
 import { MatCardModule } from '@angular/material/card';
+import { validationRules } from '../../../constants/validationRules.constants';
 
 @Component({
   selector: 'app-question',
@@ -35,10 +36,10 @@ export class QuestionComponent implements OnInit {
   @Input() index = 0;
 
   @Input() form = this.fb.group({
-    prompt: ['', [Validators.required, Validators.maxLength(100)]],
+    prompt: ['', [Validators.required, Validators.maxLength(validationRules.quiz.question.prompt.maxlength)]],
     answers: this.fb.array([
       this.fb.group({
-        value: ['', [Validators.required, Validators.maxLength(100)]],
+        value: ['', [Validators.required, Validators.maxLength(validationRules.quiz.question.answers.value.maxlength)]],
         correct: [true]
       })
     ]),
@@ -82,7 +83,7 @@ export class QuestionComponent implements OnInit {
       if (!wrongAnswers) {
         this.form.controls.answers.push(this.fb.group(
           {
-            value: ['', [Validators.required, Validators.maxLength(100)]],
+            value: ['', [Validators.required, Validators.maxLength(validationRules.quiz.question.answers.value.maxlength)]],
             correct: [false],
           }
         ));
