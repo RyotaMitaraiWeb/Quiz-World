@@ -1,14 +1,13 @@
 <div [formGroup]="form" class="single-choice-question question">
-  <mat-form-field class="prompt-field" hintLabel="Prompt must be between 1 and 100 characters">
-    <mat-label>Prompt</mat-label>
-    <textarea cdkTextareaAutosize required matInput class="prompt" formControlName="prompt"></textarea>
+  <mat-form-field class="prompt-field" [hintLabel]="form.controls.prompt.value?.length + '/ 100'">
+    <textarea placeholder="Prompt" cdkTextareaAutosize required matInput class="prompt" formControlName="prompt"></textarea>
     <mat-error *ngIf="form.controls.prompt.errors?.['required']">Please fill this field!</mat-error>
     <mat-error *ngIf="form.controls.prompt.errors?.['maxlength']">This field is too long!</mat-error>
   </mat-form-field>
   <h4 class="correct-answers-heading">Correct Answer</h4>
   <section class="correct-answer" formArrayName="answers">
     <mat-radio-button disabled checked [name]="uniqueName"></mat-radio-button>
-    <mat-form-field [formGroupName]="0" hintLabel="The answer must be between 1 and 100 characters">
+    <mat-form-field [formGroupName]="0" [hintLabel]="'' + form.controls.answers.controls[0].controls.value.value?.length + '/ 100'">
       <textarea placeholder="Correct answer" cdkTextareaAutosize required maxlength="100" matInput
         class="correct-answer-field" formControlName="value"></textarea>
       <mat-error *ngIf="correctAnswer.controls.value.errors?.['required']">Please fill this field!</mat-error>
@@ -31,7 +30,7 @@
       formArrayName="answers">
       <mat-radio-button disabled></mat-radio-button>
       <mat-form-field [formGroupName]="getActualIndex(i)" 
-        hintLabel="The answer must be between 1 and 100 characters">
+      [hintLabel]="'' + form.controls.answers.controls[getActualIndex(i)].controls.value.value?.length + '/ 100'">
         <textarea 
           cdkTextareaAutosize
           required

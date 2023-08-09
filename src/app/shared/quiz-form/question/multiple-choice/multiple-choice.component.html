@@ -1,8 +1,7 @@
 <div [formGroup]="form" class="multiple-choice-question question">
   <section>
-    <mat-form-field class="prompt-field" hintLabel="Prompt must be between 1 and 100 characters">
-      <mat-label>Prompt</mat-label>
-      <textarea cdkTextareaAutosize required matInput class="prompt" formControlName="prompt"></textarea>
+    <mat-form-field class="prompt-field" [hintLabel]="form.controls.prompt.value?.length + '/ 100'">
+      <textarea placeholder="Prompt" cdkTextareaAutosize required matInput class="prompt" formControlName="prompt"></textarea>
       <mat-error *ngIf="form.controls.prompt.errors?.['required']">Please fill this field!</mat-error>
       <mat-error *ngIf="form.controls.prompt.errors?.['maxlength']">This field is too long!</mat-error>
     </mat-form-field>
@@ -13,7 +12,7 @@
       <div class="answer-field" *ngFor="let answer of correctAnswers; index as i" formArrayName="answers">
         <mat-checkbox disabled checked></mat-checkbox>
         <mat-form-field [formGroupName]="actualIndex(i, true)" 
-          hintLabel="The answer must be between 1 and 100 characters">
+        [hintLabel]="'' + form.controls.answers.controls[actualIndex(i, true)].controls.value.value?.length + '/ 100'">
           <textarea 
             cdkTextareaAutosize
             required
@@ -56,7 +55,7 @@
     <div class="wrong-answers">
       <div class="answer-field" *ngFor="let answer of wrongAnswers; index as i" formArrayName="answers">
         <mat-checkbox disabled></mat-checkbox>
-        <mat-form-field [formGroupName]="actualIndex(i, false)" hintLabel="The answer must be between 1 and 100 characters">
+        <mat-form-field [formGroupName]="actualIndex(i, false)" [hintLabel]="'' + form.controls.answers.controls[actualIndex(i, false)].controls.value.value?.length + '/ 100'">
           <textarea 
             cdkTextareaAutosize
             required
