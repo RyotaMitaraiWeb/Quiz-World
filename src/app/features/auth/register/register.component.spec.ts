@@ -18,6 +18,7 @@ import { AuthService } from '../../../core/auth-service/auth.service';
 import { AppStoreModule } from '../../../store/app-store.module';
 import { Location } from '@angular/common';
 import { RegisterComponent } from './register.component';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 describe('RegisterComponent', () => {
 
@@ -41,6 +42,12 @@ describe('RegisterComponent', () => {
           HttpClientTestingModule,
           AppStoreModule,
           NoopAnimationsModule
+        ],
+        providers: [
+          { 
+            provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, 
+            useValue: { duration: 0 }
+          },
         ]
       });
 
@@ -58,7 +65,7 @@ describe('RegisterComponent', () => {
     });
 
     describe('register method', () => {
-      it('Calls the router, localStorage, and store when successful', fakeAsync(() => {
+      it('Calls the router, localStorage, and store when successful', waitForAsync(() => {
         spyOn(authService, 'register').and.returnValue(of(new HttpResponse<IAuthSuccessResponse>({
           status: HttpStatusCode.Created,
           statusText: 'Created',
@@ -75,7 +82,6 @@ describe('RegisterComponent', () => {
         spyOn(localStorage, 'setItem').and.stub();
 
         component.register(event);
-        tick();
         expect(router.navigate).toHaveBeenCalledTimes(1);
         expect(router.navigate).toHaveBeenCalledWith(['/']);
         expect(store.dispatch).toHaveBeenCalledTimes(1);

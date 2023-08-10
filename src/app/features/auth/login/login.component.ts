@@ -84,6 +84,9 @@ export class LoginComponent implements OnDestroy {
       password: this.form.controls.password.value!,
     };
 
+    console.log(this.snackbar.open);
+    
+
     this.loginSub = this.authService.login(body)
       .subscribe({
         next: (res) => {
@@ -96,9 +99,7 @@ export class LoginComponent implements OnDestroy {
           }));
 
           localStorage.setItem('token', body.token);
-          this.snackbar.open(successfulActionsMessages.login, 'Awesome!', {
-            duration: 7000,
-          })
+          this.snackbar.open(successfulActionsMessages.login, 'Awesome!');
           this.router.navigate(['/']);
         },
         error: (err: HttpErrorResponse) => {

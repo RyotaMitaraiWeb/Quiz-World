@@ -47,9 +47,7 @@ export class ChangeRoleButtonComponent implements OnDestroy {
     if (!this.userHasRole) {
       this.addRoleSub = this.adminService.addRoleToUser(this.userId, this.role).subscribe({
         next: res => {
-          this.snackbar.open(successfulActionsMessages.admin.role.promoted(this.role), 'Got it!', {
-            duration: 7000,
-          });
+          this.snackbar.open(successfulActionsMessages.admin.role.promoted(this.role));
           this.updateUsersEvent.emit(res)
         },
         error: err => {
@@ -59,9 +57,7 @@ export class ChangeRoleButtonComponent implements OnDestroy {
     } else {
       this.removeRoleSub = this.adminService.removeRoleFromUser(this.userId, this.role).subscribe({
         next: res => {
-          this.snackbar.open(successfulActionsMessages.admin.role.demoted(this.role), 'Got it!', {
-            duration: 7000,
-          });
+          this.snackbar.open(successfulActionsMessages.admin.role.demoted(this.role));
           this.updateUsersEvent.emit(res)
           this.updateUsersEvent.emit(res)
         },

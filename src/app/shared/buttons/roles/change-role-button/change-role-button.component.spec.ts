@@ -10,6 +10,8 @@ import { api } from '../../../../constants/api.constants';
 import { HttpStatusCode } from '@angular/common/http';
 import { IUserList } from '../../../../../types/responses/administration.types';
 import { roles } from '../../../../constants/roles.constants';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 describe('ChangeRoleButtonComponent', () => {
   let component: ChangeRoleButtonComponent;
@@ -26,6 +28,13 @@ describe('ChangeRoleButtonComponent', () => {
         HttpClientTestingModule,
         AppStoreModule,
         RouterTestingModule,
+        NoopAnimationsModule
+      ],
+      providers: [
+        { 
+          provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, 
+          useValue: { duration: 0 }
+        },
       ]
     });
 

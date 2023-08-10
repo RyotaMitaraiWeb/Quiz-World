@@ -19,6 +19,17 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { NgZone } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar } from '@angular/material/snack-bar';
+
+class MatSnackBarStub{
+  open(){
+    return {
+      onAction: () => of({})
+    }
+  }
+  dismiss() {}
+
+}
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -29,7 +40,6 @@ describe('LoginComponent', () => {
 
   let authService: AuthService;
   let router: Router;
-
   let ngZone: NgZone;
 
   describe('Unit tests', () => {
@@ -40,6 +50,12 @@ describe('LoginComponent', () => {
           HttpClientTestingModule,
           AppStoreModule,
           NoopAnimationsModule
+        ],
+        providers: [
+          { 
+            provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, 
+            useValue: { duration: 0 }
+          },
         ]
       });
 
@@ -48,6 +64,7 @@ describe('LoginComponent', () => {
       store = TestBed.inject(Store);
       authService = TestBed.inject(AuthService);
       router = TestBed.inject(Router);
+
       component = fixture.componentInstance;
       fixture.detectChanges();
     });
@@ -57,7 +74,7 @@ describe('LoginComponent', () => {
     });
 
     describe('login method', () => {
-      it('Calls the router, localStorage, and store when successful', fakeAsync(() => {
+      it('Calls the router, localStorage, and store when successful', waitForAsync(() => {
         spyOn(authService, 'login').and.returnValue(of(new HttpResponse<IAuthSuccessResponse>({
           status: HttpStatusCode.Created,
           statusText: 'Created',
@@ -74,14 +91,13 @@ describe('LoginComponent', () => {
         spyOn(localStorage, 'setItem').and.stub();
 
         component.login(event);
-        tick();
         expect(router.navigate).toHaveBeenCalledTimes(1);
         expect(router.navigate).toHaveBeenCalledWith(['/']);
         expect(store.dispatch).toHaveBeenCalledTimes(1);
         expect(localStorage.setItem).toHaveBeenCalledWith('token', 'a');
       }));
 
-      it('Does not call the router and store if the auth service returns an error response', fakeAsync(() => {
+      it('Does not call the router and store if the auth service returns an error response', waitForAsync(() => {
         spyOn(authService, 'login').and.returnValue(new Observable(o => {
           o.error(new HttpErrorResponse({
             status: HttpStatusCode.Forbidden,
@@ -95,7 +111,6 @@ describe('LoginComponent', () => {
         spyOn(localStorage, 'setItem').and.stub();
 
         component.login(event);
-        tick();
 
         expect(authService.login).toHaveBeenCalledTimes(1);
         expect(router.navigate).not.toHaveBeenCalled();

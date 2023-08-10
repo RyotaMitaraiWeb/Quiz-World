@@ -111,9 +111,7 @@ export class RegisterComponent implements OnDestroy {
           }));
 
           localStorage.setItem('token', body.token);
-          this.snackbar.open(successfulActionsMessages.register, 'Awesome!', {
-            duration: 7000,
-          });
+          this.snackbar.open(successfulActionsMessages.register, 'Awesome!');
           
           this.router.navigate(['/']);
         },

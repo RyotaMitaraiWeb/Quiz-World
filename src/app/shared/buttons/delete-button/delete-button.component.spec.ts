@@ -7,6 +7,7 @@ import { Observable, of } from 'rxjs';
 import { HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 describe('DeleteButtonComponent', () => {
   let component: DeleteButtonComponent;
@@ -22,6 +23,7 @@ describe('DeleteButtonComponent', () => {
         DeleteButtonComponent,
         HttpClientTestingModule,
         RouterTestingModule,
+        NoopAnimationsModule,
       ]
     });
     fixture = TestBed.createComponent(DeleteButtonComponent);
