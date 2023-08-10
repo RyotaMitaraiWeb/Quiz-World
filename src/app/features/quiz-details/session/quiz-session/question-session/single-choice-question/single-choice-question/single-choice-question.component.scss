@@ -53,7 +53,7 @@
 }
 
 
-::ng-deep label {
+::ng-deep .single-choice-question.question label {
   width: 100%; // Make label take up the remainder of the horizontal whitespace
   display: block;
   padding: 20px; // Padding needed for label to fill up the container vertically
@@ -82,6 +82,6 @@
 }
 
 // Needed to allow the label to fill up the remaining whitespace.
-::ng-deep .mdc-form-field {
+::ng-deep .single-choice-question.question .mdc-form-field {
   width: 100%;
 }
