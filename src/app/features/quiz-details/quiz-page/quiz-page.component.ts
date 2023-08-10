@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Data } from '@angular/router';
-import { Observable, Subscription, map } from 'rxjs';
+import { Observable, Subscription, map, tap } from 'rxjs';
 import { SharedModule } from '../../../shared/shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
 import { IQuizDetails } from '../../../../types/responses/quiz.types';
@@ -12,6 +12,7 @@ import { selectUser } from '../../../store/user/user.selector';
 import { MatChipsModule } from '@angular/material/chips';
 import { QuizSessionComponent } from '../session/quiz-session/quiz-session.component';
 import { MatCardModule } from '@angular/material/card';
+import { IUserState } from '../../../../types/store/user.types';
 @Component({
   selector: 'app-quiz-page',
   standalone: true,
@@ -38,12 +39,19 @@ export class QuizPageComponent implements OnInit, OnDestroy {
 
   protected get canEdit(): Observable<boolean> {    
     return this.user.pipe(
-      map(u => this.roleService.isModerator() || this.quiz.creatorId === u.id));
+      map(u => this.roleService.isModerator() || this.quiz.creatorId.toLowerCase() === u.id.toLowerCase())
+    );
   }
 
   protected get canDelete(): Observable<boolean> {
     return this.user.pipe(
-      map(u => this.roleService.isModerator() || this.quiz.creatorId === u.id));
+      map(u => this.roleService.isModerator() || this.quiz.creatorId.toLowerCase() === u.id.toLowerCase())
+    );
+  }
+
+  private isModerator(u: IUserState) {
+    // return this.roleService.isModerator() || this.quiz.creatorId.toLowerCase() === u.id.toLowerCase();
+    return true;
   }
 
   ngOnInit(): void {
