@@ -4,11 +4,18 @@
     <form (submit)="register($event)" [formGroup]="form">
       <mat-form-field>
         <mat-label>Username</mat-label>
-        <input required matInput name="username" id="username" formControlName="username" />
+        <input 
+          required
+          matInput
+          name="username"
+          id="username"
+          formControlName="username"
+          [maxLength]="usernameRules.maxlength"
+        />
         <mat-error *ngIf="controlError('username')?.['required']">Username is required!</mat-error>
-        <mat-error *ngIf="controlError('username')?.['minlength']">Username must be at least 5 characters
+        <mat-error *ngIf="controlError('username')?.['minlength']">Username must be at least {{ usernameRules.minlength }} characters
           long!</mat-error>
-        <mat-error *ngIf="controlError('username')?.['maxlength']">Username must be no more than 15 characters
+        <mat-error *ngIf="controlError('username')?.['maxlength']">Username must be no more than {{ usernameRules.maxlength }} characters
           long!</mat-error>
         <mat-error *ngIf="controlError('username')?.['pattern']">Username must consist solely of alphanumeric
           characters</mat-error>
@@ -23,7 +30,7 @@
           <mat-icon>{{ passwordVisibilityIcon }}</mat-icon>
         </button>
         <mat-error *ngIf="controlError('password')?.['required']">Password is required!</mat-error>
-        <mat-error *ngIf="controlError('password')?.['minlength']">Password must be at least 6 characters
+        <mat-error *ngIf="controlError('password')?.['minlength']">Password must be at least {{ passwordRules.minlength }} characters
           long!</mat-error>
       </mat-form-field>
       <button class="submit" matButton mat-raised-button color="primary" [disabled]="form.invalid">

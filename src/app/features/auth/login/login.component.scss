@@ -5,6 +5,12 @@
     text-align: center;
   }
 
+  .failed-login {
+    color: red;
+    text-align: center;
+    margin-top: 8px;
+  }
+
   form {
     display: flex;
     flex-direction: column;

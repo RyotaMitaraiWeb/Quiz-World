@@ -6,8 +6,9 @@ import {
   HttpInterceptor,
   HttpResponse,
   HttpStatusCode,
+  HttpErrorResponse,
 } from '@angular/common/http';
-import { Observable, catchError, filter, map, of, tap } from 'rxjs';
+import { Observable, catchError, filter, map, of, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 
 export const SkipUnauthorizedRedirectionHeader = 'Skip-Unauthorized-Redirection'; 
@@ -33,7 +34,10 @@ export class UnauthorizedRedirectInterceptor implements HttpInterceptor {
         filter(event => event instanceof HttpResponse),
         catchError((err: HttpResponse<any>) => {          
           this.redirectOnError(request, err.status);          
-          return of(err);
+          return throwError(() => new HttpErrorResponse({
+            status: err.status,
+            statusText: err.statusText,
+          }));
         })
       );
   }

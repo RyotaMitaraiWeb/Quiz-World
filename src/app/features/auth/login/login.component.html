@@ -19,6 +19,7 @@
       <button class="submit" matButton mat-raised-button color="primary" [disabled]="form.invalid">
         Login
       </button>
+      <p *ngIf="failedLogin" class="failed-login">Wrong username or password!</p>
     </form>
   </section>
 </app-sheet>

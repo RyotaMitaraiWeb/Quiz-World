@@ -15,6 +15,7 @@ import { IAuthBody } from '../../../../types/auth/general.types';
 import { setUser } from '../../../store/user/user.action';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SharedModule } from '../../../shared/shared.module';
+import { validationRules } from '../../../constants/validationRules.constants';
 
 @Component({
   selector: 'app-register',
@@ -40,20 +41,23 @@ export class RegisterComponent implements OnDestroy {
     private readonly uniqueUsernameValidator: UniqueUsernameValidator,
   ) { }
 
+  protected usernameRules = validationRules.register.username;
+  protected passwordRules = validationRules.register.password;
+
   form = this.fb.group({
     username: ['', {
       validators: [
         Validators.required,
-        Validators.minLength(5),
-        Validators.maxLength(15),
-        Validators.pattern(/^[a-z0-9]+$/i)
+        Validators.minLength(this.usernameRules.minlength),
+        Validators.maxLength(this.usernameRules.maxlength),
+        Validators.pattern(this.usernameRules.pattern),
       ],
       asyncValidators: [this.uniqueUsernameValidator]
     }],
     password: ['',
       [
         Validators.required,
-        Validators.minLength(6)
+        Validators.minLength(this.passwordRules.minlength)
       ]
     ]
   });

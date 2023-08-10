@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { IAppStore } from '../../../../types/store/store.types';
 import { IAuthBody } from '../../../../types/auth/general.types';
 import { setUser } from '../../../store/user/user.action';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { UniqueUsernameValidator } from '../../validators/unique-username-validator/unique-username.validator';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -49,6 +49,8 @@ export class LoginComponent implements OnDestroy {
   protected controlError(control: 'username' | 'password') {
     return this.form.controls[control].errors;
   }
+
+  failedLogin = false;
 
   passwordIsVisible = false;
   togglePasswordVisibility(event: Event): void {
@@ -97,6 +99,11 @@ export class LoginComponent implements OnDestroy {
           this.router.navigate(['/']);
         },
         error: (err: HttpErrorResponse) => {
+          console.log('a');
+          
+          if (err.status === HttpStatusCode.Unauthorized) {
+            this.failedLogin = true;
+          }
           console.warn(err);
         }
       });

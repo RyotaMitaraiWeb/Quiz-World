@@ -31,5 +31,15 @@ export const validationRules = {
         }
       }
     }
+  },
+  register: {
+    username: {
+      minlength: 5,
+      maxlength: 15,
+      pattern: /^[a-z0-9]+$/i,
+    },
+    password: {
+      minlength: 6,
+    }
   }
 }
