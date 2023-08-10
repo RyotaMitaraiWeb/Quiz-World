@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Data } from '@angular/router';
+import { ActivatedRoute, Data, RouterModule } from '@angular/router';
 import { Observable, Subscription, map, tap } from 'rxjs';
 import { SharedModule } from '../../../shared/shared.module';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -23,6 +23,7 @@ import { IUserState } from '../../../../types/store/user.types';
     MatChipsModule,
     MatCardModule,
     QuizSessionComponent,
+    RouterModule,
   ],
   templateUrl: './quiz-page.component.html',
   styleUrls: ['./quiz-page.component.scss']
@@ -49,11 +50,6 @@ export class QuizPageComponent implements OnInit, OnDestroy {
     );
   }
 
-  private isModerator(u: IUserState) {
-    // return this.roleService.isModerator() || this.quiz.creatorId.toLowerCase() === u.id.toLowerCase();
-    return true;
-  }
-
   ngOnInit(): void {
     this.quizSub = this.getResolvedData().subscribe(data => {
       this.quiz = data['quiz'];
@@ -71,6 +67,7 @@ export class QuizPageComponent implements OnInit, OnDestroy {
     instantMode: false,
     questions: [],
     creatorId: '',
+    creatorUsername: '',
     version: 0,
   }
 

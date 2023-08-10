@@ -29,6 +29,7 @@ export interface IQuizDetails {
   instantMode: boolean;
   questions: ISessionQuestion[];
   creatorId: string;
+  creatorUsername: string;
   version: number;
 }
 

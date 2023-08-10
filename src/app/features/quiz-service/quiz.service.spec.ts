@@ -103,6 +103,7 @@ describe('QuizService', () => {
         instantMode: false,
         questions: [],
         creatorId: '1',
+        creatorUsername: 'ryota1',
         version: 1,
       }
 
@@ -420,6 +421,7 @@ describe('QuizService', () => {
         instantMode: false,
         questions: [],
         creatorId: '1',
+        creatorUsername: 'ryota1',
         version: 1,
       }
 

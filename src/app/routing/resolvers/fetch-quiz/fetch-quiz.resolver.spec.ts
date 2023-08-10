@@ -44,6 +44,7 @@ describe('fetchQuizResolver', () => {
               description: 'a',
               instantMode: false,
               version: 1,
+              creatorUsername: 'ryota1',
               questions: [
                 {
                   id: '1',

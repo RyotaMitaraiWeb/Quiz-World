@@ -23,6 +23,7 @@ function generateQuiz(): IQuizDetails {
     description: 'test',
     instantMode: true,
     creatorId: '1',
+    creatorUsername: 'ryota1',
     version: 1,
     questions: [
       {
@@ -100,6 +101,7 @@ describe('QuizPageComponent', () => {
             description: '',
             instantMode: true,
             creatorId: '',
+            creatorUsername: 'ryota1',
             version: 1,
             questions: [],
           } as IQuizDetails
