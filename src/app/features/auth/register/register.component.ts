@@ -65,6 +65,7 @@ export class RegisterComponent implements OnDestroy {
   passwordIsVisible = false;
 
   togglePasswordVisibility(event: Event): void {
+    event.preventDefault();
     this.passwordIsVisible = !this.passwordIsVisible;
   }
 
