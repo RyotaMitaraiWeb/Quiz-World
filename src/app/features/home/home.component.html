@@ -2,33 +2,37 @@
   <h1>Home</h1>
   <section class="home-section" *ngIf="isLoggedIn()">
     <h2>Welcome, {{ (user | async )?.username }}!</h2>
-    <a mat-fab extended routerLink="/quiz/create" color="primary">
-      <mat-icon>add</mat-icon>
-      Create a new quiz
-    </a>
-    <a mat-fab extended [routerLink]="'/profile/' + (user | async)?.id" color="accent">
-      <mat-icon>person</mat-icon>
-      View your profile
-    </a>
-    <a mat-fab extended routerLink="/quiz/all" color="primary">
-      <mat-icon>list</mat-icon>
-      Browse all quizzes
-    </a>
+    <div class="actions">
+      <a mat-fab extended routerLink="/quiz/create" color="primary">
+        <mat-icon>add</mat-icon>
+        Create a new quiz
+      </a>
+      <a mat-fab extended [routerLink]="'/profile/' + (user | async)?.id" color="accent">
+        <mat-icon>person</mat-icon>
+        View your profile
+      </a>
+      <a mat-fab extended routerLink="/quiz/all" color="primary">
+        <mat-icon>list</mat-icon>
+        Browse all quizzes
+      </a>
+    </div>
   </section>
   <section class="home-section" *ngIf="!isLoggedIn()">
     <h2>Welcome!</h2>
     <p>To create quizzes, please create an account or log in to your existing one.</p>
-    <a mat-fab extended routerLink="/register" color="primary">
-      <mat-icon>account_box</mat-icon>
-      Register
-    </a>
-    <a mat-fab extended routerLink="/login" color="accent">
-      <mat-icon>arrow_forward</mat-icon>
-      Log in to your account
-    </a>
-    <a mat-fab extended routerLink="/quiz/all" color="primary">
-      <mat-icon>list</mat-icon>
-      Browse all quizzes
-    </a>
+    <div class="actions">
+      <a mat-fab extended routerLink="/register" color="primary">
+        <mat-icon>account_box</mat-icon>
+        Register
+      </a>
+      <a mat-fab extended routerLink="/login" color="accent">
+        <mat-icon>arrow_forward</mat-icon>
+        Log in to your account
+      </a>
+      <a mat-fab extended routerLink="/quiz/all" color="primary">
+        <mat-icon>list</mat-icon>
+        Browse all quizzes
+      </a>
+    </div>
   </section>
 </app-sheet>

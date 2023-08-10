@@ -21,7 +21,7 @@
   ul {
     animation: expand 0.5s;
     display: flex;
-    width: 40%;
+    width: var(--links-width);
     flex-direction: column;
     background: rgb(253, 248, 248);
     height: 100%;
@@ -59,7 +59,7 @@
         transition: background-color 0.1s;
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 16px;
         
         &:hover {
           background-color: gray;
@@ -85,13 +85,31 @@
   }
 }
 
+@media screen and (min-width: 781px) {
+  :root {
+    --links-width: 40%;
+  }
+}
+
+@media screen and (max-width: 780px) {
+  :root {
+    --links-width: 80%;
+  }
+}
+
+@media screen and (max-width: 475px) {
+  :root {
+    --links-width: 150%;
+  }
+}
+
 @keyframes expand {
   from {
     width: 0;
   }
 
   to {
-    width: 40%;
+    width: var(--links-width);
   }
 }
 
@@ -107,7 +125,7 @@
 
 @keyframes collapse {
   from {
-    width: 40%;
+    width: var(--links-width);
   }
 
   to {

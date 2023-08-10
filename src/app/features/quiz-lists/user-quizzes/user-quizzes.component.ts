@@ -54,9 +54,7 @@ export class UserQuizzesComponent implements OnInit, OnDestroy {
   /**
    * Updates the catalogue property with the fetched data.
    */
-  updateQuizzes({ page, sort, order }: { page: number, sort: sort, order: order } ): void {
-    console.log(page);
-    
+  updateQuizzes({ page, sort, order }: { page: number, sort: sort, order: order } ): void {    
     this.catalogueSub = this.quizService.getUserQuizzes(this.id, page, sort, order).subscribe(data => {
       this.catalogue = data
     });

@@ -13,10 +13,16 @@
       </a>
     </li>
     <li *ngIf="isGuest()">
-      <a routerLink="/register">Register</a>
+      <a routerLink="/register">
+        <mat-icon>account_box</mat-icon>
+        Register
+      </a>
     </li>
     <li *ngIf="isGuest()">
-      <a routerLink="/login">Login</a>
+      <a routerLink="/login">
+        <mat-icon>arrow_forward</mat-icon>
+        Login
+      </a>
     </li>
     <li *ngIf="!isGuest()">
       <a routerLink="/quiz/create">

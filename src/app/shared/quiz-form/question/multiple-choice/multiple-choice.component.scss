@@ -5,6 +5,12 @@
     visibility: hidden;
   }
 
+  .remove-field-btn {
+    @media screen and (max-width: 350px) {
+      margin-top: 1.5em;
+    }
+  }
+
   .correct-answer, .wrong-answers {
     text-align: center;
     mat-form-field {

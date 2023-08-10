@@ -38,8 +38,6 @@ export class ProfileComponent {
 
   username = this.route.data
     .pipe(
-      tap(data => console.log(data)
-      ),
       map(data => (data['profile'] as IUserState).username)
     );
 

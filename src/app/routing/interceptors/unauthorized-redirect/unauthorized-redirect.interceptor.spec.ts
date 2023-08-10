@@ -77,11 +77,7 @@ describe('UnauthorizedRedirectInterceptor', () => {
       }
     })
     .subscribe({
-      error: (err) => {
-        console.log('ERROR');
-        
-        console.log(err);
-        
+      error: (err) => {        
         expect(router.navigate).not.toHaveBeenCalled();
         expect(localStorage.removeItem).not.toHaveBeenCalled();
         done();

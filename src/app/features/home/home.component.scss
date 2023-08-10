@@ -1,6 +1,22 @@
 .home-section {
-  a {
-    margin-right: 8px;
+  .actions {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+
+    @media screen and (max-width: 760px) {
+      flex-direction: column;
+      a, button {
+        width: 400px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      a, button {
+        width: 280px;
+      }
+    }
   }
 
   p {

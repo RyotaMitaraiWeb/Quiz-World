@@ -5,6 +5,12 @@
     width: 45vw;
   }
 
+  .remove-field-btn {
+    @media screen and (max-width: 350px) {
+      margin-top: 1.5em;
+    }
+  }
+
   .prompt-field mat-form-field {
     width: 100%;
     font-size: 1.2rem;

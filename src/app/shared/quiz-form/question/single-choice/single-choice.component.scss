@@ -4,6 +4,12 @@
   .invisible {
     visibility: hidden;
   }
+
+  .remove-field-btn {
+    @media screen and (max-width: 350px) {
+      margin-top: 1.5em;
+    }
+  }
   
   mat-divider {
     margin: 20px auto;

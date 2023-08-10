@@ -72,8 +72,6 @@ export class LogsComponent implements OnInit {
             ...l
           }
         ));
-
-        console.log(this.logs);
         
       }
     });

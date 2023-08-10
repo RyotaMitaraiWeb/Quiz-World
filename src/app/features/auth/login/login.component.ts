@@ -84,8 +84,6 @@ export class LoginComponent implements OnDestroy {
       password: this.form.controls.password.value!,
     };
 
-    console.log(this.snackbar.open);
-    
 
     this.loginSub = this.authService.login(body)
       .subscribe({
@@ -102,9 +100,7 @@ export class LoginComponent implements OnDestroy {
           this.snackbar.open(successfulActionsMessages.login, 'Awesome!');
           this.router.navigate(['/']);
         },
-        error: (err: HttpErrorResponse) => {
-          console.log('a');
-          
+        error: (err: HttpErrorResponse) => {          
           if (err.status === HttpStatusCode.Unauthorized) {
             this.failedLogin = true;
           }
