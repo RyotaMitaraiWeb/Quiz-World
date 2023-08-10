@@ -12,6 +12,7 @@ import { UnauthorizedRedirectInterceptor } from './routing/interceptors/unauthor
 import { CreateQuizModule } from './features/create-quiz/create-quiz.module';
 import { EditQuizModule } from './features/edit-quiz/edit-quiz.module';
 import { AdministrationPageModule } from './features/administration-page/administration-page.module';
+import { ForbiddenRedirectInterceptor } from './routing/interceptors/forbidden-redirect/forbidden-redirect.interceptor';
 
 @NgModule({
     declarations: [
@@ -28,6 +29,11 @@ import { AdministrationPageModule } from './features/administration-page/adminis
         useClass: UnauthorizedRedirectInterceptor,
         multi: true,
       },
+      {
+        provide: HTTP_INTERCEPTORS,
+        useClass: ForbiddenRedirectInterceptor,
+        multi: true,
+      }
     ],
     bootstrap: [AppComponent],
     imports: [
