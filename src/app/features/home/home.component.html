@@ -6,7 +6,7 @@
       <mat-icon>add</mat-icon>
       Create a new quiz
     </a>
-    <a mat-fab extended routerLink="/quiz/create" color="accent">
+    <a mat-fab extended [routerLink]="'/profile/' + (user | async)?.id" color="accent">
       <mat-icon>person</mat-icon>
       View your profile
     </a>
@@ -18,11 +18,11 @@
   <section class="home-section" *ngIf="!isLoggedIn()">
     <h2>Welcome!</h2>
     <p>To create quizzes, please create an account or log in to your existing one.</p>
-    <a mat-fab extended routerLink="/quiz/create" color="primary">
+    <a mat-fab extended routerLink="/register" color="primary">
       <mat-icon>account_box</mat-icon>
       Register
     </a>
-    <a mat-fab extended routerLink="/quiz/create" color="accent">
+    <a mat-fab extended routerLink="/login" color="accent">
       <mat-icon>arrow_forward</mat-icon>
       Log in to your account
     </a>
