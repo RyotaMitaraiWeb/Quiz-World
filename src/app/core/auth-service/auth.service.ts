@@ -6,6 +6,7 @@ import { IAuthBody } from '../../../types/auth/general.types';
 import { api } from '../../constants/api.constants';
 import { SkipUnauthorizedRedirectionHeader } from '../../routing/interceptors/unauthorized-redirect/unauthorized-redirect.interceptor';
 import { IUserState } from '../../../types/store/user.types';
+import { SkipNotFoundRedirection } from '../../routing/interceptors/not-found-redirect/not-found-redirect.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -68,6 +69,9 @@ export class AuthService {
   usernameExists(username: string): Observable<HttpResponse<unknown>> {
     return this.http.get(this.url.usernameExists(username), {
       observe: 'response',
+      headers: {
+        [SkipNotFoundRedirection]: 'true',
+      }
     });
   }
 

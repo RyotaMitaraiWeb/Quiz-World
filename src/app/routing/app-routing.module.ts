@@ -24,6 +24,7 @@ import { fetchProfileResolver } from './resolvers/fetch-profile/fetch-profile.re
 import { UserQuizzesComponent } from '../features/quiz-lists/user-quizzes/user-quizzes.component';
 import { fetchUserQuizzesResolver } from './resolvers/fetch-user-quizzes/fetch-user-quizzes.resolver';
 import { HomeComponent } from '../features/home/home.component';
+import { NotFoundComponent } from '../features/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -144,6 +145,10 @@ const routes: Routes = [
       }
     ]
   },
+  {
+    path: '**',
+    component: NotFoundComponent,
+  }
 ];
 
 @NgModule({
