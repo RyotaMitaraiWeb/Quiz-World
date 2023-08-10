@@ -10,6 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 import { SharedModule } from '../../../../shared/shared.module';
 import { AdminTabsComponent } from '../../tabs/admin-tabs.component';
 import { UsersListComponent } from '../users-list.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-usernames',
@@ -17,6 +19,8 @@ import { UsersListComponent } from '../users-list.component';
   imports: [
     CommonModule,
     MatInputModule,
+    MatButtonModule,
+    MatIconModule,
     SharedModule,
     AdminTabsComponent,
     UsersListComponent,
@@ -53,7 +57,7 @@ export class UsernamesComponent {
 
   protected updateUsers() {
     this.userList$ = this.adminService
-      .getUsersByUsername(this.username)
+      .getUsersByUsername(this.username, this.page, this.order)
       .pipe(
         map(this.mapToList)
       );
@@ -65,8 +69,10 @@ export class UsernamesComponent {
   }
 
   changeUsername(event: Event) {
-    const username = (event.target as HTMLInputElement).value;
-    this.username = username;
+    event.preventDefault();
+    const form = event.target as HTMLFormElement;
+    const data = new FormData(form);
+    this.username = data.get('username')?.toString() || '';
     this.updateUsers();
   }
 
