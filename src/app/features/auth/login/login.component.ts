@@ -9,15 +9,13 @@ import { IAppStore } from '../../../../types/store/store.types';
 import { IAuthBody } from '../../../../types/auth/general.types';
 import { setUser } from '../../../store/user/user.action';
 import { HttpErrorResponse, HttpResponse, HttpStatusCode } from '@angular/common/http';
-import { UniqueUsernameValidator } from '../../validators/unique-username-validator/unique-username.validator';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { selectUserRoles } from '../../../store/user/user.selector';
-import { IAuthSuccessResponse } from '../../../../types/responses/auth.types';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from '../../../shared/shared.module';
-
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { successfulActionsMessages } from '../../../constants/successfulActionsMessages.constants';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -29,6 +27,7 @@ import { SharedModule } from '../../../shared/shared.module';
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
+    MatSnackBarModule,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
@@ -39,6 +38,7 @@ export class LoginComponent implements OnDestroy {
     private readonly fb: FormBuilder,
     private readonly router: Router,
     private readonly store: Store<IAppStore>,
+    private readonly snackbar: MatSnackBar
   ) { }
 
   form = this.fb.group({
@@ -96,6 +96,9 @@ export class LoginComponent implements OnDestroy {
           }));
 
           localStorage.setItem('token', body.token);
+          this.snackbar.open(successfulActionsMessages.login, 'Awesome!', {
+            duration: 7000,
+          })
           this.router.navigate(['/']);
         },
         error: (err: HttpErrorResponse) => {

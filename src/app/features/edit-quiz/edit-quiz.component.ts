@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subscription, of } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { IEditQuizForm,IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuizService } from '../quiz-service/quiz.service';
-import { IQuizDetails } from '../../../types/responses/quiz.types';
 import { SharedModule } from '../../shared/shared.module';
-import { questionTypes } from '../../constants/question-types.constants';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { successfulActionsMessages } from '../../constants/successfulActionsMessages.constants';
 
 @Component({
   selector: 'app-edit-quiz',
@@ -14,6 +14,7 @@ import { questionTypes } from '../../constants/question-types.constants';
   imports: [
     CommonModule,
     SharedModule,
+    MatSnackBarModule,
   ],
   templateUrl: './edit-quiz.component.html',
   styleUrls: ['./edit-quiz.component.scss']
@@ -23,6 +24,7 @@ export class EditQuizComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly quizService: QuizService,
     private readonly router: Router,
+    private readonly snackbar: MatSnackBar
   ) {}
   private quizSub = new Subscription();
   private editSub = new Subscription();
@@ -36,7 +38,10 @@ export class EditQuizComponent implements OnInit, OnDestroy {
   editQuiz(quiz: IQuizFormSubmission): void {
     this.editSub = this.quizService.edit(this.quiz.id, quiz).subscribe({
       next: () => {
-        this.router.navigate(['/quiz', this.quiz.id.toString()])
+        this.snackbar.open(successfulActionsMessages.quiz.edit, 'Awesome!', {
+          duration: 7000,
+        });
+        this.router.navigate(['/quiz', this.quiz.id.toString()]);
       },
       error: (err) => {
         console.warn(err);
@@ -51,6 +56,7 @@ export class EditQuizComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.quizSub.unsubscribe();
+    this.editSub.unsubscribe();
   }
 
   quiz: IEditQuizForm = {

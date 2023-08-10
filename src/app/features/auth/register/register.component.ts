@@ -16,6 +16,8 @@ import { setUser } from '../../../store/user/user.action';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SharedModule } from '../../../shared/shared.module';
 import { validationRules } from '../../../constants/validationRules.constants';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { successfulActionsMessages } from '../../../constants/successfulActionsMessages.constants';
 
 @Component({
   selector: 'app-register',
@@ -27,6 +29,7 @@ import { validationRules } from '../../../constants/validationRules.constants';
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
+    MatSnackBarModule,
     SharedModule,
   ],
   templateUrl: './register.component.html',
@@ -39,6 +42,7 @@ export class RegisterComponent implements OnDestroy {
     private readonly authService: AuthService,
     private readonly fb: FormBuilder,
     private readonly uniqueUsernameValidator: UniqueUsernameValidator,
+    private readonly snackbar: MatSnackBar,
   ) { }
 
   protected usernameRules = validationRules.register.username;
@@ -107,6 +111,10 @@ export class RegisterComponent implements OnDestroy {
           }));
 
           localStorage.setItem('token', body.token);
+          this.snackbar.open(successfulActionsMessages.register, 'Awesome!', {
+            duration: 7000,
+          });
+          
           this.router.navigate(['/']);
         },
         error: (err: HttpErrorResponse) => {

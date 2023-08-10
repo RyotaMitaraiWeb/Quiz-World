@@ -5,13 +5,16 @@ import { QuizService } from '../quiz-service/quiz.service';
 import { Router } from '@angular/router';
 import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { SharedModule } from '../../shared/shared.module';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { successfulActionsMessages } from '../../constants/successfulActionsMessages.constants';
 
 @Component({
   selector: 'app-create-quiz',
   standalone: true,
   imports: [
     CommonModule,
-    SharedModule
+    SharedModule,
+    MatSnackBarModule,
   ],
   templateUrl: './create-quiz.component.html',
   styleUrls: ['./create-quiz.component.scss']
@@ -22,12 +25,17 @@ export class CreateQuizComponent implements OnDestroy {
   constructor(
     private readonly quizService: QuizService,
     private readonly router: Router,
+    private readonly snackbar: MatSnackBar,
   ) { }
 
   createQuiz(quiz: IQuizFormSubmission): void {
     this.quizSub = this.quizService.create(quiz).subscribe({
       next: (res) => {
         const body = res.body;
+        this.snackbar.open(successfulActionsMessages.quiz.create, 'Awesome!', {
+          duration: 7000,
+        });
+        
         this.router.navigate(['/quiz', body?.id.toString()]);
       },
       error: (err) => {

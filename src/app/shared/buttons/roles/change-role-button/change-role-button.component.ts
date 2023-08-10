@@ -7,6 +7,8 @@ import { AdminService } from '../../../../features/admin-service/admin.service';
 import { role } from '../../../../../types/auth/roles.types';
 import { roles } from '../../../../constants/roles.constants';
 import { Subscription } from 'rxjs';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { successfulActionsMessages } from '../../../../constants/successfulActionsMessages.constants';
 
 @Component({
   selector: 'app-change-role-button',
@@ -14,13 +16,17 @@ import { Subscription } from 'rxjs';
   imports: [
     CommonModule,
     MatButtonModule,
+    MatSnackBarModule
   ],
   templateUrl: './change-role-button.component.html',
   styleUrls: ['./change-role-button.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class ChangeRoleButtonComponent implements OnDestroy {
-  constructor(private readonly adminService: AdminService) { }
+  constructor(
+    private readonly adminService: AdminService,
+    private readonly snackbar: MatSnackBar,
+    ) { }
   private addRoleSub = new Subscription();
   private removeRoleSub = new Subscription();
 
@@ -41,6 +47,9 @@ export class ChangeRoleButtonComponent implements OnDestroy {
     if (!this.userHasRole) {
       this.addRoleSub = this.adminService.addRoleToUser(this.userId, this.role).subscribe({
         next: res => {
+          this.snackbar.open(successfulActionsMessages.admin.role.promoted(this.role), 'Got it!', {
+            duration: 7000,
+          });
           this.updateUsersEvent.emit(res)
         },
         error: err => {
@@ -50,6 +59,10 @@ export class ChangeRoleButtonComponent implements OnDestroy {
     } else {
       this.removeRoleSub = this.adminService.removeRoleFromUser(this.userId, this.role).subscribe({
         next: res => {
+          this.snackbar.open(successfulActionsMessages.admin.role.demoted(this.role), 'Got it!', {
+            duration: 7000,
+          });
+          this.updateUsersEvent.emit(res)
           this.updateUsersEvent.emit(res)
         },
         error: err => {
