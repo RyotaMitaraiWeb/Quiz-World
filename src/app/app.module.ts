@@ -15,6 +15,7 @@ import { AdministrationPageModule } from './features/administration-page/adminis
 import { ForbiddenRedirectInterceptor } from './routing/interceptors/forbidden-redirect/forbidden-redirect.interceptor';
 import { NotFoundRedirectInterceptor } from './routing/interceptors/not-found-redirect/not-found-redirect.interceptor';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { UnauthorizedSnackbarInterceptor } from './routing/interceptors/unauthorized-snackbar/unauthorized-snackbar.interceptor';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,11 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedRedirectInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedSnackbarInterceptor,
       multi: true,
     },
     {
