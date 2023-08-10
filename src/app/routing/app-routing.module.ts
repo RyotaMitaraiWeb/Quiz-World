@@ -23,8 +23,17 @@ import { ProfileComponent } from '../features/profile/profile.component';
 import { fetchProfileResolver } from './resolvers/fetch-profile/fetch-profile.resolver';
 import { UserQuizzesComponent } from '../features/quiz-lists/user-quizzes/user-quizzes.component';
 import { fetchUserQuizzesResolver } from './resolvers/fetch-user-quizzes/fetch-user-quizzes.resolver';
+import { HomeComponent } from '../features/home/home.component';
 
 const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+  },
+  {
+    path: 'home',
+    component: HomeComponent,
+  },
   {
     path: 'login',
     component: LoginComponent,
