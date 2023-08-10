@@ -5,6 +5,7 @@ import { AdminService } from '../../admin-service/admin.service';
 import { MatTableModule } from '@angular/material/table';
 import { IUser, IUserList, IUserResponse } from '../../../../types/responses/administration.types';
 import { SharedModule } from '../../../shared/shared.module';
+import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-users-list',
   standalone: true,
@@ -12,6 +13,7 @@ import { SharedModule } from '../../../shared/shared.module';
     CommonModule,
     MatTableModule,
     SharedModule,
+    RouterModule,
   ],
   templateUrl: './users-list.component.html',
   styleUrls: ['./users-list.component.scss']
