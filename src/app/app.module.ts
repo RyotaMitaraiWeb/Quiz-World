@@ -16,6 +16,8 @@ import { ForbiddenRedirectInterceptor } from './routing/interceptors/forbidden-r
 import { NotFoundRedirectInterceptor } from './routing/interceptors/not-found-redirect/not-found-redirect.interceptor';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { UnauthorizedSnackbarInterceptor } from './routing/interceptors/unauthorized-snackbar/unauthorized-snackbar.interceptor';
+import { RequestFailedInterceptor } from './routing/interceptors/request-failed/request-failed.interceptor';
+import { RequestFailedSnackbarInterceptor } from './routing/interceptors/request-failed-snackbar/request-failed-snackbar.interceptor';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,16 @@ import { UnauthorizedSnackbarInterceptor } from './routing/interceptors/unauthor
     {
       provide: HTTP_INTERCEPTORS,
       useClass: NotFoundRedirectInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RequestFailedInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RequestFailedSnackbarInterceptor,
       multi: true,
     }
   ],

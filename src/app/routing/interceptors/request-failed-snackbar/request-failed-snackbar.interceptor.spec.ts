@@ -1,18 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 
-import { UnauthorizedSnackbarInterceptor } from './unauthorized-snackbar.interceptor';
+import { RequestFailedSnackbarInterceptor } from './request-failed-snackbar.interceptor';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-describe('UnauthorizedSnackbarInterceptor', () => {
+describe('RequestFailedSnackbarInterceptor', () => {
   beforeEach(() => TestBed.configureTestingModule({
     providers: [
-      UnauthorizedSnackbarInterceptor,
+      RequestFailedSnackbarInterceptor,
       MatSnackBar,
       ]
   }));
 
   it('should be created', () => {
-    const interceptor: UnauthorizedSnackbarInterceptor = TestBed.inject(UnauthorizedSnackbarInterceptor);
+    const interceptor: RequestFailedSnackbarInterceptor = TestBed.inject(RequestFailedSnackbarInterceptor);
     expect(interceptor).toBeTruthy();
   });
 });
