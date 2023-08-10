@@ -9,7 +9,8 @@
   </ng-container>
 </div>
 
-<app-catalogue-paginator [total]="catalogue.total" [page]="page" (pageEvent)="changePage($event)"></app-catalogue-paginator>
+<app-catalogue-paginator [total]="catalogue.total" [page]="page" (pageEvent)="changePage($event)"
+  [pageSize]="6"></app-catalogue-paginator>
 
 <ng-template #empty>
   <p class="no-quizzes">There are no quizzes matching your request!</p>
