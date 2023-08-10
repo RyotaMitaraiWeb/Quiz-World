@@ -155,4 +155,8 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
   protected track(_index: number, item: KeyValue<string, string | null>) {
     return item.key;
   }
+
+  protected originalOrder() {
+    return 0;
+  }
 }
