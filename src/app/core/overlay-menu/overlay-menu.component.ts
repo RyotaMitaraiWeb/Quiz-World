@@ -42,4 +42,8 @@ export class OverlayMenuComponent {
   protected isGuest() {
     return this.roleService.isGuest();
   }
+
+  protected isAdmin() {
+    return this.roleService.isAdmin();
+  }
 }
