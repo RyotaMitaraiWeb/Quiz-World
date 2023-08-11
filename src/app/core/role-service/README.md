@@ -27,9 +27,3 @@ function isLoggedIn(): boolean;
 function isLoggedIn(strategy: 'store' | 'localStorage'): boolean;
 ```
 Returns a boolean value that indicates whether the user is logged in or not. By default, the method determines that by checking if ``userRoles`` is empty or not. If you want this to be determined by whether the user has a JWT in the ``localStorage``, pass ``'localStorage'`` as an argument. It's recommended to use the store strategy whenever possible.
-
-```typescript
-function getHighestRole(): role | null;
-```
-Returns the user's "highest" role. For example, if the user has the Administrator and Moderator roles, this method will return "Administrator". ``null`` is returned
-if the user is not logged in.
