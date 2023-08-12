@@ -4,9 +4,8 @@ import { Observable } from 'rxjs';
 import { IAuthSuccessResponse } from '../../../types/responses/auth.types';
 import { IAuthBody } from '../../../types/auth/general.types';
 import { api } from '../../constants/api.constants';
-import { SkipUnauthorizedRedirectionHeader } from '../../routing/interceptors/unauthorized-redirect/unauthorized-redirect.interceptor';
 import { IUserState } from '../../../types/store/user.types';
-import { SkipNotFoundRedirection } from '../../routing/interceptors/not-found-redirect/not-found-redirect.interceptor';
+import { interceptorHeaders } from '../../constants/interceptor-headers.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +25,7 @@ export class AuthService {
       observe: 'response',
       responseType: 'json',
       headers: {
-        [SkipUnauthorizedRedirectionHeader]: 'true',
+        [interceptorHeaders.SkipUnauthorizedRedirection]: 'true',
       },
     });
   }
@@ -42,7 +41,7 @@ export class AuthService {
       observe: 'response',
       responseType: 'json',
       headers: {
-        [SkipUnauthorizedRedirectionHeader]: 'true',
+        [interceptorHeaders.SkipUnauthorizedRedirection]: 'true',
       },
     });
   }
@@ -70,7 +69,7 @@ export class AuthService {
     return this.http.get(this.url.usernameExists(username), {
       observe: 'response',
       headers: {
-        [SkipNotFoundRedirection]: 'true',
+        [interceptorHeaders.SkipNotFoundRedirection]: 'true',
       }
     });
   }
@@ -85,7 +84,7 @@ export class AuthService {
       observe: 'response',
       responseType: 'json',
       headers: {
-        [SkipUnauthorizedRedirectionHeader]: 'true',
+        [interceptorHeaders.SkipUnauthorizedRedirection]: 'true',
       },
     });
   }

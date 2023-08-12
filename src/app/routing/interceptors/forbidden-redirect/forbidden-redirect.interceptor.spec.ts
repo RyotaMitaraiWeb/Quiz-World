@@ -1,9 +1,10 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 
-import { ForbiddenRedirectInterceptor, SkipForbiddenRedirectionHeader } from './forbidden-redirect.interceptor';
+import { ForbiddenRedirectInterceptor } from './forbidden-redirect.interceptor';
 import { HTTP_INTERCEPTORS, HttpClient, HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { interceptorHeaders } from '../../../constants/interceptor-headers.constants';
 
 describe('ForbiddenRedirectInterceptor', () => {
   let router: Router;
@@ -69,7 +70,7 @@ describe('ForbiddenRedirectInterceptor', () => {
 
     http.get('/test', {
       headers: {
-        [SkipForbiddenRedirectionHeader]: 'true',
+        [interceptorHeaders.SkipForbiddenRedirection]: 'true',
       }
     })
     .subscribe({

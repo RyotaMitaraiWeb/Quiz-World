@@ -10,7 +10,7 @@ import {
 } from '@angular/common/http';
 import { Observable, catchError, filter, tap, throwError } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SkipUnauthorizedRedirectionHeader } from '../unauthorized-redirect/unauthorized-redirect.interceptor';
+import { interceptorHeaders } from '../../../constants/interceptor-headers.constants';
 import { invalidActionsMessages } from '../../../constants/invalidActionsMessages.constants';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class UnauthorizedSnackbarInterceptor implements HttpInterceptor {
       .pipe(
         filter(event => event instanceof HttpResponse),
         catchError((err: HttpResponse<any>) => {
-          if (err.status === HttpStatusCode.Unauthorized && !request.headers.has(SkipUnauthorizedRedirectionHeader)) {
+          if (err.status === HttpStatusCode.Unauthorized && !request.headers.has(interceptorHeaders.SkipUnauthorizedRedirection)) {
             this.snackbar.open(invalidActionsMessages.login, 'Got it');
           }
           return throwError(() => new HttpErrorResponse({

@@ -4,6 +4,7 @@ import { UnauthorizedRedirectInterceptor } from './unauthorized-redirect.interce
 import { HTTP_INTERCEPTORS, HttpClient, HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { interceptorHeaders } from '../../../constants/interceptor-headers.constants';
 
 describe('UnauthorizedRedirectInterceptor', () => {
   let router: Router;
@@ -72,7 +73,7 @@ describe('UnauthorizedRedirectInterceptor', () => {
 
     http.get('/test', {
       headers: {
-        'Skip-Unauthorized-Redirection': 'true',
+        [interceptorHeaders.SkipUnauthorizedRedirection]: 'true',
       }
     })
     .subscribe({

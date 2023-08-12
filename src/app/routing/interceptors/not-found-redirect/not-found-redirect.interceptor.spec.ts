@@ -1,9 +1,10 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 
-import {  NotFoundRedirectInterceptor, SkipNotFoundRedirection } from './not-found-redirect.interceptor';
+import {  NotFoundRedirectInterceptor } from './not-found-redirect.interceptor';
 import { HTTP_INTERCEPTORS, HttpClient, HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { interceptorHeaders } from '../../../constants/interceptor-headers.constants';
 
 describe('NotFoundRedirectInterceptor', () => {
   let router: Router;
@@ -67,7 +68,7 @@ describe('NotFoundRedirectInterceptor', () => {
 
     http.get('/test', {
       headers: {
-        [SkipNotFoundRedirection]: 'true',
+        [interceptorHeaders.SkipNotFoundRedirection]: 'true',
       }
     })
     .subscribe({
