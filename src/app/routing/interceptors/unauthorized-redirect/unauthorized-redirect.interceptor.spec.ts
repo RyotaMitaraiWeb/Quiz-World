@@ -4,7 +4,6 @@ import { UnauthorizedRedirectInterceptor } from './unauthorized-redirect.interce
 import { HTTP_INTERCEPTORS, HttpClient, HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { tap } from 'rxjs';
 
 describe('UnauthorizedRedirectInterceptor', () => {
   let router: Router;

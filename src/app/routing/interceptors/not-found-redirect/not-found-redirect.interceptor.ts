@@ -35,7 +35,6 @@ export class NotFoundRedirectInterceptor implements HttpInterceptor {
   private redirectOnError(req: HttpRequest<unknown>, status: number) {    
     if (!req.headers.has(SkipNotFoundRedirection) && status === HttpStatusCode.NotFound) {      
       this.router.navigate(['/not-found']);
-      localStorage.removeItem('token');
     }
   }
 }
