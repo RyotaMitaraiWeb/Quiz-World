@@ -13,7 +13,6 @@ import { fetchAllQuizzesResolver } from './resolvers/fetch-all-quizzes/fetch-all
 import { SearchQuizzesComponent } from '../features/quiz-lists/search-quizzes/search-quizzes.component';
 import { fetchSearchResults } from './resolvers/fetch-search-results/fetch-search-results.resolver';
 import { fetchQuizForEditResolver } from './resolvers/fetch-quiz-for-edit/fetch-quiz-for-edit.resolver';
-import { AdministrationPageComponent } from '../features/administration-page/administration-page.component';
 import { UsersComponent } from '../features/administration-page/users-list/users/users.component';
 import { ModeratorsComponent } from '../features/administration-page/users-list/moderators/moderators.component';
 import { AdminsComponent } from '../features/administration-page/users-list/admins/admins.component';
