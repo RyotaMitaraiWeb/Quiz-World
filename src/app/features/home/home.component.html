@@ -1,13 +1,13 @@
 <app-sheet [centerContent]="true">
   <h1>Home</h1>
-  <section class="home-section" *ngIf="isLoggedIn()">
-    <h2>Welcome, {{ (user | async )?.username }}!</h2>
+  <section class="home-section logged-in" *ngIf="(user | async)?.id">
+    <h2 class="welcome">Welcome, {{ (user | async )?.username }}!</h2>
     <div class="actions">
       <a mat-fab extended routerLink="/quiz/create" color="primary">
         <mat-icon>add</mat-icon>
         Create a new quiz
       </a>
-      <a mat-fab extended [routerLink]="'/profile/' + (user | async)?.id" color="accent">
+      <a mat-fab class="profile" extended [routerLink]="'/profile/' + (user | async)?.id" color="accent">
         <mat-icon>person</mat-icon>
         View your profile
       </a>
@@ -17,7 +17,7 @@
       </a>
     </div>
   </section>
-  <section class="home-section" *ngIf="!isLoggedIn()">
+  <section class="home-section guest" *ngIf="!(user | async)?.id">
     <h2>Welcome!</h2>
     <p>To create quizzes, please create an account or log in to your existing one.</p>
     <div class="actions">
