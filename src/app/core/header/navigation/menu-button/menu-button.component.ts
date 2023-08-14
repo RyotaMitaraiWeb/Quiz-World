@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,20 +19,20 @@ import { closeMenu, openMenu } from '../../../../store/menu/menu.action';
   templateUrl: './menu-button.component.html',
   styleUrls: ['./menu-button.component.scss'],
 })
-export class MenuButtonComponent {
+export class MenuButtonComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: Store<IAppStore>
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.openSub = this.store.select(store => store.menu.open).subscribe(open => {
       this.open = open;
-    })
+    });
   }
 
   open = false;
 
-  toggle(event: Event) {
+  toggle(event: Event): void {
     event.preventDefault();
 
     if (this.open) {
@@ -42,5 +42,9 @@ export class MenuButtonComponent {
     }
   }
 
-  openSub = new Subscription();
+  private openSub = new Subscription();
+
+  ngOnDestroy(): void {
+    this.openSub.unsubscribe();
+  }
 }
