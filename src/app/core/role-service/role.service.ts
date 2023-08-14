@@ -53,7 +53,14 @@ export class RoleService {
    * If you want this to be determined by whether the user has a JWT in the
    * ``localStorage``, pass ``'localStorage'`` as an argument.
    * 
-   * It's recommended to use the store strategy whenever possible.
+   * ``localStorage`` is preferred as a strategy when used in contexts where the
+   * store is not available or the store may be initialized later.
+   * An example of this is checking if the user is logged before rendering a page
+   * (such as via a guard). Because the user state is not set until 
+   * after render, using the ``store`` strategy in this scenario will always 
+   * result in ``false`` (even if the store would later be initialized correctly).
+   * The ``store`` strategy is recommended when conditionally displaying elements
+   * based on whether the user is logged in due to its better reactivity.
    * @returns a boolean value that indicates whether the user is logged in or not.
    */
   isLoggedIn(): boolean;
@@ -61,7 +68,17 @@ export class RoleService {
    * @param strategy how to determine if the user is logged it or not. ``store``
    * will make the method check the ``userRoles`` (which is derived from the store).
    * ``localStorage`` will make the method check if ``localStorage`` contains
-   * a ``token`` key. Using ``store`` is recommended whenever possible.
+   * a ``token`` key.
+   * 
+   * ``localStorage`` is preferred as a strategy when used in contexts where the
+   * store is not available or the store may be initialized later.
+   * An example of this is checking if the user is logged before rendering a page
+   * (such as via a guard). Because the user state is not set until 
+   * after render, using the ``store`` strategy in this scenario will always 
+   * result in ``false`` (even if the store would later be initialized correctly).
+   * The ``store`` strategy is recommended when conditionally displaying elements
+   * based on whether the user is logged in due to its better reactivity.
+   * @returns a boolean value that indicates whether the user is logged in or not.
    */
   isLoggedIn(strategy: 'store' | 'localStorage'): boolean;
   isLoggedIn(strategy: 'store' | 'localStorage' = 'store'): boolean {
