@@ -9,15 +9,15 @@ import {
   HttpStatusCode
 } from '@angular/common/http';
 import { Observable, catchError, filter, tap, throwError } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { interceptorHeaders } from '../../../constants/interceptor-headers.constants';
 import { invalidActionsMessages } from '../../../constants/invalidActionsMessages.constants';
+import { SnackbarService } from '../../../core/snackbar/snackbar.service';
 
 @Injectable()
 export class UnauthorizedSnackbarInterceptor implements HttpInterceptor {
 
   constructor(
-    private readonly snackbar: MatSnackBar,
+    private readonly snackbar: SnackbarService,
   ) { }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
