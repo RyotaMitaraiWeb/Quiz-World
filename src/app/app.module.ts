@@ -11,7 +11,7 @@ import { TokenInterceptor } from './routing/interceptors/token-interceptor/token
 import { UnauthorizedRedirectInterceptor } from './routing/interceptors/unauthorized-redirect/unauthorized-redirect.interceptor';
 import { ForbiddenRedirectInterceptor } from './routing/interceptors/forbidden-redirect/forbidden-redirect.interceptor';
 import { NotFoundRedirectInterceptor } from './routing/interceptors/not-found-redirect/not-found-redirect.interceptor';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 import { UnauthorizedSnackbarInterceptor } from './routing/interceptors/unauthorized-snackbar/unauthorized-snackbar.interceptor';
 import { RequestFailedInterceptor } from './routing/interceptors/request-failed/request-failed.interceptor';
 import { RequestFailedSnackbarInterceptor } from './routing/interceptors/request-failed-snackbar/request-failed-snackbar.interceptor';
@@ -69,6 +69,7 @@ import { RequestFailedSnackbarInterceptor } from './routing/interceptors/request
     AppStoreModule,
     CoreModule,
     HttpClientModule,
+    MatSnackBarModule,
   ]
 })
 export class AppModule { }
