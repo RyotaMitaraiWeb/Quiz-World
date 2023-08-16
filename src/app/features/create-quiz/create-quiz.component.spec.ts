@@ -11,6 +11,7 @@ import { Observable, of } from 'rxjs';
 import { HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('CreateQuizComponent', () => {
   let component: CreateQuizComponent;
@@ -25,7 +26,14 @@ describe('CreateQuizComponent', () => {
         CreateQuizComponent,
         HttpClientTestingModule,
         RouterTestingModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        MatSnackBarModule,
+      ],
+      providers: [
+        { 
+          provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, 
+          useValue: { duration: 0 },
+        },
       ]
     });
     fixture = TestBed.createComponent(CreateQuizComponent);

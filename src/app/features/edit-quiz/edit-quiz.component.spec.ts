@@ -10,6 +10,7 @@ import { HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { IEditQuizForm, IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { questionTypes } from '../../constants/question-types.constants';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('EditQuizComponent', () => {
   let component: EditQuizComponent;
@@ -24,7 +25,14 @@ describe('EditQuizComponent', () => {
         EditQuizComponent,
         HttpClientTestingModule,
         RouterTestingModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        MatSnackBarModule
+      ],
+      providers: [
+        { 
+          provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, 
+          useValue: { duration: 0 }, // or whatever duration you want
+        },
       ]
     });
     fixture = TestBed.createComponent(EditQuizComponent);

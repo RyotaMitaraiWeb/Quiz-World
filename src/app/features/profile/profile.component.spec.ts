@@ -13,6 +13,7 @@ import { restartUser, setUser } from '../../store/user/user.action';
 import { roles } from '../../constants/roles.constants';
 import { IUserState } from '../../../types/store/user.types';
 import { IProfile } from '../../../types/others/lists.types';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('ProfileComponent', () => {
   let component: ProfileComponent;
@@ -30,7 +31,14 @@ describe('ProfileComponent', () => {
         ProfileComponent,
         RouterTestingModule,
         AppStoreModule,
-        HttpClientTestingModule
+        HttpClientTestingModule,
+        MatSnackBarModule
+      ],
+      providers: [
+        { 
+          provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, 
+          useValue: { duration: 0 }, // or whatever duration you want
+        },
       ]
     });
     fixture = TestBed.createComponent(ProfileComponent);

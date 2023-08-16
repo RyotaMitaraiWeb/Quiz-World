@@ -5,8 +5,9 @@ import { IEditQuizForm,IQuizFormSubmission } from '../../../types/components/qui
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuizService } from '../quiz-service/quiz.service';
 import { SharedModule } from '../../shared/shared.module';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { successfulActionsMessages } from '../../constants/successfulActionsMessages.constants';
+import { SnackbarService } from '../../core/snackbar/snackbar.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-edit-quiz',
@@ -14,7 +15,6 @@ import { successfulActionsMessages } from '../../constants/successfulActionsMess
   imports: [
     CommonModule,
     SharedModule,
-    MatSnackBarModule,
   ],
   templateUrl: './edit-quiz.component.html',
   styleUrls: ['./edit-quiz.component.scss']
@@ -24,7 +24,7 @@ export class EditQuizComponent implements OnInit, OnDestroy {
     private readonly activatedRoute: ActivatedRoute,
     private readonly quizService: QuizService,
     private readonly router: Router,
-    private readonly snackbar: MatSnackBar
+    private readonly snackbar: SnackbarService
   ) {}
   private quizSub = new Subscription();
   private editSub = new Subscription();
@@ -38,14 +38,11 @@ export class EditQuizComponent implements OnInit, OnDestroy {
   editQuiz(quiz: IQuizFormSubmission): void {
     this.editSub = this.quizService.edit(this.quiz.id, quiz).subscribe({
       next: () => {
-        this.snackbar.open(successfulActionsMessages.quiz.edit, 'Awesome!', {
-          duration: 7000,
-        });
+        this.snackbar.open(successfulActionsMessages.quiz.edit, 'Awesome!');
         this.router.navigate(['/quiz', this.quiz.id.toString()]);
       },
-      error: (err) => {
-        console.warn(err);
-        
+      error: (err: HttpErrorResponse) => {
+        this.snackbar.open(err.error);
       }
     })
   }

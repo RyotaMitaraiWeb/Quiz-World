@@ -31,6 +31,8 @@ export class AppComponent implements OnInit {
           }));
         },
         error: (err: HttpErrorResponse) => {
+          console.log(err);
+          
           this.store.dispatch(restartUser());
           if (err.status < 500) {
             localStorage.removeItem('token');

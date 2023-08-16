@@ -18,7 +18,8 @@ import { AuthService } from '../../../core/auth-service/auth.service';
 import { AppStoreModule } from '../../../store/app-store.module';
 import { Location } from '@angular/common';
 import { RegisterComponent } from './register.component';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarService } from '../../../core/snackbar/snackbar.service';
 
 describe('RegisterComponent', () => {
 
@@ -33,15 +34,17 @@ describe('RegisterComponent', () => {
   let router: Router;
 
   let ngZone: NgZone;
+  let snackbar: SnackbarService;
 
   describe('Unit tests', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [
+          MatSnackBarModule,
           RegisterComponent,
           HttpClientTestingModule,
           AppStoreModule,
-          NoopAnimationsModule
+          NoopAnimationsModule,
         ],
         providers: [
           { 
@@ -57,6 +60,9 @@ describe('RegisterComponent', () => {
       authService = TestBed.inject(AuthService);
       router = TestBed.inject(Router);
       component = fixture.componentInstance;
+
+      snackbar = TestBed.inject(SnackbarService);
+      spyOn(snackbar, 'open').and.stub();
       fixture.detectChanges();
     });
 

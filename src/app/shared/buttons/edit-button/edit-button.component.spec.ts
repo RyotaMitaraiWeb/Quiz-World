@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { EditButtonComponent } from './edit-button.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('EditButtonComponent', () => {
   let component: EditButtonComponent;
@@ -12,7 +13,11 @@ describe('EditButtonComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [EditButtonComponent, RouterTestingModule]
+      imports: [
+        EditButtonComponent,
+        RouterTestingModule,
+        MatSnackBarModule
+      ]
     });
     fixture = TestBed.createComponent(EditButtonComponent);
     component = fixture.componentInstance;

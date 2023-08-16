@@ -19,7 +19,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { NgZone } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar } from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 class MatSnackBarStub{
   open(){
@@ -49,7 +49,8 @@ describe('LoginComponent', () => {
           LoginComponent,
           HttpClientTestingModule,
           AppStoreModule,
-          NoopAnimationsModule
+          NoopAnimationsModule,
+          MatSnackBarModule
         ],
         providers: [
           { 
