@@ -24,13 +24,8 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class HomeComponent {
   constructor(
-    private readonly roleService: RoleService,
     private readonly store: Store<IAppStore>,
   ) { }
 
   user = this.store.select(selectUser);
-
-  protected isLoggedIn() {
-    return this.roleService.isLoggedIn();
-  }
 }

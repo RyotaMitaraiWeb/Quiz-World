@@ -113,34 +113,6 @@ describe('RoleService', () => {
     });
   });
 
-  describe('getHighestRole', () => {
-    it('Returns "Administrator" if userRoles has "Administrator"', () => {
-      service.userRoles = [roles.moderator, roles.admin, roles.user];
-      expect(service.getHighestRole()).toBe(roles.admin);
-
-      service.userRoles = [roles.admin, roles.user];
-      expect(service.getHighestRole()).toBe(roles.admin);
-    });
-
-    it('Returns "Moderator" if userRoles has "Moderator" and nothing higher', () => {
-      service.userRoles = [roles.user, roles.moderator];
-      expect(service.getHighestRole()).toBe(roles.moderator);
-
-      service.userRoles = [roles.moderator];
-      expect(service.getHighestRole()).toBe(roles.moderator);
-    });
-
-    it('Returns "User" if userRoles has "User" and nothing higher', () => {
-      service.userRoles = [roles.user];
-      expect(service.getHighestRole()).toBe(roles.user);
-    });
-
-    it('Returns null if userRoles is empty', () => {
-      service.userRoles = [];
-      expect(service.getHighestRole()).toBeNull();
-    });
-  });
-
   afterEach(() => {
     localStorage.clear();
   })

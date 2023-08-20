@@ -13,7 +13,6 @@ import { fetchAllQuizzesResolver } from './resolvers/fetch-all-quizzes/fetch-all
 import { SearchQuizzesComponent } from '../features/quiz-lists/search-quizzes/search-quizzes.component';
 import { fetchSearchResults } from './resolvers/fetch-search-results/fetch-search-results.resolver';
 import { fetchQuizForEditResolver } from './resolvers/fetch-quiz-for-edit/fetch-quiz-for-edit.resolver';
-import { AdministrationPageComponent } from '../features/administration-page/administration-page.component';
 import { UsersComponent } from '../features/administration-page/users-list/users/users.component';
 import { ModeratorsComponent } from '../features/administration-page/users-list/moderators/moderators.component';
 import { AdminsComponent } from '../features/administration-page/users-list/admins/admins.component';
@@ -25,6 +24,8 @@ import { UserQuizzesComponent } from '../features/quiz-lists/user-quizzes/user-q
 import { fetchUserQuizzesResolver } from './resolvers/fetch-user-quizzes/fetch-user-quizzes.resolver';
 import { HomeComponent } from '../features/home/home.component';
 import { NotFoundComponent } from '../features/not-found/not-found.component';
+import { RolesListPageComponent } from '../features/administration-page/users-list/roles-list-page/roles-list-page.component';
+import { roles } from '../constants/roles.constants';
 
 const routes: Routes = [
   {
@@ -112,37 +113,17 @@ const routes: Routes = [
     path: 'administration',
     children: [
       {
-        path: 'users',
-        component: UsersComponent,
-        data: {
-          activeRoute: 'users',
-        }
-      },
-      {
-        path: 'moderators',
-        component: ModeratorsComponent,
-        data: {
-          activeRoute: 'moderators',
-        }
-      },
-      {
-        path: 'admins',
-        component: AdminsComponent,
-        data: {
-          activeRoute: 'admins',
-        },
-      },
-      {
         path: 'usernames',
         component: UsernamesComponent,
-        data: {
-          activeRoute: 'usernames',
-        }
       },
       {
         path: 'logs',
         component: LogsComponent,
-      }
+      },
+      {
+        path: ':role',
+        component: RolesListPageComponent,
+      },
     ]
   },
   {

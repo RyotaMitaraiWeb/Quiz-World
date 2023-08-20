@@ -56,11 +56,13 @@ export class UsernamesComponent {
   }
 
   protected updateUsers() {
-    this.userList$ = this.adminService
+    if (this.username) {
+      this.userList$ = this.adminService
       .getUsersByUsername(this.username, this.page, this.order)
       .pipe(
         map(this.mapToList)
       );
+    }
   }
 
   changeOrder(order: string) {

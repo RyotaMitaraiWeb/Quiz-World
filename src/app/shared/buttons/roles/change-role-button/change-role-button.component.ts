@@ -7,8 +7,8 @@ import { AdminService } from '../../../../features/admin-service/admin.service';
 import { role } from '../../../../../types/auth/roles.types';
 import { roles } from '../../../../constants/roles.constants';
 import { Subscription } from 'rxjs';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { successfulActionsMessages } from '../../../../constants/successfulActionsMessages.constants';
+import { SnackbarService } from '../../../../core/snackbar/snackbar.service';
 
 @Component({
   selector: 'app-change-role-button',
@@ -16,7 +16,6 @@ import { successfulActionsMessages } from '../../../../constants/successfulActio
   imports: [
     CommonModule,
     MatButtonModule,
-    MatSnackBarModule
   ],
   templateUrl: './change-role-button.component.html',
   styleUrls: ['./change-role-button.component.scss'],
@@ -25,7 +24,7 @@ import { successfulActionsMessages } from '../../../../constants/successfulActio
 export class ChangeRoleButtonComponent implements OnDestroy {
   constructor(
     private readonly adminService: AdminService,
-    private readonly snackbar: MatSnackBar,
+    private readonly snackbar: SnackbarService,
     ) { }
   private addRoleSub = new Subscription();
   private removeRoleSub = new Subscription();
@@ -47,11 +46,11 @@ export class ChangeRoleButtonComponent implements OnDestroy {
     if (!this.userHasRole) {
       this.addRoleSub = this.adminService.addRoleToUser(this.userId, this.role).subscribe({
         next: res => {
-          this.snackbar.open(successfulActionsMessages.admin.role.promoted(this.role));
+          this.snackbar.open(successfulActionsMessages.admin.role.promoted(this.role), 'Got it');
           this.updateUsersEvent.emit(res)
         },
         error: err => {
-          console.warn(err);
+          this.snackbar.open(err.error)
         }
       });
     } else {
@@ -62,7 +61,7 @@ export class ChangeRoleButtonComponent implements OnDestroy {
           this.updateUsersEvent.emit(res)
         },
         error: err => {
-          console.warn(err);
+          this.snackbar.open(err.error)
         }
       });
     }

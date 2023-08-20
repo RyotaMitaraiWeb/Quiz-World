@@ -11,6 +11,7 @@ import { EditButtonModule } from './buttons/edit-button/edit-button.module';
 import { DeleteButtonModule } from './buttons/delete-button/delete-button.module';
 import { SheetComponent } from './sheet/sheet.component';
 import { ChangeRoleButtonModule } from './buttons/roles/change-role-button/change-role-button.module';
+import { RefreshButtonComponent } from './buttons/refresh-button/refresh-button.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { ChangeRoleButtonModule } from './buttons/roles/change-role-button/chang
     CatalogueModule,
     EditButtonModule,
     DeleteButtonModule,
-    SheetComponent
+    SheetComponent,
+    RefreshButtonComponent
   ],
   exports: [
     QuestionModule,
@@ -36,6 +38,7 @@ import { ChangeRoleButtonModule } from './buttons/roles/change-role-button/chang
     EditButtonModule,
     SheetComponent,
     ChangeRoleButtonModule,
+    RefreshButtonComponent,
   ],
 })
 export class SharedModule { }

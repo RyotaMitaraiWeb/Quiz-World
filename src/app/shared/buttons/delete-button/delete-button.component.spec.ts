@@ -8,6 +8,8 @@ import { HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarService } from '../../../core/snackbar/snackbar.service';
 
 describe('DeleteButtonComponent', () => {
   let component: DeleteButtonComponent;
@@ -16,6 +18,7 @@ describe('DeleteButtonComponent', () => {
   let element: HTMLElement;
   let quizService: QuizService;
   let router: Router;
+  let snackbar: SnackbarService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -24,6 +27,7 @@ describe('DeleteButtonComponent', () => {
         HttpClientTestingModule,
         RouterTestingModule,
         NoopAnimationsModule,
+        MatSnackBarModule,
       ]
     });
     fixture = TestBed.createComponent(DeleteButtonComponent);
@@ -32,6 +36,8 @@ describe('DeleteButtonComponent', () => {
     element = fixture.debugElement.nativeElement;
     quizService = TestBed.inject(QuizService);
     router = TestBed.inject(Router);
+    snackbar = TestBed.inject(SnackbarService);
+    spyOn(snackbar, 'open').and.stub();
     fixture.detectChanges();
   });
 

@@ -16,8 +16,10 @@ import { setUser } from '../../../store/user/user.action';
 import { HttpErrorResponse } from '@angular/common/http';
 import { SharedModule } from '../../../shared/shared.module';
 import { validationRules } from '../../../constants/validationRules.constants';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { successfulActionsMessages } from '../../../constants/successfulActionsMessages.constants';
+import { SnackbarService } from '../../../core/snackbar/snackbar.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+
 
 @Component({
   selector: 'app-register',
@@ -42,7 +44,7 @@ export class RegisterComponent implements OnDestroy {
     private readonly authService: AuthService,
     private readonly fb: FormBuilder,
     private readonly uniqueUsernameValidator: UniqueUsernameValidator,
-    private readonly snackbar: MatSnackBar,
+    private readonly snackbar: SnackbarService,
   ) { }
 
   protected usernameRules = validationRules.register.username;
@@ -115,11 +117,10 @@ export class RegisterComponent implements OnDestroy {
           
           this.router.navigate(['/']);
         },
-        error: (err: HttpErrorResponse) => {
-          console.warn(err);
+        error: () => {
+          this.snackbar.open('Your registration is invalid! Please verify that all fields are valid and try again!');
         }
-      })
-
+      });
   }
 
   private registerSub = new Subscription();

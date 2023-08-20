@@ -14,8 +14,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from '../../../shared/shared.module';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { successfulActionsMessages } from '../../../constants/successfulActionsMessages.constants';
+import { SnackbarService } from '../../../core/snackbar/snackbar.service';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { invalidActionsMessages } from '../../../constants/invalidActionsMessages.constants';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -38,7 +40,7 @@ export class LoginComponent implements OnDestroy {
     private readonly fb: FormBuilder,
     private readonly router: Router,
     private readonly store: Store<IAppStore>,
-    private readonly snackbar: MatSnackBar
+    private readonly snackbar: SnackbarService
   ) { }
 
   form = this.fb.group({
@@ -103,8 +105,8 @@ export class LoginComponent implements OnDestroy {
         error: (err: HttpErrorResponse) => {          
           if (err.status === HttpStatusCode.Unauthorized) {
             this.failedLogin = true;
+            this.snackbar.open(invalidActionsMessages.login, 'Gotcha!');
           }
-          console.warn(err);
         }
       });
   }

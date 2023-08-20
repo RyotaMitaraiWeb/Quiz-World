@@ -10,8 +10,7 @@ import {
 } from '@angular/common/http';
 import { Observable, catchError, filter, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-
-export const SkipForbiddenRedirectionHeader = 'Skip-Forbidden-Redirection';
+import { interceptorHeaders } from '../../../constants/interceptor-headers.constants';
 
 @Injectable()
 export class ForbiddenRedirectInterceptor implements HttpInterceptor {
@@ -35,7 +34,7 @@ export class ForbiddenRedirectInterceptor implements HttpInterceptor {
   }
 
   private redirectOnError(req: HttpRequest<unknown>, status: number) {    
-    if (!req.headers.has(SkipForbiddenRedirectionHeader) && status === HttpStatusCode.Forbidden) {      
+    if (!req.headers.has(interceptorHeaders.SkipForbiddenRedirection) && status === HttpStatusCode.Forbidden) {      
       this.router.navigate(['']);
     }
   }

@@ -26,8 +26,7 @@ import { role } from '../../../../../types/auth/roles.types';
 export class UsersComponent implements OnInit {
   constructor(
     private readonly adminService: AdminService,
-    private readonly route: ActivatedRoute,
-    ) {
+  ) {
 
   }
 
@@ -35,7 +34,7 @@ export class UsersComponent implements OnInit {
   page = 1;
 
 
-  userList$ = of<IUserList>({ total: 0, users: []});
+  userList$ = of<IUserList>({ total: 0, users: [] });
 
   protected options: Record<string, order> = {
     'Username (Ascending)': 'asc',

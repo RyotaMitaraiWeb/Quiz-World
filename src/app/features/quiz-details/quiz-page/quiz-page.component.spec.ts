@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {MatTabGroupHarness} from '@angular/material/tabs/testing';
+import { MatTabGroupHarness } from '@angular/material/tabs/testing';
 
 import { QuizPageComponent } from './quiz-page.component';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -15,6 +15,7 @@ import { setUser } from '../../../store/user/user.action';
 import { roles } from '../../../constants/roles.constants';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
 
 function generateQuiz(): IQuizDetails {
   return {
@@ -79,11 +80,18 @@ describe('QuizPageComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        QuizPageComponent, 
+        QuizPageComponent,
         RouterTestingModule,
         AppStoreModule,
         HttpClientTestingModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        MatSnackBarModule,
+      ],
+      providers: [
+        {
+          provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+          useValue: { duration: 0 }, // or whatever duration you want
+        },
       ]
     }).compileComponents();
     fixture = TestBed.createComponent(QuizPageComponent);
@@ -167,10 +175,10 @@ describe('QuizPageComponent', () => {
             quiz
           })
         );
-        
+
         component.ngOnInit();
         fixture.detectChanges();
-        
+
         const title = element.querySelector('.title');
         expect(title?.textContent).toBe('test');
 
@@ -196,7 +204,7 @@ describe('QuizPageComponent', () => {
         component.ngOnInit();
         fixture.detectChanges();
         await fixture.whenStable();
-        
+
         const deleteBtn = element.querySelector('.delete-button');
         const editBtn = element.querySelector('.edit-button');
 

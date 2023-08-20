@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { map, tap } from 'rxjs';
+import { ActivatedRoute, Data, Router, RouterModule } from '@angular/router';
+import { Observable, map, tap } from 'rxjs';
 import { IUserState } from '../../../types/store/user.types';
 import { SharedModule } from '../../shared/shared.module';
 import { RoleService } from '../../core/role-service/role.service';
@@ -13,8 +13,8 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-profile',
   standalone: true,
   imports: [
-    CommonModule, 
-    MatButtonModule, 
+    CommonModule,
+    MatButtonModule,
     RouterModule,
     SharedModule,
   ],
@@ -26,34 +26,50 @@ export class ProfileComponent {
     private readonly route: ActivatedRoute,
     private readonly roleService: RoleService,
     private readonly router: Router,
-    ) {
+  ) {
 
   }
 
-  redirect() {
+  protected redirect() {
     this.router.navigate(['/administration', 'usernames']);
   }
 
-  isAdmin = this.roleService.isAdmin();
+  /**
+   * Returns the resolved ``data`` from the route. Used for easier spying
+   * in tests.
+   */
+  getResolvedData(): Observable<Data> {
+    return this.route.data;
+  }
 
-  username = this.route.data
+  protected get isAdmin() {
+    return this.roleService.isAdmin();
+  }
+
+  protected get username() {
+    return this.getResolvedData()
     .pipe(
       map(data => (data['profile'] as IUserState).username)
     );
+  }
 
-    userId = this.route.data
-    .pipe(
-      map(data => (data['profile'] as IUserState).id)
-    );
-
-    roles = this.route.data
-    .pipe(
-      map(data => (data['profile'] as IUserState).roles)
-    );
-
-    get isModerator() {
-      return this.roles.pipe(
-        map(r => r.includes(roles.moderator))
+  protected get userId() {
+    return this.getResolvedData()
+      .pipe(
+        map(data => (data['profile'] as IUserState).id)
       );
-    }
+  }
+
+  protected get roles() {
+    return this.getResolvedData()
+      .pipe(
+        map(data => (data['profile'] as IUserState).roles)
+      );
+  }
+
+  protected get isModerator() {
+    return this.roles.pipe(
+      map(r => r.includes(roles.moderator))
+    );
+  }
 }

@@ -8,14 +8,14 @@ import {
   HttpResponse
 } from '@angular/common/http';
 import { Observable, catchError, filter, throwError } from 'rxjs';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { invalidActionsMessages } from '../../../constants/invalidActionsMessages.constants';
+import { SnackbarService } from '../../../core/snackbar/snackbar.service';
 
 @Injectable()
 export class RequestFailedSnackbarInterceptor implements HttpInterceptor {
 
   constructor(
-    private readonly snackbar: MatSnackBar,
+    private readonly snackbar: SnackbarService,
   ) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {

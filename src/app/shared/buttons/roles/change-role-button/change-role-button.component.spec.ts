@@ -11,7 +11,8 @@ import { HttpStatusCode } from '@angular/common/http';
 import { IUserList } from '../../../../../types/responses/administration.types';
 import { roles } from '../../../../constants/roles.constants';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnackbarService } from '../../../../core/snackbar/snackbar.service';
 
 describe('ChangeRoleButtonComponent', () => {
   let component: ChangeRoleButtonComponent;
@@ -19,6 +20,7 @@ describe('ChangeRoleButtonComponent', () => {
   let adminService: AdminService;
   let controller: HttpTestingController;
   let element: HTMLElement;
+  let snackbar: SnackbarService;
 
   const event = new Event('click');
   beforeEach(() => {
@@ -28,7 +30,8 @@ describe('ChangeRoleButtonComponent', () => {
         HttpClientTestingModule,
         AppStoreModule,
         RouterTestingModule,
-        NoopAnimationsModule
+        NoopAnimationsModule,
+        MatSnackBarModule,
       ],
       providers: [
         { 
@@ -43,7 +46,9 @@ describe('ChangeRoleButtonComponent', () => {
     adminService = TestBed.inject(AdminService);
     controller = TestBed.inject(HttpTestingController);
     element = fixture.debugElement.nativeElement;
-
+    snackbar = TestBed.inject(SnackbarService);
+    spyOn(snackbar, 'open').and.stub();
+    
     fixture.detectChanges();
   });
 

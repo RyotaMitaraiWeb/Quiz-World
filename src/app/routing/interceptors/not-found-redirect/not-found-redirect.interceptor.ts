@@ -10,8 +10,8 @@ import {
 } from '@angular/common/http';
 import { Observable, catchError, filter, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { interceptorHeaders } from '../../../constants/interceptor-headers.constants';
 
-export const SkipNotFoundRedirection = 'Skip-Not-Found-Redirection';
 
 @Injectable()
 export class NotFoundRedirectInterceptor implements HttpInterceptor {
@@ -33,9 +33,8 @@ export class NotFoundRedirectInterceptor implements HttpInterceptor {
   }
 
   private redirectOnError(req: HttpRequest<unknown>, status: number) {    
-    if (!req.headers.has(SkipNotFoundRedirection) && status === HttpStatusCode.NotFound) {      
+    if (!req.headers.has(interceptorHeaders.SkipNotFoundRedirection) && status === HttpStatusCode.NotFound) {      
       this.router.navigate(['/not-found']);
-      localStorage.removeItem('token');
     }
   }
 }

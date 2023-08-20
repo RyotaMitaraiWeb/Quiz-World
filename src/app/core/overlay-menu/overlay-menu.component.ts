@@ -31,7 +31,7 @@ export class OverlayMenuComponent {
 
   disappear = false;
   
-  closeMenu() {
+  closeMenu(): void {
     this.disappear = true;
     setTimeout(() => {
       this.store.dispatch(closeMenu());

@@ -4,8 +4,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { QuizService } from '../../../features/quiz-service/quiz.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { successfulActionsMessages } from '../../../constants/successfulActionsMessages.constants';
+import { SnackbarService } from '../../../core/snackbar/snackbar.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-delete-button',
@@ -13,7 +14,6 @@ import { successfulActionsMessages } from '../../../constants/successfulActionsM
   imports: [
     CommonModule,
     MatButtonModule,
-    MatSnackBarModule,
   ],
   templateUrl: './delete-button.component.html',
   styleUrls: ['./delete-button.component.scss']
@@ -22,7 +22,7 @@ export class DeleteButtonComponent implements OnDestroy {
   constructor(
     private readonly quizService: QuizService,
     private readonly router: Router,
-    private readonly snackbar: MatSnackBar,
+    private readonly snackbar: SnackbarService,
   ) { }
 
   @Input({ required: true }) id = 0;
@@ -31,15 +31,13 @@ export class DeleteButtonComponent implements OnDestroy {
     this.sub = this.quizService.deleteQuiz(id)
       .subscribe({
         next: () => {
-          this.snackbar.open(successfulActionsMessages.quiz.delete, 'Got it!', {
-            duration: 7000,
-          });
+          this.snackbar.open(successfulActionsMessages.quiz.delete, 'Got it!');
           
           this.router.navigate(['/']);
         },
-        error: (err) => {
-          console.warn(err)
-        },
+        error: (err: HttpErrorResponse) => {
+          this.snackbar.open(err.error)
+        }
       });
   }
 

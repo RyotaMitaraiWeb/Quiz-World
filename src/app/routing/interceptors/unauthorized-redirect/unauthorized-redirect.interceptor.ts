@@ -10,8 +10,8 @@ import {
 } from '@angular/common/http';
 import { Observable, catchError, filter, map, of, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
+import { interceptorHeaders } from '../../../constants/interceptor-headers.constants';
 
-export const SkipUnauthorizedRedirectionHeader = 'Skip-Unauthorized-Redirection'; 
 
 /**
  * This interceptor will redirect the user to the login page if a 
@@ -43,7 +43,7 @@ export class UnauthorizedRedirectInterceptor implements HttpInterceptor {
   }
 
   private redirectOnError(req: HttpRequest<unknown>, status: number) {    
-    if (!req.headers.has(SkipUnauthorizedRedirectionHeader) && status === HttpStatusCode.Unauthorized) {      
+    if (!req.headers.has(interceptorHeaders.SkipUnauthorizedRedirection) && status === HttpStatusCode.Unauthorized) {      
       this.router.navigate(['/login']);
       localStorage.removeItem('token');
     }
