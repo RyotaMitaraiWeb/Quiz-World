@@ -36,7 +36,7 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
     const group = this.fb.group({
       currentAnswer: type === shortQuestionTypes[questionTypes.multi] ? value : [value, [Validators.required]],
       id: [questionId],
-      type: [type]
+      type: [type],
     });
 
     if (type === shortQuestionTypes[questionTypes.multi]) {
@@ -76,6 +76,8 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
         answers: q.answers,
         type: q.type,
       });
+
+      this.questionNotes.set(q.id, q.notes);      
     });    
   }
 
@@ -102,6 +104,8 @@ export class QuizSessionComponent implements OnInit, OnDestroy {
   >> = this.fb.array([
     this.addControl('', '', shortQuestionTypes[questionTypes.single])
   ]);
+
+  questionNotes = new Map<string, string | null>();
 
   protected getQuestionControlAt(index: number) {
     return this.form.controls[index];

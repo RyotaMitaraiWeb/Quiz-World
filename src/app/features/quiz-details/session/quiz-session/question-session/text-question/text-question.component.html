@@ -14,6 +14,7 @@
         formattedCorrectAnswers?.join(', ') }}</p>
       <p *ngIf="isCorrect === false" class="wrong answer-feedback">Wrong! The answers are: {{
         formattedCorrectAnswers?.join(', ') }}</p>
+      <p class="question-notes" *ngIf="isCorrect !== null && notes">{{ notes }}</p>
     </mat-card-footer>
   </mat-card>
 </section>

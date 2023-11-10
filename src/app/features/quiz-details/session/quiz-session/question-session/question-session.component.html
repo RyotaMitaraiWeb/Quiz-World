@@ -1,12 +1,13 @@
 <div class="question-container">
-  <app-text-question *ngIf="type === types['Text']" [correctAnswers]="correctAnswers" [form]="form" [prompt]="prompt">
+  <app-text-question *ngIf="type === types['Text']" [correctAnswers]="correctAnswers" [form]="form" [prompt]="prompt"
+    [notes]="notes">
   </app-text-question>
 
   <app-single-choice-question *ngIf="type === types['SingleChoice']" [correctAnswers]="correctAnswers" [form]="form"
-    [answers]="answers!" [prompt]="prompt"></app-single-choice-question>
+    [answers]="answers!" [prompt]="prompt" [notes]="notes"></app-single-choice-question>
 
   <app-multiple-choice-question *ngIf="type === types['MultipleChoice']" [correctAnswers]="correctAnswers" [form]="form"
-    [answers]="answers!" [prompt]="prompt">
+    [answers]="answers!" [prompt]="prompt" [notes]="notes">
   </app-multiple-choice-question>
 
 

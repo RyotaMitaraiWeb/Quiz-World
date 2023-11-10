@@ -48,6 +48,7 @@ export interface ISessionQuestion {
   prompt: string;
   answers?: ISessionAnswer[];
   type: shortQuestionType;
+  notes: string | null;
 }
 
 /**

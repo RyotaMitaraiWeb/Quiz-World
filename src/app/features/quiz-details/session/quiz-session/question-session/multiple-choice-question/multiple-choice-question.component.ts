@@ -36,6 +36,7 @@ export class MultipleChoiceQuestionComponent implements OnChanges {
     ) { }
   @Input({ required: true }) correctAnswers: ISessionAnswer[] | null = [];
   @Input({ required: true }) prompt: string = '';
+  @Input() notes: string | null | undefined;
   @Input({ required: true }) answers: ISessionAnswer[] = [{
     id: '',
     value: '',

@@ -15,6 +15,7 @@
     <mat-card-footer>
       <p *ngIf="isCorrect" class="correct answer-feedback">Correct!</p>
       <p *ngIf="isCorrect === false" class="wrong answer-feedback">Wrong!</p>
+      <p class="question-notes" *ngIf="isCorrect !== null && notes">{{ notes }}</p>
     </mat-card-footer>
   </mat-card>
 </section>

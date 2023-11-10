@@ -38,6 +38,7 @@ export class QuestionSessionComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) correctAnswers: ISessionAnswer[] | null = null;
   @Input({ required: true }) instantMode: boolean = false;
   @Input({ required: true }) type: shortQuestionType | null = shortQuestionTypes[questionTypes.single];
+  @Input() notes: string | null | undefined = '';
   @Input({ required: true }) form: FormGroup<
     {
       currentAnswer: any;

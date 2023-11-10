@@ -40,6 +40,8 @@ export class SingleChoiceQuestionComponent implements OnChanges {
     value: '',
   }];
 
+  @Input() notes: string | null | undefined;
+
   protected radioName = Date.now().toString();
 
   @Input({ required: true }) form: FormGroup<
