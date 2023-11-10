@@ -50,7 +50,8 @@ describe('fetchQuizResolver', () => {
                   id: '1',
                   type: shortQuestionTypes[questionTypes.text],
                   prompt: 'a',
-                  answers: []
+                  answers: [],
+                  notes: ''
                 }
               ],
               creatorId: '1'

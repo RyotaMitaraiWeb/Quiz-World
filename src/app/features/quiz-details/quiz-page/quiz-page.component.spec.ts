@@ -31,6 +31,7 @@ function generateQuiz(): IQuizDetails {
         id: '1',
         prompt: 'question #1',
         type: shortQuestionTypes[questionTypes.single],
+        notes: '',
         answers: [
           {
             value: 'a',
@@ -46,6 +47,7 @@ function generateQuiz(): IQuizDetails {
         id: '2',
         prompt: 'question #2',
         type: shortQuestionTypes[questionTypes.multi],
+        notes: '',
         answers: [
           {
             value: 'a',
@@ -65,6 +67,7 @@ function generateQuiz(): IQuizDetails {
         id: '3',
         prompt: 'question #3',
         type: shortQuestionTypes[questionTypes.text],
+        notes: '',
       }
     ],
   }
