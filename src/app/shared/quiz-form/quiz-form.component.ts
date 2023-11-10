@@ -65,7 +65,7 @@ export class QuizFormComponent implements OnInit {
         prompt: [q.prompt, [Validators.required, Validators.maxLength(validationRules.quiz.question.prompt.maxlength)]],
         answers: this.fb.array(answersFormArray),
         type: [q.type],
-        notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]],
+        notes: [q.notes || '', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]],
       });
 
       this.form.controls.questions.push(group);
