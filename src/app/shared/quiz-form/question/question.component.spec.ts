@@ -34,6 +34,7 @@ describe('QuestionComponent', () => {
           ]),
 
           type: [questionTypes.single],
+          notes: ['']
         }
       )]
     ),
@@ -67,6 +68,7 @@ describe('QuestionComponent', () => {
               ]),
 
               type: [questionTypes.single],
+              notes: [''],
             }
           )]
         ),
@@ -141,6 +143,7 @@ describe('QuestionComponent', () => {
               ]),
     
               type: [questionTypes.single],
+              notes: [''],
             }
           )]
         ),

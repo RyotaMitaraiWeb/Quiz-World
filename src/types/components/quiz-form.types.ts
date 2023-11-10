@@ -33,6 +33,7 @@ export interface IQuizFormSubmission {
       answer: string | null;
     }>[];
     type: string | null;
+    notes: string | null;
   }>[];
 }
 

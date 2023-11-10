@@ -15,6 +15,7 @@ const questions: ISessionQuestion[] = [
     prompt: 'question #1',
     type: shortQuestionTypes[questionTypes.single],
     id: '1',
+    notes: '',
     answers: [
       {
         value: 'a',
@@ -30,6 +31,7 @@ const questions: ISessionQuestion[] = [
     prompt: 'question #2',
     type: shortQuestionTypes[questionTypes.multi],
     id: '2',
+    notes: '',
     answers: [
       {
         id: '3',
@@ -49,6 +51,7 @@ const questions: ISessionQuestion[] = [
     prompt: 'question #3',
     type: shortQuestionTypes[questionTypes.text],
     id: '3',
+    notes: '',
   }
 ];
 
@@ -255,7 +258,8 @@ describe('QuizSessionComponent', () => {
             prompt: 'question #1',
             id: '1',
             type: shortQuestionTypes[questionTypes.text],
-          }
+            notes: '',
+          },
         ];
 
 
@@ -302,6 +306,7 @@ describe('QuizSessionComponent', () => {
             prompt: 'question #1',
             id: '1',
             type: shortQuestionTypes[questionTypes.text],
+            notes: '',
           }
         ];
 

@@ -35,6 +35,8 @@ export class TextQuestionComponent implements OnChanges {
 
   @Input({ required: true }) correctAnswers: ISessionAnswer[] | null = null;
   @Input({ required: true }) prompt: string = '';
+  @Input() notes: string | null | undefined;
+
 
   protected get formattedCorrectAnswers(): string[] | null {
     return this.correctAnswers?.map(ca => ca.value) || null;

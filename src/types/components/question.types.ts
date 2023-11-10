@@ -11,6 +11,7 @@ import { IAnswer } from './answer.types';
  */
 export interface IQuestion {
   prompt: string;
+  notes: string;
   answers: IAnswer[];
 }
 

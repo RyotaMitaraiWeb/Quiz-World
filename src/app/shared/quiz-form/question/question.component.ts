@@ -5,10 +5,12 @@ import { question } from '../../../../types/components/question.types';
 import { SingleChoiceComponent } from './single-choice/single-choice.component';
 import { MultipleChoiceComponent } from './multiple-choice/multiple-choice.component';
 import { TextComponent } from './text/text.component';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { questionTypes } from '../../../constants/question-types.constants';
 import { MatCardModule } from '@angular/material/card';
 import { validationRules } from '../../../constants/validationRules.constants';
+import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-question',
@@ -22,6 +24,9 @@ import { validationRules } from '../../../constants/validationRules.constants';
     TextComponent,
     MatSelectModule,
     MatCardModule,
+    MatInputModule,
+    ReactiveFormsModule,
+    MatDividerModule,
   ],
 })
 export class QuestionComponent implements OnInit {
@@ -43,6 +48,7 @@ export class QuestionComponent implements OnInit {
         correct: [true]
       })
     ]),
+    notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]],
     type: [questionTypes.single]
   });
 

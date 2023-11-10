@@ -32,7 +32,8 @@ describe('SingleChoiceComponent', () => {
             }
           )
         ]),
-        type: [questionTypes.single]
+        type: [questionTypes.single],
+        notes: [''],
       })]
     ),
     instantMode: [false, [Validators.required]],
@@ -82,7 +83,8 @@ describe('SingleChoiceComponent', () => {
                 }
               )
             ]),
-            type: [questionTypes.single]
+            type: [questionTypes.single],
+            notes: [''],
           })]
         ),
         instantMode: [false, [Validators.required]],

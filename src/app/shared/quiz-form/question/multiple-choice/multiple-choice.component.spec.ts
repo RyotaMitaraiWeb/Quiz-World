@@ -33,7 +33,7 @@ describe('MultipleChoiceComponent', () => {
               correct: [false],
             })
           ]),
-
+          notes: [''],
           type: [questionTypes.multi],
         }
       )]
@@ -89,6 +89,7 @@ describe('MultipleChoiceComponent', () => {
               ]),
 
               type: [questionTypes.multi],
+              notes: [''],
             }
           )]
         ),

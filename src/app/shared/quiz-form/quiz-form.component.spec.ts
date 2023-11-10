@@ -7,6 +7,7 @@ import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { MatSelectHarness } from '@angular/material/select/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { questionTypes } from '../../constants/question-types.constants';
+import { validationRules } from 'src/app/constants/validationRules.constants';
 
 describe('QuizFormComponent', () => {
   let component: QuizFormComponent;
@@ -36,6 +37,7 @@ describe('QuizFormComponent', () => {
               ]
             ),
             type: [questionTypes.single],
+            notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]],
           }
         )]
     ),
@@ -72,6 +74,7 @@ describe('QuizFormComponent', () => {
                   ]
                 ),
                 type: [questionTypes.single],
+                notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]],
               }
             )]
         ),
@@ -99,12 +102,14 @@ describe('QuizFormComponent', () => {
                 value: 'b',
                 correct: false,
               }
-            ]
+            ],
+            notes: '',
           },
           {
             prompt: 'question2',
             type: questionTypes.multi,
             order: 2,
+            notes: '',
             answers: [
               {
                 value: 'a',
@@ -222,6 +227,7 @@ describe('QuizFormComponent', () => {
                 ]
               ),
               type: [questionTypes.single],
+              notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]],
             }
           )
         );
@@ -264,6 +270,7 @@ describe('QuizFormComponent', () => {
             prompt: 'question1',
             type: questionTypes.single,
             order: 1,
+            notes: '',
             answers: [
               {
                 value: 'a',
@@ -279,6 +286,7 @@ describe('QuizFormComponent', () => {
             prompt: 'question2',
             type: questionTypes.multi,
             order: 2,
+            notes: '',
             answers: [
               {
                 value: 'a',
