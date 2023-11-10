@@ -182,7 +182,7 @@ export class QuizFormComponent implements OnInit {
   onSubmit(event: Event) {
     event.preventDefault();
     const value = this.form.value as IQuizFormSubmission;
-
+    
     this.submitEvent.emit(value);
   }
 
