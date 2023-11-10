@@ -118,7 +118,7 @@ export class QuizFormComponent implements OnInit {
               ]
             ),
             type: [questionTypes.single],
-            notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]]
+            notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]],
           }
         )]
     ),
