@@ -43,6 +43,7 @@ export class QuestionComponent implements OnInit {
         correct: [true]
       })
     ]),
+    notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]],
     type: [questionTypes.single]
   });
 

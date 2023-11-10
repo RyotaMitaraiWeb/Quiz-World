@@ -16,5 +16,11 @@
       <app-multiple-choice [form]="form" *ngIf="form.controls.type.value === types.multi"></app-multiple-choice>
       <app-text *ngIf="form.controls.type.value === types.text" [form]="form"></app-text>
     </mat-card-content>
+    <mat-card-footer>
+      <h4>Notes for the question</h4>
+      <mat-form-field>
+        
+      </mat-form-field>
+    </mat-card-footer>
   </mat-card>
 </article>

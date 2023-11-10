@@ -62,7 +62,8 @@ export class MultipleChoiceComponent {
         correct: [false],
       }),
     ]),
-    type: [questionTypes.multi]
+    type: [questionTypes.multi],
+    notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]],
   });
 
   protected addNewWrongAnswerField(event: Event) {

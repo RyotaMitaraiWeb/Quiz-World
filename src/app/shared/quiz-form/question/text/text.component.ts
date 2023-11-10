@@ -51,7 +51,8 @@ export class TextComponent {
         correct: [true],
       })
     ]),
-    type: [questionTypes.text]
+    type: [questionTypes.text],
+    notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]],
   });
 
   protected addField(event: Event) {

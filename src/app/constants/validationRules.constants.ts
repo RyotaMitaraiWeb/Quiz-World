@@ -11,6 +11,9 @@ export const validationRules = {
       prompt: {
         maxlength: 200,
       },
+      notes: {
+        maxLength: 500,
+      },
       single: {
         minimumAmount: 2,
         minimumAmountOfWrongAnswers: 1,

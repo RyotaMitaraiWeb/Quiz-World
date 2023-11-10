@@ -69,6 +69,7 @@ export class SingleChoiceComponent implements OnInit {
         }
       )
     ]),
+    notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]],
     type: [questionTypes.single]
   });
 

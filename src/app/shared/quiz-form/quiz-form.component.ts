@@ -64,7 +64,8 @@ export class QuizFormComponent implements OnInit {
       const group = this.fb.group({
         prompt: [q.prompt, [Validators.required, Validators.maxLength(validationRules.quiz.question.prompt.maxlength)]],
         answers: this.fb.array(answersFormArray),
-        type: [q.type]
+        type: [q.type],
+        notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]],
       });
 
       this.form.controls.questions.push(group);
@@ -87,6 +88,7 @@ export class QuizFormComponent implements OnInit {
       ],
       order: 1,
       type: questionTypes.single,
+      notes: '',
     },
   ];
 
@@ -116,6 +118,7 @@ export class QuizFormComponent implements OnInit {
               ]
             ),
             type: [questionTypes.single],
+            notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]]
           }
         )]
     ),
@@ -146,6 +149,7 @@ export class QuizFormComponent implements OnInit {
               ]
             ),
             type: [questionTypes.single],
+            notes: ['', [Validators.maxLength(validationRules.quiz.question.notes.maxLength)]],
           }
         )
       );
