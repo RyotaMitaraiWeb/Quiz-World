@@ -1,4 +1,19 @@
 # QuizWorld
+Quiz World is an application that allows you to play on and create quizzes.
+
+## Preview images
+
+<details>
+<summary>Toggle images</summary>
+<br>
+<img src="./preview-images/question_example.png" alt="An example of a question during a quiz session">
+<img src="./preview-images/correct_answer_example.png" alt="An example of answering a question correctly">
+<img src="./preview-images/wrong_answer_example.png" alt="An example of answering a question incorrectly">
+<img src="./preview-images/creating_quiz_1.png" alt="An example of creating a quiz by filling the title and description and choosing the question type">
+<img src="./preview-images/creating_quiz_2.png" alt="An example of creating a single-choice question">
+<img src="./preview-images/creating_quiz_3.png" alt="An example of creating a multiple-choice question">
+<img src="./preview-images/creating_quiz_4.png" alt="An example of creating a text question">
+</details>
 
 ## How to run
 ```bash
@@ -32,7 +47,7 @@ Each folder and its respective subfolders contain more documentation for the dif
 ### environments
 Contains environment variables for development and production modes.
 
-The app assumes that the .NET server associated with it runs on localhost:7246 in development stage. If you want to change this, navigate to ``src/environments`` and change whatever configuration you need to change.
+The app assumes that the .NET server associated with it runs on localhost:5000 in development stage. If you want to change this, navigate to ``src/environments`` and change whatever configuration you need to change. The server also offers an HTTPS connection on port 7246 (if you configure an SSL certificate).
 
 ### types
 Contains custom types.
