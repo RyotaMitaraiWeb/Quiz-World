@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { successfulActionsMessages } from '../../../constants/successfulActionsMessages.constants';
 import { SnackbarService } from '../../../core/snackbar/snackbar.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DisableOnLoadingDirective } from '../../directives/disable-on-loading/disable-on-loading.directive';
 
 @Component({
   selector: 'app-delete-button',
@@ -14,6 +15,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   imports: [
     CommonModule,
     MatButtonModule,
+    DisableOnLoadingDirective,
   ],
   templateUrl: './delete-button.component.html',
   styleUrls: ['./delete-button.component.scss']

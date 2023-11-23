@@ -33,7 +33,7 @@
         <mat-error *ngIf="controlError('password')?.['minlength']">Password must be at least {{ passwordRules.minlength }} characters
           long!</mat-error>
       </mat-form-field>
-      <button class="submit" matButton mat-raised-button color="primary" [disabled]="form.invalid">
+      <button class="submit" disableOnLoading  mat-raised-button color="primary" [disabled]="form.invalid">
         Register
       </button>
     </form>

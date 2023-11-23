@@ -9,6 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Subscription, delay } from 'rxjs';
 import { questionTypes, shortQuestionTypes } from '../../../../constants/question-types.constants';
 import { ChangeDetectionStrategy } from '@angular/core';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
   selector: 'app-quiz-session',
@@ -19,6 +20,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
     CommonModule,
     QuestionSessionModule,
     MatButtonModule,
+    SharedModule
   ],
 })
 export class QuizSessionComponent implements OnInit, OnDestroy {

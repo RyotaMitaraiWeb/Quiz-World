@@ -3,5 +3,7 @@
   [pageIndex]="page - 1"
   [length]="total"
   [showFirstLastButtons]="true"
-  (page)="changePage($event)">
+  (page)="changePage($event)"
+  [disabled]="!(isLoading | async)"
+>
 </mat-paginator>
