@@ -11,6 +11,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { IQuizFormSubmission } from '../../../types/components/quiz-form.types';
 import { questionTypes } from '../../constants/question-types.constants';
 import { validationRules } from '../../constants/validationRules.constants';
+import { DisableOnLoadingDirective } from '../directives/disable-on-loading/disable-on-loading.directive';
 
 @Component({
   selector: 'app-quiz-form',
@@ -24,6 +25,7 @@ import { validationRules } from '../../constants/validationRules.constants';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    DisableOnLoadingDirective,
   ]
 })
 export class QuizFormComponent implements OnInit {

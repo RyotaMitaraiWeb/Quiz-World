@@ -12,6 +12,7 @@ import { DeleteButtonModule } from './buttons/delete-button/delete-button.module
 import { SheetComponent } from './sheet/sheet.component';
 import { ChangeRoleButtonModule } from './buttons/roles/change-role-button/change-role-button.module';
 import { RefreshButtonComponent } from './buttons/refresh-button/refresh-button.component';
+import { DisableOnLoadingDirective } from './directives/disable-on-loading/disable-on-loading.directive';
 
 @NgModule({
   imports: [
@@ -24,7 +25,8 @@ import { RefreshButtonComponent } from './buttons/refresh-button/refresh-button.
     EditButtonModule,
     DeleteButtonModule,
     SheetComponent,
-    RefreshButtonComponent
+    RefreshButtonComponent,
+    DisableOnLoadingDirective,
   ],
   exports: [
     QuestionModule,
@@ -39,6 +41,7 @@ import { RefreshButtonComponent } from './buttons/refresh-button/refresh-button.
     SheetComponent,
     ChangeRoleButtonModule,
     RefreshButtonComponent,
+    DisableOnLoadingDirective,
   ],
 })
 export class SharedModule { }

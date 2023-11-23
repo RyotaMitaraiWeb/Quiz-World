@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
+import { DisableOnLoadingDirective } from '../../directives/disable-on-loading/disable-on-loading.directive';
 
 @Component({
   selector: 'app-refresh-button',
@@ -12,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatButtonModule,
     MatTooltipModule,
     MatIconModule,
+    DisableOnLoadingDirective,
   ],
   templateUrl: './refresh-button.component.html',
   styleUrls: ['./refresh-button.component.scss'],

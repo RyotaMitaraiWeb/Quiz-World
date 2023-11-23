@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
   selector: 'app-search',
@@ -15,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
     ReactiveFormsModule,
     MatIconModule,
     MatButtonModule,
+    SharedModule,
   ],
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss'],

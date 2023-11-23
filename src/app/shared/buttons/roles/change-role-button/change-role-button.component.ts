@@ -9,6 +9,7 @@ import { roles } from '../../../../constants/roles.constants';
 import { Subscription } from 'rxjs';
 import { successfulActionsMessages } from '../../../../constants/successfulActionsMessages.constants';
 import { SnackbarService } from '../../../../core/snackbar/snackbar.service';
+import { DisableOnLoadingDirective } from 'src/app/shared/directives/disable-on-loading/disable-on-loading.directive';
 
 @Component({
   selector: 'app-change-role-button',
@@ -16,6 +17,7 @@ import { SnackbarService } from '../../../../core/snackbar/snackbar.service';
   imports: [
     CommonModule,
     MatButtonModule,
+    DisableOnLoadingDirective,
   ],
   templateUrl: './change-role-button.component.html',
   styleUrls: ['./change-role-button.component.scss'],

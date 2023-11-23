@@ -4,19 +4,19 @@
     <form (submit)="login($event)" [formGroup]="form">
       <mat-form-field>
         <mat-label>Username</mat-label>
-        <input required matInput name="username" id="username" formControlName="username" />
+        <input disableOnLoading required matInput name="username" id="username" formControlName="username" />
         <mat-error *ngIf="controlError('username')?.['required']">Username is required!</mat-error>
       </mat-form-field>
       <mat-form-field>
         <mat-label>Password</mat-label>
-        <input required matInput name="password" id="password" [type]="passwordFieldType" formControlName="password" />
+        <input disableOnLoading required matInput name="password" id="password" [type]="passwordFieldType" formControlName="password" />
         <button matPrefix [matTooltip]="passwordFieldAriaLabel" matTooltipPosition="above" mat-icon-button
           [attr.aria-label]="passwordFieldAriaLabel" (click)="togglePasswordVisibility($event)">
           <mat-icon>{{ passwordVisibilityIcon }}</mat-icon>
         </button>
         <mat-error *ngIf="controlError('password')?.['required']">Password is required!</mat-error>
       </mat-form-field>
-      <button class="submit" matButton mat-raised-button color="primary" [disabled]="form.invalid">
+      <button disableOnLoading class="submit" matButton mat-raised-button color="primary" [disabled]="form.invalid">
         Login
       </button>
       <p *ngIf="failedLogin" class="failed-login">Wrong username or password!</p>

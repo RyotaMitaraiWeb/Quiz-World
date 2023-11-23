@@ -15,6 +15,8 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule } from '@angular/mater
 import { UnauthorizedSnackbarInterceptor } from './routing/interceptors/unauthorized-snackbar/unauthorized-snackbar.interceptor';
 import { RequestFailedInterceptor } from './routing/interceptors/request-failed/request-failed.interceptor';
 import { RequestFailedSnackbarInterceptor } from './routing/interceptors/request-failed-snackbar/request-failed-snackbar.interceptor';
+import { LoaderInterceptor } from './routing/interceptors/loader/loader.interceptor';
+import { LoadingComponent } from './core/loading/component/loading.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +61,11 @@ import { RequestFailedSnackbarInterceptor } from './routing/interceptors/request
       provide: HTTP_INTERCEPTORS,
       useClass: RequestFailedSnackbarInterceptor,
       multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true,
     }
   ],
   bootstrap: [AppComponent],
@@ -70,6 +77,7 @@ import { RequestFailedSnackbarInterceptor } from './routing/interceptors/request
     CoreModule,
     HttpClientModule,
     MatSnackBarModule,
+    LoadingComponent,
   ]
 })
 export class AppModule { }

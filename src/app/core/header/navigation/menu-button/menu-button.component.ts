@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { IAppStore } from '../../../../../types/store/store.types';
 import { Subscription } from 'rxjs';
 import { closeMenu, openMenu } from '../../../../store/menu/menu.action';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
   selector: 'app-menu-button',
@@ -14,7 +15,7 @@ import { closeMenu, openMenu } from '../../../../store/menu/menu.action';
   imports: [
     CommonModule,
     MatIconModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   templateUrl: './menu-button.component.html',
   styleUrls: ['./menu-button.component.scss'],
