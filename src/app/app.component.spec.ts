@@ -10,6 +10,8 @@ import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { HttpErrorResponse, HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { IAuthSuccessResponse } from '../types/responses/auth.types';
+import { SharedModule } from './shared/shared.module';
+import { LoadingComponent } from './core/loading/component/loading.component';
 
 describe('AppComponent', () => {
   let authService: AuthService;
@@ -23,6 +25,8 @@ describe('AppComponent', () => {
           RouterTestingModule,
           CoreModule,
           HttpClientTestingModule,
+          SharedModule,
+          LoadingComponent,
         ],
         declarations: [AppComponent]
       });
