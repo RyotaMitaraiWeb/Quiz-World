@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { UserState } from '../store/user/user.store';
-import { api } from '../common/api';
+import { UserState } from '../../store/user/user.store';
+import { api } from '../../common/api';
 import { catchError, map, of, tap } from 'rxjs';
+import type { AuthBody, SuccessfulAuthResponse } from './types';
 
 @Injectable({
   providedIn: 'root'
@@ -48,13 +49,4 @@ export class AuthService {
     });
   }
 }
-
-export type AuthBody = {
-  username: string;
-  password: string;
-};
-
-export type SuccessfulAuthResponse = {
-  token: string;
-} & UserState;
 
