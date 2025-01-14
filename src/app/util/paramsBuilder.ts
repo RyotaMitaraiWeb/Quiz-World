@@ -1,20 +1,16 @@
 import { HttpParams } from "@angular/common/http";
-import { SearchOptions } from "../types/search";
 
-type searchOptionsKey = keyof SearchOptions;
-
-
-export function paramsBuilder(searchOptions: SearchOptions | undefined) {
+export function paramsBuilder(options: Record<string, any> | undefined) {
   let params = new HttpParams();
 
-  if (!searchOptions) {
+  if (!options) {
     return params;
   }
   
-  for (const key in searchOptions) {
-    const value = searchOptions[key as searchOptionsKey];
+  for (const key in options) {
+    const value = options[key as string];
     if (value !== undefined) {
-      params = params.append(key, value);
+      params = params.append(key, String(value));
     }
   }
 
