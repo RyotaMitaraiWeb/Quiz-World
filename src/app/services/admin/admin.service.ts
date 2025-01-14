@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { api } from '../../common/api';
-import { SearchOptionsWithPaginationAndOrdering } from '../../types/search';
+import { SearchOptions, SearchOptionsWithPaginationAndOrdering } from '../../types/search';
 import { paramsBuilder } from '../../util/paramsBuilder';
 import { UserList } from './searchTable.types';
-import { IndexedLogActivity, LogActivity } from './logs.types';
-import { map } from 'rxjs';
+import { IndexedLogActivity, IndexedLogsList, LogActivity, LogsList } from './logs.types';
+import { map, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -38,12 +38,20 @@ export class AdminService {
 
   getActivityLogs(options?: SearchOptionsWithPaginationAndOrdering) {
     const params = paramsBuilder(options);
-
-    return this.http.get<LogActivity[]>(this.logsUrl.getLogs, { params })
-      .pipe<IndexedLogActivity[]>(
-        map((logs, index) => {
-          return logs.map((log) => ({...log, index}))
+    const page = options?.page;
+  
+    return this.http.get<LogsList>(this.logsUrl.getLogs, { params })
+      .pipe<IndexedLogsList>(
+        map((logsList) => {
+          return {
+            total: logsList.total,
+            logs: logsList.logs.map((log, index) => ({ ...log, index: this._calculateLogIndex(index, page) }))
+          }
         })
       );
+  }
+
+  private _calculateLogIndex(index: number, page = 1) {
+    return (index + 1) + ((page - 1) * 20);
   }
 }

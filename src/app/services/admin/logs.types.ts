@@ -11,3 +11,8 @@ export type LogsList = {
   total: number;
   logs: LogActivity[];
 }
+
+export type IndexedLogsList = {
+  total: number;
+  logs: IndexedLogActivity[];
+};
