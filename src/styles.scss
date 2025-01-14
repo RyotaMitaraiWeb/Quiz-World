@@ -2,23 +2,3 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-h1, h2, h3, h4, h5, h6 {
-  text-align: center;
-}
-
-.answer-feedback {
-  font-weight: bold;
-}
-
-.correct {
-  color: green;
-}
-
-.wrong {
-  color: red;
-}
-
-.prewrap {
-  white-space: pre-wrap;
-}
