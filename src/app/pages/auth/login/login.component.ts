@@ -6,11 +6,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Subscription } from 'rxjs';
 import { AuthBody } from '../../../services/auth/types';
+import { NgOptimizedImage } from '@angular/common'
+
+
 
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule],
+  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule, NgOptimizedImage],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,7 +42,7 @@ export class LoginComponent implements OnDestroy {
         localStorage.setItem('token', token);
         this.userStore.updateUser(userData);
       },
-      error() {}
+      error() { }
     });
   }
 

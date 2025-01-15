@@ -1,16 +1,22 @@
-<h1>Login</h1>
+<section class="login">
+  <div class="image">
+    <img alt="" ngSrc="/images/login.svg" priority fill>
+  </div>
+  <div class="section">
+    <h1>Log into your Quiz World profile</h1>
+    <p>Get access to the quizzes you have created</p>
+    <form class="login-form" [formGroup]="loginForm" (submit)="submit($event)">
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input id="username" matInput placeholder="Your username..." formControlName="username" />
+      </mat-form-field>
 
-<form [formGroup]="loginForm" (submit)="submit($event)">
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input id="password" matInput placeholder="Password..." formControlName="password" type="password" />
+      </mat-form-field>
 
-  <mat-form-field>
-    <mat-label>Username</mat-label>
-    <input id="username" matInput placeholder="Your username..." formControlName="username" />
-  </mat-form-field>
-
-  <mat-form-field>
-    <mat-label>Password</mat-label>
-    <input id="password" matInput placeholder="Password..." formControlName="password" type="password" />
-  </mat-form-field>
-
-  <button id="submit" mat-flat-button type="submit" [disabled]="loginForm.invalid">Log into my account</button>
-</form>
+      <button id="submit" mat-flat-button type="submit" [disabled]="loginForm.invalid">Log into my account</button>
+    </form>
+  </div>
+</section>
