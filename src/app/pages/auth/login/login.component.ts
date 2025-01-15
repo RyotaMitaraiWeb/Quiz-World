@@ -1,14 +1,49 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../services/auth/auth.service';
 import { UserStore } from '../../../store/user/user.store';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { Subscription } from 'rxjs';
+import { AuthBody } from '../../../services/auth/types';
+
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   private readonly authService = inject(AuthService);
   private readonly userStore = inject(UserStore);
+
+  private loginSub?: Subscription;
+
+  loginForm = new FormGroup({
+    username: new FormControl('', { validators: [Validators.required] }),
+    password: new FormControl('', { validators: [Validators.required] }),
+  });
+
+  submit(event: SubmitEvent) {
+    event.preventDefault();
+    const body: AuthBody = {
+      username: this.loginForm.controls.username.value || '',
+      password: this.loginForm.controls.password.value || '',
+    }
+
+    this.loginSub = this.authService.login(body).subscribe({
+      next: (user) => {
+        const { token, ...userData } = user;
+        localStorage.setItem('token', token);
+        this.userStore.updateUser(userData);
+      },
+      error() {}
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.loginSub?.unsubscribe();
+  }
 }
