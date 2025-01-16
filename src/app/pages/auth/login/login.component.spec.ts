@@ -113,16 +113,14 @@ describe('LoginComponent', () => {
       expect(spy).not.toHaveBeenCalled();
       expect(store.username()).toBe('');
 
-      const error = fixture.debugElement.query(By.css('.text-error'));
+      const error = fixture.debugElement.query(By.css('.error'));
       expect(error).not.toBeNull();
     });
 
     it('Disables the submit button when a request is ongoing', async () => {
       const usernameField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Your username...' }));
       const passwordField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Password...' }));
-      const spy = spyOn(window.localStorage, 'setItem').and.stub();
-
-      const store = TestBed.inject(UserStore);
+      spyOn(window.localStorage, 'setItem').and.stub();
 
       await usernameField.setValue('admin');
       fixture.detectChanges();
