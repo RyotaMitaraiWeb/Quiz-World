@@ -1,1 +1,32 @@
-<p>register works!</p>
+@let username = registerForm.controls.username;
+@let password = registerForm.controls.password;
+@let submitIsDisabled = registerForm.invalid || submitting();
+
+<section class="register">
+  <div class="image">
+    <img alt="" ngSrc="/images/register.svg" priority fill>
+  </div>
+
+  <div class="section">
+    <h1>Create your new Quiz World profile today!</h1>
+    <p>Create quizzes to enhance your studying and to help other users</p>
+
+    <form class="register-form" [formGroup]="registerForm" (submit)="submit($event)">
+      <mat-form-field matError>
+        <mat-label>Username</mat-label>
+        <input id="username" matInput placeholder="Your username..." formControlName="username" />
+        <mat-error>{{ username.errors | singleInputError: usernameErrorMessages}}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input [type]="passwordIsVisible() ? 'text' : 'password'" id="password" matInput placeholder="Password..."
+          formControlName="password" />
+        <app-password-visibility-button matSuffix [(passwordIsVisible)]="passwordIsVisible" />
+        <mat-error>{{ password.errors | singleInputError: passwordErrorMessages}}</mat-error>
+      </mat-form-field>
+
+      <button id="submit" mat-flat-button type="submit" [disabled]="submitIsDisabled">Create my
+        account</button>
+    </form>
+  </div>
+</section>
