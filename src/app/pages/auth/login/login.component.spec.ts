@@ -48,17 +48,11 @@ describe('LoginComponent', () => {
       const store = TestBed.inject(UserStore);
 
       await usernameField.setValue('admin');
-      fixture.detectChanges();
-
       await passwordField.setValue('123456');
-      fixture.detectChanges();
-
       await fixture.whenStable();
 
       const button = await loader.getHarness(MatButtonHarness.with({ text: 'Log into my account' }));
       await button.click();
-
-      fixture.detectChanges();
       await fixture.whenStable();
 
       const request = httpTest.expectOne(api.endpoints.auth.login);
@@ -83,17 +77,12 @@ describe('LoginComponent', () => {
       const store = TestBed.inject(UserStore);
 
       await usernameField.setValue('admin');
-      fixture.detectChanges();
-
       await passwordField.setValue('123456');
-      fixture.detectChanges();
-
       await fixture.whenStable();
 
       const button = await loader.getHarness(MatButtonHarness.with({ text: 'Log into my account' }));
       await button.click();
 
-      fixture.detectChanges();
       await fixture.whenStable();
 
       const request = httpTest.expectOne(api.endpoints.auth.login);
@@ -108,7 +97,6 @@ describe('LoginComponent', () => {
       });
 
       await fixture.whenStable();
-      fixture.detectChanges();
 
       expect(spy).not.toHaveBeenCalled();
       expect(store.username()).toBe('');
@@ -123,17 +111,11 @@ describe('LoginComponent', () => {
       spyOn(window.localStorage, 'setItem').and.stub();
 
       await usernameField.setValue('admin');
-      fixture.detectChanges();
-
       await passwordField.setValue('123456');
-      fixture.detectChanges();
-
       await fixture.whenStable();
 
       const button = await loader.getHarness(MatButtonHarness.with({ text: 'Log into my account' }));
       await button.click();
-
-      fixture.detectChanges();
       await fixture.whenStable();
 
       expect(await button.isDisabled()).toBeTrue();
@@ -148,6 +130,8 @@ describe('LoginComponent', () => {
         status: HttpStatusCode.Created,
         statusText: 'Created'
       });
+
+      await fixture.whenStable();
 
       expect(await button.isDisabled()).toBeFalse();
     });
