@@ -45,6 +45,7 @@ export class LoginComponent implements OnDestroy {
         localStorage.setItem('token', token);
         this.userStore.updateUser(userData);
         this.router.navigate(['']);
+        this.loginFailed.set(true);
       },
       error: (e: HttpErrorResponse) => {
         if (e.status === HttpStatusCode.Unauthorized) {

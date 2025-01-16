@@ -13,6 +13,7 @@ import { SuccessfulAuthResponse } from '../../../services/auth/types';
 import { roles } from '../../../common/roles';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { UserStore } from '../../../store/user/user.store';
+import { By } from '@angular/platform-browser';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -75,7 +76,7 @@ describe('LoginComponent', () => {
       expect(store.username()).toBe('admin');
     });
 
-    it('Does not set the token and update the user when login is unsuccessful', async () => {
+    it('Handles wrong username and password correctly', async () => {
       const usernameField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Your username...' }));
       const passwordField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Password...' }));
       const spy = spyOn(window.localStorage, 'setItem').and.stub();
@@ -106,8 +107,14 @@ describe('LoginComponent', () => {
         statusText: 'Unauthorized'
       });
 
+      await fixture.whenStable();
+      fixture.detectChanges();
+
       expect(spy).not.toHaveBeenCalled();
       expect(store.username()).toBe('');
+
+      const error = fixture.debugElement.query(By.css('.text-error'));
+      expect(error).not.toBeNull();
     });
   });
 
