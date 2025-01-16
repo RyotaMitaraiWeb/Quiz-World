@@ -34,6 +34,8 @@ export class LoginComponent implements OnDestroy {
 
   submit(event: SubmitEvent) {
     event.preventDefault();
+    this.submitting.set(true);
+
     const body: AuthBody = {
       username: this.loginForm.controls.username.value || '',
       password: this.loginForm.controls.password.value || '',
@@ -45,13 +47,16 @@ export class LoginComponent implements OnDestroy {
         localStorage.setItem('token', token);
         this.userStore.updateUser(userData);
         this.router.navigate(['']);
-        this.loginFailed.set(true);
+        this.loginFailed.set(false);
+        this.submitting.set(false);
       },
       error: (e: HttpErrorResponse) => {
         if (e.status === HttpStatusCode.Unauthorized) {
           this.loginFailed.set(true);
         }
-      }
+
+        this.submitting.set(false);
+      },
     });
   }
 
@@ -60,4 +65,5 @@ export class LoginComponent implements OnDestroy {
   }
 
   loginFailed = signal(false);
+  submitting = signal(false);
 }

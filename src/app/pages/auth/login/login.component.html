@@ -18,7 +18,7 @@
         <input id="password" matInput placeholder="Password..." formControlName="password" type="password" />
       </mat-form-field>
 
-      <button id="submit" mat-flat-button type="submit" [disabled]="loginForm.invalid">Log into my account</button>
+      <button id="submit" mat-flat-button type="submit" [disabled]="loginForm.invalid || submitting()">Log into my account</button>
     </form>
 
     @if (loginFailed()) {

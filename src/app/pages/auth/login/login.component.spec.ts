@@ -40,7 +40,7 @@ describe('LoginComponent', () => {
   });
 
   describe('Component tests', () => {
-    it('Correctly sets localStorage token and updates user when login is successful', async () => {
+    it('Handles successful login correctly', async () => {
       const usernameField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Your username...' }));
       const passwordField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Password...' }));
       const spy = spyOn(window.localStorage, 'setItem').and.stub();
@@ -115,6 +115,43 @@ describe('LoginComponent', () => {
 
       const error = fixture.debugElement.query(By.css('.text-error'));
       expect(error).not.toBeNull();
+    });
+
+    it('Disables the submit button when a request is ongoing', async () => {
+      const usernameField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Your username...' }));
+      const passwordField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Password...' }));
+      const spy = spyOn(window.localStorage, 'setItem').and.stub();
+
+      const store = TestBed.inject(UserStore);
+
+      await usernameField.setValue('admin');
+      fixture.detectChanges();
+
+      await passwordField.setValue('123456');
+      fixture.detectChanges();
+
+      await fixture.whenStable();
+
+      const button = await loader.getHarness(MatButtonHarness.with({ text: 'Log into my account' }));
+      await button.click();
+
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(await button.isDisabled()).toBeTrue();
+
+      const request = httpTest.expectOne(api.endpoints.auth.login);
+      request.flush({
+        token: 'a',
+        id: '1',
+        username: 'admin',
+        roles: [roles.user],
+      } as SuccessfulAuthResponse, {
+        status: HttpStatusCode.Created,
+        statusText: 'Created'
+      });
+
+      expect(await button.isDisabled()).toBeFalse();
     });
   });
 
