@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { Subscription } from 'rxjs';
 import { AuthBody } from '../../../services/auth/types';
 import { NgOptimizedImage } from '@angular/common'
+import { Router } from '@angular/router';
 
 
 
@@ -21,6 +22,7 @@ import { NgOptimizedImage } from '@angular/common'
 export class LoginComponent implements OnDestroy {
   private readonly authService = inject(AuthService);
   private readonly userStore = inject(UserStore);
+  private readonly router = inject(Router);
 
   private loginSub?: Subscription;
 
@@ -41,6 +43,7 @@ export class LoginComponent implements OnDestroy {
         const { token, ...userData } = user;
         localStorage.setItem('token', token);
         this.userStore.updateUser(userData);
+        this.router.navigate(['']);
       },
       error() { }
     });
