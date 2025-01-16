@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnDestroy, signal } from '@angular/core';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { UserStore } from '../../../store/user/user.store';
@@ -10,6 +10,9 @@ import { NgOptimizedImage } from '@angular/common';
 import { registerErrorMessages } from '../../../common/validationErrors/register';
 import { registerValidationRules } from '../../../common/validationRules/register';
 import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-input-error.pipe';
+import { AuthBody } from '../../../services/auth/types';
+import { Subscription } from 'rxjs';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 @Component({
   selector: 'app-register',
@@ -23,7 +26,7 @@ import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-i
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnDestroy {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly userStore = inject(UserStore);
@@ -47,8 +50,27 @@ export class RegisterComponent {
 
 
   submit(event: SubmitEvent) {
-    this.registerForm.controls.username.errors;
-    this.registerForm.controls.username.errors;
+    event.preventDefault();
+
+    this.submitting.set(true);
+
+    const body: AuthBody = {
+      username: this.registerForm.controls.username.value || '',
+      password: this.registerForm.controls.password.value || '',
+    };
+
+    this._registerSub = this.authService.register(body).subscribe({
+      next: (result) => {
+        const { token, ...user } = result;
+        localStorage.setItem('token', token);
+        this.userStore.updateUser(user);
+        this.router.navigate(['']);
+        this.submitting.set(false);
+      },
+      error: () => {
+        this.submitting.set(false);
+      },
+    });
   }
 
   protected passwordIsVisible = signal(false);
@@ -56,4 +78,10 @@ export class RegisterComponent {
 
   protected usernameErrorMessages = registerErrorMessages.username;
   protected passwordErrorMessages = registerErrorMessages.password;
+
+  private _registerSub?: Subscription;
+
+  ngOnDestroy() {
+    this._registerSub?.unsubscribe();
+  }
 }
