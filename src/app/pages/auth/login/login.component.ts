@@ -9,9 +9,7 @@ import { AuthBody } from '../../../services/auth/types';
 import { NgOptimizedImage } from '@angular/common'
 import { Router } from '@angular/router';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-
-
-
+import { loginErrors } from '../../../common/validationErrors/login';
 
 @Component({
   selector: 'app-login',
@@ -24,6 +22,7 @@ export class LoginComponent implements OnDestroy {
   private readonly authService = inject(AuthService);
   private readonly userStore = inject(UserStore);
   private readonly router = inject(Router);
+  protected errorMessages = loginErrors;
 
   private loginSub?: Subscription;
 

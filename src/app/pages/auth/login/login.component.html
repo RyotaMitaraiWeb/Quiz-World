@@ -8,21 +8,29 @@
     <p>Get access to the quizzes you have created</p>
 
     <form class="login-form" [formGroup]="loginForm" (submit)="submit($event)">
-      <mat-form-field>
+      <mat-form-field matError>
         <mat-label>Username</mat-label>
         <input id="username" matInput placeholder="Your username..." formControlName="username" />
+
+        @if (loginForm.controls.username.getError('required')) {
+        <mat-error>{{errorMessages.usernameRequired}}</mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field>
         <mat-label>Password</mat-label>
         <input id="password" matInput placeholder="Password..." formControlName="password" type="password" />
+        @if (loginForm.controls.password.getError('required')) {
+        <mat-error>{{errorMessages.passwordRequired}}</mat-error>
+        }
       </mat-form-field>
 
-      <button id="submit" mat-flat-button type="submit" [disabled]="loginForm.invalid || submitting()">Log into my account</button>
+      <button id="submit" mat-flat-button type="submit" [disabled]="loginForm.invalid || submitting()">Log into my
+        account</button>
     </form>
 
     @if (loginFailed()) {
-      <p class="mat-mdc-form-field-error error">Wrong username or password!</p>
+    <p class="mat-mdc-form-field-error error">{{ errorMessages.wrongUsernameOrPassword }}</p>
     }
   </div>
 </section>
