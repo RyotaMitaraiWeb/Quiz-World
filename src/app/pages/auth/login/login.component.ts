@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal } from '@angular/core';
 import { AuthService } from '../../../services/auth/auth.service';
 import { UserStore } from '../../../store/user/user.store';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { AuthBody } from '../../../services/auth/types';
 import { NgOptimizedImage } from '@angular/common'
 import { Router } from '@angular/router';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 
 
@@ -45,11 +46,17 @@ export class LoginComponent implements OnDestroy {
         this.userStore.updateUser(userData);
         this.router.navigate(['']);
       },
-      error() { }
+      error: (e: HttpErrorResponse) => {
+        if (e.status === HttpStatusCode.Unauthorized) {
+          this.loginFailed.set(true);
+        }
+      }
     });
   }
 
   ngOnDestroy(): void {
     this.loginSub?.unsubscribe();
   }
+
+  loginFailed = signal(false);
 }

@@ -18,5 +18,9 @@
 
       <button id="submit" mat-flat-button type="submit" [disabled]="loginForm.invalid">Log into my account</button>
     </form>
+
+    @if (loginFailed()) {
+      <p class="text-error">Wrong username or password!</p>
+    }
   </div>
 </section>
