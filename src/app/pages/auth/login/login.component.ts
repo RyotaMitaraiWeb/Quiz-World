@@ -4,16 +4,24 @@ import { UserStore } from '../../../store/user/user.store';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 import { AuthBody } from '../../../services/auth/types';
 import { NgOptimizedImage } from '@angular/common'
 import { Router } from '@angular/router';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { loginErrors } from '../../../common/validationErrors/login';
+import { PasswordVisibilityButtonComponent } from '../../../components/auth/login/password-visibility-button/password-visibility-button.component';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, MatInputModule, MatButtonModule, NgOptimizedImage],
+  imports: [
+    ReactiveFormsModule,
+    MatInputModule,
+    MatButtonModule,
+    NgOptimizedImage,
+    PasswordVisibilityButtonComponent,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -63,6 +71,8 @@ export class LoginComponent implements OnDestroy {
     this.loginSub?.unsubscribe();
   }
 
-  loginFailed = signal(false);
-  submitting = signal(false);
+  protected loginFailed = signal(false);
+  protected submitting = signal(false);
+
+  protected passwordIsVisible = signal(false);
 }
