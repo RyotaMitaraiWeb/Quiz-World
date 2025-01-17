@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal } from '@angular/core';
 import { AuthService } from '../../../services/auth/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { UserStore } from '../../../store/user/user.store';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
@@ -23,6 +23,7 @@ import { uniqueUsernameValidatorAsync } from '../../../validators/unique-usernam
     PasswordVisibilityButtonComponent,
     NgOptimizedImage,
     SingleInputErrorPipe,
+    RouterModule,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',

@@ -35,5 +35,10 @@
     @if (loginFailed()) {
     <p class="mat-mdc-form-field-error error">{{ errorMessages.wrongUsernameOrPassword }}</p>
     }
+
+    <p class="auth-link">
+      Don't have a profile? <a routerLink="/auth/register">Register for free</a>
+    </p>
   </div>
 </section>
+

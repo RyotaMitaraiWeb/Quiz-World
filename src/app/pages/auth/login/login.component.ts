@@ -8,7 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 import { AuthBody } from '../../../services/auth/types';
 import { NgOptimizedImage } from '@angular/common'
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { loginErrors } from '../../../common/validationErrors/login';
 import { PasswordVisibilityButtonComponent } from '../../../components/auth/login/password-visibility-button/password-visibility-button.component';
@@ -23,6 +23,7 @@ import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-i
     NgOptimizedImage,
     PasswordVisibilityButtonComponent,
     SingleInputErrorPipe,
+    RouterModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
