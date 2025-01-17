@@ -2,9 +2,9 @@ name: Angular unit/integration/component tests
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "angular-19-migrate" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "angular-19-migrate" ]
 
 jobs:
   build:
