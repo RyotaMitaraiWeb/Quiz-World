@@ -1,4 +1,4 @@
-import { role } from "../../common/roles";
+import { role } from '../../common/roles';
 
 export interface User {
   index: number;

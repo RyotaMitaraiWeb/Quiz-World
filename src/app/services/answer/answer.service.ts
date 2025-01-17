@@ -5,7 +5,7 @@ import { paramsBuilder } from '../../util/paramsBuilder';
 import { GradedAnswer } from '../quiz/types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AnswerService {
   url = api.endpoints.answers;
@@ -15,7 +15,7 @@ export class AnswerService {
     const params = paramsBuilder({ version });
 
     return this.http.get<GradedAnswer>(this.url.correctAnswersInstantMode(questionId), {
-      params
+      params,
     });
   }
 
@@ -23,7 +23,7 @@ export class AnswerService {
     const params = paramsBuilder({ version });
 
     return this.http.get<GradedAnswer[]>(this.url.correctAnswersFull(quizId), {
-      params
+      params,
     });
   }
 }

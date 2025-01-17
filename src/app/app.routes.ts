@@ -17,7 +17,7 @@ export const routes: Routes = [
         component: RegisterComponent,
         title: 'Create your new Quiz World profile',
       },
-    ]
+    ],
   },
   {
     path: '',

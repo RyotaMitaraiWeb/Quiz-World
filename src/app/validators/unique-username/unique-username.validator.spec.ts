@@ -12,7 +12,7 @@ describe('uniqueUsernameValidatorAsync', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting(), uniqueUsernameValidatorAsync]
+      providers: [provideHttpClient(), provideHttpClientTesting(), uniqueUsernameValidatorAsync],
     });
     authService = TestBed.inject(AuthService);
 

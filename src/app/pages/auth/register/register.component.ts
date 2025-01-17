@@ -39,15 +39,15 @@ export class RegisterComponent implements OnDestroy {
         Validators.required,
         Validators.minLength(registerValidationRules.username.minlength),
         Validators.maxLength(registerValidationRules.username.maxlength),
-        Validators.pattern(registerValidationRules.username.pattern)
+        Validators.pattern(registerValidationRules.username.pattern),
       ],
       asyncValidators: [uniqueUsernameValidatorAsync()],
     }),
     password: new FormControl('', {
       validators: [
         Validators.required,
-        Validators.minLength(registerValidationRules.password.minlength)
-      ]
+        Validators.minLength(registerValidationRules.password.minlength),
+      ],
     }),
   });
 

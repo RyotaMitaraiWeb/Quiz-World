@@ -18,9 +18,9 @@ export const api = {
       login: `${auth}/login`,
       logout: `${auth}/logout`,
       usernameExists: (username: string) => `${auth}/username/${username}`,
-      /**Endpoint to check if the user has a valid session upon app load */
+      /** Endpoint to check if the user has a valid session upon app load */
       session: `${auth}/session`,
-      profile: (id: string) => `${auth}/${id}`
+      profile: (id: string) => `${auth}/${id}`,
     },
     /**
      * Endpoints related to actions with quizzes (``api/quiz``)
@@ -29,7 +29,7 @@ export const api = {
       create: quiz,
       /**
        * Endpoint for retrieving a specific quiz by its id.
-       * @param id 
+       * @param id
        * @returns ``{quiz}/{id}``
        */
       id: (id: string | number) => `${quiz}/${id}`,
@@ -56,6 +56,6 @@ export const api = {
        * Use query string ``username`` to filter users.
        */
       getUsersOfUsername: () => `${roles}/users`,
-    }
-  }
+    },
+  },
 };

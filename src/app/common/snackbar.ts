@@ -16,7 +16,7 @@ export const messages = {
       role: {
         promoted: (role: string) => `You promoted the user to ${role} successfully!`,
         demoted: (role: string) => `You demoted the user from ${role} successfully!`,
-      }
-    }
-  }
-}
+      },
+    },
+  },
+};

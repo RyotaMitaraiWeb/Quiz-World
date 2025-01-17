@@ -24,7 +24,7 @@ describe('LoginComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LoginComponent, NoopAnimationsModule],
-      providers: [provideHttpClient(), provideHttpClientTesting(), provideExperimentalZonelessChangeDetection(), provideRouter([])]
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideExperimentalZonelessChangeDetection(), provideRouter([])],
     })
       .compileComponents();
 
@@ -63,7 +63,7 @@ describe('LoginComponent', () => {
         roles: [roles.user],
       } as SuccessfulAuthResponse, {
         status: HttpStatusCode.Created,
-        statusText: 'Created'
+        statusText: 'Created',
       });
 
       expect(spy).toHaveBeenCalledWith('token', 'a');
@@ -93,7 +93,7 @@ describe('LoginComponent', () => {
         roles: [roles.user],
       } as SuccessfulAuthResponse, {
         status: HttpStatusCode.Unauthorized,
-        statusText: 'Unauthorized'
+        statusText: 'Unauthorized',
       });
 
       await fixture.whenStable();
@@ -128,7 +128,7 @@ describe('LoginComponent', () => {
         roles: [roles.user],
       } as SuccessfulAuthResponse, {
         status: HttpStatusCode.Created,
-        statusText: 'Created'
+        statusText: 'Created',
       });
 
       await fixture.whenStable();

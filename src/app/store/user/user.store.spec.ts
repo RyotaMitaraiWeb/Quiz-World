@@ -1,12 +1,12 @@
-import { TestBed } from "@angular/core/testing";
-import { UserState, UserStore } from "./user.store";
-import { roles } from "../../common/roles";
+import { TestBed } from '@angular/core/testing';
+import { UserState, UserStore } from './user.store';
+import { roles } from '../../common/roles';
 
 const user: UserState = {
   id: '1',
   username: 'a',
   roles: [roles.user, roles.moderator, roles.admin],
-}
+};
 
 describe('User store', () => {
   describe('Integration tests', () => {

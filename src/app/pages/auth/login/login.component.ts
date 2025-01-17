@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { Subscription } from 'rxjs';
 import { AuthBody } from '../../../services/auth/types';
-import { NgOptimizedImage } from '@angular/common'
+import { NgOptimizedImage } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { loginErrors } from '../../../common/validationErrors/login';
@@ -55,7 +55,7 @@ export class LoginComponent implements OnDestroy {
     const body: AuthBody = {
       username: this.loginForm.controls.username.value || '',
       password: this.loginForm.controls.password.value || '',
-    }
+    };
 
     this.loginSub = this.authService.login(body).subscribe({
       next: (user) => {

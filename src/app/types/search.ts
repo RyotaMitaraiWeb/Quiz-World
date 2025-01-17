@@ -1,4 +1,4 @@
-import { order, quizSort } from "../common/sort";
+import { order, quizSort } from '../common/sort';
 
 export interface SearchOptionsWithPagination {
   page?: number;

@@ -11,7 +11,7 @@ describe('AdminService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()]
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     });
 
     service = TestBed.inject(AdminService);
@@ -39,14 +39,14 @@ describe('AdminService', () => {
             message: 'a',
             date: 'a',
           },
-        ]
+        ],
       };
 
       service.getActivityLogs({ page: 3 }).subscribe(v => {
         expect(v.total).toBe(logs.total);
         expect(v.logs.map(l => l.index)).toEqual([41, 42, 43]);
         done();
-      })
+      });
 
       const request = httpTest.expectOne(match => match.url === service.logsUrl.getLogs);
       request.flush(logs);

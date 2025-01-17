@@ -1,4 +1,4 @@
-import { question, shortQuestionType } from "../../common/questionTypes";
+import { question, shortQuestionType } from '../../common/questionTypes';
 
 export interface CreatedQuizResponse {
   id: number;

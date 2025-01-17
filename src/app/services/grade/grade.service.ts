@@ -3,7 +3,7 @@ import { SessionAnswer } from '../quiz/types';
 import { QuestionType } from './types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GradeService {
 
@@ -85,7 +85,7 @@ export class GradeService {
   /**
    * Returns a normalized variant of ``answer``, which is trimmed (on both ends),
    * has all letters uppercased, and has all spaces removed.
-   * @param answer 
+   * @param answer
    * @returns a trimmed and uppercased ``answer`` with all spaces removed.
    */
   private _normalizeAnswer(answer: string) {

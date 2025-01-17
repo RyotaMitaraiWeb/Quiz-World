@@ -1,4 +1,4 @@
-import { UserState } from "../../store/user/user.store";
+import { UserState } from '../../store/user/user.store';
 
 export interface AuthBody {
   username: string;

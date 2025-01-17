@@ -10,7 +10,7 @@ describe('AuthService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()]
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     });
     service = TestBed.inject(AuthService);
     httpTest = TestBed.inject(HttpTestingController);
@@ -33,7 +33,7 @@ describe('AuthService', () => {
       const request = httpTest.expectOne(service.url.usernameExists(username));
       request.flush(null, {
         status: HttpStatusCode.Ok,
-        statusText: 'Ok'
+        statusText: 'Ok',
       });
 
     });
@@ -45,11 +45,11 @@ describe('AuthService', () => {
         expect(v).toBeFalse();
         done();
       });
-      
+
       const request = httpTest.expectOne(service.url.usernameExists(username));
       request.flush(null, {
         status: HttpStatusCode.NotFound,
-        statusText: 'Not found'
+        statusText: 'Not found',
       });
 
     });
@@ -57,5 +57,5 @@ describe('AuthService', () => {
 
   afterEach(() => {
     httpTest.verify();
-  })
+  });
 });
