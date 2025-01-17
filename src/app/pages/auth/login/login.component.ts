@@ -46,6 +46,11 @@ export class LoginComponent implements OnDestroy {
 
   submit(event: SubmitEvent) {
     event.preventDefault();
+
+    if (this.loginForm.invalid) {
+      return;
+    }
+
     this.submitting.set(true);
 
     const body: AuthBody = {
