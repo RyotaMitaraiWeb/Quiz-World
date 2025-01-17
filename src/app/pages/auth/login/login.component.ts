@@ -8,10 +8,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 import { AuthBody } from '../../../services/auth/types';
 import { NgOptimizedImage } from '@angular/common'
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { loginErrors } from '../../../common/validationErrors/login';
 import { PasswordVisibilityButtonComponent } from '../../../components/auth/login/password-visibility-button/password-visibility-button.component';
+import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-input-error.pipe';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,8 @@ import { PasswordVisibilityButtonComponent } from '../../../components/auth/logi
     MatButtonModule,
     NgOptimizedImage,
     PasswordVisibilityButtonComponent,
+    SingleInputErrorPipe,
+    RouterModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -31,6 +34,8 @@ export class LoginComponent implements OnDestroy {
   private readonly userStore = inject(UserStore);
   private readonly router = inject(Router);
   protected errorMessages = loginErrors;
+  protected usernameErrors = loginErrors.username;
+  protected passwordErrors = loginErrors.password;
 
   private loginSub?: Subscription;
 
@@ -41,6 +46,11 @@ export class LoginComponent implements OnDestroy {
 
   submit(event: SubmitEvent) {
     event.preventDefault();
+
+    if (this.loginForm.invalid) {
+      return;
+    }
+
     this.submitting.set(true);
 
     const body: AuthBody = {

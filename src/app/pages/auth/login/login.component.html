@@ -1,3 +1,8 @@
+@let username = loginForm.controls.username;
+@let password = loginForm.controls.password;
+@let submitIsDisabled = loginForm.invalid || submitting();
+
+
 <section class="login">
   <div class="image">
     <img alt="" ngSrc="/images/login.svg" priority fill>
@@ -12,9 +17,7 @@
         <mat-label>Username</mat-label>
         <input id="username" matInput placeholder="Your username..." formControlName="username" />
 
-        @if (loginForm.controls.username.getError('required')) {
-        <mat-error>{{errorMessages.usernameRequired}}</mat-error>
-        }
+        <mat-error>{{ username.errors | singleInputError: usernameErrors}}</mat-error>
       </mat-form-field>
 
       <mat-form-field>
@@ -22,17 +25,20 @@
         <input [type]="passwordIsVisible() ? 'text' : 'password'" id="password" matInput placeholder="Password..."
           formControlName="password" />
         <app-password-visibility-button matSuffix [(passwordIsVisible)]="passwordIsVisible" />
-        @if (loginForm.controls.password.getError('required')) {
-        <mat-error>{{errorMessages.passwordRequired}}</mat-error>
-        }
+        <mat-error>{{ password.errors | singleInputError: passwordErrors}}</mat-error>
       </mat-form-field>
 
-      <button id="submit" mat-flat-button type="submit" [disabled]="loginForm.invalid || submitting()">Log into my
+      <button id="submit" mat-flat-button type="submit" [disabled]="submitIsDisabled">Log into my
         account</button>
     </form>
 
     @if (loginFailed()) {
     <p class="mat-mdc-form-field-error error">{{ errorMessages.wrongUsernameOrPassword }}</p>
     }
+
+    <p class="auth-link">
+      Don't have a profile? <a routerLink="/auth/register">Register for free</a>
+    </p>
   </div>
 </section>
+

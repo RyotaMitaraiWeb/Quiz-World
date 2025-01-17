@@ -1,4 +1,4 @@
-.login {
+.register {
   display: flex;
   flex-direction: row-reverse;
   height: 100%;
@@ -42,7 +42,7 @@
     justify-content: center;
     width: 50%;
 
-    .login-form {
+    .register-form {
       display: flex;
       flex-direction: column;
       gap: 8px;
