@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { loginErrors } from '../../../common/validationErrors/login';
 import { PasswordVisibilityButtonComponent } from '../../../components/auth/login/password-visibility-button/password-visibility-button.component';
+import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-input-error.pipe';
 
 @Component({
   selector: 'app-login',
@@ -21,6 +22,7 @@ import { PasswordVisibilityButtonComponent } from '../../../components/auth/logi
     MatButtonModule,
     NgOptimizedImage,
     PasswordVisibilityButtonComponent,
+    SingleInputErrorPipe,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -31,6 +33,8 @@ export class LoginComponent implements OnDestroy {
   private readonly userStore = inject(UserStore);
   private readonly router = inject(Router);
   protected errorMessages = loginErrors;
+  protected usernameErrors = loginErrors.username;
+  protected passwordErrors = loginErrors.password;
 
   private loginSub?: Subscription;
 
