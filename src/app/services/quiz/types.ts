@@ -1,10 +1,10 @@
 import { question, shortQuestionType } from "../../common/questionTypes";
 
-export type CreatedQuizResponse = {
+export interface CreatedQuizResponse {
   id: number;
 }
 
-export type IQuizDetails = {
+export interface IQuizDetails {
   id: number;
   title: string;
   description: string;
@@ -14,7 +14,7 @@ export type IQuizDetails = {
   creatorUsername: string;
   version: number;
 }
-export type SessionQuestion = {
+export interface SessionQuestion {
   id: string;
   prompt: string;
   answers?: SessionAnswer[];
@@ -22,17 +22,17 @@ export type SessionQuestion = {
   notes: string | null;
 }
 
-export type SessionAnswer = {
+export interface SessionAnswer {
   id: string;
   value: string;
 }
 
-export type GradedAnswer = {
+export interface GradedAnswer {
   id: string;
   answers: SessionAnswer[];
 }
 
-export type QuizFormSubmission = {
+export interface QuizFormSubmission {
   title: string;
   description: string;
   instantMode: boolean;
@@ -49,14 +49,14 @@ export type QuizFormSubmission = {
   }>[];
 }
 
-export type EditQuizForm = {
+export interface EditQuizForm {
   id: number;
   title: string;
   description: string;
   questions: QuestionSubmission[];
 }
 
-export type Question = {
+export interface Question {
   prompt: string;
   notes: string;
   answers: Answer[];
@@ -77,12 +77,12 @@ export type QuestionSubmission = {
   type: question;
 } & Question
 
-export type Answer = {
+export interface Answer {
   value: string;
   correct: boolean;
 }
 
-export type QuizListItem = {
+export interface QuizListItem {
   id: number;
   title: string;
   description: string;
@@ -91,7 +91,7 @@ export type QuizListItem = {
   updatedOn?: string;
 }
 
-export type QuizList = {
+export interface QuizList {
   quizzes: QuizListItem[];
   total: number;
 }

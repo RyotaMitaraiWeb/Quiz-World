@@ -2,11 +2,11 @@ import { computed } from "@angular/core";
 import { role, roles } from "../../common/roles";
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 
-export type UserState = {
+export interface UserState {
   id: string;
   username: string;
   roles: role[];
-};
+}
 
 export const initialUserState: UserState = {
   id: '',
