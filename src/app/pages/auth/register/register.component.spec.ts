@@ -29,7 +29,7 @@ describe('RegisterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RegisterComponent, NoopAnimationsModule],
-      providers: [provideHttpClient(), provideHttpClientTesting(), provideExperimentalZonelessChangeDetection(), provideRouter([])]
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideExperimentalZonelessChangeDetection(), provideRouter([])],
     })
       .compileComponents();
 
@@ -73,7 +73,7 @@ describe('RegisterComponent', () => {
         roles: [roles.user],
       } as SuccessfulAuthResponse, {
         status: HttpStatusCode.Created,
-        statusText: 'Created'
+        statusText: 'Created',
       });
 
       expect(spy).toHaveBeenCalledWith('token', 'a');
@@ -100,7 +100,7 @@ describe('RegisterComponent', () => {
       const request = httpTest.expectOne(api.endpoints.auth.register);
       request.flush({}, {
         status: HttpStatusCode.BadRequest,
-        statusText: 'Bad request'
+        statusText: 'Bad request',
       });
 
       await fixture.whenStable();
@@ -134,7 +134,7 @@ describe('RegisterComponent', () => {
         roles: [roles.user],
       } as SuccessfulAuthResponse, {
         status: HttpStatusCode.Created,
-        statusText: 'Created'
+        statusText: 'Created',
       });
 
       await fixture.whenStable();

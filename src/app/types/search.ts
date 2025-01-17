@@ -1,16 +1,16 @@
-import { order, quizSort } from "../common/sort";
+import { order, quizSort } from '../common/sort';
 
-export type SearchOptionsWithPagination = {
+export interface SearchOptionsWithPagination {
   page?: number;
-};
+}
 
-export type SearchOptionsWithSorting = {
+export interface SearchOptionsWithSorting {
   sort?: quizSort;
-};
+}
 
-export type SearchOptionsWithOrdering = {
+export interface SearchOptionsWithOrdering {
   order?: order;
-};
+}
 
 export type SearchOptionsWithPaginationAndOrdering = SearchOptionsWithOrdering & SearchOptionsWithPagination;
 

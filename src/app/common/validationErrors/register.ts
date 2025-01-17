@@ -1,4 +1,4 @@
-import { registerValidationRules } from "../validationRules/register";
+import { registerValidationRules } from '../validationRules/register';
 
 export const registerErrorMessages = {
   username: {

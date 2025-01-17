@@ -1,6 +1,6 @@
-import { role } from "../../common/roles";
+import { role } from '../../common/roles';
 
-export type User = {
+export interface User {
   index: number;
   username: string;
   id: string;
@@ -8,13 +8,13 @@ export type User = {
   roleButtons: role[]
 }
 
-export type UserResponse = {
+export interface UserResponse {
   username: string;
   id: string;
   roles: string[],
 }
 
-export type UserList = {
+export interface UserList {
   total: number;
   users: User[];
 }

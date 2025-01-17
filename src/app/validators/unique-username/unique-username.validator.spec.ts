@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
-import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { AuthService } from '../../services/auth/auth.service';
 import { AsyncValidatorFn, FormControl, ValidationErrors } from '@angular/forms';
 import { uniqueUsernameValidatorAsync } from './unique-username.validator';
@@ -8,16 +8,13 @@ import { Observable, of } from 'rxjs';
 
 describe('uniqueUsernameValidatorAsync', () => {
   let authService: AuthService;
-  let httpTest: HttpTestingController;
-  let validate: AsyncValidatorFn;
   let validator: AsyncValidatorFn;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting(), uniqueUsernameValidatorAsync]
+      providers: [provideHttpClient(), provideHttpClientTesting(), uniqueUsernameValidatorAsync],
     });
     authService = TestBed.inject(AuthService);
-    httpTest = TestBed.inject(HttpTestingController);
 
     validator = TestBed.inject(uniqueUsernameValidatorAsync);
   });

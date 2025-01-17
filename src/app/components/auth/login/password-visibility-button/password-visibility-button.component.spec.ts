@@ -13,7 +13,7 @@ describe('PasswordVisibilityButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PasswordVisibilityButtonComponent, NoopAnimationsModule]
+      imports: [PasswordVisibilityButtonComponent, NoopAnimationsModule],
     })
     .compileComponents();
 

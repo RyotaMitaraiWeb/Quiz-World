@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { api } from '../../common/api';
 import { CreatedQuizResponse, EditQuizForm, QuizList, type QuizFormSubmission } from './types';
@@ -6,7 +6,7 @@ import { paramsBuilder } from '../../util/paramsBuilder';
 import { SearchOptions } from '../../types/search';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class QuizService {
   private readonly http = inject(HttpClient);
@@ -51,7 +51,7 @@ export class QuizService {
   /**
    * Retrieves data for the quiz so that it can be filled in the edit form.
    * @param id
-   * @returns 
+   * @returns
    */
   getQuizForEdit(id: number) {
     return this.http.get<EditQuizForm>(this.url.quizForEdit(id));

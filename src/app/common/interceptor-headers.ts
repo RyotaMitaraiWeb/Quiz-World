@@ -15,5 +15,5 @@ export const interceptorHeaders = {
    * Attach this headear to any request for which the 404 status code
    * should not redirect to the not found page.
    */
-  SkipNotFoundRedirection: 'Skip-Not-Found-Redirection'
-}
+  SkipNotFoundRedirection: 'Skip-Not-Found-Redirection',
+};

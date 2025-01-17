@@ -2,11 +2,11 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { UserState } from '../../store/user/user.store';
 import { api } from '../../common/api';
-import { catchError, map, of, tap } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import type { AuthBody, SuccessfulAuthResponse } from './types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
 
@@ -29,7 +29,7 @@ export class AuthService {
     return this.http.get(this.url.usernameExists(username))
       .pipe(
         map(() => true),
-        catchError(() => of(false))
+        catchError(() => of(false)),
     );
   }
 
@@ -45,7 +45,7 @@ export class AuthService {
 
   private _makeAuthRequest(url: string, body: AuthBody) {
     return this.http.post<SuccessfulAuthResponse>(url, body, {
-      responseType: 'json'
+      responseType: 'json',
     });
   }
 }

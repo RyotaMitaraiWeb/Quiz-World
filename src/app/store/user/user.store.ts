@@ -1,12 +1,12 @@
-import { computed } from "@angular/core";
-import { role, roles } from "../../common/roles";
+import { computed } from '@angular/core';
+import { role, roles } from '../../common/roles';
 import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 
-export type UserState = {
+export interface UserState {
   id: string;
   username: string;
   roles: role[];
-};
+}
 
 export const initialUserState: UserState = {
   id: '',
@@ -21,16 +21,16 @@ export const UserStore = signalStore(
     {
       isLoggedIn: computed(() => state.id() !== ''),
       isModerator: computed(() => state.roles().includes(roles.moderator)),
-      isAdmin: computed(() => state.roles().includes(roles.admin))
+      isAdmin: computed(() => state.roles().includes(roles.admin)),
     }
   )),
   withMethods(store => (
     {
       updateUser(user: UserState) {
-        patchState(store, user)
+        patchState(store, user);
       },
       logout() {
-        patchState(store, initialUserState)
-      }
+        patchState(store, initialUserState);
+      },
     }
   )));

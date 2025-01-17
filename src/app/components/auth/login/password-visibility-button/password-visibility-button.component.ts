@@ -1,4 +1,4 @@
-import { Component, model, signal } from '@angular/core';
+import { Component, model } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -6,7 +6,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   selector: 'app-password-visibility-button',
   imports: [MatButtonModule, MatIconModule, MatTooltipModule],
   templateUrl: './password-visibility-button.component.html',
-  styleUrl: './password-visibility-button.component.scss'
+  styleUrl: './password-visibility-button.component.scss',
 })
 export class PasswordVisibilityButtonComponent {
   passwordIsVisible = model(false);

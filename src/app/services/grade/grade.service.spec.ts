@@ -5,7 +5,7 @@ import { SessionAnswer } from '../quiz/types';
 
 const singleChoiceAnswer: SessionAnswer = {
   id: '1',
-  value: 'yes'
+  value: 'yes',
 };
 
 const textAnswers: SessionAnswer[] = [
@@ -20,7 +20,7 @@ const textAnswers: SessionAnswer[] = [
   {
     id: '3',
     value: 'correct',
-  }
+  },
 ];
 
 function generateMultipleCorrectAnswers(correctAnswersCount: number) {

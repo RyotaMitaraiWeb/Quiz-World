@@ -6,7 +6,7 @@ const validationErrorMessages = {
   errorTwo: 'error2',
   errorThree: 'error3',
   errorFour: 'error4',
-}
+};
 
 describe('SingleInputErrorPipe', () => {
   it('create an instance', () => {
@@ -55,5 +55,5 @@ describe('SingleInputErrorPipe', () => {
     const errors = { required: true };
 
     expect(pipe.transform(errors, validationErrorMessages)).toBe('');
-  })
+  });
 });

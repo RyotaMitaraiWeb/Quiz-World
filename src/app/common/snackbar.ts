@@ -1,4 +1,4 @@
-const messages = {
+export const messages = {
   error: {
     login: 'You must be logged in to perform this action!',
     requestFailed: 'Something went wrong with your request, please try again later!',
@@ -16,7 +16,7 @@ const messages = {
       role: {
         promoted: (role: string) => `You promoted the user to ${role} successfully!`,
         demoted: (role: string) => `You demoted the user from ${role} successfully!`,
-      }
-    }
-  }
-}
+      },
+    },
+  },
+};

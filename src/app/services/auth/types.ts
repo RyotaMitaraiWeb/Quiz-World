@@ -1,9 +1,9 @@
-import { UserState } from "../../store/user/user.store";
+import { UserState } from '../../store/user/user.store';
 
-export type AuthBody = {
+export interface AuthBody {
   username: string;
   password: string;
-};
+}
 
 export type SuccessfulAuthResponse = {
   token: string;

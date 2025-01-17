@@ -12,7 +12,6 @@ import { registerValidationRules } from '../../../common/validationRules/registe
 import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-input-error.pipe';
 import { AuthBody } from '../../../services/auth/types';
 import { Subscription } from 'rxjs';
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { uniqueUsernameValidatorAsync } from '../../../validators/unique-username/unique-username.validator';
 
 @Component({
@@ -40,15 +39,15 @@ export class RegisterComponent implements OnDestroy {
         Validators.required,
         Validators.minLength(registerValidationRules.username.minlength),
         Validators.maxLength(registerValidationRules.username.maxlength),
-        Validators.pattern(registerValidationRules.username.pattern)
+        Validators.pattern(registerValidationRules.username.pattern),
       ],
       asyncValidators: [uniqueUsernameValidatorAsync()],
     }),
     password: new FormControl('', {
       validators: [
         Validators.required,
-        Validators.minLength(registerValidationRules.password.minlength)
-      ]
+        Validators.minLength(registerValidationRules.password.minlength),
+      ],
     }),
   });
 
