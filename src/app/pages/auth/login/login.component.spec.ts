@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { LoginComponent } from './login.component';
 import { HttpStatusCode, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
@@ -14,6 +13,7 @@ import { roles } from '../../../common/roles';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { UserStore } from '../../../store/user/user.store';
 import { By } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -24,7 +24,7 @@ describe('LoginComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [LoginComponent, NoopAnimationsModule],
-      providers: [provideHttpClient(), provideHttpClientTesting(), provideExperimentalZonelessChangeDetection()]
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideExperimentalZonelessChangeDetection(), provideRouter([])]
     })
       .compileComponents();
 

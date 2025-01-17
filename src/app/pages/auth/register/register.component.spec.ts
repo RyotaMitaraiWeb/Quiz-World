@@ -16,6 +16,7 @@ import { UserStore } from '../../../store/user/user.store';
 import { AuthService } from '../../../services/auth/auth.service';
 import { of } from 'rxjs';
 import { registerValidationRules } from '../../../common/validationRules/register';
+import { provideRouter } from '@angular/router';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -28,7 +29,7 @@ describe('RegisterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RegisterComponent, NoopAnimationsModule],
-      providers: [provideHttpClient(), provideHttpClientTesting(), provideExperimentalZonelessChangeDetection()]
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideExperimentalZonelessChangeDetection(), provideRouter([])]
     })
       .compileComponents();
 
