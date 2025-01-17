@@ -60,6 +60,7 @@ module.exports = tseslint.config(
       'no-var': 'error',
       'object-shorthand': 'error',
       'prefer-const': 'error',
+      'quote-props': ['error', 'as-needed'],
       radix: 'error',
       'spaced-comment': [
         'error',
