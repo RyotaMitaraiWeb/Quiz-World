@@ -22,6 +22,8 @@ export class QuizService {
     creatorId: '',
     creatorUsername: '',
     version: 0,
+    createdOn: '',
+    updatedOn: '',
   };
 
   create(quiz: QuizFormSubmission, options?: SearchOptions) {

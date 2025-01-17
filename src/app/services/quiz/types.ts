@@ -13,6 +13,8 @@ export interface QuizDetails {
   creatorId: string;
   creatorUsername: string;
   version: number;
+  createdOn: string;
+  updatedOn: string;
 }
 export interface SessionQuestion {
   id: string;

@@ -1,3 +1,12 @@
 @let data = quiz();
 
 <h1>{{data.title}}</h1>
+
+<mat-tab-group dynamicHeight>
+  <mat-tab label="Overview">
+    <app-quiz-overview [quiz]="data"></app-quiz-overview>
+  </mat-tab>
+  <mat-tab label="Play">
+    <p>quiz</p>
+  </mat-tab>
+</mat-tab-group>

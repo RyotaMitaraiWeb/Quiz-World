@@ -1,0 +1,34 @@
+@let data = quiz();
+
+<mat-card appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>
+      Overview
+    </mat-card-title>
+    <mat-card-subtitle>
+      Made by {{ data.creatorUsername }}
+
+      <mat-chip-set>
+        <mat-chip>
+          Created on {{ data.createdOn | date: 'dd/MM/yyyy'}}
+        </mat-chip>
+        <mat-chip>
+          Updated on {{ data.updatedOn | date: 'dd/MM/yyyy'}}
+        </mat-chip>
+      </mat-chip-set>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p>
+      {{ data.description }}
+    </p>
+  </mat-card-content>
+  @if (data.instantMode) {
+  <mat-card-footer>
+    <h3>What does this quiz feature?</h3>
+    <mat-chip-set>
+      <mat-chip>Instant mode</mat-chip>
+    </mat-chip-set>
+  </mat-card-footer>
+  }
+</mat-card>
