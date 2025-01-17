@@ -6,6 +6,7 @@ export const registerErrorMessages = {
     maxlength: `The username should be no longer than ${registerValidationRules.username.maxlength} characters long`,
     pattern: 'The username can only contain letters and numbers',
     required: 'Please fill in a username',
+    uniqueUsername: 'This username is already taken, please select another one!',
   },
   password: {
     minlength: `The password must be at least ${registerValidationRules.password.minlength} characters long`,

@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { RegisterComponent } from './register.component';
 import { HttpStatusCode, provideHttpClient } from '@angular/common/http';
@@ -13,13 +13,17 @@ import { SuccessfulAuthResponse } from '../../../services/auth/types';
 import { roles } from '../../../common/roles';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { UserStore } from '../../../store/user/user.store';
-import { By } from '@angular/platform-browser';
+import { AuthService } from '../../../services/auth/auth.service';
+import { of } from 'rxjs';
+import { registerValidationRules } from '../../../common/validationRules/register';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
   let loader: HarnessLoader;
   let httpTest: HttpTestingController;
+
+  let authService: AuthService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -32,6 +36,8 @@ describe('RegisterComponent', () => {
     loader = TestbedHarnessEnvironment.loader(fixture);
     component = fixture.componentInstance;
     httpTest = TestBed.inject(HttpTestingController);
+    authService = TestBed.inject(AuthService);
+    spyOn(authService, 'checkIfUsernameExists').and.returnValue(of(false));
     fixture.detectChanges();
   });
 
@@ -40,7 +46,7 @@ describe('RegisterComponent', () => {
   });
 
   describe('Component tests', () => {
-    it('Handles successful register correctly', async () => {
+    it('Handles successful register correctly', fakeAsync(async () => {
       const usernameField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Your username...' }));
       const passwordField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Password...' }));
       const spy = spyOn(window.localStorage, 'setItem').and.stub();
@@ -51,9 +57,12 @@ describe('RegisterComponent', () => {
       await passwordField.setValue('123456');
       await fixture.whenStable();
 
+      tick(registerValidationRules.username.UNIQUE_USERNAME_TIMEOUT);
+
       const button = await loader.getHarness(MatButtonHarness.with({ text: 'Create my account' }));
       await button.click();
       await fixture.whenStable();
+
 
       const request = httpTest.expectOne(api.endpoints.auth.register);
       request.flush({
@@ -68,9 +77,9 @@ describe('RegisterComponent', () => {
 
       expect(spy).toHaveBeenCalledWith('token', 'a');
       expect(store.username()).toBe('admin');
-    });
+    }));
 
-    it('Handles wrong username and password correctly', async () => {
+    it('Handles wrong username and password correctly', fakeAsync(async () => {
       const usernameField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Your username...' }));
       const passwordField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Password...' }));
       const spy = spyOn(window.localStorage, 'setItem').and.stub();
@@ -79,6 +88,8 @@ describe('RegisterComponent', () => {
       await usernameField.setValue('admin');
       await passwordField.setValue('123456');
       await fixture.whenStable();
+
+      tick(registerValidationRules.username.UNIQUE_USERNAME_TIMEOUT);
 
       const button = await loader.getHarness(MatButtonHarness.with({ text: 'Create my account' }));
       await button.click();
@@ -95,9 +106,9 @@ describe('RegisterComponent', () => {
 
       expect(spy).not.toHaveBeenCalled();
       expect(store.username()).toBe('');
-    });
+    }));
 
-    it('Disables the submit button when a request is ongoing', async () => {
+    it('Disables the submit button when a request is ongoing', fakeAsync(async () => {
       const usernameField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Your username...' }));
       const passwordField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Password...' }));
       spyOn(window.localStorage, 'setItem').and.stub();
@@ -105,6 +116,8 @@ describe('RegisterComponent', () => {
       await usernameField.setValue('admin');
       await passwordField.setValue('123456');
       await fixture.whenStable();
+
+      tick(registerValidationRules.username.UNIQUE_USERNAME_TIMEOUT);
 
       const button = await loader.getHarness(MatButtonHarness.with({ text: 'Create my account' }));
       await button.click();
@@ -126,7 +139,7 @@ describe('RegisterComponent', () => {
       await fixture.whenStable();
 
       expect(await button.isDisabled()).toBeFalse();
-    });
+    }));
   });
 
   afterEach(() => {

@@ -13,6 +13,7 @@ import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-i
 import { AuthBody } from '../../../services/auth/types';
 import { Subscription } from 'rxjs';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { uniqueUsernameValidatorAsync } from '../../../validators/unique-username/unique-username.validator';
 
 @Component({
   selector: 'app-register',
@@ -39,6 +40,7 @@ export class RegisterComponent implements OnDestroy {
         Validators.maxLength(registerValidationRules.username.maxlength),
         Validators.pattern(registerValidationRules.username.pattern)
       ],
+      asyncValidators: [uniqueUsernameValidatorAsync()],
     }),
     password: new FormControl('', {
       validators: [
@@ -59,18 +61,20 @@ export class RegisterComponent implements OnDestroy {
       password: this.registerForm.controls.password.value || '',
     };
 
-    this._registerSub = this.authService.register(body).subscribe({
-      next: (result) => {
-        const { token, ...user } = result;
-        localStorage.setItem('token', token);
-        this.userStore.updateUser(user);
-        this.router.navigate(['']);
-        this.submitting.set(false);
-      },
-      error: () => {
-        this.submitting.set(false);
-      },
-    });
+    if (this.registerForm.valid) {
+      this._registerSub = this.authService.register(body).subscribe({
+        next: (result) => {
+          const { token, ...user } = result;
+          localStorage.setItem('token', token);
+          this.userStore.updateUser(user);
+          this.router.navigate(['']);
+          this.submitting.set(false);
+        },
+        error: () => {
+          this.submitting.set(false);
+        },
+      });
+    }
   }
 
   protected passwordIsVisible = signal(false);
