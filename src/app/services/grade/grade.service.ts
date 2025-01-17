@@ -73,7 +73,7 @@ export class GradeService {
       superSet.set(answer, 2);
     }
 
-    for (const [_key, value] of superSet) {
+    for (const value of superSet.values()) {
       if (value === 1) {
         return false;
       }

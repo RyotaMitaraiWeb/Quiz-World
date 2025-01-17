@@ -12,7 +12,6 @@ import { registerValidationRules } from '../../../common/validationRules/registe
 import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-input-error.pipe';
 import { AuthBody } from '../../../services/auth/types';
 import { Subscription } from 'rxjs';
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { uniqueUsernameValidatorAsync } from '../../../validators/unique-username/unique-username.validator';
 
 @Component({

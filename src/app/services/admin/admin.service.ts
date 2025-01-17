@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { api } from '../../common/api';
-import { SearchOptions, SearchOptionsWithPaginationAndOrdering } from '../../types/search';
+import { SearchOptionsWithPaginationAndOrdering } from '../../types/search';
 import { paramsBuilder } from '../../util/paramsBuilder';
 import { UserList } from './searchTable.types';
-import { IndexedLogActivity, IndexedLogsList, LogActivity, LogsList } from './logs.types';
-import { map, tap } from 'rxjs';
+import { IndexedLogsList, LogsList } from './logs.types';
+import { map } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

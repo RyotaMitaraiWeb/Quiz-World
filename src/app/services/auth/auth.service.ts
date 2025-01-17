@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { UserState } from '../../store/user/user.store';
 import { api } from '../../common/api';
-import { catchError, map, of, tap } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import type { AuthBody, SuccessfulAuthResponse } from './types';
 
 @Injectable({
