@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { api } from '../../common/api';
-import { CreatedQuizResponse, EditQuizForm, QuizList, type QuizFormSubmission } from './types';
+import { CreatedQuizResponse, EditQuizForm, QuizDetails, QuizList, type QuizFormSubmission } from './types';
 import { paramsBuilder } from '../../util/paramsBuilder';
 import { SearchOptions } from '../../types/search';
 
@@ -13,12 +13,27 @@ export class QuizService {
 
   url = api.endpoints.quiz;
 
+  static emptyQuiz: QuizDetails = {
+    id: 0,
+    title: '',
+    description: '',
+    instantMode: false,
+    questions: [],
+    creatorId: '',
+    creatorUsername: '',
+    version: 0,
+  };
+
   create(quiz: QuizFormSubmission, options?: SearchOptions) {
     const params = paramsBuilder(options);
 
     return this.http.post<CreatedQuizResponse>(this.url.create, quiz, {
       params,
     });
+  }
+
+  getById(id: number) {
+    return this.http.get<QuizDetails>(this.url.id(id));
   }
 
   getQuizzesByTitle(query: string, options?: SearchOptions) {
