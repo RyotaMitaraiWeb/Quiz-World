@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { GradeService } from './grade.service';
 import { SessionAnswer } from '../quiz/types';
+import { QuestionType } from './types';
 
 const singleChoiceAnswer: SessionAnswer = {
   id: '1',
@@ -44,33 +45,33 @@ describe('GradeService', () => {
     expect(service).toBeTruthy();
   });
 
-  describe('gradeSingleChoiceQuestion', () => {
+  describe('grade (single-choice question)', () => {
     it('Returns true if the provided answers match up', () => {
-      const result = service.gradeSingleChoiceQuestion('1', [singleChoiceAnswer]);
+      const result = service.grade('1', [singleChoiceAnswer], QuestionType.SingleChoice);
       expect(result).toBeTrue();
     });
 
     it('Returns false if the answers do not match up', () => {
-      const result = service.gradeSingleChoiceQuestion('2', [singleChoiceAnswer]);
+      const result = service.grade('2', [singleChoiceAnswer], QuestionType.SingleChoice);
       expect(result).toBeFalse();
     });
 
     it('Returns null if the question has not been graded yet', () => {
-      const result = service.gradeSingleChoiceQuestion('1', null);
+      const result = service.grade('1', null, QuestionType.SingleChoice);
       expect(result).toBeNull();
     });
   });
 
-  describe('gradeMultipleChoiceQuestion', () => {
+  describe('grade (multiple-choice)', () => {
     it('Returns true if the provided answers match up (regardless of order)', () => {
-      const result1 = service.gradeMultipleChoiceQuestion(['3', '2', '1'], generateMultipleCorrectAnswers(3));
+      const result1 = service.grade(['3', '2', '1'], generateMultipleCorrectAnswers(3), QuestionType.MultipleChoice);
       expect(result1).toBeTrue();
     });
 
     it('Returns false if the answers do not match up', () => {
-      const wrongDueToLengthDifference = service.gradeMultipleChoiceQuestion(['1', '2', '3', '3'], generateMultipleCorrectAnswers(3));
-      const wrongDueToPresenceOfAWrongAnswer = service.gradeMultipleChoiceQuestion(['1', '2', '3', '4'], generateMultipleCorrectAnswers(3));
-      const wrongDueToMissingACorrectAnswer = service.gradeMultipleChoiceQuestion(['1', '2'], generateMultipleCorrectAnswers(3));
+      const wrongDueToLengthDifference = service.grade(['1', '2', '3', '3'], generateMultipleCorrectAnswers(3), QuestionType.MultipleChoice);
+      const wrongDueToPresenceOfAWrongAnswer = service.grade(['1', '2', '3', '4'], generateMultipleCorrectAnswers(3), QuestionType.MultipleChoice);
+      const wrongDueToMissingACorrectAnswer = service.grade(['1', '2'], generateMultipleCorrectAnswers(3), QuestionType.MultipleChoice);
 
       expect(wrongDueToLengthDifference).toBeFalse();
       expect(wrongDueToPresenceOfAWrongAnswer).toBeFalse();
@@ -78,24 +79,24 @@ describe('GradeService', () => {
     });
 
     it('Returns null if the question has not been graded yet', () => {
-      const result = service.gradeMultipleChoiceQuestion(['1'], null);
+      const result = service.grade(['1'], null, QuestionType.MultipleChoice);
       expect(result).toBeNull();
     });
   });
 
-  describe('gradeTextQuestion', () => {
+  describe('grade (text)', () => {
     it('Returns true if the provided answers match up (ignores casing, whitespace, and caps letter)', () => {
-      const result = service.gradeTextQuestion('  NOrma L      ', textAnswers);
+      const result = service.grade('  NOrma L      ', textAnswers, QuestionType.Text);
       expect(result).toBeTrue();
     });
 
     it('Returns false if the answers do not match up', () => {
-      const result = service.gradeTextQuestion('wrong', textAnswers);
+      const result = service.grade('wrong', textAnswers, QuestionType.Text);
       expect(result).toBeFalse();
     });
 
     it('Returns null if the question has not been graded yet', () => {
-      const result = service.gradeTextQuestion('1', null);
+      const result = service.grade('1', null, QuestionType.Text);
       expect(result).toBeNull();
     });
   });

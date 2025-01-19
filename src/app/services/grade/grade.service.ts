@@ -20,7 +20,21 @@ export class GradeService {
     }
   }
 
-  gradeSingleChoiceQuestion(answer: string, correctAnswers: SessionAnswer[] | null) {
+  grade(answer: string, correctAnswers: SessionAnswer[] | null, questionType: QuestionType.SingleChoice): boolean | null;
+  grade(answer: string[], correctAnswers: SessionAnswer[] | null, questionType: QuestionType.MultipleChoice): boolean | null;
+  grade(answer: string, correctAnswers: SessionAnswer[] | null, questionType: QuestionType.Text): boolean | null;
+  grade(answer: string | string[], correctAnswers: SessionAnswer[] | null, questionType: QuestionType): boolean | null {
+    switch (questionType) {
+      case QuestionType.SingleChoice:
+        return this._gradeSingleChoiceQuestion(answer as string, correctAnswers);
+      case QuestionType.MultipleChoice:
+        return this._gradeMultipleChoiceQuestion(answer as string[], correctAnswers);
+      default:
+        return this._gradeTextQuestion(answer as string, correctAnswers);
+    }
+  }
+
+  private _gradeSingleChoiceQuestion(answer: string, correctAnswers: SessionAnswer[] | null) {
     const formattedCorrectAnswers = this.formatCorrectAnswers(correctAnswers, QuestionType.SingleChoice);
     if (formattedCorrectAnswers === null) {
       return null;
@@ -30,17 +44,17 @@ export class GradeService {
     return answer === correctAnswer;
   }
 
-  gradeMultipleChoiceQuestion(answers: string[], correctAnswers: SessionAnswer[] | null) {
+  private _gradeMultipleChoiceQuestion(answers: string[], correctAnswers: SessionAnswer[] | null) {
     const formattedCorrectAnswers = this.formatCorrectAnswers(correctAnswers, QuestionType.MultipleChoice);
 
     if (formattedCorrectAnswers === null) {
       return null;
     }
 
-    return this._gradeMultipleChoiceQuestion(answers, formattedCorrectAnswers);
+    return this._compareMultipleChoiceAnswers(answers, formattedCorrectAnswers);
   }
 
-  gradeTextQuestion(answer: string, correctAnswers: SessionAnswer[] | null) {
+  private _gradeTextQuestion(answer: string, correctAnswers: SessionAnswer[] | null) {
     const formattedCorrectAnswers = this.formatCorrectAnswers(correctAnswers, QuestionType.Text);
 
     if (formattedCorrectAnswers === null) {
@@ -51,7 +65,7 @@ export class GradeService {
     return normalizedAnswers.includes(this._normalizeAnswer(answer));
   }
 
-  private _gradeMultipleChoiceQuestion(answers: string[], correctAnswers: string[]) {
+  private _compareMultipleChoiceAnswers(answers: string[], correctAnswers: string[]) {
     if (answers.length !== correctAnswers.length) {
       return false;
     }
