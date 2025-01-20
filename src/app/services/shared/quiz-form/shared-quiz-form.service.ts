@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { FormArray, FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { questionTypes, shortQuestionType, shortQuestionTypes } from '../../../common/questionTypes';
 import { QuizDetails, SessionQuestion } from '../../quiz/types';
 
@@ -24,10 +24,14 @@ export class SharedQuizFormService {
   }
 
   private _addControl(value: unknown, questionId: string, type: shortQuestionType) {
-    const group = this.formBuilder.group({
-      currentAnswer: type === shortQuestionTypes[questionTypes.multi] ? value : [value, [Validators.required]],
-      id: [questionId],
-      type: [type],
+
+    const group = new FormGroup({
+      currentAnswer: type === shortQuestionTypes[questionTypes.multi]
+        ? new FormArray(value as never[], [Validators.required])
+        : new FormControl(value, [Validators.required]),
+      id: new FormControl(questionId),
+      type: new FormControl(type),
+
     });
 
     if (type === shortQuestionTypes[questionTypes.multi]) {
