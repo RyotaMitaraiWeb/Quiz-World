@@ -2,8 +2,10 @@
 @if (q) {
 @let type = q.type;
 @let questionForm = form();
+@let _correctAnswers = correctAnswers();
+@let isCorrect = userHasAnsweredCorrectly();
 
-<div class="question">
+<div class="question" [appQuestionGrade]="isCorrect">
   <mat-card>
     <mat-card-header>
       <mat-card-title>
@@ -15,23 +17,31 @@
     </mat-card-header>
     <mat-card-content>
       @switch (type) {
-        @case (questionTypes.SingleChoice) {
-        <app-single-choice-question [question]="q"></app-single-choice-question>
-        }
+      @case (questionTypes.SingleChoice) {
+      <app-single-choice-question [question]="q"></app-single-choice-question>
+      }
 
-        @case (questionTypes.Text) {
-          <app-text-question [question]="q"></app-text-question>
-        }
+      @case (questionTypes.Text) {
+      <app-text-question [question]="q"></app-text-question>
+      }
 
-        @case (questionTypes.MultipleChoice) {
-          <app-multiple-choice-question [question]="q"></app-multiple-choice-question>
-        }
+      @case (questionTypes.MultipleChoice) {
+      <app-multiple-choice-question [question]="q"></app-multiple-choice-question>
+      }
       }
     </mat-card-content>
     @if (isInstantMode() && questionForm) {
-      <button [disabled]="questionForm.invalid" mat-flat-button type="button">
-        Check my answer
-      </button>
+      <mat-card-actions>
+        <button (click)="gradeQuestion($event)" [disabled]="questionForm.invalid || questionForm.disabled"
+          mat-flat-button type="button">
+          Check my answer
+        </button>
+      </mat-card-actions>
+      }
+    @if (q.notes && _correctAnswers !== null) {
+      <mat-card-footer>
+        <p class="question-notes">{{ q.notes }}</p>
+      </mat-card-footer>
     }
   </mat-card>
 </div>

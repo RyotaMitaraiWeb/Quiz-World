@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { QuizSessionQuestionComponent } from './quiz-session-question.component';
 import { QuizService } from '../../../services/quiz/quiz.service';
 import { QuizStore } from '../../../store/quiz/quiz.store';
-import { multipleChoiceQuestionNoteless, sampleQuestions, singleChoiceQuestionNoteless, textQuestionNoteless } from '../sample-test-questions';
-import { SessionQuestion } from '../../../services/quiz/types';
+import { multipleChoiceQuestionNoteless, sampleQuestions, singleChoiceQuestionNoteless, singleChoiceQuestionWithNotes, textQuestionNoteless } from '../sample-test-questions';
+import { GradedAnswer, SessionQuestion } from '../../../services/quiz/types';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { SharedQuizFormService } from '../../../services/shared/quiz-form/shared-quiz-form.service';
@@ -13,16 +13,22 @@ import { MatRadioButtonHarness } from '@angular/material/radio/testing';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { AnswerService } from '../../../services/answer/answer.service';
+import { of } from 'rxjs';
 
 describe('QuizSessionQuestionComponent', () => {
   let component: QuizSessionQuestionComponent;
   let fixture: ComponentFixture<QuizSessionQuestionComponent>;
   let form: SharedQuizFormService;
   let loader: HarnessLoader;
+  let answerService: AnswerService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [QuizSessionQuestionComponent, NoopAnimationsModule],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     })
     .compileComponents();
 
@@ -30,6 +36,7 @@ describe('QuizSessionQuestionComponent', () => {
     component = fixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(fixture);
     form = TestBed.inject(SharedQuizFormService);
+    answerService = TestBed.inject(AnswerService);
     fixture.detectChanges();
   });
 
@@ -120,6 +127,151 @@ describe('QuizSessionQuestionComponent', () => {
       await fixture.whenStable();
 
       expect(await button.isDisabled()).toBeTrue();
+    });
+  });
+
+  describe('Grading process', () => {
+    it('Disables the form and button once graded (instant mode)', async () => {
+      setup(singleChoiceQuestionNoteless, true);
+
+      const correctAnswer: GradedAnswer = {
+        id: singleChoiceQuestionNoteless.id,
+        answers: [
+          singleChoiceQuestionNoteless!.answers![0]],
+      };
+
+      spyOn(answerService, 'getCorrectAnswersForQuestionById').and.returnValue(
+        of(
+          correctAnswer,
+        ),
+      );
+
+      const button = await loader.getHarness(MatButtonHarness);
+      const [radio1] = await loader.getAllHarnesses(MatRadioButtonHarness);
+
+      await radio1.check();
+      await fixture.whenStable();
+
+      await button.click();
+      await fixture.whenStable();
+
+      expect(component.form()?.disabled).toBeTrue();
+      expect(await button.isDisabled()).toBeTrue();
+    });
+
+    it('Shows notes if there are such after grading', async () => {
+      setup(singleChoiceQuestionWithNotes, true);
+      expect(document.querySelector('.question-notes')).toBeNull();
+
+      const correctAnswer: GradedAnswer = {
+        id: singleChoiceQuestionNoteless.id,
+        answers: [
+          singleChoiceQuestionNoteless!.answers![0]],
+      };
+
+      spyOn(answerService, 'getCorrectAnswersForQuestionById').and.returnValue(
+        of(
+          correctAnswer,
+        ),
+      );
+
+      const button = await loader.getHarness(MatButtonHarness);
+      const [radio1] = await loader.getAllHarnesses(MatRadioButtonHarness);
+
+      await radio1.check();
+      await fixture.whenStable();
+
+      await button.click();
+      await fixture.whenStable();
+
+      const notes = document.querySelector('.question-notes');
+      expect(notes).not.toBeNull();
+
+    });
+
+    it('Does not show notes if there are no such after grading', async () => {
+      setup(singleChoiceQuestionNoteless, true);
+      expect(document.querySelector('.question-notes')).toBeNull();
+
+      const correctAnswer: GradedAnswer = {
+        id: singleChoiceQuestionNoteless.id,
+        answers: [
+          singleChoiceQuestionNoteless!.answers![0]],
+      };
+
+      spyOn(answerService, 'getCorrectAnswersForQuestionById').and.returnValue(
+        of(
+          correctAnswer,
+        ),
+      );
+
+      const button = await loader.getHarness(MatButtonHarness);
+      const [radio1] = await loader.getAllHarnesses(MatRadioButtonHarness);
+
+      await radio1.check();
+      await fixture.whenStable();
+
+      await button.click();
+      await fixture.whenStable();
+
+      const notes = document.querySelector('.question-notes');
+      expect(notes).toBeNull();
+    });
+
+    it('Correctly denotes the question as correct', async () => {
+      setup(singleChoiceQuestionNoteless, true);
+
+      const correctAnswer: GradedAnswer = {
+        id: singleChoiceQuestionNoteless.id,
+        answers: [
+          singleChoiceQuestionNoteless!.answers![0]],
+      };
+
+      spyOn(answerService, 'getCorrectAnswersForQuestionById').and.returnValue(
+        of(
+          correctAnswer,
+        ),
+      );
+
+      const button = await loader.getHarness(MatButtonHarness);
+      const [radio1] = await loader.getAllHarnesses(MatRadioButtonHarness);
+
+      await radio1.check();
+      await fixture.whenStable();
+
+      await button.click();
+      await fixture.whenStable();
+
+      expect(document.querySelector('.correct')).not.toBeNull();
+    });
+
+    it('Correctly denotes the question as incorrect', async () => {
+      setup(singleChoiceQuestionWithNotes, true);
+      expect(document.querySelector('.question-notes')).toBeNull();
+
+      const correctAnswer: GradedAnswer = {
+        id: singleChoiceQuestionNoteless.id,
+        answers: [
+          singleChoiceQuestionNoteless!.answers![0]],
+      };
+
+      spyOn(answerService, 'getCorrectAnswersForQuestionById').and.returnValue(
+        of(
+          correctAnswer,
+        ),
+      );
+
+      const button = await loader.getHarness(MatButtonHarness);
+      const radios = await loader.getAllHarnesses(MatRadioButtonHarness);
+      const radio2 = radios[1];
+
+      await radio2.check();
+      await fixture.whenStable();
+
+      await button.click();
+      await fixture.whenStable();
+
+      expect(document.querySelector('.incorrect')).not.toBeNull();
     });
   });
 });
