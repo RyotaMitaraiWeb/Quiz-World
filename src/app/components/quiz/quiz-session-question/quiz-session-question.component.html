@@ -1,0 +1,38 @@
+@let q = question();
+@if (q) {
+@let type = q.type;
+@let questionForm = form();
+
+<div>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>
+        {{ q.prompt }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ questionInstructions[q.type] }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      @switch (type) {
+        @case (questionTypes.SingleChoice) {
+        <app-single-choice-question [question]="q"></app-single-choice-question>
+        }
+
+        @case (questionTypes.Text) {
+          <app-text-question [question]="q"></app-text-question>
+        }
+
+        @case (questionTypes.MultipleChoice) {
+          <app-multiple-choice-question [question]="q"></app-multiple-choice-question>
+        }
+      }
+    </mat-card-content>
+    @if (isInstantMode() && questionForm) {
+      <button [disabled]="questionForm.invalid" mat-flat-button type="button">
+        Check my answer
+      </button>
+    }
+  </mat-card>
+</div>
+}
