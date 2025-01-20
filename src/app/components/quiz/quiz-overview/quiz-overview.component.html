@@ -1,29 +1,27 @@
-@let data = quiz();
-
 <mat-card appearance="outlined">
   <mat-card-header>
     <mat-card-title>
       Overview
     </mat-card-title>
     <mat-card-subtitle>
-      Made by {{ data.creatorUsername }}
+      Made by {{ quiz.creatorUsername() }}
 
       <mat-chip-set>
         <mat-chip>
-          Created on {{ data.createdOn | date: 'dd/MM/yyyy'}}
+          Created on {{ quiz.createdOn() | date: 'dd/MM/yyyy'}}
         </mat-chip>
         <mat-chip>
-          Updated on {{ data.updatedOn | date: 'dd/MM/yyyy'}}
+          Updated on {{ quiz.updatedOn() | date: 'dd/MM/yyyy'}}
         </mat-chip>
       </mat-chip-set>
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
     <p>
-      {{ data.description }}
+      {{ quiz.description() }}
     </p>
   </mat-card-content>
-  @if (data.instantMode) {
+  @if (quiz.instantMode()) {
   <mat-card-footer>
     <h3>What does this quiz feature?</h3>
     <mat-chip-set>
