@@ -1,0 +1,8 @@
+@let q = question();
+@let questionForm = form();
+
+@if (q && questionForm) {
+  <mat-form-field [formGroup]="questionForm">
+    <input matInput formControlName="currentAnswer" />
+  </mat-form-field>
+}

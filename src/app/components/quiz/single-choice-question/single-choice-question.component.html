@@ -1,0 +1,15 @@
+@let q = question();
+@let questionForm = form();
+
+@if (questionForm) {
+  <div [formGroup]="questionForm">
+    <mat-radio-group formControlName="currentAnswer" [name]="q.id" required>
+      @for (answer of q.answers; track answer.id) {
+        <mat-radio-button [value]="answer.id">
+          {{ answer.value }}
+        </mat-radio-button>
+      }
+    </mat-radio-group>
+  </div>
+}
+

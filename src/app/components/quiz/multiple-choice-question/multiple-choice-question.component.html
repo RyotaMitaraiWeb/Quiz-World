@@ -1,0 +1,14 @@
+@let q = question();
+@let questionForm = form();
+@let answers = q.answers;
+<!-- @let test = questionForm.controls.currentAnswer; -->
+
+@if (questionForm && answers) {
+<div>
+  @for (answer of answers; track answer.id) {
+  <mat-checkbox (change)="updateAnswers($event)" [value]="answer.id">
+    {{ answer.value }}
+  </mat-checkbox>
+  }
+</div>
+}
