@@ -20,10 +20,7 @@ export class GradeService {
     }
   }
 
-  grade(answer: string, correctAnswers: SessionAnswer[] | null, questionType: QuestionType.SingleChoice): boolean | null;
-  grade(answer: string[], correctAnswers: SessionAnswer[] | null, questionType: QuestionType.MultipleChoice): boolean | null;
-  grade(answer: string, correctAnswers: SessionAnswer[] | null, questionType: QuestionType.Text): boolean | null;
-  grade(answer: string | string[], correctAnswers: SessionAnswer[] | null, questionType: QuestionType): boolean | null {
+  grade(answer: unknown, correctAnswers: SessionAnswer[] | null, questionType: QuestionType): boolean | null {
     switch (questionType) {
       case QuestionType.SingleChoice:
         return this._gradeSingleChoiceQuestion(answer as string, correctAnswers);
