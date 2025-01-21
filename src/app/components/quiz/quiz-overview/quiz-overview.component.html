@@ -1,32 +1,38 @@
-<mat-card appearance="outlined">
-  <mat-card-header>
-    <mat-card-title>
-      Overview
-    </mat-card-title>
-    <mat-card-subtitle>
-      Made by {{ quiz.creatorUsername() }}
+<section class="quiz-overview">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>
+        Overview
+      </mat-card-title>
+      <mat-card-subtitle>
+        Made by {{ quiz.creatorUsername() }}
 
+        <mat-chip-set>
+          <mat-chip>
+            Created on {{ quiz.createdOn() | date: 'dd/MM/yyyy'}}
+          </mat-chip>
+          <mat-chip>
+            Updated on {{ quiz.updatedOn() | date: 'dd/MM/yyyy'}}
+          </mat-chip>
+        </mat-chip-set>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      @let description = quiz.description();
+      @if (description) {
+        <p class="description">
+          {{ description }}
+        </p>
+      }
+    </mat-card-content>
+    @if (quiz.instantMode()) {
+    <mat-card-footer class="features">
+      <h2>What does this quiz feature?</h2>
+      
       <mat-chip-set>
-        <mat-chip>
-          Created on {{ quiz.createdOn() | date: 'dd/MM/yyyy'}}
-        </mat-chip>
-        <mat-chip>
-          Updated on {{ quiz.updatedOn() | date: 'dd/MM/yyyy'}}
-        </mat-chip>
+        <mat-chip>Instant mode</mat-chip>
       </mat-chip-set>
-    </mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
-    <p>
-      {{ quiz.description() }}
-    </p>
-  </mat-card-content>
-  @if (quiz.instantMode()) {
-  <mat-card-footer>
-    <h3>What does this quiz feature?</h3>
-    <mat-chip-set>
-      <mat-chip>Instant mode</mat-chip>
-    </mat-chip-set>
-  </mat-card-footer>
-  }
-</mat-card>
+    </mat-card-footer>
+    }
+  </mat-card>
+</section>

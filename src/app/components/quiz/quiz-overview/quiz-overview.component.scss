@@ -1,0 +1,14 @@
+.quiz-overview {
+  width: 95%;
+  margin: 0 auto;
+  padding: 16px;
+
+  mat-card-footer.features {
+    padding: 16px;
+
+    h2 {
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+  }
+}
