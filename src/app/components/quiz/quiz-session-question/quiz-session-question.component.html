@@ -35,17 +35,17 @@
       }
     </mat-card-content>
     @if (_correctAnswers !== null) {
-      <mat-card-footer [appQuestionGrade]="isCorrect">
-  
-        <p class="feedback">
+    <mat-card-footer [appQuestionGrade]="isCorrect">
+
+      <p class="feedback">
         {{ isCorrect ? 'Correct! ' : 'Incorrect! '}}
         @if (q.notes) {
         <span class="question-notes">{{ q.notes }}</span>
         }
-        </p>
-  
-      </mat-card-footer>
-      }
+      </p>
+
+    </mat-card-footer>
+    }
     @if (isInstantMode() && questionForm) {
     <mat-card-actions>
       <button class="grade-button" (click)="gradeQuestion($event)"

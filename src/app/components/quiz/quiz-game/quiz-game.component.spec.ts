@@ -12,6 +12,8 @@ import { MatInputHarness } from '@angular/material/input/testing';
 import { MatCheckboxHarness } from '@angular/material/checkbox/testing';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { QuizDetails } from '../../../services/quiz/types';
+import { AnswerService } from '../../../services/answer/answer.service';
+import { of } from 'rxjs';
 
 const sampleQuiz: QuizDetails = {
   id: 1,
@@ -30,6 +32,7 @@ describe('QuizGameComponent', () => {
   let component: QuizGameComponent;
   let fixture: ComponentFixture<QuizGameComponent>;
   let loader: HarnessLoader;
+  let answerService: AnswerService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -41,6 +44,7 @@ describe('QuizGameComponent', () => {
     fixture = TestBed.createComponent(QuizGameComponent);
     component = fixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(fixture);
+    answerService = TestBed.inject(AnswerService);
 
     fixture.detectChanges();
   });
@@ -65,6 +69,8 @@ describe('QuizGameComponent', () => {
 
     it('is enabled and disabled when appropriate', async () => {
       setup();
+
+      const spy = spyOn(answerService, 'getCorrectAnswersForAllQuestions').and.returnValue(of([]));
 
       const radios = await loader.getAllHarnesses(MatRadioButtonHarness);
       const fields = await loader.getAllHarnesses(MatInputHarness);
@@ -92,6 +98,18 @@ describe('QuizGameComponent', () => {
       await fields[0].setValue('');
       await fixture.whenStable();
 
+      expect(await button.isDisabled()).toBeTrue();
+
+      await fields[0].setValue('1');
+
+      await fixture.whenStable();
+
+
+      await button.click();
+      await fixture.whenStable();
+
+      // make sure that the button was actually clicked
+      expect(spy).toHaveBeenCalled();
       expect(await button.isDisabled()).toBeTrue();
     });
   });

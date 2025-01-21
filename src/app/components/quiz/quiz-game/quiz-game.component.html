@@ -12,6 +12,6 @@
   }
 
   @if (!instantMode) {
-  <button id="grade" [disabled]="quizForm.invalid" mat-flat-button type="submit">Check my answers</button>
+  <button id="grade" [disabled]="quizForm.invalid || quizForm.disabled" mat-flat-button type="submit">Check my answers</button>
   }
 </form>

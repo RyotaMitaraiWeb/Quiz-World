@@ -41,6 +41,7 @@ export class QuizGameComponent implements OnDestroy  {
         next: (answers) => {
           this.form.disable();
           this.correctAnswers.set(answers);
+          this.form.disable();
         },
         error: () => {
           //
