@@ -3,12 +3,15 @@
 
 @if (questionForm) {
 <div [formGroup]="questionForm">
-  <mat-radio-group formControlName="currentAnswer" [name]="q.id" required>
+  <mat-radio-group class="answers" formControlName="currentAnswer" [name]="q.id" required>
     @for (answer of q.answers; track answer.id) {
-    <mat-radio-button [value]="answer.id">
-      <span class="answer-label" [appQuestionGrade]="answerIsCorrect(answer.id)" incorrectAnswerClassName="mat-mdc-form-field-error">{{
-        answer.value }}</span>
-    </mat-radio-button>
+    <div class="answer-radio">
+      <mat-radio-button [value]="answer.id">
+        <span class="answer-label" [appQuestionGrade]="answerIsCorrect(answer.id)">{{
+          answer.value }}</span>
+      </mat-radio-button>
+    </div>
+
     }
   </mat-radio-group>
 </div>

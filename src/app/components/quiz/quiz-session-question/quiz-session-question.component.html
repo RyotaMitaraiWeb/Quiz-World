@@ -9,7 +9,7 @@
 <div class="question" [appQuestionGrade]="isCorrect">
   <mat-card>
     <mat-card-header>
-      <mat-card-title>
+      <mat-card-title [appQuestionGrade]="isCorrect">
         {{ q.prompt }}
       </mat-card-title>
       <mat-card-subtitle>
@@ -29,22 +29,30 @@
       }
 
       @case (questionTypes.MultipleChoice) {
-      <app-multiple-choice-question [question]="q" [correctAnswers]="_correctAnswersForQuestion"></app-multiple-choice-question>
+      <app-multiple-choice-question [question]="q"
+        [correctAnswers]="_correctAnswersForQuestion"></app-multiple-choice-question>
       }
       }
     </mat-card-content>
+    @if (_correctAnswers !== null) {
+      <mat-card-footer [appQuestionGrade]="isCorrect">
+  
+        <p class="feedback">
+        {{ isCorrect ? 'Correct! ' : 'Incorrect! '}}
+        @if (q.notes) {
+        <span class="question-notes">{{ q.notes }}</span>
+        }
+        </p>
+  
+      </mat-card-footer>
+      }
     @if (isInstantMode() && questionForm) {
     <mat-card-actions>
-      <button (click)="gradeQuestion($event)" [disabled]="questionForm.invalid || questionForm.disabled" mat-flat-button
-        type="button">
+      <button class="grade-button" (click)="gradeQuestion($event)"
+        [disabled]="questionForm.invalid || questionForm.disabled" mat-flat-button type="button">
         Check my answer
       </button>
     </mat-card-actions>
-    }
-    @if (q.notes && _correctAnswers !== null) {
-    <mat-card-footer>
-      <p class="question-notes">{{ q.notes }}</p>
-    </mat-card-footer>
     }
   </mat-card>
 </div>

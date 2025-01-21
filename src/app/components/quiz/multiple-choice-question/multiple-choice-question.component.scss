@@ -1,0 +1,18 @@
+.answers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .answer-label {
+    transition: color 0.4s;
+  
+    &.correct {
+      color: green;
+      font-weight: bold;
+    }
+
+    &.incorrect {
+      color: rgb(186, 26, 26);
+    }
+  }
+}

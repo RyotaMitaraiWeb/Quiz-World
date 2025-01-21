@@ -5,10 +5,13 @@
 <form (submit)="gradeAllQuestions($event)">
   @for (control of controls; track control.controls.id.value) {
   @let questionId = control.controls.id.value;
-  <app-quiz-session-question [questionId]="questionId!" [correctAnswers]="correctAnswers()"></app-quiz-session-question>
+  <div class="question-container">
+    <app-quiz-session-question [questionId]="questionId!"
+      [correctAnswers]="correctAnswers()"></app-quiz-session-question>
+  </div>
   }
 
   @if (!instantMode) {
-    <button id="grade" [disabled]="quizForm.invalid" mat-flat-button type="submit">Check my answers</button>
+  <button id="grade" [disabled]="quizForm.invalid" mat-flat-button type="submit">Check my answers</button>
   }
 </form>
