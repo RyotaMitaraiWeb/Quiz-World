@@ -273,5 +273,32 @@ describe('QuizSessionQuestionComponent', () => {
 
       expect(document.querySelector('.incorrect')).not.toBeNull();
     });
+
+    it('Correctly handles grading in non-instant mode', async () => {
+      setup(singleChoiceQuestionNoteless, true);
+      const [radio1] = await loader.getAllHarnesses(MatRadioButtonHarness);
+
+      await radio1.check();
+      await fixture.whenStable();
+
+      spyOn(answerService, 'getCorrectAnswersForQuestionById').and.returnValue(
+        of(
+          [
+            {
+              id: singleChoiceQuestionNoteless.id,
+              answers: [singleChoiceQuestionNoteless!.answers![0]],
+            },
+          ] as unknown as GradedAnswer,
+        ),
+      );
+
+      const button = await loader.getHarness(MatButtonHarness);
+      await button.click();
+
+      await fixture.whenStable();
+
+      const question = document.querySelector('.correct');
+      expect(question).not.toBeNull();
+    });
   });
 });

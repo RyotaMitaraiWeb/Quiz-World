@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, input, signal, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, model, OnDestroy } from '@angular/core';
 import { SharedQuizFormService } from '../../../services/shared/quiz-form/shared-quiz-form.service';
 import { QuizStore } from '../../../store/quiz/quiz.store';
 import { shortQuestionType, shortQuestionTypes } from '../../../common/questionTypes';
@@ -11,7 +11,7 @@ import { MultipleChoiceQuestionComponent } from '../multiple-choice-question/mul
 import { Subscription } from 'rxjs';
 import { GradeService } from '../../../services/grade/grade.service';
 import { AnswerService } from '../../../services/answer/answer.service';
-import { SessionAnswer } from '../../../services/quiz/types';
+import { GradedAnswer, SessionAnswer } from '../../../services/quiz/types';
 import { QuestionType } from '../../../services/grade/types';
 import { QuestionGradeDirective } from '../../../directives/question-grade/question-grade.directive';
 
@@ -41,18 +41,31 @@ export class QuizSessionQuestionComponent implements OnDestroy {
   question = computed(() => this.quiz.questions().find(q => q.id === this.questionId()));
   questionId = input.required<string>();
 
+
   private version = computed(() => this.quiz.version());
   private questionType = computed(() => this.question()?.type);
   readonly form = computed(() => this.sharedForm.mapControlToQuestion(this.questionId()));
   protected isInstantMode = computed(() => this.quiz.instantMode());
 
-  readonly correctAnswers = signal<SessionAnswer[] | null>(null);
+  readonly correctAnswers = model<GradedAnswer | GradedAnswer[] | null>(null);
+
+  readonly correctAnswersForQuestion = computed<SessionAnswer[] | null>(() => {
+    const correctAnswers = this.correctAnswers();
+
+    if (Array.isArray(correctAnswers)) {
+      return correctAnswers.find(ca => ca.id === this.questionId())?.answers|| null;
+    }
+
+    return correctAnswers?.answers || null;
+  });
+
   readonly userHasAnsweredCorrectly = computed<boolean | null>(() => {
     const userAnswers = this.form()?.controls.currentAnswer.value;
-    const correctAnswers = this.correctAnswers();
+    const correctAnswers = this.correctAnswersForQuestion();
+
     const questionType = this.questionType();
 
-    if (!userAnswers || !questionType) {
+    if (!userAnswers || !questionType || !correctAnswers) {
       return null;
     }
 
@@ -66,7 +79,7 @@ export class QuizSessionQuestionComponent implements OnDestroy {
       .getCorrectAnswersForQuestionById(this.questionId(), this.version())
       .subscribe({
         next: (grade) => {
-          this.correctAnswers.set(grade.answers);
+          this.correctAnswers.set(grade);
           this.form()?.disable();
         },
         error: () => {

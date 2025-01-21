@@ -5,7 +5,7 @@
 <form (submit)="gradeAllQuestions($event)">
   @for (control of controls; track control.controls.id.value) {
   @let questionId = control.controls.id.value;
-  <app-quiz-session-question [questionId]="questionId!"></app-quiz-session-question>
+  <app-quiz-session-question [questionId]="questionId!" [correctAnswers]="correctAnswers()"></app-quiz-session-question>
   }
 
   @if (!instantMode) {
