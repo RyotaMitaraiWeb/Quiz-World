@@ -1,13 +1,15 @@
 @let q = question();
 @let questionForm = form();
 @let answers = q.answers;
-<!-- @let test = questionForm.controls.currentAnswer; -->
 
 @if (questionForm && answers) {
 <div>
   @for (answer of answers; track answer.id) {
-  <mat-checkbox (change)="updateAnswers($event)" [value]="answer.id">
-    {{ answer.value }}
+  @let _answerIsCorrect = answerIsCorrect(answer.id);
+  <mat-checkbox [disabled]="_answerIsCorrect !== null" (change)="updateAnswers($event)" [value]="answer.id">
+    <span [appQuestionGrade]="_answerIsCorrect" incorrectAnswerClassName="mat-mdc-form-field-error">
+      {{ answer.value }}
+    </span>
   </mat-checkbox>
   }
 </div>

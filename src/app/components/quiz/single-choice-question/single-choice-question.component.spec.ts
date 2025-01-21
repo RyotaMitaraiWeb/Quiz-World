@@ -8,6 +8,7 @@ import { sampleQuestions, singleChoiceQuestionNoteless, singleChoiceQuestionWith
 import { MatRadioButtonHarness } from '@angular/material/radio/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
+import { SessionAnswer } from '../../../services/quiz/types';
 
 describe('SingleChoiceQuestionComponent', () => {
   let component: SingleChoiceQuestionComponent;
@@ -27,11 +28,14 @@ describe('SingleChoiceQuestionComponent', () => {
     component = fixture.componentInstance;
   });
 
-  function setup(question = singleChoiceQuestionNoteless) {
+  function setup(question = singleChoiceQuestionNoteless, correctAnswers?: SessionAnswer[]) {
     const quiz = TestBed.inject(QuizStore);
     quiz.updateQuiz({ ...QuizService.emptyQuiz, questions: sampleQuestions});
     form.populate({ ...QuizService.emptyQuiz, questions: sampleQuestions });
     fixture.componentRef.setInput('question', question);
+    if (correctAnswers) {
+      fixture.componentRef.setInput('correctAnswers', correctAnswers);
+    }
     fixture.detectChanges();
   }
 

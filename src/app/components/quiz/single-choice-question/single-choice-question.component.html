@@ -2,14 +2,14 @@
 @let questionForm = form();
 
 @if (questionForm) {
-  <div [formGroup]="questionForm">
-    <mat-radio-group formControlName="currentAnswer" [name]="q.id" required>
-      @for (answer of q.answers; track answer.id) {
-        <mat-radio-button [value]="answer.id">
-          {{ answer.value }}
-        </mat-radio-button>
-      }
-    </mat-radio-group>
-  </div>
+<div [formGroup]="questionForm">
+  <mat-radio-group formControlName="currentAnswer" [name]="q.id" required>
+    @for (answer of q.answers; track answer.id) {
+    <mat-radio-button [value]="answer.id">
+      <span class="answer-label" [appQuestionGrade]="answerIsCorrect(answer.id)" incorrectAnswerClassName="mat-mdc-form-field-error">{{
+        answer.value }}</span>
+    </mat-radio-button>
+    }
+  </mat-radio-group>
+</div>
 }
-
