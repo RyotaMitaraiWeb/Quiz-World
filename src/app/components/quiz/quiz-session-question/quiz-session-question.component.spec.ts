@@ -281,6 +281,12 @@ describe('QuizSessionQuestionComponent', () => {
       await radio1.check();
       await fixture.whenStable();
 
+      /*
+        this is pretty hacky, but this basically simulates the parent component
+        updating the correct answers in non-instant mode.
+
+        This is done here just so I don't have to lift the test up one component.
+       */
       spyOn(answerService, 'getCorrectAnswersForQuestionById').and.returnValue(
         of(
           [
