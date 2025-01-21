@@ -1,5 +1,11 @@
 import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
 
+/**
+ * Directive for applying class names based on "feedback". Essentially,
+ * the directive applies one class name for "correct" answers and one for "wrong"
+ * answers. Pass ``null`` to the directive to indicate that there is no feedback
+ * (yet).
+ */
 @Directive({
   selector: '[appQuestionGrade]',
   standalone: true,
