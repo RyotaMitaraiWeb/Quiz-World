@@ -66,7 +66,6 @@ export class QuizSessionQuestionComponent implements OnDestroy {
     const questionType = this.questionType();
 
     if (!userAnswers || !questionType || !correctAnswers) {
-      console.log('NULL HERE');
       return null;
     }
 
