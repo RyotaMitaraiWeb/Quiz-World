@@ -6,8 +6,18 @@ import { QuestionType } from './types';
   providedIn: 'root',
 })
 export class GradeService {
+  grade(answer: unknown, correctAnswers: SessionAnswer[] | null, questionType: QuestionType): boolean | null {
+    switch (questionType) {
+      case QuestionType.SingleChoice:
+        return this._gradeSingleChoiceQuestion(answer as string, correctAnswers);
+      case QuestionType.MultipleChoice:
+        return this._gradeMultipleChoiceQuestion(answer as string[], correctAnswers);
+      default:
+        return this._gradeTextQuestion(answer as string, correctAnswers);
+    }
+  }
 
-  formatCorrectAnswers(correctAnswers: SessionAnswer[] | null, questionType: QuestionType): string[] | null {
+  _formatCorrectAnswers(correctAnswers: SessionAnswer[] | null, questionType: QuestionType): string[] | null {
     if (correctAnswers === null) {
       return null;
     }
@@ -20,19 +30,8 @@ export class GradeService {
     }
   }
 
-  grade(answer: unknown, correctAnswers: SessionAnswer[] | null, questionType: QuestionType): boolean | null {
-    switch (questionType) {
-      case QuestionType.SingleChoice:
-        return this._gradeSingleChoiceQuestion(answer as string, correctAnswers);
-      case QuestionType.MultipleChoice:
-        return this._gradeMultipleChoiceQuestion(answer as string[], correctAnswers);
-      default:
-        return this._gradeTextQuestion(answer as string, correctAnswers);
-    }
-  }
-
   private _gradeSingleChoiceQuestion(answer: string, correctAnswers: SessionAnswer[] | null) {
-    const formattedCorrectAnswers = this.formatCorrectAnswers(correctAnswers, QuestionType.SingleChoice);
+    const formattedCorrectAnswers = this._formatCorrectAnswers(correctAnswers, QuestionType.SingleChoice);
     if (formattedCorrectAnswers === null) {
       return null;
     }
@@ -42,7 +41,7 @@ export class GradeService {
   }
 
   private _gradeMultipleChoiceQuestion(answers: string[], correctAnswers: SessionAnswer[] | null) {
-    const formattedCorrectAnswers = this.formatCorrectAnswers(correctAnswers, QuestionType.MultipleChoice);
+    const formattedCorrectAnswers = this._formatCorrectAnswers(correctAnswers, QuestionType.MultipleChoice);
 
     if (formattedCorrectAnswers === null) {
       return null;
@@ -52,7 +51,7 @@ export class GradeService {
   }
 
   private _gradeTextQuestion(answer: string, correctAnswers: SessionAnswer[] | null) {
-    const formattedCorrectAnswers = this.formatCorrectAnswers(correctAnswers, QuestionType.Text);
+    const formattedCorrectAnswers = this._formatCorrectAnswers(correctAnswers, QuestionType.Text);
 
     if (formattedCorrectAnswers === null) {
       return null;
