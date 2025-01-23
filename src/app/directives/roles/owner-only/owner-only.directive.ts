@@ -17,22 +17,21 @@ export class OwnerOnlyDirective {
   appOwnerOnly!: string;
 
   @Input() appOwnerOnlyRolesThatCanAlsoSee?: role[];
+
   private readonly user = inject(UserStore);
+  private readonly templateRef: TemplateRef<HTMLElement> = inject(TemplateRef<HTMLElement>);
+  private readonly viewContainerRef: ViewContainerRef = inject(ViewContainerRef);
 
-  constructor(
-    private readonly templateRef: TemplateRef<HTMLElement>,
-    private readonly viewContainerRef: ViewContainerRef,
-  ) {
+  constructor() {
     effect(() => {
-
       const userMatchesRoles = this.userMatchesRoles(this.user.roles());
       const userId = this.user.id();
 
-      if (userMatchesRoles || userId === this.appOwnerOnly) {
-        this.viewContainerRef.createEmbeddedView(this.templateRef);
-      } else  {
-        this.viewContainerRef.clear();
-      }
+      if (userMatchesRoles || (userId === this.appOwnerOnly && userId)) {
+          this.viewContainerRef.createEmbeddedView(this.templateRef);
+        } else  {
+          this.viewContainerRef.clear();
+        }
     });
   }
 

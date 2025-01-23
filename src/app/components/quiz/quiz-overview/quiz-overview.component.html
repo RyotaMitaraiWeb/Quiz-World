@@ -1,3 +1,4 @@
+@let id = quiz.id();
 <section class="quiz-overview">
   <mat-card appearance="outlined">
     <mat-card-header>
@@ -17,22 +18,38 @@
         </mat-chip-set>
       </mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content class="content">
       @let description = quiz.description();
       @if (description) {
-        <p class="description">
-          {{ description }}
-        </p>
+      <p class="description">
+        {{ description }}
+      </p>
       }
     </mat-card-content>
-    @if (quiz.instantMode()) {
-    <mat-card-footer class="features">
-      <h2>What does this quiz feature?</h2>
-      
+  </mat-card>
+
+  @if (quiz.instantMode()) {
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>What does this quiz feature?</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
       <mat-chip-set>
         <mat-chip>Instant mode</mat-chip>
       </mat-chip-set>
-    </mat-card-footer>
-    }
+    </mat-card-content>
+  </mat-card>
+  }
+
+  @let creatorId = quiz.creatorId();
+
+  <mat-card *appOwnerOnly="creatorId; rolesThatCanAlsoSee: ['Moderator']" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Actions</mat-card-title>
+    </mat-card-header>
+    <mat-card-actions class="actions">
+      <app-edit-button [quizId]="id"></app-edit-button>
+      <app-delete-button [quizId]="id" (afterDelete)="redirectToHome()"></app-delete-button>
+    </mat-card-actions>
   </mat-card>
 </section>
