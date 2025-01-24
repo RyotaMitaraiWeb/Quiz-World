@@ -98,3 +98,36 @@ export const sampleQuestions = [
   multipleChoiceQuestionNoteless,
   multipleChoiceQuestionWithNotes,
 ];
+
+export const sampleQuestionsCorrectAnswers = [
+  {
+    id: singleChoiceQuestionNoteless.id,
+    answers: [singleChoiceQuestionNoteless.answers![0]],
+  },
+  {
+    id: singleChoiceQuestionWithNotes.id,
+    answers: [singleChoiceQuestionWithNotes.answers![0]],
+  },
+  {
+    id: multipleChoiceQuestionNoteless.id,
+    answers: [multipleChoiceQuestionNoteless.answers![0], multipleChoiceQuestionNoteless.answers![1]],
+  },
+  {
+    id: multipleChoiceQuestionWithNotes.id,
+    answers: [multipleChoiceQuestionWithNotes.answers![0], multipleChoiceQuestionWithNotes.answers![1]],
+  },
+  {
+    id: textQuestionNoteless.id,
+    answers: [{
+      id: '1212',
+      value: 'test',
+    }],
+  },
+  {
+    id: textQuestionWithNotes.id,
+    answers: [{
+      id: '1212',
+      value: 'test',
+    }],
+  },
+];

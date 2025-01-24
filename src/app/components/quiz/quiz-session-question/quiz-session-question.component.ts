@@ -39,7 +39,7 @@ export class QuizSessionQuestionComponent implements OnDestroy {
   protected questionTypes = shortQuestionTypes;
 
   question = computed(() => this.quiz.questions().find(q => q.id === this.questionId()));
-  questionId = input.required<string>();
+  questionId = input<string>('');
 
 
   private version = computed(() => this.quiz.version());

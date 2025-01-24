@@ -1,6 +1,7 @@
 @let controls = form.controls;
 @let instantMode = quiz.instantMode();
 @let quizForm = form;
+@let questions = answersFeedback();
 
 <form (submit)="gradeAllQuestions($event)">
   @for (control of controls; track control.controls.id.value) {
@@ -15,3 +16,7 @@
   <button id="grade" [disabled]="quizForm.invalid || quizForm.disabled" mat-flat-button type="submit">Check my answers</button>
   }
 </form>
+
+<section class="stats-section">
+  <app-quiz-game-stats [questions]="questions" [instantMode]="instantMode"></app-quiz-game-stats>
+</section>

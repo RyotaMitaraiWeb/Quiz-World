@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { QuizGameComponent } from './quiz-game.component';
-import { sampleQuestions } from '../sample-test-questions';
+import { sampleQuestionsCorrectAnswers, sampleQuestions, singleChoiceQuestionNoteless } from '../sample-test-questions';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,6 +14,7 @@ import { MatButtonHarness } from '@angular/material/button/testing';
 import { QuizDetails } from '../../../services/quiz/types';
 import { AnswerService } from '../../../services/answer/answer.service';
 import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 const sampleQuiz: QuizDetails = {
   id: 1,
@@ -70,7 +71,7 @@ describe('QuizGameComponent', () => {
     it('is enabled and disabled when appropriate', async () => {
       setup();
 
-      const spy = spyOn(answerService, 'getCorrectAnswersForAllQuestions').and.returnValue(of([]));
+      const spy = spyOn(answerService, 'getCorrectAnswersForAllQuestions').and.returnValue(of(sampleQuestionsCorrectAnswers));
 
       const radios = await loader.getAllHarnesses(MatRadioButtonHarness);
       const fields = await loader.getAllHarnesses(MatInputHarness);
@@ -111,6 +112,66 @@ describe('QuizGameComponent', () => {
       // make sure that the button was actually clicked
       expect(spy).toHaveBeenCalled();
       expect(await button.isDisabled()).toBeTrue();
+    });
+  });
+
+  describe('Stats', () => {
+    it('Stats are updated in instant mode', async () => {
+      setup(true);
+      spyOn(answerService, 'getCorrectAnswersForQuestionById').and.returnValue(of({
+        id: singleChoiceQuestionNoteless.id,
+        answers: singleChoiceQuestionNoteless.answers!,
+      }));
+
+      const radios = await loader.getAllHarnesses(MatRadioButtonHarness);
+      const button = await loader.getHarness(MatButtonHarness.with({ text: 'Check my answer' }));
+
+      await radios[0].check();
+      await fixture.whenStable();
+
+      await button.click();
+      await fixture.whenStable();
+
+      const counts = fixture.debugElement
+        .queryAll(By.css('.question-count'))
+        .map(el => el.nativeElement.textContent);
+
+      expect(counts).toEqual(['1', '0', '5']);
+    });
+
+    it('Stats are updated in non-instant mode', async () => {
+      setup();
+      spyOn(answerService, 'getCorrectAnswersForAllQuestions').and.returnValue(of(sampleQuestionsCorrectAnswers));
+
+      const radios = await loader.getAllHarnesses(MatRadioButtonHarness);
+      const fields = await loader.getAllHarnesses(MatInputHarness);
+      const checkboxes = await loader.getAllHarnesses(MatCheckboxHarness);
+
+      const button = await loader.getHarness(MatButtonHarness.with({ text: 'Check my answers' }));
+      expect(await button.isDisabled()).toBeTrue();
+
+      for (const radio of radios) {
+        await radio.check();
+      }
+
+      for (const checkbox of checkboxes) {
+        await checkbox.check();
+      }
+
+      for (const field of fields) {
+        await field.setValue('test');
+      }
+
+      await fixture.whenStable();
+
+      await button.click();
+      await fixture.whenStable();
+
+      const counts = fixture.debugElement
+        .queryAll(By.css('.question-count'))
+        .map(el => el.nativeElement.textContent);
+
+      expect(counts).toEqual(['2', '4']);
     });
   });
 });
