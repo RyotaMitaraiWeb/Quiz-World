@@ -2,7 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { QuizDetailsComponent } from '../../pages/quiz-details/quiz-details.component';
+import { QuizDetailsComponent } from '../../pages/quiz/quiz-details/quiz-details.component';
 import { TestComponent } from './test/test.component';
 
 describe('QuestionGradeDirective', () => {

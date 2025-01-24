@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
-import { QuizDetailsComponent } from './pages/quiz-details/quiz-details.component';
+import { QuizDetailsComponent } from './pages/quiz/quiz-details/quiz-details.component';
 
 export const routes: Routes = [
   {

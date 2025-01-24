@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject, input, OnDestroy, ViewChild, AfterViewInit } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { QuizService } from '../../services/quiz/quiz.service';
+import { QuizService } from '../../../services/quiz/quiz.service';
 import { MatTabsModule } from '@angular/material/tabs';
-import { QuizOverviewComponent } from '../../components/quiz/quiz-overview/quiz-overview.component';
-import { QuizGameComponent } from '../../components/quiz/quiz-game/quiz-game.component';
-import { QuizStore } from '../../store/quiz/quiz.store';
+import { QuizOverviewComponent } from '../../../components/quiz/quiz-overview/quiz-overview.component';
+import { QuizGameComponent } from '../../../components/quiz/quiz-game/quiz-game.component';
+import { QuizStore } from '../../../store/quiz/quiz.store';
 import { Title } from '@angular/platform-browser';
 
 @Component({
