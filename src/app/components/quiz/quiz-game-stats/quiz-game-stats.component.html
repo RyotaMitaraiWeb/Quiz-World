@@ -26,7 +26,7 @@
               ({{ count / _questions | percent: '1.0-0' }})
             </span>
           </div>
-          <div matListItemLine>out of {{_questions}} questions</div>
+          <div matListItemLine>out of {{_questions}} {{_questions === 1 ? 'question' : 'questions' }}</div>
         </mat-list-item>
         }
         }

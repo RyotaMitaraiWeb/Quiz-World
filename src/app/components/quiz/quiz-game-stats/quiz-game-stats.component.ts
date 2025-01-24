@@ -42,21 +42,25 @@ export class QuizGameStatsComponent {
       {
         icon: 'check_circle',
         count: stats.correct,
-        extraLabel: 'questions answered correctly',
+        extraLabel: `${this.pluralQuestionWord(stats.correct)} answered correctly`,
       },
       {
         icon: 'cancel',
         count: stats.wrong,
-        extraLabel: 'questions answered incorrectly',
+        extraLabel: `${this.pluralQuestionWord(stats.wrong)} answered incorrectly`,
       },
       {
         icon: 'pending',
         count: stats.unanswered,
-        extraLabel: 'questions still awaiting your answer',
+        extraLabel: `${this.pluralQuestionWord(stats.unanswered)} still awaiting your answer`,
         show: () => this.instantMode() || false,
       },
     ] as StatsStruct[];
   });
+
+  private pluralQuestionWord(questions: number) {
+    return questions === 1 ? 'question' : 'questions';
+  }
 }
 
 interface QuestionsStats {
