@@ -4,7 +4,7 @@ export interface CreatedQuizResponse {
   id: number;
 }
 
-export interface IQuizDetails {
+export interface QuizDetails {
   id: number;
   title: string;
   description: string;
@@ -13,6 +13,8 @@ export interface IQuizDetails {
   creatorId: string;
   creatorUsername: string;
   version: number;
+  createdOn: string;
+  updatedOn: string;
 }
 export interface SessionQuestion {
   id: string;
@@ -62,16 +64,6 @@ export interface Question {
   answers: Answer[];
 }
 
-/**
- * ```typescript
- * interface IQuestionSubmission {
-    prompt: string;
-    answers: IAnswer[];
-    order: number;
-    type: question;
-  }
- * ```
- */
 export type QuestionSubmission = {
   order: number;
   type: question;

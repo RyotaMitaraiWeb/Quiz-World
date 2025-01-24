@@ -1,0 +1,12 @@
+<section>
+  <h1>{{quiz.title()}}</h1>
+
+  <mat-tab-group dynamicHeight preserveContent>
+    <mat-tab label="Overview">
+      <app-quiz-overview></app-quiz-overview>
+    </mat-tab>
+    <mat-tab label="Play">
+      <app-quiz-game></app-quiz-game>
+    </mat-tab>
+  </mat-tab-group>
+</section>

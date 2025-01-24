@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
+import { QuizDetailsComponent } from './pages/quiz/quiz-details/quiz-details.component';
 
 export const routes: Routes = [
   {
@@ -23,5 +24,14 @@ export const routes: Routes = [
     path: '',
     component: HomeComponent,
     title: 'Home | Quiz World',
+  },
+  {
+    path: 'quiz',
+    children: [
+      {
+        path: ':id',
+        component: QuizDetailsComponent,
+      },
+    ],
   },
 ];
