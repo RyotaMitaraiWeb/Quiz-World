@@ -6,11 +6,13 @@ export interface QuestionForm {
   type: FormControl<question | null>;
   answers: FormArray<FormGroup<AnswerField>>;
   notes: FormControl<string | null>;
+  randomId: FormControl<string | null>;
 }
 
 export interface AnswerField {
   value: FormControl<string | null>;
   correct: FormControl<boolean | null>;
+  randomId: FormControl<string | null>;
 }
 
 export type QuizBasicDataForm = FormGroup<{
