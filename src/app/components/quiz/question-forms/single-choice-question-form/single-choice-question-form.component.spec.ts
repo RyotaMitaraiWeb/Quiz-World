@@ -62,14 +62,14 @@ describe('SingleChoiceQuestionFormComponent', () => {
 
   it('remove answer button works correctly', async () => {
     const add = nativeElement.querySelector('.add-wrong-answer-button');
-    expect(nativeElement.querySelector('.remove-wrong-answer-button')).toBeNull();
+    expect(nativeElement.querySelector('.remove-wrong-answer-button:not(.invisible)')).toBeNull();
 
-    add?.dispatchEvent(new MouseEvent('click'));
-    add?.dispatchEvent(new MouseEvent('click'));
+    add!.dispatchEvent(new MouseEvent('click'));
+    add!.dispatchEvent(new MouseEvent('click'));
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const removeButton1 = document.querySelectorAll('.remove-wrong-answer-button')[1];
+    const removeButton1 = document.querySelectorAll('.remove-wrong-answer-button:not(.invisible)')[1];
     const answerId = answersForm.controls[2].controls.randomId.value;
 
     removeButton1.dispatchEvent(new MouseEvent('click'));
@@ -81,11 +81,11 @@ describe('SingleChoiceQuestionFormComponent', () => {
     const removedAnswer = answersForm.controls.find(c => c.controls.randomId.value === answerId);
     expect(removedAnswer).toBeUndefined();
 
-    const removeButton2 = document.querySelectorAll('.remove-wrong-answer-button')[1];
+    const removeButton2 = document.querySelectorAll('.remove-wrong-answer-button:not(.invisible)')[1];
     removeButton2.dispatchEvent(new MouseEvent('click'));
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(nativeElement.querySelector('.remove-wrong-answer-button')).toBeNull();
+    expect(nativeElement.querySelector('.remove-wrong-answer-button:not(.invisible)')).toBeNull();
   });
 });

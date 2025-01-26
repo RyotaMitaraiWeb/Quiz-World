@@ -24,12 +24,8 @@
     <mat-form-field [formGroup]="answer">
       <input matInput formControlName="value" />
     </mat-form-field>
-    @if (_answersCount > minAnswersCount) {
-    <app-delete-answer-button class="remove-wrong-answer-button"
+    <app-delete-answer-button [appHideVisually]="_answersCount <= minAnswersCount" class="remove-wrong-answer-button"
       (click)="removeAnswer(id, $event)"></app-delete-answer-button>
-    } @else {
-    <app-delete-answer-button [style]="{ visibility: 'hidden'}"></app-delete-answer-button>
-    }
   </div>
   }
   }
