@@ -64,3 +64,25 @@ export const emptyMultipleChoiceQuestion = () => new FormGroup<QuestionForm>(
     answers: new FormArray<FormGroup<AnswerField>>([emptyAnswer(true), emptyAnswer(false)]),
   },
 );
+
+export const emptyTextQuestion = () => new FormGroup<QuestionForm>(
+  {
+    randomId: new FormControl(generateUniqueId()),
+    type: new FormControl(questionTypes.text),
+    prompt: new FormControl('',
+      {
+        validators: [
+          Validators.required,
+          Validators.maxLength(quizValidationRules.questions.prompt.maxlength),
+        ],
+      },
+  ),
+    notes: new FormControl('',
+      {
+        validators: [
+          Validators.maxLength(quizValidationRules.questions.prompt.maxlength),
+        ],
+      }),
+    answers: new FormArray<FormGroup<AnswerField>>([emptyAnswer(true)]),
+  },
+);
