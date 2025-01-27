@@ -1,17 +1,26 @@
 @let _form = form();
+@let title = _form.controls.title;
+@let description = _form.controls.description;
 
 <form [formGroup]="_form">
-  <ng-template matStepLabel>What is your quiz about?</ng-template>
-  <mat-form-field>
-    <mat-label>Title</mat-label>
-    <input matInput placeholder="Your quiz's title" formControlName="title" />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Description</mat-label>
-    <input matInput placeholder="Your quiz's description" formControlName="description" />
-  </mat-form-field>
-  <mat-checkbox formControlName="instantMode">
-    <!-- TO-DO: add a tooltip to explain what instant mode is-->
-    Instant mode
-  </mat-checkbox>
+  <div>
+    <mat-form-field class="title-field">
+      <mat-label>Title</mat-label>
+      <input matInput placeholder="Your quiz's title" formControlName="title" />
+      <mat-error>{{ title.errors | singleInputError: titleErrorMessages }}</mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="description-field">
+      <mat-label>Description</mat-label>
+      <textarea cdkTextareaAutosize matInput placeholder="Your quiz's description" formControlName="description"></textarea>
+      <mat-hint align="end">{{ description.value?.length || 0 }} / {{ maxDescriptionLength }}</mat-hint>
+      <mat-error>{{ description.errors | singleInputError: descriptionErrorMessages }}</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="instant-mode">
+    <mat-checkbox formControlName="instantMode">
+      Instant mode
+    </mat-checkbox>
+  </div>
 </form>
