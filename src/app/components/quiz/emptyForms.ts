@@ -36,7 +36,7 @@ export const emptySingleChoiceQuestion = () =>
       notes: new FormControl('',
         {
           validators: [
-            Validators.maxLength(quizValidationRules.questions.prompt.maxlength),
+            Validators.maxLength(quizValidationRules.questions.notes.maxlength),
           ],
         }),
       answers: new FormArray<FormGroup<AnswerField>>([emptyAnswer(true), emptyAnswer(false)]),
@@ -58,7 +58,7 @@ export const emptyMultipleChoiceQuestion = () => new FormGroup<QuestionForm>(
     notes: new FormControl('',
       {
         validators: [
-          Validators.maxLength(quizValidationRules.questions.prompt.maxlength),
+          Validators.maxLength(quizValidationRules.questions.notes.maxlength),
         ],
       }),
     answers: new FormArray<FormGroup<AnswerField>>([emptyAnswer(true), emptyAnswer(false)]),
@@ -80,7 +80,7 @@ export const emptyTextQuestion = () => new FormGroup<QuestionForm>(
     notes: new FormControl('',
       {
         validators: [
-          Validators.maxLength(quizValidationRules.questions.prompt.maxlength),
+          Validators.maxLength(quizValidationRules.questions.notes.maxlength),
         ],
       }),
     answers: new FormArray<FormGroup<AnswerField>>([emptyAnswer(true)]),
