@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AnswerField } from '../../types';
-import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AddAnswerButtonComponent } from '../../../common/buttons/add-answer-button/add-answer-button.component';
@@ -17,7 +16,6 @@ import { HideVisuallyDirective } from '../../../../directives/hide-visually/hide
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
     ReactiveFormsModule,
     AddAnswerButtonComponent,
     DeleteAnswerButtonComponent,

@@ -4,7 +4,6 @@ import { AnswerField } from '../../types';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
 import { AddAnswerButtonComponent } from '../../../common/buttons/add-answer-button/add-answer-button.component';
 import { quizValidationRules } from '../../../../common/validationRules/quiz-form';
 import { emptyAnswer, emptySingleChoiceQuestion } from '../../emptyForms';
@@ -17,7 +16,6 @@ import { HideVisuallyDirective } from '../../../../directives/hide-visually/hide
     MatRadioModule,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule,
     ReactiveFormsModule,
     AddAnswerButtonComponent,
     DeleteAnswerButtonComponent,

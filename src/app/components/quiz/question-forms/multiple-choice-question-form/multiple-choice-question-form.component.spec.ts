@@ -5,6 +5,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormArray, FormGroup } from '@angular/forms';
 import { emptyMultipleChoiceQuestion } from '../../emptyForms';
 import { AnswerField } from '../../types';
+import { quizValidationRules } from '../../../../common/validationRules/quiz-form';
 
 describe('MultipleChoiceQuestionFormComponent', () => {
   let component: MultipleChoiceQuestionFormComponent;
@@ -60,6 +61,13 @@ describe('MultipleChoiceQuestionFormComponent', () => {
     await clickAddWrongAnswerButton();
 
     expect(nativeElement.querySelectorAll('.answer-field.wrong').length).toBe(2);
+
+    for (let i = 4; i < quizValidationRules.questions.answers.multipleChoice.maxlength; i++) {
+      await clickAddCorrectAnswerButton();
+    }
+
+    expect(nativeElement.querySelector('.add-answer-button.correct')).toBeNull();
+    expect(nativeElement.querySelector('.add-answer-button.wrong')).toBeNull();
   });
 
   it('Remove answers buttons work and show/hide when appropriate', async () => {
