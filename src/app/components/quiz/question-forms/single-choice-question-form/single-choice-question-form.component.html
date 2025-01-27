@@ -7,10 +7,12 @@
   @for (answer of answers; track answer.controls.randomId.value) {
   @if (answer.controls.correct.value) {
   <div class="answer-field single-choice correct">
-    <mat-radio-button checked disabled [name]="answer.controls.randomId.value!"></mat-radio-button>
-    <mat-form-field [formGroup]="answer">
-      <input matInput formControlName="value" />
-    </mat-form-field>
+    <div class="answer-input">
+      <mat-radio-button checked disabled [name]="answer.controls.randomId.value!"></mat-radio-button>
+      <mat-form-field [formGroup]="answer">
+        <input matInput formControlName="value" />
+      </mat-form-field>
+    </div>
   </div>
   }
   }
@@ -20,10 +22,12 @@
   @if (!answer.controls.correct.value) {
   <div class="answer-field single-choice wrong">
     @let id = answer.controls.randomId.value!;
-    <mat-radio-button disabled [name]="id"></mat-radio-button>
-    <mat-form-field [formGroup]="answer">
-      <input matInput formControlName="value" />
-    </mat-form-field>
+    <div class="answer-input">
+      <mat-radio-button disabled [name]="id"></mat-radio-button>
+      <mat-form-field [formGroup]="answer">
+        <input matInput formControlName="value" />
+      </mat-form-field>
+    </div>
     <app-delete-answer-button [appHideVisually]="_answersCount <= minAnswersCount" class="remove-wrong-answer-button"
       (click)="removeAnswer(id, $event)"></app-delete-answer-button>
   </div>

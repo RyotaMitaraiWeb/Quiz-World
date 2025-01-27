@@ -8,11 +8,12 @@
   @if (answer.controls.correct.value) {
   @let id = answer.controls.randomId.value!;
   <div class="answer-field text correct">
-    <mat-form-field [formGroup]="answer">
-      <input matInput formControlName="value" />
-    </mat-form-field>
-    <app-delete-answer-button (click)="removeAnswer(id, $event)"
-      [appHideVisually]="_answersCount === minAnswersCount"
+    <div class="answer-input">
+      <mat-form-field [formGroup]="answer">
+        <input matInput formControlName="value" />
+      </mat-form-field>
+    </div>
+    <app-delete-answer-button (click)="removeAnswer(id, $event)" [appHideVisually]="_answersCount === minAnswersCount"
       class="remove-correct-answer-button"></app-delete-answer-button>
   </div>
   }

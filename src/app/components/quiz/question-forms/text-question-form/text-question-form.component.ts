@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, signal, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { quizValidationRules } from '../../../../common/validationRules/quiz-form';
 import { emptyAnswer, emptyTextQuestion } from '../../emptyForms';
@@ -24,6 +24,7 @@ import { DeleteAnswerButtonComponent } from '../../../common/buttons/delete-answ
   templateUrl: './text-question-form.component.html',
   styleUrl: './text-question-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class TextQuestionFormComponent {
   form = input.required<FormArray<FormGroup<AnswerField>>>();

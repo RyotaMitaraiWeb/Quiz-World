@@ -7,6 +7,7 @@
     <mat-form-field class="title-field">
       <mat-label>Title</mat-label>
       <input matInput placeholder="Your quiz's title" formControlName="title" />
+      <mat-hint align="end">{{ title.value?.length || 0 }} / {{ maxTitleLength }}</mat-hint>
       <mat-error>{{ title.errors | singleInputError: titleErrorMessages }}</mat-error>
     </mat-form-field>
   </div>

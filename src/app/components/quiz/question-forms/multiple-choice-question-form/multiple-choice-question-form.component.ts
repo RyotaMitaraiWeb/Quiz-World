@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, signal, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AnswerField } from '../../types';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -24,6 +24,7 @@ import { HideVisuallyDirective } from '../../../../directives/hide-visually/hide
   templateUrl: './multiple-choice-question-form.component.html',
   styleUrl: './multiple-choice-question-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class MultipleChoiceQuestionFormComponent {
   form = input.required<FormArray<FormGroup<AnswerField>>>();

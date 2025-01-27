@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, signal, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AnswerField } from '../../types';
 import { MatRadioModule } from '@angular/material/radio';
@@ -24,6 +24,7 @@ import { HideVisuallyDirective } from '../../../../directives/hide-visually/hide
   templateUrl: './single-choice-question-form.component.html',
   styleUrl: './single-choice-question-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class SingleChoiceQuestionFormComponent {
   form = input.required<FormArray<FormGroup<AnswerField>>>();

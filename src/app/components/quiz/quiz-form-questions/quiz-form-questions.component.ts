@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, ViewEncapsulation } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -14,6 +14,9 @@ import { emptySingleChoiceQuestion } from '../emptyForms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { question } from '../../../common/questionTypes';
 import { QuestionTypeSelectComponent } from '../question-type-select/question-type-select.component';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-input-error.pipe';
+import { quizErrors } from '../../../common/validationErrors/quiz-form';
 
 @Component({
   selector: 'app-quiz-form-questions',
@@ -25,14 +28,17 @@ import { QuestionTypeSelectComponent } from '../question-type-select/question-ty
     MatIconModule,
     MatTooltipModule,
     ReactiveFormsModule,
+    CdkTextareaAutosize,
     SingleChoiceQuestionFormComponent,
     MultipleChoiceQuestionFormComponent,
     TextQuestionFormComponent,
     QuestionTypeSelectComponent,
+    SingleInputErrorPipe,
   ],
   templateUrl: './quiz-form-questions.component.html',
   styleUrl: './quiz-form-questions.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
 })
 export class QuizFormQuestionsComponent {
   readonly form = input.required<FormArray<FormGroup<QuestionForm>>>();
@@ -61,4 +67,10 @@ export class QuizFormQuestionsComponent {
 
   protected minQuestionsCount = quizValidationRules.questions.minlength;
   protected maxQuestionsCount = quizValidationRules.questions.maxlength;
+
+  protected promptMaxLength = quizValidationRules.questions.prompt.maxlength;
+  protected notesMaxLength = quizValidationRules.questions.notes.maxlength;
+
+  protected promptErrorMessages = quizErrors.questions.prompt;
+  protected notesErrorMessages = quizErrors.questions.notes;
 }

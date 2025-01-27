@@ -11,10 +11,12 @@
   @if (answer.controls.correct.value) {
   @let id = answer.controls.randomId.value!;
   <div class="answer-field multiple-choice correct">
-    <mat-checkbox checked disabled [name]="answer.controls.randomId.value!"></mat-checkbox>
-    <mat-form-field [formGroup]="answer">
-      <input matInput formControlName="value" />
-    </mat-form-field>
+    <div class="answer-input">
+      <mat-checkbox checked disabled [name]="answer.controls.randomId.value!"></mat-checkbox>
+      <mat-form-field [formGroup]="answer">
+        <input matInput formControlName="value" />
+      </mat-form-field>
+    </div>
     <app-delete-answer-button (click)="removeAnswer(id, true, $event)"
       [appHideVisually]="_correctAnswers <= minCorrectAnswersCount || _answersCount <= minAnswersCount"
       class="remove-correct-answer-button"></app-delete-answer-button>
@@ -31,10 +33,12 @@
     @if (!answer.controls.correct.value) {
     <div class="answer-field multiple-choice wrong">
       @let id = answer.controls.randomId.value!;
-      <mat-checkbox disabled [name]="id"></mat-checkbox>
-      <mat-form-field [formGroup]="answer">
-        <input matInput formControlName="value" />
-      </mat-form-field>
+      <div class="answer-input">
+        <mat-checkbox disabled [name]="id"></mat-checkbox>
+        <mat-form-field [formGroup]="answer">
+          <input matInput formControlName="value" />
+        </mat-form-field>
+      </div>
       <app-delete-answer-button [appHideVisually]="_answersCount <= minAnswersCount" class="remove-wrong-answer-button"
         (click)="removeAnswer(id, false, $event)"></app-delete-answer-button>
     </div>

@@ -31,4 +31,5 @@ export class QuizFormBasicDataComponent {
   protected titleErrorMessages = quizErrors.title;
   protected descriptionErrorMessages = quizErrors.description;
   protected maxDescriptionLength = quizValidationRules.description.maxlength;
+  protected maxTitleLength = quizValidationRules.title.maxlength;
 }
