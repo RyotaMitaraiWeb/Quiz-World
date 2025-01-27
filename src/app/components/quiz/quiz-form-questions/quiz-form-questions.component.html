@@ -25,6 +25,10 @@
       <app-text-question-form [form]="group.controls.answers"></app-text-question-form>
       }
       }
+      <mat-form-field>
+        <mat-label>Notes</mat-label>
+        <input formControlName="notes" matInput placeholder="Type your notes here" />
+      </mat-form-field>
     </mat-card-content>
     @if (_form.length > minQuestionsCount) {
     <button (click)="deleteQuestion(group.controls.randomId.value!, $event)" mat-icon-button class="remove-question-btn"
