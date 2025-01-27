@@ -1,0 +1,17 @@
+@let _form = form();
+
+<form [formGroup]="_form">
+  <ng-template matStepLabel>What is your quiz about?</ng-template>
+  <mat-form-field>
+    <mat-label>Title</mat-label>
+    <input matInput placeholder="Your quiz's title" formControlName="title" />
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <input matInput placeholder="Your quiz's description" formControlName="description" />
+  </mat-form-field>
+  <mat-checkbox formControlName="instantMode">
+    <!-- TO-DO: add a tooltip to explain what instant mode is-->
+    Instant mode
+  </mat-checkbox>
+</form>
