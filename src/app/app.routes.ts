@@ -32,6 +32,7 @@ export const routes: Routes = [
       {
         path: 'create',
         component: CreateQuizComponent,
+        title: 'Create a new quiz | Quiz World',
       },
       {
         path: ':id',
