@@ -13,6 +13,7 @@ import { quizValidationRules } from '../../../common/validationRules/quiz-form';
 import { emptySingleChoiceQuestion } from '../emptyForms';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { question } from '../../../common/questionTypes';
+import { QuestionTypeSelectComponent } from '../question-type-select/question-type-select.component';
 
 @Component({
   selector: 'app-quiz-form-questions',
@@ -27,6 +28,7 @@ import { question } from '../../../common/questionTypes';
     SingleChoiceQuestionFormComponent,
     MultipleChoiceQuestionFormComponent,
     TextQuestionFormComponent,
+    QuestionTypeSelectComponent,
   ],
   templateUrl: './quiz-form-questions.component.html',
   styleUrl: './quiz-form-questions.component.scss',
