@@ -17,7 +17,7 @@ export const quizErrors = {
   },
   questions: {
     prompt: {
-      maxLength: `Prompt must be no longer than ${prompt.maxlength} characters long`,
+      maxlength: `Prompt must be no longer than ${prompt.maxlength} characters long`,
       required: 'Please provide a valid question!',
     },
     notes: {
