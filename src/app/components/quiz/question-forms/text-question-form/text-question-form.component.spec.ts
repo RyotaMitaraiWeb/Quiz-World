@@ -46,7 +46,7 @@ describe('TextQuestionFormComponent', () => {
     const fields = nativeElement.querySelectorAll('.answer-field');
     expect(fields.length).toBe(2);
 
-    for (let i = 2; i <= quizValidationRules.questions.answers.text.maxlength; i++) {
+    for (let i = 2; i < quizValidationRules.questions.answers.text.maxlength; i++) {
       await clickAddCorrectAnswerButton();
     }
 

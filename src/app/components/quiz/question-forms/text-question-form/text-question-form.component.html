@@ -18,7 +18,7 @@
   }
   }
 
-  @if (_answersCount <= maxAnswersCount) { <app-add-answer-button class="add-answer-button correct" [correct]="true"
+  @if (_answersCount < maxAnswersCount) { <app-add-answer-button class="add-answer-button correct" [correct]="true"
     (click)="addNewAnswer($event)">
     </app-add-answer-button>
     }
