@@ -1,3 +1,11 @@
-<mat-horizontal-stepper>
-  <mat-step [stepControl]="basicDataForm"></mat-step>
-</mat-horizontal-stepper>
+<mat-stepper orientation="horizontal" #stepper>
+  <mat-step [stepControl]="basicDataForm">
+    <app-quiz-form-basic-data [form]="basicDataForm"></app-quiz-form-basic-data>
+    <div>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
+  <mat-step [stepControl]="questionsForm">
+    <app-quiz-form-questions [form]="questionsForm"></app-quiz-form-questions>
+  </mat-step>
+</mat-stepper>

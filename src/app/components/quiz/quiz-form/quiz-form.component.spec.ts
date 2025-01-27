@@ -8,7 +8,7 @@ describe('QuizFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [QuizFormComponent]
+      imports: [QuizFormComponent],
     })
     .compileComponents();
 

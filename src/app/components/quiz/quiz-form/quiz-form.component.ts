@@ -1,22 +1,25 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormControl, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
-import { question, questionTypes } from '../../../common/questionTypes';
-import { QuestionForm, AnswerField, QuizBasicDataForm } from '../types';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FormGroup, FormControl, ReactiveFormsModule, Validators, FormArray } from '@angular/forms';
+import { QuestionForm, QuizBasicDataForm } from '../types';
 import { MatStepperModule } from '@angular/material/stepper';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
 import { quizValidationRules } from '../../../common/validationRules/quiz-form';
+import { QuizFormBasicDataComponent } from '../quiz-form-basic-data/quiz-form-basic-data.component';
+import { MatButtonModule } from '@angular/material/button';
+import { QuizFormQuestionsComponent } from '../quiz-form-questions/quiz-form-questions.component';
+import { emptySingleChoiceQuestion } from '../emptyForms';
 
 @Component({
   selector: 'app-quiz-form',
   imports: [
     MatStepperModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
     MatButtonModule,
+    ReactiveFormsModule,
+    QuizFormBasicDataComponent,
+    QuizFormQuestionsComponent,
 ],
   templateUrl: './quiz-form.component.html',
   styleUrl: './quiz-form.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizFormComponent {
   basicDataForm: QuizBasicDataForm = new FormGroup({
@@ -42,48 +45,5 @@ export class QuizFormComponent {
     instantMode: new FormControl(false),
   });
 
-  questionsForm = new FormArray<FormGroup<QuestionForm>>([
-    new FormGroup({
-      prompt: new FormControl('',
-        {
-          validators: [
-            Validators.required,
-            Validators.maxLength(quizValidationRules.questions.prompt.maxlength),
-          ],
-        },
-      ),
-      type: new FormControl<question | null>(questionTypes.single),
-      notes: new FormControl('',
-        {
-          validators: [
-            Validators.maxLength(quizValidationRules.questions.notes.maxlength),
-          ],
-        },
-      ),
-      answers: new FormArray<FormGroup<AnswerField>>([
-        new FormGroup<AnswerField>({
-          value: new FormControl('',
-            {
-              validators: [
-                Validators.required,
-                Validators.maxLength(quizValidationRules.questions.maxlength),
-              ],
-            },
-          ),
-          correct: new FormControl(false),
-        }),
-        new FormGroup<AnswerField>({
-          value: new FormControl('',
-            {
-              validators: [
-                Validators.required,
-                Validators.maxLength(quizValidationRules.questions.maxlength),
-              ],
-            },
-          ),
-          correct: new FormControl(false),
-        }),
-      ]),
-    }),
-  ]);
+  readonly questionsForm = new FormArray<FormGroup<QuestionForm>>([emptySingleChoiceQuestion()]);
 }
