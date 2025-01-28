@@ -28,7 +28,7 @@ export class CreateQuizComponent implements OnDestroy {
       questions: this.transformQuestions(questions),
     };
 
-    this.quizService.create(quiz).subscribe({
+    this._submitSub = this.quizService.create(quiz).subscribe({
       next: (v) => {
         this.router.navigate(['/quiz', v.id]);
       },
