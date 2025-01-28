@@ -9,8 +9,12 @@
   @let id = answer.controls.randomId.value!;
   <div class="answer-field text correct">
     <div class="answer-input">
+      @let answerLength = answer.value.value?.length || 0;
+      @let errors = answer.controls.value.errors;
       <mat-form-field [formGroup]="answer">
-        <input matInput formControlName="value" />
+        <textarea cdkTextareaAutosize matInput formControlName="value"></textarea>
+        <mat-hint>{{ answerLength }} / {{ answersMaxLength }}</mat-hint>
+        <mat-error>{{ errors | singleInputError: answersErrorMessages }}</mat-error>
       </mat-form-field>
     </div>
     <app-delete-answer-button (click)="removeAnswer(id, $event)" [appHideVisually]="_answersCount === minAnswersCount"

@@ -9,6 +9,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { emptyAnswer } from '../../emptyForms';
 import { quizValidationRules } from '../../../../common/validationRules/quiz-form';
 import { HideVisuallyDirective } from '../../../../directives/hide-visually/hide-visually.directive';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { SingleInputErrorPipe } from '../../../../pipes/single-input-error/single-input-error.pipe';
+import { quizErrors } from '../../../../common/validationErrors/quiz-form';
 
 @Component({
   selector: 'app-multiple-choice-question-form',
@@ -17,9 +20,11 @@ import { HideVisuallyDirective } from '../../../../directives/hide-visually/hide
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    CdkTextareaAutosize,
     AddAnswerButtonComponent,
     DeleteAnswerButtonComponent,
     HideVisuallyDirective,
+    SingleInputErrorPipe,
   ],
   templateUrl: './multiple-choice-question-form.component.html',
   styleUrl: './multiple-choice-question-form.component.scss',
@@ -71,4 +76,7 @@ export class MultipleChoiceQuestionFormComponent {
   protected minAnswersCount = quizValidationRules.questions.answers.multipleChoice.minlength;
   protected maxAnswersCount = quizValidationRules.questions.answers.multipleChoice.maxlength;
   protected minCorrectAnswersCount = quizValidationRules.questions.answers.multipleChoice.minlengthCorrect;
+
+  protected answersErrorMessages = quizErrors.questions.answers;
+  protected answersMaxLength = quizValidationRules.questions.answers.maxlength;
 }

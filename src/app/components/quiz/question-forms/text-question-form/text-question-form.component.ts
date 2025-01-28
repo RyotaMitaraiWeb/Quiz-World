@@ -9,6 +9,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { HideVisuallyDirective } from '../../../../directives/hide-visually/hide-visually.directive';
 import { AddAnswerButtonComponent } from '../../../common/buttons/add-answer-button/add-answer-button.component';
 import { DeleteAnswerButtonComponent } from '../../../common/buttons/delete-answer-button/delete-answer-button.component';
+import { quizErrors } from '../../../../common/validationErrors/quiz-form';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { SingleInputErrorPipe } from '../../../../pipes/single-input-error/single-input-error.pipe';
 
 @Component({
   selector: 'app-text-question-form',
@@ -17,9 +20,11 @@ import { DeleteAnswerButtonComponent } from '../../../common/buttons/delete-answ
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    CdkTextareaAutosize,
     HideVisuallyDirective,
     AddAnswerButtonComponent,
     DeleteAnswerButtonComponent,
+    SingleInputErrorPipe,
   ],
   templateUrl: './text-question-form.component.html',
   styleUrl: './text-question-form.component.scss',
@@ -55,4 +60,7 @@ export class TextQuestionFormComponent {
 
   protected minAnswersCount = quizValidationRules.questions.answers.text.minlength;
   protected maxAnswersCount = quizValidationRules.questions.answers.text.maxlength;
+
+  protected answersErrorMessages = quizErrors.questions.answers;
+  protected answersMaxLength = quizValidationRules.questions.answers.maxlength;
 }

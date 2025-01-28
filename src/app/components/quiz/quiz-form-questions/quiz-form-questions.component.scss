@@ -39,7 +39,15 @@ form {
 
   .answer-field {
     display: flex;
-    gap: 32px;
     margin-bottom: 16px;
+    width: 100%;
+  }
+
+  .answer-input {
+    width: 80%;
+
+    mat-form-field {
+      width: 90%;
+    }
   }
 }

@@ -9,6 +9,9 @@ import { quizValidationRules } from '../../../../common/validationRules/quiz-for
 import { emptyAnswer, emptySingleChoiceQuestion } from '../../emptyForms';
 import { DeleteAnswerButtonComponent } from '../../../common/buttons/delete-answer-button/delete-answer-button.component';
 import { HideVisuallyDirective } from '../../../../directives/hide-visually/hide-visually.directive';
+import { quizErrors } from '../../../../common/validationErrors/quiz-form';
+import { SingleInputErrorPipe } from '../../../../pipes/single-input-error/single-input-error.pipe';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 
 @Component({
   selector: 'app-single-choice-question-form',
@@ -17,9 +20,11 @@ import { HideVisuallyDirective } from '../../../../directives/hide-visually/hide
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    CdkTextareaAutosize,
     AddAnswerButtonComponent,
     DeleteAnswerButtonComponent,
     HideVisuallyDirective,
+    SingleInputErrorPipe,
   ],
   templateUrl: './single-choice-question-form.component.html',
   styleUrl: './single-choice-question-form.component.scss',
@@ -55,4 +60,7 @@ export class SingleChoiceQuestionFormComponent {
 
   protected minAnswersCount = quizValidationRules.questions.answers.singleChoice.minlength;
   protected maxAnswersCount = quizValidationRules.questions.answers.singleChoice.maxlength;
+
+  protected answersErrorMessages = quizErrors.questions.answers;
+  protected answersMaxLength = quizValidationRules.questions.answers.maxlength;
 }

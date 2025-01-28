@@ -80,7 +80,7 @@ export const emptyTextQuestion = () => new FormGroup<QuestionForm>(
     notes: new FormControl('',
       {
         validators: [
-          Validators.maxLength(quizValidationRules.questions.notes.maxlength),
+          Validators.maxLength(quizValidationRules.questions.prompt.maxlength),
         ],
       }),
     answers: new FormArray<FormGroup<AnswerField>>([emptyAnswer(true)]),
