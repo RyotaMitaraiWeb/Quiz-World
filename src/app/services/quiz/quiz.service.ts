@@ -26,12 +26,8 @@ export class QuizService {
     updatedOn: '',
   };
 
-  create(quiz: QuizFormSubmission, options?: SearchOptions) {
-    const params = paramsBuilder(options);
-
-    return this.http.post<CreatedQuizResponse>(this.url.create, quiz, {
-      params,
-    });
+  create(quiz: QuizFormSubmission) {
+    return this.http.post<CreatedQuizResponse>(this.url.create, quiz);
   }
 
   getById(id: number) {

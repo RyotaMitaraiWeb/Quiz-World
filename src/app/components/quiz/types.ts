@@ -20,3 +20,8 @@ export type QuizBasicDataForm = FormGroup<{
   description: FormControl<string | null>;
   instantMode: FormControl<boolean | null>;
 }>
+
+export interface QuizForm {
+  basic: QuizBasicDataForm;
+  questions: FormArray<FormGroup<QuestionForm>>;
+}

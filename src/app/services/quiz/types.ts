@@ -34,22 +34,25 @@ export interface GradedAnswer {
   answers: SessionAnswer[];
 }
 
+export type SubmitQuestion = Partial<{
+  prompt: string | null;
+  correctAnswers: Partial<{
+    answer: string | null;
+  }>[];
+  wrongAnswers: Partial<{
+    answer: string | null;
+  }>[];
+  type: string | null;
+  notes: string | null;
+}>;
+
 export interface QuizFormSubmission {
   title: string;
   description: string;
   instantMode: boolean;
-  questions: Partial<{
-    prompt: string | null;
-    correctAnswers: Partial<{
-      answer: string | null;
-    }>[];
-    wrongAnswers: Partial<{
-      answer: string | null;
-    }>[];
-    type: string | null;
-    notes: string | null;
-  }>[];
+  questions: SubmitQuestion[];
 }
+
 
 export interface EditQuizForm {
   id: number;

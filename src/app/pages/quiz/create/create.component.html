@@ -3,5 +3,5 @@
     <h1>Create a new quiz</h1>
     <button mat-flat-button>Guide</button>
   </header>
-  <app-quiz-form></app-quiz-form>
+  <app-quiz-form (quizSubmit)="submit($event)"></app-quiz-form>
 </section>

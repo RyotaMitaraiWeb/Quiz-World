@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule, Validators, FormArray } from '@angular/forms';
-import { QuestionForm, QuizBasicDataForm } from '../types';
+import { QuestionForm, QuizBasicDataForm, QuizForm } from '../types';
 import { MatStepperModule } from '@angular/material/stepper';
 import { quizValidationRules } from '../../../common/validationRules/quiz-form';
 import { QuizFormBasicDataComponent } from '../quiz-form-basic-data/quiz-form-basic-data.component';
@@ -24,7 +24,7 @@ import { MatCardModule } from '@angular/material/card';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizFormComponent {
-  basicDataForm: QuizBasicDataForm = new FormGroup({
+  readonly basicDataForm: QuizBasicDataForm = new FormGroup({
     title: new FormControl('',
       {
         validators: [
@@ -48,4 +48,16 @@ export class QuizFormComponent {
   });
 
   readonly questionsForm = new FormArray<FormGroup<QuestionForm>>([emptySingleChoiceQuestion()]);
+
+  quizSubmit = output<QuizForm>();
+
+  submit(event: MouseEvent) {
+    event.preventDefault();
+
+    const basic = this.basicDataForm;
+    const questions = this.questionsForm;
+
+    this.quizSubmit.emit({ basic, questions });
+  }
 }
+
