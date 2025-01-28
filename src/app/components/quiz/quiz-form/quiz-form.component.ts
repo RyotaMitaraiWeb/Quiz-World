@@ -7,12 +7,14 @@ import { QuizFormBasicDataComponent } from '../quiz-form-basic-data/quiz-form-ba
 import { MatButtonModule } from '@angular/material/button';
 import { QuizFormQuestionsComponent } from '../quiz-form-questions/quiz-form-questions.component';
 import { emptySingleChoiceQuestion } from '../emptyForms';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-quiz-form',
   imports: [
     MatStepperModule,
     MatButtonModule,
+    MatCardModule,
     ReactiveFormsModule,
     QuizFormBasicDataComponent,
     QuizFormQuestionsComponent,

@@ -9,5 +9,27 @@
   <mat-step [stepControl]="questionsForm">
     <ng-template matStepLabel>Manage questions</ng-template>
     <app-quiz-form-questions [form]="questionsForm"></app-quiz-form-questions>
+    <div>
+      <button mat-button matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Submit</ng-template>
+    <mat-card class="submit-section">
+      <div class="text">
+        <mat-card-header>
+          <mat-card-title>Submit the quiz</mat-card-title>
+          <mat-card-subtitle>You can always edit the quiz later on</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-actions>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-flat-button type="button">Submit</button>
+        </mat-card-actions>
+      </div>
+      <div class="image">
+        <img src="/images/quiz-form-submit.svg" alt="" />
+      </div>
+    </mat-card>
   </mat-step>
 </mat-stepper>
