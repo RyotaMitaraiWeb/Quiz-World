@@ -11,6 +11,7 @@ import { quizValidationRules } from '../../../common/validationRules/quiz-form';
 import { generateUniqueId } from '../../../util/generateUniqueId';
 import { SharedCreateEditQuizFormService } from '../../../services/shared/shared-create-edit-quiz-form.service';
 import { MatButtonModule } from '@angular/material/button';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-edit',
@@ -23,6 +24,7 @@ export class EditComponent implements OnDestroy, OnInit {
   private readonly quizService = inject(QuizService);
   private readonly router = inject(Router);
   private readonly sharedForm = inject(SharedCreateEditQuizFormService);
+  private readonly title = inject(Title);
 
   readonly basicDataForm: QuizBasicDataForm = this.sharedForm.basicDataForm;
 
@@ -38,6 +40,8 @@ export class EditComponent implements OnDestroy, OnInit {
         this.basicDataForm.controls.title.setValue(v.title);
         this.basicDataForm.controls.description.setValue(v.description);
         this.edit.set(true);
+
+        this.title.setTitle(`Edit ${v.title} | Quiz World`);
 
         const questions = v.questions
           .map(question => this.transformQuestionIntoControl(question));
