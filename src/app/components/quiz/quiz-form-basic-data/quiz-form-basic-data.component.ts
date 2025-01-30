@@ -1,5 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { QuizBasicDataForm } from '../types';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -9,6 +8,7 @@ import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-i
 import { quizErrors } from '../../../common/validationErrors/quiz-form';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { quizValidationRules } from '../../../common/validationRules/quiz-form';
+import { SharedCreateEditQuizFormService } from '../../../services/shared/shared-create-edit-quiz-form.service';
 
 @Component({
   selector: 'app-quiz-form-basic-data',
@@ -26,7 +26,8 @@ import { quizValidationRules } from '../../../common/validationRules/quiz-form';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizFormBasicDataComponent {
-  form = input.required<QuizBasicDataForm>();
+  private readonly sharedForm = inject(SharedCreateEditQuizFormService);
+  form = this.sharedForm.basicDataForm;
 
   protected titleErrorMessages = quizErrors.title;
   protected descriptionErrorMessages = quizErrors.description;

@@ -6,6 +6,7 @@ import { FormArray, FormGroup } from '@angular/forms';
 import { QuestionForm } from '../types';
 import { emptyMultipleChoiceQuestion, emptySingleChoiceQuestion, emptyTextQuestion } from '../emptyForms';
 import { quizValidationRules } from '../../../common/validationRules/quiz-form';
+import { SharedCreateEditQuizFormService } from '../../../services/shared/shared-create-edit-quiz-form.service';
 
 describe('QuizFormQuestionsComponent', () => {
   let component: QuizFormQuestionsComponent;
@@ -14,6 +15,7 @@ describe('QuizFormQuestionsComponent', () => {
   let singleChoiceQuestion: ReturnType<typeof emptySingleChoiceQuestion>;
   let multipleChoiceQuestion: ReturnType<typeof emptyMultipleChoiceQuestion>;
   let textQuestion: ReturnType<typeof emptyTextQuestion>;
+  let sharedForm: SharedCreateEditQuizFormService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -27,9 +29,12 @@ describe('QuizFormQuestionsComponent', () => {
     singleChoiceQuestion = emptySingleChoiceQuestion();
     multipleChoiceQuestion = emptyMultipleChoiceQuestion();
     textQuestion = emptyTextQuestion();
-    form = new FormArray([singleChoiceQuestion, multipleChoiceQuestion, textQuestion]);
+    sharedForm = TestBed.inject(SharedCreateEditQuizFormService);
+    sharedForm.questionsForm.push(singleChoiceQuestion);
+    sharedForm.questionsForm.push(multipleChoiceQuestion);
+    sharedForm.questionsForm.push(textQuestion);
+    form = sharedForm.questionsForm;
 
-    fixture.componentRef.setInput('form', form);
     fixture.detectChanges();
   });
 

@@ -1,7 +1,5 @@
-@let _form = form();
-
 <form>
-  @for (group of _form.controls; track group.controls.randomId.value) {
+  @for (group of form.controls; track group.controls.randomId.value) {
   @let type = group.controls.type.value!;
   @let prompt = group.controls.prompt;
   @let notes = group.controls.notes;
@@ -39,7 +37,7 @@
         <mat-error>{{ notes.errors | singleInputError: notesErrorMessages }}</mat-error>
       </mat-form-field>
     </mat-card-content>
-    @if (_form.length > minQuestionsCount) {
+    @if (form.length > minQuestionsCount) {
     <mat-card-actions>
       <button (click)="deleteQuestion(group.controls.randomId.value!, $event)" mat-icon-button
         class="remove-question-btn" matTooltip="Delete this question" [ariaDescription]="'Delete this question'">
@@ -50,7 +48,7 @@
   </mat-card>
   }
 
-  @if (_form.length < maxQuestionsCount) { <div class="button-container">
+  @if (form.length < maxQuestionsCount) { <div class="button-container">
     <button type="button" mat-fab extended class="add-question-btn" (click)="addQuestion($event)">
       <mat-icon>add</mat-icon>
       Add a new question

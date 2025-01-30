@@ -1,13 +1,12 @@
-import { ChangeDetectionStrategy, Component, output } from '@angular/core';
-import { FormGroup, FormControl, ReactiveFormsModule, Validators, FormArray } from '@angular/forms';
-import { QuestionForm, QuizBasicDataForm, QuizForm } from '../types';
+import { ChangeDetectionStrategy, Component, inject, input, output } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
+import { QuizForm } from '../types';
 import { MatStepperModule } from '@angular/material/stepper';
-import { quizValidationRules } from '../../../common/validationRules/quiz-form';
 import { QuizFormBasicDataComponent } from '../quiz-form-basic-data/quiz-form-basic-data.component';
 import { MatButtonModule } from '@angular/material/button';
 import { QuizFormQuestionsComponent } from '../quiz-form-questions/quiz-form-questions.component';
-import { emptySingleChoiceQuestion } from '../emptyForms';
 import { MatCardModule } from '@angular/material/card';
+import { SharedCreateEditQuizFormService } from '../../../services/shared/shared-create-edit-quiz-form.service';
 
 @Component({
   selector: 'app-quiz-form',
@@ -24,31 +23,12 @@ import { MatCardModule } from '@angular/material/card';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizFormComponent {
-  readonly basicDataForm: QuizBasicDataForm = new FormGroup({
-    title: new FormControl('',
-      {
-        validators: [
-          Validators.required,
-          Validators.minLength(quizValidationRules.title.minlength),
-          Validators.maxLength(quizValidationRules.title.maxlength),
-        ],
-      },
-    ),
-    description: new FormControl('',
-      {
-        validators: [
-          Validators.required,
-          Validators.minLength(quizValidationRules.description.minlength),
-          Validators.maxLength(quizValidationRules.description.maxlength),
-        ],
-      },
+  private readonly sharedForm = inject(SharedCreateEditQuizFormService);
+  readonly basicDataForm = this.sharedForm.basicDataForm;
 
-    ),
-    instantMode: new FormControl(false),
-  });
+  readonly questionsForm = this.sharedForm.questionsForm;
 
-  readonly questionsForm = new FormArray<FormGroup<QuestionForm>>([emptySingleChoiceQuestion()]);
-
+  edit = input(false);
   quizSubmit = output<QuizForm>();
 
   submit(event: MouseEvent) {

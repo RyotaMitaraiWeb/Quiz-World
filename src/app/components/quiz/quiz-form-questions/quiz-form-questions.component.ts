@@ -1,11 +1,10 @@
-import { ChangeDetectionStrategy, Component, input, ViewEncapsulation } from '@angular/core';
-import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, inject, input, ViewEncapsulation } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { SingleChoiceQuestionFormComponent } from '../question-forms/single-choice-question-form/single-choice-question-form.component';
-import { QuestionForm } from '../types';
 import { MultipleChoiceQuestionFormComponent } from '../question-forms/multiple-choice-question-form/multiple-choice-question-form.component';
 import { TextQuestionFormComponent } from '../question-forms/text-question-form/text-question-form.component';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,6 +16,7 @@ import { QuestionTypeSelectComponent } from '../question-type-select/question-ty
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-input-error.pipe';
 import { quizErrors } from '../../../common/validationErrors/quiz-form';
+import { SharedCreateEditQuizFormService } from '../../../services/shared/shared-create-edit-quiz-form.service';
 
 @Component({
   selector: 'app-quiz-form-questions',
@@ -41,16 +41,19 @@ import { quizErrors } from '../../../common/validationErrors/quiz-form';
   encapsulation: ViewEncapsulation.None,
 })
 export class QuizFormQuestionsComponent {
-  readonly form = input.required<FormArray<FormGroup<QuestionForm>>>();
+  private readonly sharedForm = inject(SharedCreateEditQuizFormService);
+  readonly form = this.sharedForm.questionsForm;
+
+  edit = input(false);
 
   addQuestion(event: MouseEvent) {
     event.preventDefault();
-    this.form().push(emptySingleChoiceQuestion());
+    this.form.push(emptySingleChoiceQuestion());
   }
 
   deleteQuestion(questionId: string, event: MouseEvent) {
     event.preventDefault();
-    const form = this.form();
+    const form = this.form;
     const index = form.controls.findIndex(q => q.controls.randomId.value === questionId);
 
     if (index !== -1) {

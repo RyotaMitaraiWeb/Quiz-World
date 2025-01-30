@@ -1,14 +1,14 @@
 <mat-stepper linear orientation="horizontal" #stepper>
   <mat-step [stepControl]="basicDataForm">
     <ng-template matStepLabel>Describe your quiz</ng-template>
-    <app-quiz-form-basic-data [form]="basicDataForm"></app-quiz-form-basic-data>
+    <app-quiz-form-basic-data></app-quiz-form-basic-data>
     <div>
       <button mat-button matStepperNext>Next</button>
     </div>
   </mat-step>
   <mat-step [stepControl]="questionsForm">
     <ng-template matStepLabel>Manage questions</ng-template>
-    <app-quiz-form-questions [form]="questionsForm"></app-quiz-form-questions>
+    <app-quiz-form-questions [edit]="edit()"></app-quiz-form-questions>
     <div>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button matStepperNext>Next</button>
@@ -33,3 +33,5 @@
     </mat-card>
   </mat-step>
 </mat-stepper>
+
+{{ questionsForm.controls[0].controls.prompt.value }}
