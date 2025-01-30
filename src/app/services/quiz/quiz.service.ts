@@ -57,7 +57,7 @@ export class QuizService {
     return this.http.delete(this.url.delete(id));
   }
 
-  edit(id: number, quizToEdit: EditQuizForm) {
+  edit(id: number, quizToEdit: QuizFormSubmission) {
     return this.http.put(this.url.edit(id), quizToEdit);
   }
 

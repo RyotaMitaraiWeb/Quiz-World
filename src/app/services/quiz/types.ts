@@ -49,7 +49,7 @@ export type SubmitQuestion = Partial<{
 export interface QuizFormSubmission {
   title: string;
   description: string;
-  instantMode: boolean;
+  instantMode?: boolean;
   questions: SubmitQuestion[];
 }
 
@@ -68,7 +68,6 @@ export interface Question {
 }
 
 export type QuestionSubmission = {
-  order: number;
   type: question;
 } & Question
 
