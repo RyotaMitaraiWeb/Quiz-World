@@ -60,6 +60,8 @@ export class QuizFormQuestionsComponent implements AfterViewChecked {
     const form = this.form;
     const index = form.controls.findIndex(q => q.controls.randomId.value === questionId);
 
+    const indexToFocus = index === form.length - 1 ? index - 1 : index + 1;
+    this.focusNextPromptField(indexToFocus);
     if (index !== -1) {
       form.removeAt(index);
     }
@@ -72,9 +74,7 @@ export class QuizFormQuestionsComponent implements AfterViewChecked {
 
   ngAfterViewChecked() {
     if (this.shouldFocusPromptField) {
-      const lastIndex = this.form.length;
-      const promptField = document.querySelector(`#prompt-${lastIndex}`) as HTMLTextAreaElement | null;
-      promptField?.focus();
+      this.focusNewestPromptField();
     }
 
     this.shouldFocusPromptField = false;
@@ -95,4 +95,18 @@ export class QuizFormQuestionsComponent implements AfterViewChecked {
 
   protected promptErrorMessages = quizErrors.questions.prompt;
   protected notesErrorMessages = quizErrors.questions.notes;
+
+  private focusNewestPromptField() {
+    const lastIndex = this.form.length;
+    const promptField = document.querySelector(`#prompt-${lastIndex}`) as HTMLTextAreaElement | null;
+    promptField?.focus();
+  }
+
+  /**
+   * Handles focusing of a different prompt field before one has been removed
+   */
+  private focusNextPromptField(index: number) {
+    const promptField = document.querySelector(`#prompt-${index + 1}`) as HTMLTextAreaElement | null;
+    promptField?.focus();
+  }
 }
