@@ -13,7 +13,7 @@
       <app-question-type-select [form]="group"></app-question-type-select>
       <mat-form-field class="prompt-field">
         <mat-label>Prompt</mat-label>
-        <textarea cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" matInput formControlName="prompt"
+        <textarea [id]="'prompt-' + ($index + 1)" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" matInput formControlName="prompt"
           placeholder="Type your question here"></textarea>
           <mat-error>{{ prompt.errors | singleInputError: promptErrorMessages }}</mat-error>
         <mat-hint align="end">{{ prompt.value?.length || 0 }} / {{ promptMaxLength }}</mat-hint>

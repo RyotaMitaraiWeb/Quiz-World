@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, input, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, viewChildren, ViewEncapsulation, AfterViewChecked } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -40,15 +40,19 @@ import { SharedCreateEditQuizFormService } from '../../../services/shared/shared
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
-export class QuizFormQuestionsComponent {
+export class QuizFormQuestionsComponent implements AfterViewChecked {
   private readonly sharedForm = inject(SharedCreateEditQuizFormService);
   readonly form = this.sharedForm.questionsForm;
+
+  promptFields = viewChildren('promptField');
 
   edit = input(false);
 
   addQuestion(event: MouseEvent) {
     event.preventDefault();
     this.form.push(emptySingleChoiceQuestion());
+
+    this.shouldFocusPromptField = true;
   }
 
   deleteQuestion(questionId: string, event: MouseEvent) {
@@ -59,6 +63,21 @@ export class QuizFormQuestionsComponent {
     if (index !== -1) {
       form.removeAt(index);
     }
+  }
+
+  /**
+   * Used to focus the newest prompt field when a question is added
+   */
+  private shouldFocusPromptField = false;
+
+  ngAfterViewChecked() {
+    if (this.shouldFocusPromptField) {
+      const lastIndex = this.form.length;
+      const promptField = document.querySelector(`#prompt-${lastIndex}`) as HTMLTextAreaElement | null;
+      promptField?.focus();
+    }
+
+    this.shouldFocusPromptField = false;
   }
 
   protected subtitleLabels: Record<question, string> = {

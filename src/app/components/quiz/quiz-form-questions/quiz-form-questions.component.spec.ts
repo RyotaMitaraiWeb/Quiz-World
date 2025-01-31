@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { QuizFormQuestionsComponent } from './quiz-form-questions.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -42,7 +42,7 @@ describe('QuizFormQuestionsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('Add question button works and is visible until 100 questions are entered', async () => {
+  it('Add question button works and is visible until 100 questions are entered', fakeAsync(async () => {
     const button = document.querySelector('.add-question-btn')!;
 
     const max = quizValidationRules.questions.maxlength;
@@ -53,11 +53,12 @@ describe('QuizFormQuestionsComponent', () => {
       button.dispatchEvent(new MouseEvent('click'));
       await fixture.whenStable();
       fixture.detectChanges();
+      tick();
     }
 
     expect(document.querySelectorAll('mat-card.question-form').length).toBe(max);
     expect(document.querySelector('.add-question-btn')).toBeNull();
-  });
+  }));
 
   it('Delete question button works and is visible until there is only one question', async () => {
     const removeButton = () => document.querySelector('.remove-question-btn') as HTMLButtonElement;
