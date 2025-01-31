@@ -2,6 +2,11 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-top: 16px;
+
+  @media screen and (max-width: 1024px) {
+    flex-direction: column-reverse;
+  }
 
   .image {
     width: 50%;
@@ -9,6 +14,10 @@
     display: flex;
     align-items: center;
     padding: 16px;
+    @media screen and (max-width: 1024px) {
+      align-self: center;
+    }
+
     img {
       max-width: 100%;
       margin-left: auto;

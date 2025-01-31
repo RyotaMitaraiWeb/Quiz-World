@@ -2,6 +2,7 @@ form {
   display: flex;
   flex-direction: column;
   gap: 32px;
+  margin-top: 16px;
 
   .prompt-field, .notes-field {
     width: 100%;
