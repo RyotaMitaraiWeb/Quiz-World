@@ -26,6 +26,8 @@ export class EditComponent implements OnDestroy, OnInit {
   private readonly sharedForm = inject(SharedCreateEditQuizFormService);
   private readonly title = inject(Title);
 
+  quizTitle = signal('');
+
   readonly basicDataForm: QuizBasicDataForm = this.sharedForm.basicDataForm;
 
   readonly questionsForm = this.sharedForm.questionsForm;
@@ -38,6 +40,7 @@ export class EditComponent implements OnDestroy, OnInit {
       next: (v) => {
         this.questionsForm.clear();
         this.basicDataForm.controls.title.setValue(v.title);
+        this.quizTitle.set(v.title);
         this.basicDataForm.controls.description.setValue(v.description);
         this.edit.set(true);
 
