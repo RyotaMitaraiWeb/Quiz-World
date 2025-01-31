@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy } from '@angular/core';
 import { QuizFormComponent } from '../../../components/quiz/quiz-form/quiz-form.component';
-import { MatButtonModule } from '@angular/material/button';
 import { QuestionForm, QuizForm } from '../../../components/quiz/types';
 import { QuizService } from '../../../services/quiz/quiz.service';
 import { QuizFormSubmission, SubmitQuestion } from '../../../services/quiz/types';
@@ -8,9 +7,10 @@ import { FormArray, FormGroup } from '@angular/forms';
 import { questionTypes } from '../../../common/questionTypes';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { QuizFormGuideButtonComponent } from '../../../components/quiz/quiz-form-guide-button/quiz-form-guide-button.component';
 @Component({
   selector: 'app-create',
-  imports: [QuizFormComponent, MatButtonModule],
+  imports: [QuizFormComponent, QuizFormGuideButtonComponent],
   templateUrl: './create.component.html',
   styleUrl: './create.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

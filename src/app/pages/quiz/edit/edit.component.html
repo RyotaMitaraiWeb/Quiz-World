@@ -1,7 +1,7 @@
 <section>
   <header>
     <h1>Create a new quiz</h1>
-    <button mat-flat-button>Guide</button>
+    <app-quiz-form-guide-button></app-quiz-form-guide-button>
   </header>
   <app-quiz-form [edit]="edit()" (quizSubmit)="submit($event)"></app-quiz-form>
 </section>

@@ -10,12 +10,12 @@ import { Answer, QuestionSubmission, QuizFormSubmission, SubmitQuestion } from '
 import { quizValidationRules } from '../../../common/validationRules/quiz-form';
 import { generateUniqueId } from '../../../util/generateUniqueId';
 import { SharedCreateEditQuizFormService } from '../../../services/shared/shared-create-edit-quiz-form.service';
-import { MatButtonModule } from '@angular/material/button';
 import { Title } from '@angular/platform-browser';
+import { QuizFormGuideButtonComponent } from '../../../components/quiz/quiz-form-guide-button/quiz-form-guide-button.component';
 
 @Component({
   selector: 'app-edit',
-  imports: [QuizFormComponent, MatButtonModule],
+  imports: [QuizFormComponent, QuizFormGuideButtonComponent],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
