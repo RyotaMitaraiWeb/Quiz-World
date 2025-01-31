@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -28,6 +28,8 @@ import { SharedCreateEditQuizFormService } from '../../../services/shared/shared
 export class QuizFormBasicDataComponent {
   private readonly sharedForm = inject(SharedCreateEditQuizFormService);
   form = this.sharedForm.basicDataForm;
+
+  edit = input(false);
 
   protected titleErrorMessages = quizErrors.title;
   protected descriptionErrorMessages = quizErrors.description;

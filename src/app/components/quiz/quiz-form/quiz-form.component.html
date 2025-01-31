@@ -1,7 +1,7 @@
 <mat-stepper linear orientation="horizontal" #stepper>
   <mat-step [stepControl]="basicDataForm">
     <ng-template matStepLabel>Describe your quiz</ng-template>
-    <app-quiz-form-basic-data></app-quiz-form-basic-data>
+    <app-quiz-form-basic-data [edit]="edit()"></app-quiz-form-basic-data>
     <div>
       <button mat-button matStepperNext>Next</button>
     </div>

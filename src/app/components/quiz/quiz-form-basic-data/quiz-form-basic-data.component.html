@@ -14,14 +14,17 @@
   <div>
     <mat-form-field class="description-field">
       <mat-label>Description</mat-label>
-      <textarea cdkTextareaAutosize matInput placeholder="Your quiz's description" formControlName="description"></textarea>
+      <textarea cdkTextareaAutosize matInput placeholder="Your quiz's description"
+        formControlName="description"></textarea>
       <mat-hint align="end">{{ description.value?.length || 0 }} / {{ maxDescriptionLength }}</mat-hint>
       <mat-error>{{ description.errors | singleInputError: descriptionErrorMessages }}</mat-error>
     </mat-form-field>
   </div>
+  @if (!edit()) {
   <div class="instant-mode">
     <mat-checkbox formControlName="instantMode">
       Instant mode
     </mat-checkbox>
   </div>
+  }
 </form>
