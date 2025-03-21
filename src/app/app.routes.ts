@@ -3,6 +3,8 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { HomeComponent } from './pages/home/home.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { QuizDetailsComponent } from './pages/quiz/quiz-details/quiz-details.component';
+import { CreateQuizComponent } from './pages/quiz/create/create.component';
+import { EditComponent } from './pages/quiz/edit/edit.component';
 
 export const routes: Routes = [
   {
@@ -29,8 +31,22 @@ export const routes: Routes = [
     path: 'quiz',
     children: [
       {
+        path: 'create',
+        component: CreateQuizComponent,
+        title: 'Create a new quiz | Quiz World',
+      },
+      {
         path: ':id',
-        component: QuizDetailsComponent,
+        children: [
+          {
+            component: QuizDetailsComponent,
+            path: '',
+          },
+          {
+            path: 'edit',
+            component: EditComponent,
+          },
+        ],
       },
     ],
   },

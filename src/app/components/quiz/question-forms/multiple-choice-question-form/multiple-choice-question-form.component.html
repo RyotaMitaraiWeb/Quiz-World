@@ -1,0 +1,58 @@
+@let _form = form();
+@let answers = _form.controls;
+@let _correctAnswers = correctAnswersCount();
+<!-- @let _wrongAnswersCount = wrongAnswersCount(); -->
+@let _answersCount = answersCount();
+
+
+<div class="question-form multiple-choice">
+  <h3>Correct answers</h3>
+  @for (answer of answers; track answer.controls.randomId.value) {
+  @if (answer.controls.correct.value) {
+  @let id = answer.controls.randomId.value!;
+  <div class="answer-field multiple-choice correct">
+    <div class="answer-input">
+      <mat-checkbox checked disabled [name]="answer.controls.randomId.value!"></mat-checkbox>
+      @let answerLength = answer.value.value?.length || 0;
+      @let errors = answer.controls.value.errors;
+      <mat-form-field [formGroup]="answer">
+        <textarea appFocusNewlyAddedField [id]="id" cdkTextareaAutosize matInput formControlName="value"></textarea>
+        <mat-hint>{{ answerLength }} / {{ answersMaxLength }}</mat-hint>
+        <mat-error>{{ errors | singleInputError: answersErrorMessages }}</mat-error>
+      </mat-form-field>
+    </div>
+    <app-delete-answer-button (click)="removeAnswer(id, true, $event)"
+      [appHideVisually]="_correctAnswers <= minCorrectAnswersCount || _answersCount <= minAnswersCount"
+      class="remove-correct-answer-button"></app-delete-answer-button>
+  </div>
+  }
+  }
+
+  @if (_answersCount < maxAnswersCount) { <app-add-answer-button class="add-answer-button correct" [correct]="true"
+    (click)="addNewAnswer(true, $event)"></app-add-answer-button>
+    }
+
+    <h3>Wrong answers</h3>
+    @for (answer of answers; track answer.controls.randomId.value) {
+    @if (!answer.controls.correct.value) {
+    <div class="answer-field multiple-choice wrong">
+      @let id = answer.controls.randomId.value!;
+      <div class="answer-input">
+        <mat-checkbox disabled [name]="id"></mat-checkbox>
+        @let answerLength = answer.value.value?.length || 0;
+        @let errors = answer.controls.value.errors;
+        <mat-form-field [formGroup]="answer">
+          <textarea appFocusNewlyAddedField [id]="id" cdkTextareaAutosize matInput formControlName="value"></textarea>
+          <mat-hint>{{ answerLength }} / {{ answersMaxLength }}</mat-hint>
+          <mat-error>{{ errors | singleInputError: answersErrorMessages }}</mat-error>
+        </mat-form-field>
+      </div>
+      <app-delete-answer-button [appHideVisually]="_answersCount <= minAnswersCount" class="remove-wrong-answer-button"
+        (click)="removeAnswer(id, false, $event)"></app-delete-answer-button>
+    </div>
+    }
+    }
+    @if (_answersCount < maxAnswersCount) { <app-add-answer-button class="add-answer-button wrong" [correct]="false"
+      (click)="addNewAnswer(false, $event)"></app-add-answer-button>
+      }
+</div>

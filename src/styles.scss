@@ -2,3 +2,12 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.invisible {
+  visibility: hidden;
+}
+
+code {
+  color: rgb(207, 102, 120);
+  background-color: rgb(230, 230, 230);
+}
