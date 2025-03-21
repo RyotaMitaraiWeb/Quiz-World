@@ -13,6 +13,7 @@ import { quizErrors } from '../../../../common/validationErrors/quiz-form';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { SingleInputErrorPipe } from '../../../../pipes/single-input-error/single-input-error.pipe';
 import { FocusNewlyAddedFieldDirective } from '../../../../directives/focus-newly-added-field/focus-newly-added-field.directive';
+import { findAppropriateFieldToFocusDuringRemoval } from '../../../../util/findAppropriateFieldToFocusDuringRemoval';
 
 @Component({
   selector: 'app-text-question-form',
@@ -56,8 +57,15 @@ export class TextQuestionFormComponent {
     const answerIndex = form.controls.findIndex(c => c.controls.randomId.value === answerId);
 
     if (answerIndex !== -1) {
+      const fieldControls = form.controls[answerIndex];
+      const field = findAppropriateFieldToFocusDuringRemoval(
+        form.controls,
+        fieldControls,
+      );
       form.removeAt(answerIndex);
       this.answersCount.update(v => v - 1);
+
+      field?.focus();
     }
   }
 

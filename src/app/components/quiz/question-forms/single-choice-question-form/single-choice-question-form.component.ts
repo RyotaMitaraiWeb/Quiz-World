@@ -13,6 +13,7 @@ import { quizErrors } from '../../../../common/validationErrors/quiz-form';
 import { SingleInputErrorPipe } from '../../../../pipes/single-input-error/single-input-error.pipe';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { FocusNewlyAddedFieldDirective } from '../../../../directives/focus-newly-added-field/focus-newly-added-field.directive';
+import { findAppropriateFieldToFocusDuringRemoval } from '../../../../util/findAppropriateFieldToFocusDuringRemoval';
 
 @Component({
   selector: 'app-single-choice-question-form',
@@ -55,8 +56,15 @@ export class SingleChoiceQuestionFormComponent {
     const answerIndex = form.controls.findIndex(c => c.controls.randomId.value === answerId);
 
     if (answerIndex !== -1) {
+      const fieldControls = form.controls[answerIndex];
+      const field = findAppropriateFieldToFocusDuringRemoval(
+        form.controls.filter(field => !field.value.correct),
+        fieldControls,
+      );
       form.removeAt(answerIndex);
       this.answersCount.update(v => v - 1);
+
+      field?.focus();
     }
   }
 
