@@ -3,7 +3,7 @@ import { HideVisuallyDirective } from './hide-visually.directive';
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-@Component({
+export @Component({
   selector: 'app-test',
   imports: [HideVisuallyDirective],
   template: `

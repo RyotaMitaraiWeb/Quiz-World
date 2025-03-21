@@ -12,6 +12,7 @@ import { HideVisuallyDirective } from '../../../../directives/hide-visually/hide
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { SingleInputErrorPipe } from '../../../../pipes/single-input-error/single-input-error.pipe';
 import { quizErrors } from '../../../../common/validationErrors/quiz-form';
+import { FocusNewlyAddedFieldDirective } from '../../../../directives/focus-newly-added-field/focus-newly-added-field.directive';
 
 @Component({
   selector: 'app-multiple-choice-question-form',
@@ -25,6 +26,7 @@ import { quizErrors } from '../../../../common/validationErrors/quiz-form';
     DeleteAnswerButtonComponent,
     HideVisuallyDirective,
     SingleInputErrorPipe,
+    FocusNewlyAddedFieldDirective,
   ],
   templateUrl: './multiple-choice-question-form.component.html',
   styleUrl: './multiple-choice-question-form.component.scss',
@@ -42,7 +44,8 @@ export class MultipleChoiceQuestionFormComponent {
 
   addNewAnswer(correct: boolean, event: MouseEvent) {
     event.preventDefault();
-    this.form().push(emptyAnswer(correct));
+    const answer = emptyAnswer(correct);
+    this.form().push(answer);
     this.incrementAnswerCount(correct);
   }
 

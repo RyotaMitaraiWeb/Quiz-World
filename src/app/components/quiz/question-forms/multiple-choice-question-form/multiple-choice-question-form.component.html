@@ -16,7 +16,7 @@
       @let answerLength = answer.value.value?.length || 0;
       @let errors = answer.controls.value.errors;
       <mat-form-field [formGroup]="answer">
-        <textarea cdkTextareaAutosize matInput formControlName="value"></textarea>
+        <textarea appFocusNewlyAddedField [id]="id" cdkTextareaAutosize matInput formControlName="value"></textarea>
         <mat-hint>{{ answerLength }} / {{ answersMaxLength }}</mat-hint>
         <mat-error>{{ errors | singleInputError: answersErrorMessages }}</mat-error>
       </mat-form-field>
@@ -42,7 +42,7 @@
         @let answerLength = answer.value.value?.length || 0;
         @let errors = answer.controls.value.errors;
         <mat-form-field [formGroup]="answer">
-          <textarea cdkTextareaAutosize matInput formControlName="value"></textarea>
+          <textarea appFocusNewlyAddedField [id]="id" cdkTextareaAutosize matInput formControlName="value"></textarea>
           <mat-hint>{{ answerLength }} / {{ answersMaxLength }}</mat-hint>
           <mat-error>{{ errors | singleInputError: answersErrorMessages }}</mat-error>
         </mat-form-field>

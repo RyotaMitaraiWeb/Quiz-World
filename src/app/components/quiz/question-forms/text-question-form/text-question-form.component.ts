@@ -12,6 +12,7 @@ import { DeleteAnswerButtonComponent } from '../../../common/buttons/delete-answ
 import { quizErrors } from '../../../../common/validationErrors/quiz-form';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { SingleInputErrorPipe } from '../../../../pipes/single-input-error/single-input-error.pipe';
+import { FocusNewlyAddedFieldDirective } from '../../../../directives/focus-newly-added-field/focus-newly-added-field.directive';
 
 @Component({
   selector: 'app-text-question-form',
@@ -25,6 +26,8 @@ import { SingleInputErrorPipe } from '../../../../pipes/single-input-error/singl
     AddAnswerButtonComponent,
     DeleteAnswerButtonComponent,
     SingleInputErrorPipe,
+    FocusNewlyAddedFieldDirective,
+
   ],
   templateUrl: './text-question-form.component.html',
   styleUrl: './text-question-form.component.scss',

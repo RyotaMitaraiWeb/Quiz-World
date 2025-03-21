@@ -12,6 +12,7 @@ import { HideVisuallyDirective } from '../../../../directives/hide-visually/hide
 import { quizErrors } from '../../../../common/validationErrors/quiz-form';
 import { SingleInputErrorPipe } from '../../../../pipes/single-input-error/single-input-error.pipe';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { FocusNewlyAddedFieldDirective } from '../../../../directives/focus-newly-added-field/focus-newly-added-field.directive';
 
 @Component({
   selector: 'app-single-choice-question-form',
@@ -25,6 +26,7 @@ import { CdkTextareaAutosize } from '@angular/cdk/text-field';
     DeleteAnswerButtonComponent,
     HideVisuallyDirective,
     SingleInputErrorPipe,
+    FocusNewlyAddedFieldDirective,
   ],
   templateUrl: './single-choice-question-form.component.html',
   styleUrl: './single-choice-question-form.component.scss',
