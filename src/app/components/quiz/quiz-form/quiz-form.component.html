@@ -3,7 +3,7 @@
     <ng-template matStepLabel>Describe your quiz</ng-template>
     <app-quiz-form-basic-data [edit]="edit()"></app-quiz-form-basic-data>
     <div>
-      <button mat-button matStepperNext>Next</button>
+      <button [disabled]="basicDataForm.invalid" mat-button matStepperNext>Next</button>
     </div>
   </mat-step>
   <mat-step [stepControl]="questionsForm">
@@ -11,7 +11,7 @@
     <app-quiz-form-questions [edit]="edit()"></app-quiz-form-questions>
     <div>
       <button mat-button matStepperPrevious>Back</button>
-      <button mat-button matStepperNext>Next</button>
+      <button mat-button matStepperNext [disabled]="questionsForm.invalid">Next</button>
     </div>
   </mat-step>
   <mat-step>
