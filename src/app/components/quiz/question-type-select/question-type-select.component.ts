@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, AfterViewInit, OnDestroy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
@@ -6,6 +6,7 @@ import { QuestionForm } from '../types';
 import { question, questionTypes } from '../../../common/questionTypes';
 import { emptyAnswer } from '../emptyForms';
 import { quizValidationRules } from '../../../common/validationRules/quiz-form';
+import { QuestionTypesStore } from '../../../store/question/questionTypes.store';
 @Component({
   selector: 'app-question-type-select',
   imports: [MatSelectModule, MatFormFieldModule],
@@ -13,8 +14,25 @@ import { quizValidationRules } from '../../../common/validationRules/quiz-form';
   styleUrl: './question-type-select.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class QuestionTypeSelectComponent {
+export class QuestionTypeSelectComponent implements AfterViewInit, OnDestroy {
   form = input.required<FormGroup<QuestionForm>>();
+  private readonly questionTypesStore = inject(QuestionTypesStore);
+
+  ngAfterViewInit() {
+    const form = this.form();
+    const type = form.controls.type.value;
+    if (type) {
+      this.questionTypesStore.incrementQuestionType(type);
+    }
+  }
+
+  ngOnDestroy() {
+    const form = this.form();
+    const type = form.controls.type.value;
+    if (type) {
+      this.questionTypesStore.decrementQuestionType(type);
+    }
+  }
 
   changeQuestionType(type: question) {
     const form = this.form();
@@ -28,6 +46,8 @@ export class QuestionTypeSelectComponent {
     } else if (type === questionTypes.multi) {
       this.switchToMultipleChoiceQuestion(form, currentType);
     }
+
+    this.questionTypesStore.updateCount(currentType, type);
   }
 
   private switchToTextQuestion(form: FormGroup<QuestionForm>) {

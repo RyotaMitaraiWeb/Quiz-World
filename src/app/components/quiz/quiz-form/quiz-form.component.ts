@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { QuizFormQuestionsComponent } from '../quiz-form-questions/quiz-form-questions.component';
 import { MatCardModule } from '@angular/material/card';
 import { SharedCreateEditQuizFormService } from '../../../services/shared/shared-create-edit-quiz-form.service';
+import { QuizFormSummaryComponent } from '../quiz-form-summary/quiz-form-summary.component';
 
 @Component({
   selector: 'app-quiz-form',
@@ -17,6 +18,7 @@ import { SharedCreateEditQuizFormService } from '../../../services/shared/shared
     ReactiveFormsModule,
     QuizFormBasicDataComponent,
     QuizFormQuestionsComponent,
+    QuizFormSummaryComponent,
 ],
   templateUrl: './quiz-form.component.html',
   styleUrl: './quiz-form.component.scss',
