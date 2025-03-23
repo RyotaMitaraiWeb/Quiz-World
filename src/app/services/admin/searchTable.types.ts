@@ -5,7 +5,6 @@ export interface User {
   username: string;
   id: string;
   roles: role[],
-  roleButtons: role[]
 }
 
 export interface UserResponse {

@@ -15,3 +15,7 @@ export interface SearchOptionsWithOrdering {
 export type SearchOptionsWithPaginationAndOrdering = SearchOptionsWithOrdering & SearchOptionsWithPagination;
 
 export type SearchOptions = SearchOptionsWithOrdering & SearchOptionsWithSorting & SearchOptionsWithPagination;
+
+export type PaginatedResult<T, TKey extends string> = {
+  total: number;
+} & Record<TKey, T>;

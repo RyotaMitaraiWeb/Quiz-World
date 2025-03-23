@@ -16,8 +16,8 @@ export class AdminService {
   readonly rolesUrl = api.endpoints.roles;
   readonly logsUrl = api.endpoints.logs;
 
-  getUsersOfRole(role: string, options: SearchOptionsWithPaginationAndOrdering) {
-    const params = paramsBuilder(options);
+  getUsersOfRole(role: string, username: string, options: SearchOptionsWithPaginationAndOrdering) {
+    const params = paramsBuilder({ ...options, username });
 
     return this.http.get<UserList>(this.rolesUrl.getUsersOfRole(role), { params });
   }
