@@ -8,6 +8,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { order } from '../../../../common/sort';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-users-tab-section',
@@ -16,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
     MatTableModule,
     MatPaginatorModule,
     MatInputModule,
+    MatSelectModule,
   ],
   templateUrl: './users-tab-section.component.html',
   styleUrl: './users-tab-section.component.scss',
@@ -24,6 +26,7 @@ import { MatInputModule } from '@angular/material/input';
 export class UsersTabSectionComponent implements OnDestroy, OnInit {
   private readonly adminService = inject(AdminService);
   protected displayedColumns = ['username', 'roles', 'actions'];
+  protected readonly roles = roles;
 
   readonly username = new FormControl('');
   readonly form = new FormGroup(

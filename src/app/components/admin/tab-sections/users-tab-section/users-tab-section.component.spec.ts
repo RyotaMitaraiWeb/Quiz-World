@@ -13,6 +13,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { SearchOptionsWithPaginationAndOrdering } from '../../../../types/search';
+import { MatSelectHarness } from '@angular/material/select/testing';
 const mockUserData: UserList = {
   total: 2,
   users: [
@@ -75,6 +76,33 @@ describe('UsersTabSectionComponent', () => {
 
       const searchField = await loader.getHarness(MatInputHarness);
       await searchField.setValue('b');
+
+      fakeAsync(() => {
+        tick();
+      })();
+
+      await fixture.whenStable();
+      fixture.detectChanges();
+      const rows = await table.getRows();
+      expect(rows.length).toBe(1);
+    }));
+  });
+
+  describe('Role filter', () => {
+    it('Updates table correctly when a role is selected', fakeAsync(async () => {
+      tick();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      spy.and.returnValue(of({ total: 1, users: [mockUserData.users[0]] } as UserList));
+      const table = await loader.getHarness(MatTableHarness);
+
+      const select = await loader.getHarness(MatSelectHarness);
+      await select.open();
+
+      const options = await select.getOptions();
+      const option = options[1];
+
+      await option.click();
 
       fakeAsync(() => {
         tick();
