@@ -2,6 +2,12 @@
 
 <h2>Manage users</h2>
 
+<form [formGroup]="form">
+  <mat-form-field>
+    <input matInput formControlName="username" />
+  </mat-form-field>
+</form>
+
 <mat-table [dataSource]="_users.users">
   <ng-container matColumnDef="username">
     <th mat-header-cell *matHeaderCellDef>Username</th>
