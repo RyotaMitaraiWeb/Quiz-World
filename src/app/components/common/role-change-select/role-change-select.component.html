@@ -1,0 +1,8 @@
+<mat-form-field>
+  <mat-label>Change role</mat-label>
+  <mat-select [(value)]="roles" multiple>
+    @for (role of rolesList; track role) {
+      <mat-option (onSelectionChange)="change($event)" [value]="role">{{ role }}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
