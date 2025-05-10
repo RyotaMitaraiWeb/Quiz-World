@@ -29,7 +29,9 @@
 
   <ng-container matColumnDef="actions">
     <th mat-header-cell *matHeaderCellDef>Actions</th>
-    <td mat-cell *matCellDef="let user"> {{ user.roles.join(', ') }} </td>
+    <td mat-cell *matCellDef="let user" class="actions">
+      <app-role-change-select (select)="changeRole($event, user.id)" [roles]="user.roles"></app-role-change-select>
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
