@@ -5,6 +5,7 @@ import { RegisterComponent } from './pages/auth/register/register.component';
 import { QuizDetailsComponent } from './pages/quiz/quiz-details/quiz-details.component';
 import { CreateQuizComponent } from './pages/quiz/create/create.component';
 import { EditComponent } from './pages/quiz/edit/edit.component';
+import { AdminPageComponent } from './pages/admin/admin-page/admin-page.component';
 
 export const routes: Routes = [
   {
@@ -49,5 +50,10 @@ export const routes: Routes = [
         ],
       },
     ],
+  },
+  {
+    path: 'admin',
+    title: 'Administrator area',
+    component: AdminPageComponent,
   },
 ];

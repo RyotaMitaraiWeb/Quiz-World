@@ -1,11 +1,9 @@
 import { role } from '../../common/roles';
 
 export interface User {
-  index: number;
   username: string;
   id: string;
   roles: role[],
-  roleButtons: role[]
 }
 
 export interface UserResponse {
