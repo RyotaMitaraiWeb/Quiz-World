@@ -15,6 +15,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { SearchOptionsWithPaginationAndOrdering } from '../../../../types/search';
 import { MatSelectHarness } from '@angular/material/select/testing';
+
 const mockUserData: UserList = {
   total: 21,
   users: [
