@@ -2,11 +2,11 @@
 
 <h2>Manage users</h2>
 
-<form [formGroup]="form">
-  <mat-form-field>
+<form [formGroup]="form" class="form">
+  <mat-form-field subscriptSizing="dynamic">
     <input matInput formControlName="username" />
   </mat-form-field>
-  <mat-form-field>
+  <mat-form-field subscriptSizing="dynamic">
     <mat-label>Filter by role</mat-label>
     <mat-select formControlName="role">
       <mat-option [value]="roles.user">User (all users)</mat-option>
