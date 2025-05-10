@@ -232,4 +232,35 @@ describe('UsersTabSectionComponent', () => {
       expect(rows.length).toBe(1);
     }));
   });
+
+  describe('Order by', () => {
+    it('Updates table when the order is changed', fakeAsync(async () => {
+      tick();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      spy.and.returnValue(of({ total: 20, users: [...mockUserData.users].reverse().filter((_, i) => i < 20) } as UserList));
+      const table = await loader.getHarness(MatTableHarness);
+
+      const selectMenus = await loader.getAllHarnesses(MatSelectHarness);
+      const orderBySelectMenu = selectMenus[1];
+
+      await orderBySelectMenu.open();
+
+      const options = await orderBySelectMenu.getOptions();
+      await options[1].click();
+
+      fakeAsync(() => {
+        tick();
+      })();
+
+      await fixture.whenStable();
+      fixture.detectChanges();
+      const rows = await table.getRows();
+      expect(rows.length).toBe(20);
+
+      const firstValue = (await rows[0].getCellTextByIndex())[0];
+      const expectedValue = mockUserData.users[mockUserData.users.length - 1].username;
+      expect(firstValue).toBe(expectedValue);
+    }));
+  });
 });

@@ -14,6 +14,13 @@
       <mat-option [value]="roles.admin">Administrator</mat-option>
     </mat-select>
   </mat-form-field>
+  <mat-form-field subscriptSizing="dynamic">
+    <mat-label>Order by</mat-label>
+    <mat-select formControlName="order">
+      <mat-option value="asc">Username (ascending)</mat-option>
+      <mat-option value="desc">Username (descending)</mat-option>
+    </mat-select>
+  </mat-form-field>
 </form>
 
 <mat-table [dataSource]="_users.users">
