@@ -9,13 +9,14 @@ import { roles } from '../../../../common/roles';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { MatTableHarness } from '@angular/material/table/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
+import { MatPaginatorHarness } from '@angular/material/paginator/testing';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { SearchOptionsWithPaginationAndOrdering } from '../../../../types/search';
 import { MatSelectHarness } from '@angular/material/select/testing';
 const mockUserData: UserList = {
-  total: 2,
+  total: 21,
   users: [
     {
       username: 'a',
@@ -26,6 +27,101 @@ const mockUserData: UserList = {
       username: 'ab',
       roles: [roles.user, roles.moderator],
       id: '2',
+    },
+    {
+      username: 'b',
+      roles: [roles.user],
+      id: '3',
+    },
+    {
+      username: 'c',
+      roles: [roles.user, roles.moderator],
+      id: '4',
+    },
+    {
+      username: 'ac',
+      roles: [roles.user],
+      id: '5',
+    },
+    {
+      username: 'd',
+      roles: [roles.user, roles.moderator],
+      id: '6',
+    },
+    {
+      username: 'ad',
+      roles: [roles.user],
+      id: '7',
+    },
+    {
+      username: 'e',
+      roles: [roles.user, roles.moderator],
+      id: '8',
+    },
+    {
+      username: 'ae',
+      roles: [roles.user],
+      id: '9',
+    },
+    {
+      username: 'f',
+      roles: [roles.user, roles.moderator],
+      id: '10',
+    },
+    {
+      username: 'af',
+      roles: [roles.user],
+      id: '11',
+    },
+    {
+      username: 'g',
+      roles: [roles.user, roles.moderator],
+      id: '12',
+    },
+    {
+      username: 'ag',
+      roles: [roles.user],
+      id: '13',
+    },
+    {
+      username: 'h',
+      roles: [roles.user, roles.moderator],
+      id: '14',
+    },
+    {
+      username: 'ah',
+      roles: [roles.user],
+      id: '15',
+    },
+    {
+      username: 'i',
+      roles: [roles.user, roles.moderator],
+      id: '16',
+    },
+    {
+      username: 'ai',
+      roles: [roles.user],
+      id: '17',
+    },
+    {
+      username: 'j',
+      roles: [roles.user, roles.moderator],
+      id: '18',
+    },
+    {
+      username: 'aj',
+      roles: [roles.user],
+      id: '19',
+    },
+    {
+      username: 'k',
+      roles: [roles.user, roles.moderator],
+      id: '20',
+    },
+    {
+      username: 'ak',
+      roles: [roles.user, roles.moderator],
+      id: '21',
     },
   ],
 };
@@ -49,7 +145,7 @@ describe('UsersTabSectionComponent', () => {
     loader = TestbedHarnessEnvironment.loader(fixture);
     component = fixture.componentInstance;
     adminService = TestBed.inject(AdminService);
-    spy = spyOn(adminService, 'getUsersOfRole').and.returnValue(of(mockUserData));
+    spy = spyOn(adminService, 'getUsersOfRole').and.returnValue(of({...mockUserData, users: mockUserData.users.filter((_, i) => i < 20)}));
     fixture.detectChanges();
   });
 
@@ -63,7 +159,7 @@ describe('UsersTabSectionComponent', () => {
     fixture.detectChanges();
     const table = await loader.getHarness(MatTableHarness);
     const rows = await table.getRows();
-    expect(rows.length).toBe(mockUserData.users.length);
+    expect(rows.length).toBe(20);
   }));
 
   describe('Search field', () => {
@@ -103,6 +199,28 @@ describe('UsersTabSectionComponent', () => {
       const option = options[1];
 
       await option.click();
+
+      fakeAsync(() => {
+        tick();
+      })();
+
+      await fixture.whenStable();
+      fixture.detectChanges();
+      const rows = await table.getRows();
+      expect(rows.length).toBe(1);
+    }));
+  });
+
+  describe('Paginator', () => {
+    it('Updates table when page is changed', fakeAsync(async () => {
+      tick();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      spy.and.returnValue(of({ total: 1, users: [mockUserData.users[20]] } as UserList));
+      const table = await loader.getHarness(MatTableHarness);
+
+      const paginator = await loader.getHarness(MatPaginatorHarness);
+      await paginator.goToNextPage();
 
       fakeAsync(() => {
         tick();

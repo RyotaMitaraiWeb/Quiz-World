@@ -62,6 +62,10 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
     users: [],
   });
 
+  changePage(page: number) {
+    this.form.controls.page.setValue(page);
+  }
+
   ngOnDestroy() {
     this._usersSub.unsubscribe();
     this._promoteSub?.unsubscribe();
