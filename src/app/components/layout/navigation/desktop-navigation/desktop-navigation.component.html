@@ -1,0 +1,18 @@
+@let _open = open();
+
+<mat-toolbar role="header" aria-label="Main navigation for primary actions like search">
+  <button class="menu-button" mat-icon-button aria-label="Open side menu for navigation">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <div class="second">
+    <span>Quiz World</span>
+    <app-desktop-search-field [open]="_open" />
+    <button [matTooltip]="_open ? 'Close search field' : 'Open search field'" (click)="toggleMenu()" mat-icon-button aria-label="Search quizzes">
+      @if (!_open) {
+        <mat-icon>search</mat-icon>
+      } @else {
+        <mat-icon>clear</mat-icon>
+      }
+    </button>
+  </div>
+</mat-toolbar>
