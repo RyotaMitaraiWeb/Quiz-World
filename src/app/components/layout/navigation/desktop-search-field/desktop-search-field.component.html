@@ -1,0 +1,12 @@
+@let _open = open();
+@let query = form.value.query;
+
+<form appSearchField [formGroup]="form">
+  <mat-form-field subscriptSizing="dynamic" [class]="['desktop-search-field', _open ? 'open' : 'closed']">
+    <mat-label>Search quizzes by title</mat-label>
+    <input matInput formControlName="query" />
+    <button [disabled]="!!!query" id="search-button" matTooltip="Initiate search" type="submit" mat-icon-button matIconSuffix>
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
+</form>
