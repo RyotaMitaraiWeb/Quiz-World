@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { DesktopSearchFieldComponent } from '../desktop-search-field/desktop-search-field.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { BurgerMenuComponent } from "../burger-menu/burger-menu.component";
 
 @Component({
   selector: 'app-desktop-navigation',
@@ -15,7 +16,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatButtonModule,
     MatTooltipModule,
     DesktopSearchFieldComponent,
-  ],
+    BurgerMenuComponent
+],
   templateUrl: './desktop-navigation.component.html',
   styleUrl: './desktop-navigation.component.scss',
 })

@@ -6,6 +6,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MobileSearchFieldDialogComponent } from '../mobile-search-field-dialog/mobile-search-field-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { BurgerMenuComponent } from '../burger-menu/burger-menu.component';
 
 @Component({
   selector: 'app-mobile-navigation',
@@ -15,7 +16,8 @@ import { MatDialog } from '@angular/material/dialog';
     MatInputModule,
     MatButtonModule,
     MatTooltipModule,
-  ],
+    BurgerMenuComponent,
+],
   templateUrl: './mobile-navigation.component.html',
   styleUrl: './mobile-navigation.component.scss',
 })
