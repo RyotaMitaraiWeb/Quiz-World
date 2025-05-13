@@ -3,10 +3,15 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth/auth.service';
 import { UserStore } from './store/user/user.store';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { NavigationComponent } from './components/layout/navigation/navigation/navigation.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterModule],
+  imports: [
+    RouterOutlet,
+    RouterModule,
+    NavigationComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
