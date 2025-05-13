@@ -1,4 +1,4 @@
-import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MobileSearchFieldDialogComponent } from './mobile-search-field-dialog.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
