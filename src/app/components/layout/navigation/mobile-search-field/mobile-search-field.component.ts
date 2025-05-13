@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { SearchFieldDirective } from '../../../../directives/search-field/search-field.directive';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-mobile-search-field',
@@ -23,4 +24,6 @@ export class MobileSearchFieldComponent {
   protected readonly form = new FormGroup({
     query: new FormControl(''),
   });
+
+  private readonly _routerEventsSub?: Subscription;
 }
