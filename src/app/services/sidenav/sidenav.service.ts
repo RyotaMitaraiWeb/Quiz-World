@@ -16,7 +16,18 @@ export class SidenavService {
   }
 
   close() {
+    const wasOpen = this.isOpen();
     this._open.set(false);
-    this._afterClosed$.next();
+    if (wasOpen) {
+      this._afterClosed$.next();
+    }
+  }
+
+  toggle() {
+    this._open.update(o => !o);
+
+    if (!this.isOpen()) {
+      this._afterClosed$.next();
+    }
   }
 }

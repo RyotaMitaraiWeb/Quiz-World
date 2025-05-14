@@ -14,7 +14,7 @@ describe('SidenavService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('toggles state correctly (integration test)', (done: DoneFn) => {
+  it('toggles state correctly (integration test for open and close)', (done: DoneFn) => {
     service.afterClosed.subscribe(() => {
       done();
     });
