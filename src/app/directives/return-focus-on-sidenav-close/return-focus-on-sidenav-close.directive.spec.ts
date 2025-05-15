@@ -21,7 +21,8 @@ describe('ReturnFocusOnSidenavCloseDirective', () => {
 
   it('Returns focus when sidenav is closed', () => {
     const spy = spyOn(HTMLButtonElement.prototype, 'focus').and.stub();
-
+    sidenav.open();
+    fixture.detectChanges();
     sidenav.close();
 
     expect(spy).toHaveBeenCalled();
