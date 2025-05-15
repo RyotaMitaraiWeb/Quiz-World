@@ -3,7 +3,7 @@
 
 nav {
   transition: width 0.5s;
-  min-height: 100vh;
+  min-height: 100%;
   width: 250px;
   position: relative;
   border-right: 1px solid #ddd;
@@ -37,6 +37,7 @@ ul {
   flex-direction: column;
   list-style: none;
   padding: 0;
+  position: fixed;
 
   li {
     a {

@@ -1,6 +1,8 @@
 mat-toolbar {
   gap: 16px;
   align-items: center;
+  position: fixed;
+  z-index: 1000;
 }
 
 .second {
