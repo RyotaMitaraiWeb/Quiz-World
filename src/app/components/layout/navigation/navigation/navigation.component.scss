@@ -1,6 +1,10 @@
 .desktop {
   display: block;
 
+  position: sticky;
+  top: 1px;
+  z-index: 1000;
+
   @media screen and (max-width: 1024px) {
     display: none;
   }
@@ -8,6 +12,9 @@
 
 .mobile {
   display: none;
+  position: sticky;
+  top: 1px;
+  z-index: 1000;
 
   @media screen and (max-width: 1024px) {
     display: block;

@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 @use '@angular/material' as mat;
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   height: 100%;
@@ -20,4 +24,12 @@ body {
 code {
   color: rgb(207, 102, 120);
   background-color: rgb(230, 230, 230);
+}
+
+body#app .bg-primary-container {
+  background-color: var(--mat-sys-primary-container);
+}
+
+body#app .color-primary {
+  color: var(--mat-sys-primary);
 }
