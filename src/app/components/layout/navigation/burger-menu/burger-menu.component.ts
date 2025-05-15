@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { SidenavService } from '../../../../services/sidenav/sidenav.service';
@@ -18,8 +18,9 @@ import { ReturnFocusOnSidenavCloseDirective } from '../../../../directives/retur
 })
 export class BurgerMenuComponent {
   private readonly sidenav = inject(SidenavService);
+  protected readonly isOpen = computed(() => this.sidenav.isOpen());
 
-  openSidenav() {
-    this.sidenav.open();
+  toggleSidenav() {
+    this.sidenav.toggle();
   }
 }

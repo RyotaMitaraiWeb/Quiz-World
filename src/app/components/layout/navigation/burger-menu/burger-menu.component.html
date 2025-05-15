@@ -1,3 +1,3 @@
-<button appReturnFocusOnSidenavClose mat-icon-button matTooltip="Open side menu">
+<button id="sidenav-button" (click)="toggleSidenav()" appReturnFocusOnSidenavClose mat-icon-button [matTooltip]="!isOpen() ? 'Open side menu' : 'Close side menu'">
   <mat-icon>menu</mat-icon>
 </button>
