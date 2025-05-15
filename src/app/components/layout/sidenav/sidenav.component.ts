@@ -1,11 +1,12 @@
-import { Component, computed, inject, OnDestroy } from '@angular/core';
+import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { Router, RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { SidenavService } from '../../../services/sidenav/sidenav.service';
 import { UserStore } from '../../../store/user/user.store';
 import { AuthService } from '../../../services/auth/auth.service';
-import { Subscription } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { MatRippleModule } from '@angular/material/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-sidenav',
@@ -17,11 +18,12 @@ import { MatRippleModule } from '@angular/material/core';
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
 })
-export class SidenavComponent implements OnDestroy {
+export class SidenavComponent implements OnDestroy, OnInit {
   private readonly sidenav = inject(SidenavService);
   private readonly router = inject(Router);
   private readonly userStore = inject(UserStore);
   private readonly auth = inject(AuthService);
+  private readonly breakpointObserver = inject(BreakpointObserver);
 
   protected readonly isOpen = computed(() => this.sidenav.isOpen());
   protected readonly tabIndex = computed(() => this.isOpen() ? 0 : -1);
@@ -71,6 +73,18 @@ export class SidenavComponent implements OnDestroy {
     },
   ];
 
+  ngOnInit() {
+    this.breakpointSub = this.router.events
+      .pipe(
+        filter(e => e instanceof NavigationEnd),
+      )
+      .subscribe(() => {
+        if (this.breakpointObserver.isMatched('(max-width: 1024px)')) {
+          this.sidenav.close();
+        }
+      });
+  }
+
   private logout() {
     this.logoutSub = this.auth.logout().subscribe({
       next: () => {
@@ -89,9 +103,11 @@ export class SidenavComponent implements OnDestroy {
   }
 
   private logoutSub?: Subscription;
+  private breakpointSub?: Subscription;
 
   ngOnDestroy() {
     this.logoutSub?.unsubscribe();
+    this.breakpointSub?.unsubscribe();
   }
 }
 
