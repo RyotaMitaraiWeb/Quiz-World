@@ -41,6 +41,7 @@ export class SidenavComponent implements OnDestroy, OnInit {
       icon: 'add',
       href: '/quiz/create',
       text: 'New quiz',
+      condition: this.isLoggedIn,
     },
     {
       icon: 'person',
