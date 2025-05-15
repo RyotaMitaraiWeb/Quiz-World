@@ -55,7 +55,7 @@ export class SidenavComponent implements OnDestroy, OnInit {
       condition: this.isLoggedOut,
     },
     {
-      icon: 'register',
+      icon: 'app_registration',
       href: '/auth/register',
       text: 'Register',
       condition: this.isLoggedOut,
