@@ -1,0 +1,9 @@
+main {
+  display: flex;
+
+  & > div {
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+}

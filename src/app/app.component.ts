@@ -4,6 +4,8 @@ import { AuthService } from './services/auth/auth.service';
 import { UserStore } from './store/user/user.store';
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { NavigationComponent } from './components/layout/navigation/navigation/navigation.component';
+import { SidenavComponent } from './components/layout/sidenav/sidenav.component';
+import { SidenavService } from './services/sidenav/sidenav.service';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +13,8 @@ import { NavigationComponent } from './components/layout/navigation/navigation/n
     RouterOutlet,
     RouterModule,
     NavigationComponent,
-  ],
+    SidenavComponent,
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,6 +22,7 @@ import { NavigationComponent } from './components/layout/navigation/navigation/n
 export class AppComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly userStore = inject(UserStore);
+  private readonly sidenav = inject(SidenavService);
 
   ngOnInit(): void {
     this.authService.retrieveSession().subscribe({
