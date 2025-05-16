@@ -1,9 +1,11 @@
-main {
-  display: flex;
+.drawer-container {
+  height: 100vh;
 
-  & > div {
-    width: 100%;
-    position: relative;
-    z-index: 1;
+  mat-drawer {
+    width: 200px;
+  }
+
+  mat-drawer-content {
+    padding: 0 8px;
   }
 }

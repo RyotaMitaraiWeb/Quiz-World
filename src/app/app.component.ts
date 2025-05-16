@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth/auth.service';
 import { UserStore } from './store/user/user.store';
@@ -6,6 +6,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { NavigationComponent } from './components/layout/navigation/navigation/navigation.component';
 import { SidenavComponent } from './components/layout/sidenav/sidenav.component';
 import { SidenavService } from './services/sidenav/sidenav.service';
+import { MatSidenavModule } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -14,6 +15,7 @@ import { SidenavService } from './services/sidenav/sidenav.service';
     RouterModule,
     NavigationComponent,
     SidenavComponent,
+    MatSidenavModule,
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -22,7 +24,9 @@ import { SidenavService } from './services/sidenav/sidenav.service';
 export class AppComponent implements OnInit {
   private readonly authService = inject(AuthService);
   private readonly userStore = inject(UserStore);
-  private readonly sidenav = inject(SidenavService);
+  protected readonly sidenav = inject(SidenavService);
+
+  protected readonly sidenavIsOpen = computed(() => this.sidenav.isOpen());
 
   ngOnInit(): void {
     this.authService.retrieveSession().subscribe({

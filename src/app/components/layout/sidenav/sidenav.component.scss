@@ -1,39 +1,5 @@
-@use '@angular/material' as mat;
-
-
 nav {
-  transition: width 0.5s;
-  min-height: 100vh;
-  width: 250px;
-  position: relative;
   border-right: 1px solid #ddd;
-  background-color: var(--mat-sys-surface);
-
-  @media screen and (max-width: 1024px) {
-    position: fixed;
-    z-index: 2;
-    width: 500px;
-  }
-
-  @media screen and (max-width: 500px) {
-    width: 250px;
-  }
-
-  &.open {
-    left: 0;
-    transition: left 0.5s ease-in-out, width 0.5s, margin-right 1s;
-    margin-right: 8px;
-  }
-
-  &.closed {
-    left: -320px;
-    width: 0px;
-    transition: left 0.5s ease-in-out, width 0.6s, margin-right 1s;
-
-    @media screen and (max-width: 1024px) {
-      left: -700px;
-    }
-  }
 }
 
 ul {
@@ -41,19 +7,8 @@ ul {
   flex-direction: column;
   list-style: none;
   padding: 0;
-  width: 250px;
-
-  @media screen and (max-width: 1024px) {
-    width: 500px;
-  }
-
-  @media screen and (max-width: 500px) {
-    width: 250px;
-  }
 
   li {
-    width: 100%;
-
     a,
     button {
       padding: 16px;
@@ -61,7 +16,7 @@ ul {
       gap: 8px;
       display: flex;
       align-items: center;
-      transition: padding 0.5s ease-in-out;
+
       // restart some styles
       background-color: transparent;
       border: none;

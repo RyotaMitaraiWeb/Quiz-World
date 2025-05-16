@@ -1,7 +1,11 @@
 <app-navigation />
 <main>
-  <app-sidenav />
-  <div>
-    <router-outlet />
-  </div>
+  <mat-drawer-container class="drawer-container">
+    <mat-drawer mode="side" [opened]="sidenavIsOpen()" (closedStart)="sidenav.close()">
+      <app-sidenav />
+    </mat-drawer>
+    <mat-drawer-content>
+      <router-outlet />
+    </mat-drawer-content>
+  </mat-drawer-container>
 </main>
