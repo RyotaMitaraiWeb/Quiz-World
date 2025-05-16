@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from './services/auth/auth.service';
 import { UserStore } from './store/user/user.store';
@@ -7,6 +7,9 @@ import { NavigationComponent } from './components/layout/navigation/navigation/n
 import { SidenavComponent } from './components/layout/sidenav/sidenav.component';
 import { SidenavService } from './services/sidenav/sidenav.service';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { map } from 'rxjs';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +19,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     NavigationComponent,
     SidenavComponent,
     MatSidenavModule,
+    AsyncPipe,
 ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -26,7 +30,11 @@ export class AppComponent implements OnInit {
   private readonly userStore = inject(UserStore);
   protected readonly sidenav = inject(SidenavService);
 
-  protected readonly sidenavIsOpen = computed(() => this.sidenav.isOpen());
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  protected readonly isMobile$ = this.breakpointObserver.observe('(max-width: 1024px)')
+    .pipe(
+      map(breakpoint => breakpoint.matches),
+  );
 
   ngOnInit(): void {
     this.authService.retrieveSession().subscribe({

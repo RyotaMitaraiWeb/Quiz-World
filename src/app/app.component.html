@@ -1,7 +1,9 @@
+@let mobile = isMobile$ | async;
+
 <app-navigation />
 <main>
   <mat-drawer-container class="drawer-container">
-    <mat-drawer mode="side" [opened]="sidenavIsOpen()" (closedStart)="sidenav.close()">
+    <mat-drawer [mode]="mobile ? 'over' : 'side'" [opened]="sidenav.isOpen()" (closedStart)="sidenav.close()">
       <app-sidenav />
     </mat-drawer>
     <mat-drawer-content>

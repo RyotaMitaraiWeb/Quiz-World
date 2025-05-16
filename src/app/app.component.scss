@@ -3,6 +3,14 @@
 
   mat-drawer {
     width: 200px;
+
+    @media screen and (max-width: 1024px) {
+      width: 400px;
+    }
+
+    @media screen and (max-width: 500px) {
+      width: 100%;
+    }
   }
 
   mat-drawer-content {
