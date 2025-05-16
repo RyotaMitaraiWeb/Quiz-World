@@ -1,5 +1,8 @@
+@use '../../../../scss-partials/sidenav' as sidenav;
+
 nav {
   border-right: 1px solid #ddd;
+  height: 100%;
 }
 
 ul {
@@ -7,8 +10,15 @@ ul {
   flex-direction: column;
   list-style: none;
   padding: 0;
+  position: fixed;
+  @include sidenav.width();
+
+  @media screen and (max-width: 1024px) {
+    position: relative;
+  }
 
   li {
+
     a,
     button {
       padding: 16px;
