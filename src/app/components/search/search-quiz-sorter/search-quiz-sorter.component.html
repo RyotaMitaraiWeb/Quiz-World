@@ -1,0 +1,10 @@
+<mat-form-field>
+  <mat-label>Order by</mat-label>
+  <mat-select [value]="selectedValue()" (selectionChange)="updateSorting($event.value)">
+    @for (option of options; track option.label) {
+    @let value = option.sortValue + '-' + option.orderValue;
+    @let label = option.label;
+    <mat-option [value]='value'>{{ label }}</mat-option>
+    }
+  </mat-select>
+</mat-form-field>
