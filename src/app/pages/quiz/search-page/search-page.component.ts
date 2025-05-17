@@ -6,6 +6,7 @@ import { SearchResultsComponent } from '../../../components/search/search-result
 import { SearchResultsService } from '../../../services/search-results/search-results.service';
 import { QuizService } from '../../../services/quiz/quiz.service';
 import { QuizList } from '../../../services/quiz/types';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-search-page',
@@ -22,6 +23,7 @@ export class SearchPageComponent implements OnDestroy, OnInit {
   private readonly quizService = inject(QuizService);
   private readonly queryParams = this.activatedRoute.queryParamMap;
   private readonly searchResults = inject(SearchResultsService);
+  private readonly title = inject(Title);
 
   protected readonly searchQuery = this.queryParams.pipe(
     map(qp => qp.get('query') || ''),
@@ -54,11 +56,17 @@ export class SearchPageComponent implements OnDestroy, OnInit {
         //
       },
     });
+
+    this.searchQuerySub = this.searchQuery.subscribe(query => {
+      this.title.setTitle(`Search results for "${query}" | Quiz World`);
+    });
   }
 
   ngOnDestroy() {
     this.searchResultsSub?.unsubscribe();
+    this.searchQuerySub?.unsubscribe();
   }
 
   searchResultsSub?: Subscription;
+  searchQuerySub?: Subscription;
 }
