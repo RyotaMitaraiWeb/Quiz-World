@@ -1,0 +1,14 @@
+.invisible {
+  visibility: hidden;
+}
+
+.card-link {
+  display: block;
+  width: max-content;
+  text-decoration: none;
+  color: inherit;
+
+  mat-card {
+    width: 450px;
+  }
+}
