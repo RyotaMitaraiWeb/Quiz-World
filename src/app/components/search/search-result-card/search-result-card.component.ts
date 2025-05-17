@@ -15,7 +15,7 @@ import { RouterModule } from '@angular/router';
 export class SearchResultCardComponent {
   quiz = input.required<QuizListItem>();
 
-  protected readonly DESCRIPTION_MAX_LENGTH = 50;
+  readonly DESCRIPTION_MAX_LENGTH = 50;
 
   protected readonly shortenedDescription = computed(() => {
     const description = this.quiz().description;

@@ -8,8 +8,12 @@
 
 <app-search-quiz-sorter (select)="search($event)" [sortOptions]="{ sort, order }" />
 
+@if (_quizzes.length === 0) {
+<p class="no-quizzes">No quizzes found, try changing your search parameters and try again!</p>
+} @else {
 @for (quiz of _quizzes; track quiz.id) {
 <app-search-result-card [quiz]="quiz" />
+}
 }
 
 <mat-paginator />
