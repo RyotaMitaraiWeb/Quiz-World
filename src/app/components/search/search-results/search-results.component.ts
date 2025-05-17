@@ -20,6 +20,7 @@ export class SearchResultsComponent {
   quizList = input.required<QuizList>();
 
   protected readonly quizzes = computed(() => this.quizList().quizzes);
+  protected readonly totalQuizzes = computed(() => this.quizList().total);
 
   private readonly router = inject(Router);
   private readonly searchResults = inject(SearchResultsService);
@@ -27,6 +28,13 @@ export class SearchResultsComponent {
   search(options: SortAndOrder) {
     this.router.navigate(this.routeToNavigate(), {
       queryParams: options,
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  paginate(page: number) {
+    this.router.navigate(this.routeToNavigate(), {
+      queryParams: { page },
       queryParamsHandling: 'merge',
     });
   }

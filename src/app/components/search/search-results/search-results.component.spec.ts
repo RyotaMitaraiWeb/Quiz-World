@@ -9,6 +9,7 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { SearchQuizSorterHarness } from '../search-quiz-sorter/search-quiz-sorter.harness.component';
 import { sorting } from '../../../common/sort';
+import { MatPaginatorHarness } from '@angular/material/paginator/testing';
 
 describe('SearchResultsComponent', () => {
   let component: SearchResultsComponent;
@@ -72,5 +73,33 @@ describe('SearchResultsComponent', () => {
 
     expect(params['sort']).toBe(sorting.categories[0]);
     expect(params['order']).toBe(sorting.order[1]);
+  });
+
+  it('behaves correctly when the page is changed', async () => {
+    fixture.componentRef.setInput('routeToNavigate', ['test']);
+
+    const quizList: QuizList = {
+      total: 10,
+      quizzes: [1, 2, 3, 4, 5, 6].map(n => (
+        {
+          id: n,
+          title: '',
+          description: '',
+          createdOn: '',
+          updatedOn: '',
+          instantMode: true,
+        }
+      )),
+    };
+
+    fixture.componentRef.setInput('quizList', quizList);
+    fixture.detectChanges();
+
+    const paginator = await loader.getHarness(MatPaginatorHarness);
+
+    await paginator.goToNextPage();
+
+    const params = activatedRoute.snapshot.queryParams;
+    expect(params['page']).toBe('2');
   });
 });

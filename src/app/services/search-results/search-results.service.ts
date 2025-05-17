@@ -18,10 +18,15 @@ export class SearchResultsService {
     map(qp => qp.get('sort') as quizSort),
   );
 
+  private readonly _pageQuery$ = this.queryParams.pipe(
+    map(qp => qp.get('page')),
+    map(page => Number(page)),
+  );
+
   readonly searchOptions$ = combineLatest(
-      [this._orderQuery$, this._sortQuery$],
+      [this._orderQuery$, this._sortQuery$, this._pageQuery$],
     )
     .pipe(
-      map(options => ({ sort: options[1], order: options[0] })),
+      map(options => ({ sort: options[1], order: options[0], page: options[2] })),
     );
 }
