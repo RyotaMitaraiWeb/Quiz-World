@@ -1,5 +1,5 @@
 @let query = searchQuery | async;
 
-<app-search-results [routeToNavigate]="['quiz', 'search']">
+<app-search-results [routeToNavigate]="['quiz', 'search']" [quizList]="quizList()">
   <h1 search-results-title>Search results for "{{ query }}"</h1>
 </app-search-results>
