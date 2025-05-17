@@ -4,11 +4,11 @@
 
 .card-link {
   display: block;
-  width: max-content;
+  width: 100%;
   text-decoration: none;
   color: inherit;
 
   mat-card {
-    width: 450px;
+    width: 100%;
   }
 }
