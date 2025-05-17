@@ -1,30 +1,26 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { combineLatest, map } from 'rxjs';
-import { order, quizSort, SortAndOrder } from '../../../common/sort';
-import { SearchResultsComponent } from '../../../components/search/search-results/search-results.component';
+import { map, combineLatest } from 'rxjs';
+import { SortAndOrder, order, quizSort } from '../../../common/sort';
+import { SearchQuizSorterComponent } from '../search-quiz-sorter/search-quiz-sorter.component';
+import { AsyncPipe } from '@angular/common';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
-  selector: 'app-search-page',
-  imports: [
-    AsyncPipe,
-    SearchResultsComponent,
-],
-  templateUrl: './search-page.component.html',
-  styleUrl: './search-page.component.scss',
+  selector: 'app-search-results',
+  imports: [AsyncPipe, MatPaginatorModule, SearchQuizSorterComponent],
+  templateUrl: './search-results.component.html',
+  styleUrl: './search-results.component.scss',
 })
-export class SearchPageComponent {
+export class SearchResultsComponent {
+  routeToNavigate = input.required<string[]>();
+
   private readonly activatedRoute = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly queryParams = this.activatedRoute.queryParamMap;
 
-  protected readonly searchQuery = this.queryParams.pipe(
-    map(qp => qp.get('query')),
-  );
-
   search(options: SortAndOrder) {
-    this.router.navigate(['quiz', 'search'], {
+    this.router.navigate(this.routeToNavigate(), {
       queryParams: options,
       queryParamsHandling: 'merge',
     });
