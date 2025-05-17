@@ -1,23 +1,28 @@
-import { Component, inject, input } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { map, combineLatest } from 'rxjs';
-import { SortAndOrder, order, quizSort } from '../../../common/sort';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
+import { Router } from '@angular/router';
+import { SortAndOrder } from '../../../common/sort';
 import { SearchQuizSorterComponent } from '../search-quiz-sorter/search-quiz-sorter.component';
 import { AsyncPipe } from '@angular/common';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { SearchResultsService } from '../../../services/search-results/search-results.service';
+import { QuizList } from '../../../services/quiz/types';
+import { SearchResultCardComponent } from '../search-result-card/search-result-card.component';
 
 @Component({
   selector: 'app-search-results',
-  imports: [AsyncPipe, MatPaginatorModule, SearchQuizSorterComponent],
+  imports: [AsyncPipe, MatPaginatorModule, SearchQuizSorterComponent, SearchResultCardComponent],
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SearchResultsComponent {
   routeToNavigate = input.required<string[]>();
+  quizList = input.required<QuizList>();
 
-  private readonly activatedRoute = inject(ActivatedRoute);
+  protected readonly quizzes = computed(() => this.quizList().quizzes);
+
   private readonly router = inject(Router);
-  private readonly queryParams = this.activatedRoute.queryParamMap;
+  private readonly searchResults = inject(SearchResultsService);
 
   search(options: SortAndOrder) {
     this.router.navigate(this.routeToNavigate(), {
@@ -26,18 +31,5 @@ export class SearchResultsComponent {
     });
   }
 
-  private readonly _orderQuery$ = this.queryParams.pipe(
-    map(qp => qp.get('order') as order),
-  );
-
-  private readonly _sortQuery$ = this.queryParams.pipe(
-    map(qp => qp.get('sort') as quizSort),
-  );
-
-  protected readonly searchOptions$ = combineLatest(
-      [this._orderQuery$, this._sortQuery$],
-    )
-    .pipe(
-      map(options => ({ sort: options[1], order: options[0] })),
-    );
+  protected readonly searchOptions$ = this.searchResults.searchOptions$;
 }

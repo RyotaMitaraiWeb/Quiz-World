@@ -2,10 +2,14 @@
 @let order = searchOptions?.order || 'asc';
 @let sort = searchOptions?.sort || 'title';
 
+@let _quizzes = quizzes();
+
 <ng-content select="[search-results-title]" />
 
 <app-search-quiz-sorter (select)="search($event)" [sortOptions]="{ sort, order }" />
 
-<ng-content />
+@for (quiz of _quizzes; track quiz.id) {
+<app-search-result-card [quiz]="quiz" />
+}
 
 <mat-paginator />
