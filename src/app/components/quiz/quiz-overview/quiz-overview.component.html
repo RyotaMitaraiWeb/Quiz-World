@@ -1,5 +1,6 @@
 @let id = quiz.id();
 @let questions = quiz.questions();
+@let username = quiz.creatorUsername();
 
 <section class="quiz-overview">
   <mat-card appearance="outlined">
@@ -8,7 +9,7 @@
         Overview
       </mat-card-title>
       <mat-card-subtitle>
-        Made by {{ quiz.creatorUsername() }}
+        Made by <a [routerLink]="['/profile', 'user', username]">{{ username }}</a>
 
         <mat-chip-set>
           <mat-chip>

@@ -6,10 +6,11 @@ import { QuizStore } from '../../../store/quiz/quiz.store';
 import { OwnerOnlyDirective } from '../../../directives/roles/owner-only/owner-only.directive';
 import { EditButtonComponent } from '../../common/buttons/edit-button/edit-button.component';
 import { DeleteButtonComponent } from '../../common/buttons/delete-button/delete-button.component';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 @Component({
   selector: 'app-quiz-overview',
   imports: [
+    RouterModule,
     MatCardModule,
     MatChipsModule,
     DatePipe,
