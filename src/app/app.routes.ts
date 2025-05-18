@@ -8,6 +8,7 @@ import { EditComponent } from './pages/quiz/edit/edit.component';
 import { AdminPageComponent } from './pages/admin/admin-page/admin-page.component';
 import { SearchPageComponent } from './pages/quiz/search-page/search-page.component';
 import { AllPageComponent } from './pages/quiz/all-page/all-page.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
   {
@@ -57,6 +58,20 @@ export const routes: Routes = [
           {
             path: 'edit',
             component: EditComponent,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    path: 'profile',
+    children: [
+      {
+        path: 'user',
+        children: [
+          {
+            path: ':username',
+            component: ProfileComponent,
           },
         ],
       },
