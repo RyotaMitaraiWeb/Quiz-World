@@ -39,6 +39,11 @@ export class SidenavComponent implements OnDestroy, OnInit {
       text: 'Home',
     },
     {
+      icon: 'list',
+      href: '/quiz/all',
+      text: 'Browse all quizzes',
+    },
+    {
       icon: 'add',
       href: '/quiz/create',
       text: 'New quiz',
