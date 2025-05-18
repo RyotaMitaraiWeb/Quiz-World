@@ -32,7 +32,8 @@ export class SidenavComponent implements OnDestroy, OnInit {
   private readonly isLoggedOut = computed(() => !this.userStore.isLoggedIn());
   private readonly username = computed(() => this.userStore.username());
 
-  protected readonly links: Link[] = [
+
+  protected readonly links = computed<Link[]>(() => [
     {
       icon: 'home',
       href: '/',
@@ -78,7 +79,7 @@ export class SidenavComponent implements OnDestroy, OnInit {
       text: 'Close menu',
       action: () => this.closeSidenav(),
     },
-  ];
+  ]);
 
   ngOnInit() {
     this.breakpointSub = this.router.events

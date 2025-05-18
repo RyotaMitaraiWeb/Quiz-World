@@ -3,7 +3,7 @@
 
 <nav [class]="[open ? 'open' : 'closed']">
   <ul>
-    @for (link of links; track link.icon) {
+    @for (link of links(); track link.icon) {
     @let icon = link.icon;
     @let text = link.text;
     @let condition = link.condition === undefined ? true : link.condition();
