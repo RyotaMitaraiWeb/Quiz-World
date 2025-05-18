@@ -1,0 +1,9 @@
+<form id="search-quizzes" (submit)="search($event)">
+  <mat-form-field>
+    <mat-label>Search by title</mat-label>
+    <input disableOnLoading matInput [formControl]="title">
+    <button disableOnLoading mat-icon-button matSuffix [attr.ariaLabel]="'Search quizzes whose title contains ' + title.value">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
+</form>

@@ -2,9 +2,9 @@ name: Angular unit/integration/component tests
 
 on:
   push:
-    branches: [ "master", "angular-19-migrate" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "master", "angular-19-migrate" ]
+    branches: [ "master" ]
 
 jobs:
   build:
@@ -14,10 +14,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v3
       
-    - name: Setup Node 22
+    - name: Setup Node 18
       uses: actions/setup-node@v3
       with:
-        node-version: '22'
+        node-version: '18'
         cache: 'npm'
     - name: Install dependencies
       run: npm i

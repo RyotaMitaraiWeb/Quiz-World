@@ -1,0 +1,17 @@
+<app-catalogue-select-menu [selectedValue]="sortOrder"
+  (selectEvent)="changeSortAndOrder($event)" [options]="options"></app-catalogue-select-menu>
+
+<div class="catalogue" *ngIf="catalogue.quizzes.length; else empty">
+  <ng-container>
+    <app-quiz-list-item 
+    *ngFor="let quiz of catalogue.quizzes"
+    [quiz]="quiz"></app-quiz-list-item>
+  </ng-container>
+</div>
+
+<app-catalogue-paginator [total]="catalogue.total" [page]="page" (pageEvent)="changePage($event)"
+  [pageSize]="6"></app-catalogue-paginator>
+
+<ng-template #empty>
+  <p class="no-quizzes">There are no quizzes matching your request!</p>
+</ng-template>

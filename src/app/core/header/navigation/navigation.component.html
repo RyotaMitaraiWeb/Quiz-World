@@ -1,0 +1,22 @@
+<nav id="nav">
+  <ul class="links">
+    <li *ngIf="isGuest" class="guest">
+      <mat-icon>account_box</mat-icon>
+      <a routerLink="/register">Register</a>
+    </li>
+    <li *ngIf="isGuest" class="guest">
+      <mat-icon>arrow_forward</mat-icon>
+      <a routerLink="/login">Login</a>
+    </li>
+    <li *ngIf="!isGuest" class="user">
+      <mat-icon>add</mat-icon>
+      <a routerLink="/quiz/create">Create a quiz</a>
+    </li>
+    <li *ngIf="!isGuest" class="user">
+      <app-logout-button></app-logout-button>
+    </li>
+    <li class="menu">
+      <app-menu-button></app-menu-button>
+    </li>
+  </ul>
+</nav>

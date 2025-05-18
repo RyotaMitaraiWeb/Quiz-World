@@ -1,0 +1,11 @@
+<form class="catalogue-sorter">
+  <mat-form-field [formGroup]="form">
+    <mat-label>Sort by</mat-label>
+    <mat-select formControlName="value" (selectionChange)="select($event)">
+      <mat-option 
+        *ngFor="let option of options | keyvalue: originalOrder" [value]="option.value">
+        {{ option.key }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>

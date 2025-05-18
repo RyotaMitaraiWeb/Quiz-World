@@ -1,0 +1,58 @@
+<div class="text-question question" [formGroup]="form">
+  <div class="prompt-field">
+    <mat-form-field 
+      [hintLabel]="form.controls.prompt.value?.length + ' / ' + questionValidationRules.prompt.maxlength">
+      <textarea 
+        placeholder="Prompt"
+        cdkTextareaAutosize
+        required
+        matInput
+        class="prompt"
+        formControlName="prompt"
+        [maxLength]="questionValidationRules.prompt.maxlength"
+      >
+      </textarea>
+      <mat-error *ngIf="form.controls.prompt.errors?.['required']">Please fill this field!</mat-error>
+      <mat-error *ngIf="form.controls.prompt.errors?.['maxlength']">This field is too long!</mat-error>
+    </mat-form-field>
+  </div>
+  <h4 class="correct-answers-heading">Correct Answers</h4>
+  <div class="correct-answer">
+    <div *ngFor="let answer of answerControls; index as i" formArrayName="answers">
+      <mat-form-field [formGroupName]="i" [hintLabel]="form.controls.answers.controls[i].controls.value.value?.length + ' / ' + questionValidationRules.answer.maxlength">
+        <textarea
+        cdkTextareaAutosize
+        required
+        [maxlength]="questionValidationRules.answer.maxlength"
+        class="correct-answer-field"
+        matInput
+        formControlName="value"
+        [placeholder]="'Correct answer #' + (i + 1)"
+        >
+        </textarea>
+        <mat-error *ngIf="getErrorsAt(i)?.['required']">Please fill this field!</mat-error>
+        <mat-error *ngIf="getErrorsAt(i)?.['maxlength']">This field is too long!</mat-error>
+      </mat-form-field>
+      <button 
+        aria-label="Remove this field"
+        mat-mini-fab
+        color="warn"
+        [ngClass]="deleteButtonIsVisible ? 'remove-field-btn visible' : 'remove-field-btn invisible'"
+        matTooltip="Remove this field"
+        matTooltipPosition="above"
+        (click)="removeFieldAt(i, $event)"
+      >
+        <mat-icon aria-hidden="true">delete</mat-icon>
+      </button>
+    </div>
+    <button 
+      mat-raised-button color="accent"
+      class="add-field-btn" 
+      (click)="addField($event)"
+      *ngIf="canAddField"
+    >
+      <mat-icon>add</mat-icon>
+      Add new correct answer
+    </button>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+.question.wrapper {
+  mat-card {
+    background-color: #fbfbfb;
+    -webkit-box-shadow: 5px 2px 15px 5px rgba(0, 0, 0, 0.36);
+    box-shadow: 5px 2px 15px 5px rgba(0, 0, 0, 0.36);
+  }
+
+  mat-divider {
+    width: 95%;
+    margin: 20px auto;
+  }
+
+  .question-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    .question-select {
+      width: 40vw;
+    }
+  }
+}
+
+.notes-field {
+  display: block;
+  margin: 0 auto;
+
+  h4 {
+    font-weight: bold;
+  }
+
+  mat-form-field {
+    width: 50vw;
+  }
+}
