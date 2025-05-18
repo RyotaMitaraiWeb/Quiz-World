@@ -50,8 +50,8 @@ export class SidenavComponent implements OnDestroy, OnInit {
       condition: this.isLoggedIn,
     },
     {
-      icon: 'person',
-      href: `/profile/${this.username()}`,
+      icon: 'account_circle',
+      href: `/profile/user/${this.username()}`,
       text: 'My profile',
       condition: this.isLoggedIn,
     },
