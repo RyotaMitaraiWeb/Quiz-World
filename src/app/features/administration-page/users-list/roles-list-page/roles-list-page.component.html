@@ -1,0 +1,15 @@
+<ng-container *ngIf="userList$ | async as userList">
+  <app-admin-tabs [activeRoute]="(activeRole | async) || ''"></app-admin-tabs>
+  <app-catalogue-select-menu [options]="options" selectedValue="asc" (selectEvent)="changeOrder($event)">
+  </app-catalogue-select-menu>
+
+  <app-users-list 
+    [data]="userList.users"
+    (updateUsersEvent)="updateUsers(page, order)"
+    (refresh)="updateUsers(page, order)">
+  </app-users-list>
+
+  <app-catalogue-paginator [page]="page" [total]="userList.total" (pageEvent)="changePage($event)"
+    [pageSize]="20">
+  </app-catalogue-paginator>
+</ng-container>

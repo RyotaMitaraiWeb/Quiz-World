@@ -1,13 +1,9 @@
-@let mobile = isMobile$ | async;
+<div [ngClass]="(menuIsOpen | async) ? 'wrapper locked' : 'wrapper'">
+  <app-header></app-header>
 
-<app-navigation />
-<main>
-  <mat-drawer-container class="drawer-container">
-    <mat-drawer [mode]="mobile ? 'over' : 'side'" [opened]="sidenav.isOpen()" (closedStart)="sidenav.close()">
-      <app-sidenav />
-    </mat-drawer>
-    <mat-drawer-content>
-      <router-outlet />
-    </mat-drawer-content>
-  </mat-drawer-container>
-</main>
+  <router-outlet></router-outlet>
+</div>
+
+<app-loading></app-loading>
+
+<app-overlay-menu></app-overlay-menu>
