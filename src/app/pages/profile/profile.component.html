@@ -1,14 +1,14 @@
 <mat-tab-group>
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon>person</mat-icon>
+      <mat-icon class="tab-icon">person</mat-icon>
       Overview
     </ng-template>
     <app-profile-overview [user]="user()" />
   </mat-tab>
   <mat-tab>
     <ng-template mat-tab-label>
-      <mat-icon>list</mat-icon>
+      <mat-icon class="tab-icon">list</mat-icon>
       Quizzes created by {{ user().username }}
     </ng-template>
     <app-user-quizzes-list [user]="user()" />
