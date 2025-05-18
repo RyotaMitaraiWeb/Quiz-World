@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { SidenavService } from '../../../services/sidenav/sidenav.service';
@@ -17,6 +17,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
   ],
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SidenavComponent implements OnDestroy, OnInit {
   private readonly sidenav = inject(SidenavService);
@@ -36,6 +37,11 @@ export class SidenavComponent implements OnDestroy, OnInit {
       icon: 'home',
       href: '/',
       text: 'Home',
+    },
+    {
+      icon: 'list',
+      href: '/quiz/all',
+      text: 'Browse all quizzes',
     },
     {
       icon: 'add',
