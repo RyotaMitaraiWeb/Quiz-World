@@ -7,6 +7,7 @@ import { CreateQuizComponent } from './pages/quiz/create/create.component';
 import { EditComponent } from './pages/quiz/edit/edit.component';
 import { AdminPageComponent } from './pages/admin/admin-page/admin-page.component';
 import { SearchPageComponent } from './pages/quiz/search-page/search-page.component';
+import { AllPageComponent } from './pages/quiz/all-page/all-page.component';
 
 export const routes: Routes = [
   {
@@ -32,6 +33,11 @@ export const routes: Routes = [
   {
     path: 'quiz',
     children: [
+      {
+        path: 'all',
+        component: AllPageComponent,
+        title: 'Browse all quizzes | Quiz World',
+      },
       {
         path: 'create',
         component: CreateQuizComponent,
