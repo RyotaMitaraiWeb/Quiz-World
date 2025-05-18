@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { SearchResultsComponent } from '../../../components/search/search-results/search-results.component';
 import { QuizService } from '../../../services/quiz/quiz.service';
 import { SearchResultsService } from '../../../services/search-results/search-results.service';
@@ -10,6 +10,7 @@ import { QuizList } from '../../../services/quiz/types';
   imports: [SearchResultsComponent],
   templateUrl: './all-page.component.html',
   styleUrl: './all-page.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AllPageComponent implements OnDestroy, OnInit {
   private readonly quizService = inject(QuizService);
