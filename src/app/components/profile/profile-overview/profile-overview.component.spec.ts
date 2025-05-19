@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProfileOverviewComponent } from './profile-overview.component';
+import { UserState } from '../../../store/user/user.store';
+import { roles } from '../../../common/roles';
 
 describe('ProfileOverviewComponent', () => {
   let component: ProfileOverviewComponent;
@@ -14,6 +16,11 @@ describe('ProfileOverviewComponent', () => {
 
     fixture = TestBed.createComponent(ProfileOverviewComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('user', {
+      id: '1',
+      username: 'a',
+      roles: [roles.user],
+    } as UserState);
     fixture.detectChanges();
   });
 

@@ -15,6 +15,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { SearchOptionsWithPaginationAndOrdering } from '../../../../types/search';
 import { MatSelectHarness } from '@angular/material/select/testing';
+import { provideRouter } from '@angular/router';
 
 const mockUserData: UserList = {
   total: 21,
@@ -138,7 +139,7 @@ describe('UsersTabSectionComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UsersTabSectionComponent, NoopAnimationsModule],
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideRouter([])],
     })
     .compileComponents();
 
