@@ -1,59 +1,31 @@
-# Quizworld
+# Quiz World - a web app for creating and playing quizzes
+This repository contains the client of the app, written in Angular 19.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.7.
-
-## Development server
-
-To start a local development server, run:
-
+## How to run
 ```bash
 ng serve
 ```
+The client app runs on ``http://localhost:4200``
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Check out [the server documentation](https://github.com/RyotaMitaraiWeb/QuizWorld) to run the backend associated with the app.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
+## Tests
 ```bash
 ng test
 ```
+This will launch Karma in the browser
 
-## Running end-to-end tests
+## Project architecture
+The ``app`` folder is structured the following way:
 
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- ``common`` - contains constant values, validation rules, and other magic values
+- ``components`` - contains components split by areas of the app. The ``common`` subfolder includes components used in multiple parts of the app
+- ``directives`` - contains directives used in parts of or the whole app
+- ``interceptors`` - contains interceptors
+- ``pages`` - contains components that are rendered and included in the ``app.routes.ts`` file
+- ``pipes`` - contains custom pipes
+- ``services`` - contains services which can be injected in all parts of the app. The ``shared`` subfolder features services that are used to avoid prop drilling.
+- ``store`` - features ``SignalStore`` services to share state across the app
+- ``types`` - features global types used in multiple parts of the app
+- ``util`` - contains utility functions to solve specific technical problems
+- ``validators`` - contains custom validators to be combined with Angular forms.
