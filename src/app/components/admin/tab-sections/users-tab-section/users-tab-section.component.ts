@@ -11,11 +11,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { RoleChangeSelectComponent } from '../../../common/role-change-select/role-change-select.component';
 import { RoleChangeSelectEvent, RoleChangeSelectEventType } from '../../../common/role-change-select/types';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-users-tab-section',
   imports: [
     ReactiveFormsModule,
+    RouterModule,
     MatTableModule,
     MatPaginatorModule,
     MatInputModule,
