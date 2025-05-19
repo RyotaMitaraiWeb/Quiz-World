@@ -1,59 +1,56 @@
-# Quizworld
+# QuizWorld
+Quiz World is an application that allows you to play on and create quizzes.
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.7.
+## Preview images
 
-## Development server
+<details>
+<summary>Toggle images</summary>
+<br>
+<img src="./preview-images/question_example.png" alt="An example of a question during a quiz session">
+<img src="./preview-images/correct_answer_example.png" alt="An example of answering a question correctly">
+<img src="./preview-images/wrong_answer_example.png" alt="An example of answering a question incorrectly">
+<img src="./preview-images/creating_quiz_1.png" alt="An example of creating a quiz by filling the title and description and choosing the question type">
+<img src="./preview-images/creating_quiz_2.png" alt="An example of creating a single-choice question">
+<img src="./preview-images/creating_quiz_3.png" alt="An example of creating a multiple-choice question">
+<img src="./preview-images/creating_quiz_4.png" alt="An example of creating a text question">
+</details>
 
-To start a local development server, run:
-
+## How to run
 ```bash
-ng serve
+npm install
+npm run start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+## Running tests
 ```bash
-ng generate component component-name
+npm run test # launches Chrome
+npm run test:headless # runs in headless mode, does not run in watch mode
+npm run test:headless:watch # runs in headless and watch mode
+
+npm run test:e2e # runs Playwright tests in headless mode
+npm run test:e2e:debug # runs Playwright tests in debug mode, useful for close inspection of specific tests
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Structure
 
-```bash
-ng generate --help
-```
+### app
+- ``constants`` - holds files that contain constant values, e.g. API endpoints, available roles, etc.
+- ``core`` - holds important services, shell components like header, footer, and etc., and other elements that need to be imported within the ``AppModule`` and loaded alongside the app.
+- ``shared`` - holds reusable components, pipes, guards, directives, and other elements that can be used across multipe modules. You can import the shared module in any module where you need the components, pipes, or directives.
+- ``features`` - holds components and services that implement a specific feature of the app, such as a form page, search bar, etc.
+- ``routing`` - configures the app's routing modules. Contains interceptors, resolvers, and guards.
+- ``store`` - configures the ngrx store.
+- ``util`` - holds features that do not fit in any of the above.
 
-## Building
+Each folder and its respective subfolders contain more documentation for the different components, services, etc.
 
-To build the project run:
+### environments
+Contains environment variables for development and production modes.
 
-```bash
-ng build
-```
+The app assumes that the .NET server associated with it runs on localhost:5000 in development stage. If you want to change this, navigate to ``src/environments`` and change whatever configuration you need to change. The server also offers an HTTPS connection on port 7246 (if you configure an SSL certificate).
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### types
+Contains custom types.
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## License
+MIT

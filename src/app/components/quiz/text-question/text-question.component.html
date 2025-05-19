@@ -1,8 +1,0 @@
-@let q = question();
-@let questionForm = form();
-
-@if (q && questionForm) {
-  <mat-form-field [formGroup]="questionForm">
-    <input class="answer-field" [appQuestionGrade]="answerIsCorrect()" matInput formControlName="currentAnswer" />
-  </mat-form-field>
-}

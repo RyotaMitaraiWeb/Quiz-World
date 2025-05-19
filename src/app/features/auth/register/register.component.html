@@ -1,0 +1,41 @@
+<app-sheet [centerContent]="true">
+  <section class="register">
+    <h1>Create an account</h1>
+    <form (submit)="register($event)" [formGroup]="form">
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input 
+          required
+          matInput
+          name="username"
+          id="username"
+          formControlName="username"
+          [maxLength]="usernameRules.maxlength"
+        />
+        <mat-error *ngIf="controlError('username')?.['required']">Username is required!</mat-error>
+        <mat-error *ngIf="controlError('username')?.['minlength']">Username must be at least {{ usernameRules.minlength }} characters
+          long!</mat-error>
+        <mat-error *ngIf="controlError('username')?.['maxlength']">Username must be no more than {{ usernameRules.maxlength }} characters
+          long!</mat-error>
+        <mat-error *ngIf="controlError('username')?.['pattern']">Username must consist solely of alphanumeric
+          characters</mat-error>
+        <mat-error *ngIf="controlError('username')?.['uniqueUsername']">{{ controlError('username')?.['uniqueUsername']
+          }}</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input required matInput name="password" id="password" [type]="passwordFieldType" formControlName="password" />
+        <button matPrefix [matTooltip]="passwordFieldAriaLabel" matTooltipPosition="above" mat-icon-button
+          [attr.aria-label]="passwordFieldAriaLabel" (click)="togglePasswordVisibility($event)">
+          <mat-icon>{{ passwordVisibilityIcon }}</mat-icon>
+        </button>
+        <mat-error *ngIf="controlError('password')?.['required']">Password is required!</mat-error>
+        <mat-error *ngIf="controlError('password')?.['minlength']">Password must be at least {{ passwordRules.minlength }} characters
+          long!</mat-error>
+      </mat-form-field>
+      <button class="submit" disableOnLoading  mat-raised-button color="primary" [disabled]="form.invalid">
+        Register
+      </button>
+    </form>
+  </section>
+</app-sheet>

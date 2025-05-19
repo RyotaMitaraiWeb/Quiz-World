@@ -1,0 +1,24 @@
+.register {
+  padding: 50px;
+
+  h1 {
+    text-align: center;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    mat-form-field {
+      width: 50vw;
+    }
+
+    .submit {
+      width: 90%;
+      font-size: 18pt;
+      padding: 24px;
+    }
+  }
+}

@@ -1,0 +1,32 @@
+#nav {
+  margin: 0;
+  padding: 0;
+  
+  .links {
+    display: flex;
+    list-style: none;
+    gap: 5px;
+    margin: 0;
+    
+    li {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-left: 10px;
+      @media screen and (max-width: 700px) {
+        &:not(.menu) {
+          display: none;
+        }
+      }
+
+      a, ::ng-deep a {
+        color: white;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

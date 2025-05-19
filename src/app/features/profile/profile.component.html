@@ -1,0 +1,17 @@
+<app-sheet [centerContent]="true">
+  <h1 class="username">{{ username | async }}'s profile</h1>
+  <p class="roles">{{ (roles | async)?.join(', ') }}</p>
+  <a class="user-quizzes-link" mat-raised-button color="primary" [routerLink]="'/quiz/user/' + (userId | async)">View {{ username | async }}'s quizzes</a>
+  <section class="admin-actions" *ngIf="isAdmin">
+    <h2>Administration action</h2>
+    <app-change-role-button
+      role="Moderator"
+      [userId]="(userId | async) || ''"
+      [userHasRole]="(isModerator | async) || false"
+      (updateUsersEvent)="redirect()"
+      [color]="(isModerator | async ) ? 'warn' : 'primary'"
+    >
+    {{ (isModerator | async) ? 'Demote from Moderator' : 'Promote to Moderator'}}
+    </app-change-role-button>
+  </section>
+</app-sheet>
