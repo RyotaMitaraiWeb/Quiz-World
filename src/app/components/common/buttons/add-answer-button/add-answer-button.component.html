@@ -1,0 +1,6 @@
+@let _correct = correct();
+@let tooltipText = _correct ? 'Add a new correct answer' : 'Add a new wrong answer';
+
+<button mat-fab [matTooltip]="tooltipText" [ariaDescription]="tooltipText">
+  <mat-icon>add</mat-icon>
+</button>

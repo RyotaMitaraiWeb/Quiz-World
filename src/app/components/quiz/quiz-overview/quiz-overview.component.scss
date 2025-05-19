@@ -1,0 +1,17 @@
+.quiz-overview {
+  width: 95%;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  mat-card-actions.actions {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .description {
+    margin-bottom: 16px;
+  }
+}

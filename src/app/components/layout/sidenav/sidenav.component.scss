@@ -1,0 +1,47 @@
+@use '../../../../scss-partials/sidenav' as sidenav;
+
+nav {
+  border-right: 1px solid #ddd;
+  height: 100%;
+}
+
+ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 0;
+  position: fixed;
+  @include sidenav.width();
+
+  @media screen and (max-width: 1024px) {
+    position: relative;
+  }
+
+  li {
+
+    a,
+    button {
+      padding: 16px;
+      width: 100%;
+      gap: 8px;
+      display: flex;
+      align-items: center;
+
+      // restart some styles
+      background-color: transparent;
+      border: none;
+      font-size: inherit;
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+
+      span {
+        vertical-align: middle;
+      }
+
+      &:hover {
+        background-color: rgba(126, 126, 126, 0.1);
+      }
+    }
+  }
+}

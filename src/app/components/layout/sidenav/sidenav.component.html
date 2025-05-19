@@ -1,0 +1,42 @@
+@let open = isOpen();
+@let _tabIndex = tabIndex();
+
+<nav [class]="[open ? 'open' : 'closed']">
+  <ul>
+    @for (link of links(); track link.icon) {
+    @let icon = link.icon;
+    @let text = link.text;
+    @let condition = link.condition === undefined ? true : link.condition();
+
+    @if (condition) {
+    <li>
+      @if (link.href) {
+      @let href = link.href;
+
+      <a #item [routerLink]="href" mat-ripple [tabIndex]="_tabIndex">
+        <span class="icon">
+          <mat-icon>{{ icon }}</mat-icon>
+        </span>
+        <span class="text">
+          {{ text }}
+        </span>
+      </a>
+      }
+
+      @if (link.action) {
+      @let action = link.action;
+
+      <button #item (click)="action()" mat-ripple [tabIndex]="_tabIndex">
+        <span class="icon">
+          <mat-icon>{{ icon }}</mat-icon>
+        </span>
+        <span class="text">
+          {{ text }}
+        </span>
+      </button>
+      }
+    </li>
+    }
+    }
+  </ul>
+</nav>

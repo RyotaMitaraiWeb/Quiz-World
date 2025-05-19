@@ -1,0 +1,25 @@
+name: Angular linting
+
+on:
+  push:
+    branches: [ "master", "angular-19-migrate" ]
+  pull_request:
+    branches: [ "master", "angular-19-migrate" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      
+    - name: Setup Node 22
+      uses: actions/setup-node@v3
+      with:
+        node-version: '22'
+        cache: 'npm'
+    - name: Install dependencies
+      run: npm i
+    - name: Run linting
+      run: npm run lint

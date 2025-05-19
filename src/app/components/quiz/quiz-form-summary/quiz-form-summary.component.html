@@ -1,0 +1,36 @@
+@let count = questionsCount();
+
+<mat-card class="submit-section">
+  <div class="text">
+    <mat-card-header>
+      <mat-card-title>Submit the quiz</mat-card-title>
+      <mat-card-subtitle>You can always edit the quiz later on</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+        <div mat-subheader>Summary</div>
+        @for (stat of stats(); track stat.icon) {
+        <mat-list-item>
+          <mat-icon matListItemIcon>{{ stat.icon }}</mat-icon>
+          <div matListItemTitle>{{ stat.count }}</div>
+          <div matListItemLine>{{ stat.label }} ({{ stat.count / count | percent }})</div>
+        </mat-list-item>
+        }
+        <mat-list-item>
+          <mat-icon matListItemIcon>bar_chart</mat-icon>
+          @if (count === 1) {
+          <div matListItemTitle>1 question in total</div>
+          } @else {
+          <div matListItemTitle>{{ count }} questions in total</div>
+          }
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <ng-content select="[actions]"></ng-content>
+    </mat-card-actions>
+  </div>
+  <div class="image">
+    <img src="/images/quiz-form-submit.svg" alt="" />
+  </div>
+</mat-card>
