@@ -1,24 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-h1, h2, h3, h4, h5, h6 {
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-.answer-feedback {
-  font-weight: bold;
+html,
+body {
+  height: 100%;
 }
 
-.correct {
-  color: green;
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
 }
 
-.wrong {
-  color: red;
+.invisible {
+  visibility: hidden;
 }
 
-.prewrap {
-  white-space: pre-wrap;
+code {
+  color: rgb(207, 102, 120);
+  background-color: rgb(230, 230, 230);
+}
+
+body#app .bg-primary-container {
+  background-color: var(--mat-sys-primary-container);
+}
+
+body#app .color-primary {
+  color: var(--mat-sys-primary);
 }

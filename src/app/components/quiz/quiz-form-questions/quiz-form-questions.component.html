@@ -1,0 +1,58 @@
+<form>
+  @for (group of form.controls; track group.controls.randomId.value) {
+  @let type = group.controls.type.value!;
+  @let prompt = group.controls.prompt;
+  @let notes = group.controls.notes;
+
+  <mat-card class="question-form">
+    <mat-card-header>
+      <mat-card-title>Question #{{ $index + 1 }}</mat-card-title>
+      <mat-card-subtitle>{{ subtitleLabels[type] }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content [formGroup]="group">
+      <app-question-type-select [form]="group"></app-question-type-select>
+      <mat-form-field class="prompt-field">
+        <mat-label>Prompt</mat-label>
+        <textarea [id]="'prompt-' + ($index + 1)" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5" matInput formControlName="prompt"
+          placeholder="Type your question here"></textarea>
+          <mat-error>{{ prompt.errors | singleInputError: promptErrorMessages }}</mat-error>
+        <mat-hint align="end">{{ prompt.value?.length || 0 }} / {{ promptMaxLength }}</mat-hint>
+      </mat-form-field>
+      @switch (group.controls.type.value) {
+      @case ('SingleChoice') {
+      <app-single-choice-question-form [form]="group.controls.answers"></app-single-choice-question-form>
+      }
+      @case ('MultipleChoice') {
+      <app-multiple-choice-question-form [form]="group.controls.answers"></app-multiple-choice-question-form>
+      }
+      @case ('Text') {
+      <app-text-question-form [form]="group.controls.answers"></app-text-question-form>
+      }
+      }
+      <mat-form-field class="notes-field">
+        @let notesLength = notes.value?.length || 0;
+        <mat-label>Notes (optional)</mat-label>
+        <textarea cdkTextareaAutosize formControlName="notes" matInput placeholder="Type your notes here"></textarea>
+        <mat-hint align="end">{{ notesLength }} / {{ notesMaxLength }}</mat-hint>
+        <mat-error>{{ notes.errors | singleInputError: notesErrorMessages }}</mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    @if (form.length > minQuestionsCount) {
+    <mat-card-actions>
+      <button (click)="deleteQuestion(group.controls.randomId.value!, $event)" mat-icon-button
+        class="remove-question-btn" matTooltip="Delete this question" [ariaDescription]="'Delete this question'">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-card-actions>
+    }
+  </mat-card>
+  }
+
+  @if (form.length < maxQuestionsCount) { <div class="button-container">
+    <button type="button" mat-fab extended class="add-question-btn" (click)="addQuestion($event)">
+      <mat-icon>add</mat-icon>
+      Add a new question
+    </button>
+    </div>
+    }
+</form>

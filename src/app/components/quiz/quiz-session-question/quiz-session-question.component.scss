@@ -1,0 +1,57 @@
+.question {
+  margin: 0 auto;
+
+  .grade-button {
+    margin-left: auto;
+  }
+
+  mat-card-header {
+    margin-bottom: 16px;
+  }
+
+  mat-card-title {
+    transition: color 0.4s;
+
+    &.correct {
+      color: green;
+    }
+
+    &.incorrect {
+      color: rgb(186, 26, 26);
+    }
+  }
+
+  mat-card-footer {
+    padding: 0 16px;
+    animation: fade_in 0.6s;
+
+    .feedback {
+      margin-bottom: 16px;
+      overflow-wrap: anywhere;
+    }
+
+    &.correct {
+      color: green;
+    }
+
+    &.incorrect {
+      color: rgb(186, 26, 26);
+    }
+
+    & + mat-card-actions {
+      .feedback {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+@keyframes fade_in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

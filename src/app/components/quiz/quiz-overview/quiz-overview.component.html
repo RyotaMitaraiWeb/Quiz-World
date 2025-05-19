@@ -1,0 +1,62 @@
+@let id = quiz.id();
+@let questions = quiz.questions();
+@let username = quiz.creatorUsername();
+
+<section class="quiz-overview">
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>
+        Overview
+      </mat-card-title>
+      <mat-card-subtitle>
+        Made by <a [routerLink]="['/profile', 'user', username]">{{ username }}</a>
+
+        <mat-chip-set>
+          <mat-chip>
+            Created on {{ quiz.createdOn() | date: 'dd/MM/yyyy'}}
+          </mat-chip>
+          <mat-chip>
+            Updated on {{ quiz.updatedOn() | date: 'dd/MM/yyyy'}}
+          </mat-chip>
+        </mat-chip-set>
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="content">
+      @let description = quiz.description();
+      @if (description) {
+      <p class="description">
+        {{ description }}
+      </p>
+      }
+    </mat-card-content>
+  </mat-card>
+
+
+  <mat-card appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>What does this quiz feature?</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+      <mat-chip-set>
+        @if (quiz.instantMode()) {
+        <mat-chip>Instant mode</mat-chip>
+        }
+        <mat-chip>{{ questions.length }} {{ questions.length === 1 ? 'question' : 'questions' }}</mat-chip>
+      </mat-chip-set>
+
+    </mat-card-content>
+  </mat-card>
+
+  @let creatorId = quiz.creatorId();
+
+  <mat-card *appOwnerOnly="creatorId; rolesThatCanAlsoSee: ['Moderator']" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title>Actions</mat-card-title>
+    </mat-card-header>
+    <mat-card-actions class="actions">
+      <app-edit-button [quizId]="id"></app-edit-button>
+      <app-delete-button [quizId]="id" (afterDelete)="redirectToHome()"></app-delete-button>
+    </mat-card-actions>
+  </mat-card>
+</section>

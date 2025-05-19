@@ -1,0 +1,7 @@
+<section>
+  <header>
+    <h1>Edit {{ quizTitle() }}</h1>
+    <app-quiz-form-guide-button></app-quiz-form-guide-button>
+  </header>
+  <app-quiz-form [edit]="edit()" (quizSubmit)="submit($event)"></app-quiz-form>
+</section>

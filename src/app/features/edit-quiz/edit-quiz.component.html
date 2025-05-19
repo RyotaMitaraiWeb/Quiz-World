@@ -1,7 +1,0 @@
-<app-sheet>
-  <section class="edit-quiz-form">
-    <h1>Edit {{ quiz.title }}</h1>
-    <app-quiz-form [questions]="quiz.questions" [title]="quiz.title" [description]="quiz.description"
-      [edit]="true" (submitEvent)="editQuiz($event)"></app-quiz-form>
-  </section>
-</app-sheet>

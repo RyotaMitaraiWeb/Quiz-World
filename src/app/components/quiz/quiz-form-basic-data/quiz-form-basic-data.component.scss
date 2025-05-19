@@ -1,0 +1,17 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .title-field {
+    width: 70%;
+  }
+
+  .description-field {
+    width: 100%;
+  }
+
+  .instant-mode {
+    margin-bottom: 16px;
+  }
+}

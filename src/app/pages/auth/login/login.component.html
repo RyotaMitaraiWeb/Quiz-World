@@ -1,0 +1,44 @@
+@let username = loginForm.controls.username;
+@let password = loginForm.controls.password;
+@let submitIsDisabled = loginForm.invalid || submitting();
+
+
+<section class="login">
+  <div class="image">
+    <img alt="" ngSrc="/images/login.svg" priority fill>
+  </div>
+
+  <div class="section">
+    <h1>Log into your Quiz World profile</h1>
+    <p>Get access to the quizzes you have created</p>
+
+    <form class="login-form" [formGroup]="loginForm" (submit)="submit($event)">
+      <mat-form-field matError>
+        <mat-label>Username</mat-label>
+        <input id="username" matInput placeholder="Your username..." formControlName="username" />
+
+        <mat-error>{{ username.errors | singleInputError: usernameErrors}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Password</mat-label>
+        <input [type]="passwordIsVisible() ? 'text' : 'password'" id="password" matInput placeholder="Password..."
+          formControlName="password" />
+        <app-password-visibility-button matSuffix [(passwordIsVisible)]="passwordIsVisible" />
+        <mat-error>{{ password.errors | singleInputError: passwordErrors}}</mat-error>
+      </mat-form-field>
+
+      <button id="submit" mat-flat-button type="submit" [disabled]="submitIsDisabled">Log into my
+        account</button>
+    </form>
+
+    @if (loginFailed()) {
+    <p class="mat-mdc-form-field-error error">{{ errorMessages.wrongUsernameOrPassword }}</p>
+    }
+
+    <p class="auth-link">
+      Don't have a profile? <a routerLink="/auth/register">Register for free</a>
+    </p>
+  </div>
+</section>
+

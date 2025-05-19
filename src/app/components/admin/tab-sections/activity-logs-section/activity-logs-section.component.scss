@@ -1,0 +1,15 @@
+.form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+h2 {
+  text-align: center;
+}
+
+.actions, th, td {
+  vertical-align: middle;
+}

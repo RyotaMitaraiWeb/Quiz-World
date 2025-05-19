@@ -1,0 +1,13 @@
+.search-results-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 80%;
+}
