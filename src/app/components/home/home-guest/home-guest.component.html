@@ -1,0 +1,17 @@
+<div>
+  <p class="introduction">
+    <em>Quiz World</em> is your go-to platform for playing and creating quizzes.
+    Enhance your experience by registering a new account or logging into your existing ones.
+    With an account, you can create quizzes that you can play, share, and edit at any time!
+  </p>
+</div>
+<div class="buttons">
+  <a [routerLink]="['/auth', 'register']" mat-fab extended>
+    <mat-icon>app_registration</mat-icon>
+    Create a new account
+  </a>
+  <a [routerLink]="['/auth', 'login']" mat-fab extended>
+    <mat-icon>login</mat-icon>
+    Log into your account
+  </a>
+</div>

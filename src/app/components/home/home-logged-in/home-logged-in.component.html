@@ -1,0 +1,48 @@
+<div class="home-sections">
+  <mat-card class="home-section" appearance="outlined">
+    <mat-card-header>
+      <div mat-card-avatar class="icon">
+        <mat-icon>add_circle</mat-icon>
+      </div>
+      <mat-card-title>Create a new quiz</mat-card-title>
+      <mat-card-subtitle>Create a new quiz that you and other users can use</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions align="end">
+      <a mat-button [routerLink]="['/quiz', 'create']">
+        <mat-icon>add</mat-icon>
+        New quiz
+      </a>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card class="home-section" appearance="outlined">
+    <mat-card-header>
+      <div mat-card-avatar class="icon">
+        <mat-icon>search</mat-icon>
+      </div>
+      <mat-card-title>Find quizzes</mat-card-title>
+      <mat-card-subtitle>Browse through all of our quizzes or use the search bar on the top to find a
+        quiz</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions align="end">
+      <a mat-button [routerLink]="['/quiz', 'all']">
+        <mat-icon>list</mat-icon>
+        Browse all quizzes
+      </a>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card class="home-section" appearance="outlined">
+    <mat-card-header>
+      <div mat-card-avatar class="icon">
+        <mat-icon>account_circle</mat-icon>
+      </div>
+      <mat-card-title>Review your profile</mat-card-title>
+      <mat-card-subtitle>Keep track of your quizzes</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-actions align="end">
+      <a mat-button [routerLink]="['/profile', 'user', username()]">
+        <mat-icon>badge</mat-icon>
+        Review your profile
+      </a>
+    </mat-card-actions>
+  </mat-card>
+</div>
