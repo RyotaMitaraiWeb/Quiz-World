@@ -1,0 +1,7 @@
+@let _user = user();
+@let username = _user.username;
+<app-search-results [quizList]="quizList()" [routeToNavigate]="['profile', 'user', username]">
+  <section search-results-title>
+    <h2><i>{{ username }}</i>'s quizzes</h2>
+  </section>
+</app-search-results>

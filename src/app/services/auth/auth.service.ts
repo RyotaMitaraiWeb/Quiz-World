@@ -37,6 +37,12 @@ export class AuthService {
     return this.http.get<UserState>(this.url.profile(userId));
   }
 
+  getProfileByUsername(username: string) {
+    return this.http.get<UserState>(this.url.getProfileByUsername(username), {
+      responseType: 'json',
+    });
+  }
+
   retrieveSession() {
     return this.http.post<SuccessfulAuthResponse>(this.url.session, undefined, {
       responseType: 'json',
