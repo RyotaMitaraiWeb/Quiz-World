@@ -1,0 +1,20 @@
+<app-admin-tabs activeRoute="admins"></app-admin-tabs>
+<app-catalogue-select-menu 
+  [options]="options"
+  selectedValue="asc"
+  (selectEvent)="changeOrder($event)"
+>
+</app-catalogue-select-menu>
+
+<app-users-list 
+  [data]="(userList$ | async)?.users || defaultUsers"
+  (updateUsersEvent)="updateUsers()"
+>
+</app-users-list>
+
+<app-catalogue-paginator 
+  [page]="page"
+  [total]="(userList$ | async)?.total || 1"
+  (pageEvent)="changePage($event)"
+>
+</app-catalogue-paginator>

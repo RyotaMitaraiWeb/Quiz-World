@@ -1,0 +1,21 @@
+<section class="question single-choice-question" [formGroup]="form">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title [ngClass]="promptClass">{{ prompt }}</mat-card-title>
+      <mat-card-subtitle>Select the correct answer</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-radio-group formControlName="currentAnswer" [name]="radioName" required>
+        <mat-radio-button *ngFor="let answer of answers; index as i; trackBy: track" [value]="answer.id"
+          [ngClass]="answerClass(answer.id)">
+          {{ answer.value }}
+        </mat-radio-button>
+      </mat-radio-group>
+    </mat-card-content>
+    <mat-card-footer>
+      <p *ngIf="isCorrect" class="correct answer-feedback">Correct!</p>
+      <p *ngIf="isCorrect === false" class="wrong answer-feedback">Wrong!</p>
+      <p class="question-notes" *ngIf="isCorrect !== null && notes">{{ notes }}</p>
+    </mat-card-footer>
+  </mat-card>
+</section>

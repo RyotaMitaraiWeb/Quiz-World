@@ -1,0 +1,9 @@
+<mat-paginator 
+  [pageSize]="pageSize"
+  [pageIndex]="page - 1"
+  [length]="total"
+  [showFirstLastButtons]="true"
+  (page)="changePage($event)"
+  [disabled]="!(isLoading | async)"
+>
+</mat-paginator>
