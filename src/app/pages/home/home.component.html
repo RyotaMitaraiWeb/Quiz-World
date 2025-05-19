@@ -1,1 +1,14 @@
-<h1>Home</h1>
+@let _username = username();
+
+<ng-template appAuthenticatedOnly>
+  <section>
+    <h1>Welcome back, {{ _username }}!</h1>
+    <app-home-logged-in />
+  </section>
+</ng-template>
+<ng-template appGuestOnly>
+  <section>
+    <h1>Welcome to Quiz World!</h1>
+    <app-home-guest />
+  </section>
+</ng-template>
