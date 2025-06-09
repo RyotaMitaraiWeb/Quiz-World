@@ -6,6 +6,7 @@ const quiz = `${root}/quiz`;
 const answer = `${root}/grade`;
 const logs = `${root}/logs`;
 const roles = `${root}/roles`;
+const profiles = `${root}/profile`;
 
 export const api = {
   root,
@@ -57,6 +58,10 @@ export const api = {
        * Use query string ``username`` to filter users.
        */
       getUsersOfUsername: () => `${roles}/users`,
+    },
+    profiles: {
+      getByUsername: (username: string) => `${profiles}/username/${username}`,
+      search: profiles,
     },
   },
 };
