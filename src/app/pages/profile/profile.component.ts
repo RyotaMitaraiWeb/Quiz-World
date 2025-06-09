@@ -7,6 +7,7 @@ import { AuthService } from '../../services/auth/auth.service';
 import { ProfileOverviewComponent } from '../../components/profile/profile-overview/profile-overview.component';
 import { UserQuizzesListComponent } from '../../components/profile/user-quizzes-list/user-quizzes-list.component';
 import { Title } from '@angular/platform-browser';
+import { ProfileService } from '../../services/profile/profile.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +24,7 @@ import { Title } from '@angular/platform-browser';
 export class ProfileComponent implements OnInit, OnDestroy {
   username = input.required<string>();
   private readonly authService = inject(AuthService);
+  private readonly profileService = inject(ProfileService);
   private readonly title = inject(Title);
 
   user = signal<UserState>(
@@ -34,7 +36,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   );
 
   ngOnInit() {
-    this._profileSub = this.authService.getProfileByUsername(this.username())
+    this._profileSub = this.profileService.getProfileByUsername(this.username())
       .subscribe({
         next: (user) => {
           this.user.set(user);
