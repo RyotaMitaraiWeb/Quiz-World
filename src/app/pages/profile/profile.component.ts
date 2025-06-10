@@ -3,7 +3,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { UserState } from '../../store/user/user.store';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../../services/auth/auth.service';
 import { ProfileOverviewComponent } from '../../components/profile/profile-overview/profile-overview.component';
 import { UserQuizzesListComponent } from '../../components/profile/user-quizzes-list/user-quizzes-list.component';
 import { Title } from '@angular/platform-browser';
@@ -23,7 +22,6 @@ import { ProfileService } from '../../services/profile/profile.service';
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   username = input.required<string>();
-  private readonly authService = inject(AuthService);
   private readonly profileService = inject(ProfileService);
   private readonly title = inject(Title);
 
