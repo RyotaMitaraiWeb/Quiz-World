@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { api } from '../../common/api';
 import { HttpClient } from '@angular/common/http';
-import { User } from '../admin/searchTable.types';
+import { User, UserList } from '../admin/searchTable.types';
 import { SearchProfilesParameters } from '../../types/search';
 import { paramsBuilder } from '../../util/paramsBuilder';
 
@@ -18,7 +18,7 @@ export class ProfileService {
 
   searchProfiles(searchParams: SearchProfilesParameters) {
     const params = paramsBuilder(searchParams);
-    return this.http.get<User[]>(this.url.search, {
+    return this.http.get<UserList>(this.url.search, {
       params,
     });
   }

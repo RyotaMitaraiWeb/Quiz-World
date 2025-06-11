@@ -12,6 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { RoleChangeSelectComponent } from '../../../common/role-change-select/role-change-select.component';
 import { RoleChangeSelectEvent, RoleChangeSelectEventType } from '../../../common/role-change-select/types';
 import { RouterModule } from '@angular/router';
+import { ProfileService } from '../../../../services/profile/profile.service';
 
 @Component({
   selector: 'app-users-tab-section',
@@ -30,6 +31,8 @@ import { RouterModule } from '@angular/router';
 })
 export class UsersTabSectionComponent implements OnDestroy, OnInit {
   private readonly adminService = inject(AdminService);
+  private readonly profileService = inject(ProfileService);
+
   protected displayedColumns = ['username', 'roles', 'actions'];
   protected readonly roles = roles;
 
@@ -39,7 +42,8 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
       username: new FormControl(''),
       page: new FormControl(1),
       order: new FormControl('Ascending' as order),
-      role: new FormControl(roles.user as role),
+      roles: new FormControl([roles.user] as role[]),
+      pageSize: new FormControl(20),
     },
   );
 
@@ -77,9 +81,12 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
   private _usersSub = this.form.valueChanges.pipe(
     debounceTime(500),
     distinctUntilChanged(),
-    switchMap(() => this.adminService.getUsersOfRole(this.form.value.role || roles.user, this.form.value.username || '', {
-      order: this.form.value.order || 'Ascending',
+    switchMap(() => this.profileService.searchProfiles({
       page: this.form.value.page || 1,
+      pageSize: this.form.value.pageSize || 20,
+      order: this.form.value.order || 'Ascending',
+      roles: this.form.value.roles || [roles.user],
+      username: this.form.value.username || '',
     }))).subscribe({
       next: (v) => {
         this.users.set(v);
@@ -99,7 +106,8 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
               page: 1,
               username: '',
               order: 'Ascending',
-              role: roles.user,
+              roles: [roles.user],
+              pageSize: 20,
             },
           );
         },
@@ -115,7 +123,8 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
               page: 1,
               username: '',
               order: 'Ascending',
-              role: roles.user,
+              roles: [roles.user],
+              pageSize: 20,
             },
           );
         },

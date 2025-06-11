@@ -5,11 +5,11 @@
 <form [formGroup]="form" class="form">
   <mat-form-field subscriptSizing="dynamic">
     <mat-label>Search by username</mat-label>
-    <input matInput formControlName="username" />
+    <input matInput [formControl]="form.controls.username" />
   </mat-form-field>
   <mat-form-field subscriptSizing="dynamic">
     <mat-label>Filter by role</mat-label>
-    <mat-select formControlName="role">
+    <mat-select multiple [formControl]="form.controls.roles">
       <mat-option [value]="roles.user">User (all users)</mat-option>
       <mat-option [value]="roles.moderator">Moderator</mat-option>
       <mat-option [value]="roles.admin">Administrator</mat-option>
@@ -17,9 +17,9 @@
   </mat-form-field>
   <mat-form-field subscriptSizing="dynamic">
     <mat-label>Order by</mat-label>
-    <mat-select formControlName="order">
-      <mat-option value="asc">Username (ascending)</mat-option>
-      <mat-option value="desc">Username (descending)</mat-option>
+    <mat-select [formControl]="form.controls.order">
+      <mat-option value="Ascending">Username (ascending)</mat-option>
+      <mat-option value="Descending">Username (descending)</mat-option>
     </mat-select>
   </mat-form-field>
 </form>
