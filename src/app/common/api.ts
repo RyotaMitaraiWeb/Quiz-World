@@ -53,8 +53,8 @@ export const api = {
 
     roles: {
       getUsersOfRole: (role: string) => `${roles}/users/${role}`,
-      promote: (userId: string, role: string) => `${roles}/promote/${userId}/${role}`,
-      demote: (userId: string, role: string) => `${roles}/demote/${userId}/${role}`,
+      promote: `${roles}/add`,
+      demote: `${roles}/remove`,
       /**
        * Use query string ``username`` to filter users.
        */

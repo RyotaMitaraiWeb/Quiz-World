@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { AdminService } from '../../../../services/admin/admin.service';
-import { debounceTime, distinctUntilChanged, Subscription, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subscription, switchMap, tap } from 'rxjs';
 import { role, roles } from '../../../../common/roles';
 import { UserList } from '../../../../services/admin/searchTable.types';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -96,39 +96,20 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
       },
     });
 
-
     private promote(role: role, userId: string) {
-      this._promoteSub = this.adminService.addRoleToUser(userId, role).subscribe({
-        next: v => {
-          this.users.set(v);
-          this.form.setValue(
-            {
-              page: 1,
-              username: '',
-              order: 'Ascending',
-              roles: [roles.user],
-              pageSize: 20,
-            },
-          );
-        },
-      });
+      this._promoteSub = this.adminService.addRoleToUser(userId, role)
+      .pipe(
+        // trigger a "refresh"
+        tap(() => this.form.patchValue({ username: this.form.value.username })),
+      ).subscribe();
     }
 
     private demote(role: role, userId: string) {
-      this._demoteSub = this.adminService.removeRoleFromUser(userId, role).subscribe({
-        next: v => {
-          this.users.set(v);
-          this.form.setValue(
-            {
-              page: 1,
-              username: '',
-              order: 'Ascending',
-              roles: [roles.user],
-              pageSize: 20,
-            },
-          );
-        },
-      });
+      this._demoteSub = this.adminService.removeRoleFromUser(userId, role)
+      .pipe(
+        // trigger a "refresh"
+        tap(() => this.form.patchValue({ username: this.form.value.username })),
+      ).subscribe();
     }
 
     private _promoteSub?: Subscription;
