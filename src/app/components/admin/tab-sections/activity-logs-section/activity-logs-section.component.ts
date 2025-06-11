@@ -7,7 +7,7 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { IndexedLogsList } from '../../../../services/admin/logs.types';
 import { MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-activity-logs-section',
@@ -30,8 +30,15 @@ export class ActivityLogsSectionComponent implements OnInit, OnDestroy {
     this.form.controls.page.setValue(1);
   }
 
-  changePage(page: number) {
-    this.form.controls.page.setValue(page);
+  changePage(pageEvent: PageEvent) {
+    const page = pageEvent.pageIndex + 1;
+    const pageSize = pageEvent.pageSize;
+    this.form.patchValue(
+      {
+        page,
+        pageSize,
+      },
+    );
   }
 
   logs = signal<IndexedLogsList>({
@@ -49,6 +56,7 @@ export class ActivityLogsSectionComponent implements OnInit, OnDestroy {
     {
       page: new FormControl(1),
       order: new FormControl<order>(sorting.order[0]),
+      pageSize: new FormControl(20),
     },
   );
 
