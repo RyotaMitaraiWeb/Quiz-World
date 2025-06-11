@@ -26,7 +26,7 @@ export class AllPageComponent implements OnDestroy, OnInit {
   ngOnInit() {
     this.searchResultsSub = this.searchResults.searchOptions$.pipe(
       switchMap((params) => (
-        this.quizService.getAllQuizzes(params)
+        this.quizService.search(params)
       )),
     ).subscribe({
       next: (value) => {

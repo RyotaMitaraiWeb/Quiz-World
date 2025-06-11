@@ -41,7 +41,7 @@ export class UserQuizzesListComponent implements OnInit, OnDestroy {
     this._searchSub = this.searchParams$
       .pipe(
         filter(value => value.user.id !== ''),
-        switchMap(value => this.quizService.getUserQuizzes(value.user.id, value.search)),
+        switchMap(value => this.quizService.search({...value.search, author: value.user.username})),
       )
       .subscribe({
         next: (value) => {

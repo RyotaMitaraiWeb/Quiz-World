@@ -38,7 +38,7 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
     {
       username: new FormControl(''),
       page: new FormControl(1),
-      order: new FormControl('asc' as order),
+      order: new FormControl('Ascending' as order),
       role: new FormControl(roles.user as role),
     },
   );
@@ -78,7 +78,7 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
     debounceTime(500),
     distinctUntilChanged(),
     switchMap(() => this.adminService.getUsersOfRole(this.form.value.role || roles.user, this.form.value.username || '', {
-      order: this.form.value.order || 'asc',
+      order: this.form.value.order || 'Ascending',
       page: this.form.value.page || 1,
     }))).subscribe({
       next: (v) => {
@@ -98,7 +98,7 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
             {
               page: 1,
               username: '',
-              order: 'asc',
+              order: 'Ascending',
               role: roles.user,
             },
           );
@@ -114,7 +114,7 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
             {
               page: 1,
               username: '',
-              order: 'asc',
+              order: 'Ascending',
               role: roles.user,
             },
           );

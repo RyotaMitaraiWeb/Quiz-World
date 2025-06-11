@@ -1,7 +1,8 @@
 @let searchOptions = searchOptions$ | async;
-@let order = searchOptions?.order || 'asc';
-@let sort = searchOptions?.sort || 'title';
+@let order = searchOptions?.order || 'Ascending';
+@let sortBy = searchOptions?.sortBy || 'Title';
 @let page = searchOptions?.page || 1;
+@let pageSize = searchOptions?.pageSize || 5;
 
 @let _quizzes = quizzes();
 @let total = totalQuizzes();
@@ -9,7 +10,7 @@
 <ng-content select="[search-results-title]" />
 
 <div class="search-results-section">
-  <app-search-quiz-sorter (select)="search($event)" [sortOptions]="{ sort, order }" />
+  <app-search-quiz-sorter (select)="search($event)" [sortOptions]="{ sortBy, order }" />
 
   @if (_quizzes.length === 0) {
   <p class="no-quizzes">No quizzes found, try changing your search parameters and try again!</p>
@@ -21,5 +22,5 @@
   </div>
   }
 
-  <mat-paginator [pageSize]="6" [length]="total" [pageIndex]="page - 1" (page)="paginate($event.pageIndex + 1)" />
+  <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 15, 20]" [length]="total" [pageIndex]="page - 1" (page)="paginate($event)" />
 </div>

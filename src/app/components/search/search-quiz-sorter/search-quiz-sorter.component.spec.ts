@@ -64,7 +64,7 @@ describe('SearchQuizSorterComponent', () => {
 
     expect(spy).toHaveBeenCalledWith(
       {
-        sort: sorting.categories[0],
+        sortBy: sorting.categories[0],
         order: sorting.order[1],
       },
     );

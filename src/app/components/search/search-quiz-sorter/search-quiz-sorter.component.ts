@@ -14,7 +14,7 @@ export class SearchQuizSorterComponent {
 
   readonly sortOptions = input<SortAndOrder>(
     {
-      sort: sorting.categories[0],
+      sortBy: sorting.categories[0],
       order: sorting.order[0],
     },
   );
@@ -23,15 +23,15 @@ export class SearchQuizSorterComponent {
 
   protected readonly selectedValue = computed(() => {
     const options = this.sortOptions();
-    const { sort, order } = options;
-    return `${sort}-${order}`;
+    const { sortBy, order } = options;
+    return `${sortBy}-${order}`;
   });
 
   updateSorting(value: string) {
-    const sort = this._extractSortCategory(value);
+    const sortBy = this._extractSortCategory(value);
     const order = this._extractOrder(value);
 
-    this.select.emit({ sort, order });
+    this.select.emit({ sortBy, order });
   }
 
   private _extractSortCategory(value: string) {

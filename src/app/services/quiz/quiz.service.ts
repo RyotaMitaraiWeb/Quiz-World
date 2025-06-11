@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { api } from '../../common/api';
 import { CreatedQuizResponse, EditQuizForm, QuizDetails, QuizList, type QuizFormSubmission } from './types';
 import { paramsBuilder } from '../../util/paramsBuilder';
-import { SearchOptions } from '../../types/search';
+import { SearchOptions, SearchQuizParameters } from '../../types/search';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +25,12 @@ export class QuizService {
     createdOn: '',
     updatedOn: '',
   };
+
+  search(searchParameters: SearchQuizParameters) {
+    const params = paramsBuilder(searchParameters);
+
+    return this.http.get<QuizList>(this.url.browse, { params });
+  }
 
   create(quiz: QuizFormSubmission) {
     return this.http.post<CreatedQuizResponse>(this.url.create, quiz);

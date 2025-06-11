@@ -23,6 +23,7 @@ export type SearchQuizParameters = Partial<{
   order: order;
   sortBy: quizSort;
   author: string;
+  title: string;
 }>;
 
 export type SearchProfilesParameters = Partial<{

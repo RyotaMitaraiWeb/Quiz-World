@@ -29,6 +29,7 @@ export const api = {
      */
     quiz: {
       create: quiz,
+      browse: quiz,
       /**
        * Endpoint for retrieving a specific quiz by its id.
        * @param id
