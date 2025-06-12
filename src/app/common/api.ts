@@ -18,7 +18,7 @@ export const api = {
       register: `${auth}/register`,
       login: `${auth}/login`,
       logout: `${auth}/logout`,
-      usernameExists: (username: string) => `${auth}/username/${username}`,
+      usernameExists: `${auth}/username`,
       /** Endpoint to check if the user has a valid session upon app load */
       session: `${auth}/session`,
       profile: (id: string) => `${auth}/${id}`,
@@ -38,21 +38,18 @@ export const api = {
       id: (id: string | number) => `${quiz}/${id}`,
       edit: (id: string | number) => `${quiz}/${id}`,
       delete: (id: string | number) => `${quiz}/${id}`,
-      all: `${quiz}/all`,
-      search: `${quiz}/search`,
       user: (id: string) => `${quiz}/user/${id}`,
       quizForEdit: (id: number) => `${quiz}/${id}/edit`,
     },
     answers: {
-      correctAnswersInstantMode: (questionId: string) => `${answer}/${questionId}/question`,
-      correctAnswersFull: (quizId: number) => `${answer}/${quizId}/quiz`,
+      correctAnswersInstantMode: (questionId: string) => `${answer}/question/${questionId}`,
+      correctAnswersFull: (quizId: number) => `${answer}/quiz/${quizId}`,
     },
     logs: {
       getLogs: logs,
     },
 
     roles: {
-      getUsersOfRole: (role: string) => `${roles}/users/${role}`,
       promote: `${roles}/add`,
       demote: `${roles}/remove`,
       /**

@@ -44,13 +44,13 @@ export class QuizService {
     let params = paramsBuilder(options);
     params = params.append('search', query);
 
-    return this.http.get<QuizList>(this.url.search, { params });
+    return this.http.get<QuizList>(this.url.browse, { params });
   }
 
   getAllQuizzes(options?: SearchOptions) {
     const params = paramsBuilder(options);
 
-    return this.http.get<QuizList>(this.url.all, { params });
+    return this.http.get<QuizList>(this.url.browse, { params });
   }
 
   getUserQuizzes(userId: string, options?: SearchOptions) {
