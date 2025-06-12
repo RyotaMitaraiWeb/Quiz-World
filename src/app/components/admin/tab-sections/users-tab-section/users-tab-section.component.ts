@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { AdminService } from '../../../../services/admin/admin.service';
-import { debounceTime, distinctUntilChanged, Subscription, switchMap, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, startWith, Subscription, switchMap, tap } from 'rxjs';
 import { role, roles } from '../../../../common/roles';
 import { UserList } from '../../../../services/admin/searchTable.types';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -14,10 +14,12 @@ import { RoleChangeSelectEvent, RoleChangeSelectEventType } from '../../../commo
 import { RouterModule } from '@angular/router';
 import { ProfileService } from '../../../../services/profile/profile.service';
 import { defaultSearchValues } from '../../../../common/search';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-users-tab-section',
   imports: [
+    AsyncPipe,
     ReactiveFormsModule,
     RouterModule,
     MatTableModule,
@@ -80,6 +82,19 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
     this._promoteSub?.unsubscribe();
     this._demoteSub?.unsubscribe();
   }
+
+  protected readonly users$ = this.form.valueChanges.pipe(
+    startWith(this.form.value),
+    debounceTime(500),
+    distinctUntilChanged(),
+    switchMap(() => this.profileService.searchProfiles({
+      page: this.form.value.page || 1,
+      pageSize: this.form.value.pageSize || 20,
+      order: this.form.value.order || 'Ascending',
+      roles: this.form.value.roles || [roles.user],
+      username: this.form.value.username || '',
+    })),
+  );
 
   private _usersSub = this.form.valueChanges.pipe(
     debounceTime(500),

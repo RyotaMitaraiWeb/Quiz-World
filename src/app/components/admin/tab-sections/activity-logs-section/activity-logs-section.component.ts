@@ -1,18 +1,19 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit, signal, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AdminService } from '../../../../services/admin/admin.service';
 import { MatSelectModule } from '@angular/material/select';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { activityLogsOrderLabels, order, sorting } from '../../../../common/sort';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, startWith, switchMap } from 'rxjs';
 import { IndexedLogsList } from '../../../../services/admin/logs.types';
 import { MatTableModule } from '@angular/material/table';
-import { DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { defaultSearchValues } from '../../../../common/search';
 
 @Component({
   selector: 'app-activity-logs-section',
   imports: [
+    AsyncPipe,
     ReactiveFormsModule,
     MatSelectModule,
     MatTableModule,
@@ -23,13 +24,9 @@ import { defaultSearchValues } from '../../../../common/search';
   styleUrl: './activity-logs-section.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ActivityLogsSectionComponent implements OnInit, OnDestroy {
+export class ActivityLogsSectionComponent {
   private readonly adminService = inject(AdminService);
   protected readonly displayedColumns = ['index', 'message', 'date'];
-
-  ngOnInit() {
-    this.form.controls.page.setValue(1);
-  }
 
   changePage(pageEvent: PageEvent) {
     const page = pageEvent.pageIndex + 1;
@@ -42,16 +39,10 @@ export class ActivityLogsSectionComponent implements OnInit, OnDestroy {
     );
   }
 
-  logs = signal<IndexedLogsList>({
+  protected defaultLogs: IndexedLogsList = {
     total: 0,
-    logs: [
-      {
-        index: 0,
-        date: '',
-        message: '',
-      },
-    ],
-  });
+    logs: [],
+  };
 
   protected readonly form = new FormGroup(
     {
@@ -61,7 +52,8 @@ export class ActivityLogsSectionComponent implements OnInit, OnDestroy {
     },
   );
 
-  private _logsSub = this.form.valueChanges.pipe(
+  protected readonly logs$ = this.form.valueChanges.pipe(
+    startWith(this.form.value),
     debounceTime(500),
     distinctUntilChanged(),
     switchMap(() => this.adminService.getActivityLogs(
@@ -70,18 +62,8 @@ export class ActivityLogsSectionComponent implements OnInit, OnDestroy {
         order: this.form.value.order || sorting.order[0],
       },
     )),
-  ).subscribe({
-    next: (logs) => {
-      this.logs.set(logs);
-    },
-    error: () => {
-      //
-    },
-  });
+  );
 
-  ngOnDestroy() {
-    this._logsSub.unsubscribe();
-  }
 
   protected readonly orders = sorting.order;
   protected readonly orderLabels = activityLogsOrderLabels;
