@@ -1,8 +1,8 @@
 @let searchOptions = searchOptions$ | async;
-@let order = searchOptions?.order || 'Ascending';
-@let sortBy = searchOptions?.sortBy || 'Title';
+@let order = searchOptions?.order || defaultSearchValues.DEFAULT_ORDER;
+@let sortBy = searchOptions?.sortBy || defaultSearchValues.DEFAULT_QUIZ_SORT_CATEGORY;
 @let page = searchOptions?.page || 1;
-@let pageSize = searchOptions?.pageSize || 5;
+@let pageSize = searchOptions?.pageSize || defaultSearchValues.DEFAULT_PAGE_SIZE_QUIZ;
 
 @let _quizzes = quizzes();
 @let total = totalQuizzes();
@@ -22,5 +22,6 @@
   </div>
   }
 
-  <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 15, 20]" [length]="total" [pageIndex]="page - 1" (page)="paginate($event)" />
+  <mat-paginator [pageSize]="pageSize" [pageSizeOptions]="defaultSearchValues.DEFAULT_PAGE_SIZE_OPTIONS"
+    [length]="total" [pageIndex]="page - 1" (page)="paginate($event)" />
 </div>

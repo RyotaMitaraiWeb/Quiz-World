@@ -7,6 +7,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { SearchResultsService } from '../../../services/search-results/search-results.service';
 import { QuizList } from '../../../services/quiz/types';
 import { SearchResultCardComponent } from '../search-result-card/search-result-card.component';
+import { defaultSearchValues } from '../../../common/search';
 
 @Component({
   selector: 'app-search-results',
@@ -43,4 +44,5 @@ export class SearchResultsComponent {
   }
 
   protected readonly searchOptions$ = this.searchResults.searchOptions$;
+  protected readonly defaultSearchValues = defaultSearchValues;
 }
