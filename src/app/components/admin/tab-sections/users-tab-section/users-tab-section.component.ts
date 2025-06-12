@@ -1,9 +1,8 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { AdminService } from '../../../../services/admin/admin.service';
 import { debounceTime, distinctUntilChanged, startWith, Subscription, switchMap, tap } from 'rxjs';
 import { role, roles } from '../../../../common/roles';
-import { UserList } from '../../../../services/admin/searchTable.types';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { order, sorting } from '../../../../common/sort';
@@ -39,7 +38,6 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
   protected displayedColumns = ['username', 'roles', 'actions'];
   protected readonly roles = roles;
 
-  readonly username = new FormControl('');
   readonly form = new FormGroup(
     {
       username: new FormControl(''),
@@ -66,10 +64,6 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
     this.form.controls.username.setValue('');
   }
 
-  users = signal<UserList>({
-    total: 0,
-    users: [],
-  });
 
   changePage(pageEvent: PageEvent) {
     const page = pageEvent.pageIndex + 1;
@@ -78,7 +72,6 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy() {
-    this._usersSub.unsubscribe();
     this._promoteSub?.unsubscribe();
     this._demoteSub?.unsubscribe();
   }
@@ -96,23 +89,6 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
     })),
   );
 
-  private _usersSub = this.form.valueChanges.pipe(
-    debounceTime(500),
-    distinctUntilChanged(),
-    switchMap(() => this.profileService.searchProfiles({
-      page: this.form.value.page || 1,
-      pageSize: this.form.value.pageSize || 20,
-      order: this.form.value.order || 'Ascending',
-      roles: this.form.value.roles || [roles.user],
-      username: this.form.value.username || '',
-    }))).subscribe({
-      next: (v) => {
-        this.users.set(v);
-      },
-      error() {
-//
-      },
-    });
 
     private promote(role: role, userId: string) {
       this._promoteSub = this.adminService.addRoleToUser(userId, role)
