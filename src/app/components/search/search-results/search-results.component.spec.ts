@@ -71,7 +71,7 @@ describe('SearchResultsComponent', () => {
 
     const params = activatedRoute.snapshot.queryParams;
 
-    expect(params['sort']).toBe(sorting.categories[0]);
+    expect(params['sortBy']).toBe(sorting.categories[0]);
     expect(params['order']).toBe(sorting.order[1]);
   });
 

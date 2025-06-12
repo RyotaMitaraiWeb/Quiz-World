@@ -30,7 +30,7 @@ describe('SearchQuizSorterComponent', () => {
 
   it('Correctly reflects the current value when it is set from the outside', async () => {
     fixture.componentRef.setInput('sortOptions', {
-      sort: sorting.categories[1],
+      sortBy: sorting.categories[1],
       order: sorting.order[1],
     });
 
@@ -44,7 +44,7 @@ describe('SearchQuizSorterComponent', () => {
     expect(await options[3].isSelected()).toBeTrue();
 
     fixture.componentRef.setInput('sortOptions', {
-      sort: sorting.categories[0],
+      sortBy: sorting.categories[0],
       order: sorting.order[0],
     });
 
