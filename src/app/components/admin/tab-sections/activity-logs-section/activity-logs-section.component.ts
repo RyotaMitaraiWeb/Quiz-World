@@ -2,12 +2,13 @@ import { ChangeDetectionStrategy, Component, inject, OnInit, signal, OnDestroy }
 import { AdminService } from '../../../../services/admin/admin.service';
 import { MatSelectModule } from '@angular/material/select';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { order, sorting } from '../../../../common/sort';
+import { activityLogsOrderLabels, order, sorting } from '../../../../common/sort';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { IndexedLogsList } from '../../../../services/admin/logs.types';
 import { MatTableModule } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { defaultSearchValues } from '../../../../common/search';
 
 @Component({
   selector: 'app-activity-logs-section',
@@ -81,4 +82,9 @@ export class ActivityLogsSectionComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this._logsSub.unsubscribe();
   }
+
+  protected readonly orders = sorting.order;
+  protected readonly orderLabels = activityLogsOrderLabels;
+
+  protected readonly defaultSearchParameters = defaultSearchValues;
 }

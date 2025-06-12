@@ -5,9 +5,9 @@
 <form [formGroup]="form" class="form">
   <mat-form-field subscriptSizing="dynamic">
     <mat-label>Order by</mat-label>
-    <mat-select formControlName="order">
-      <mat-option value="Ascending">Date (ascending)</mat-option>
-      <mat-option value="Descending">Date (descending)</mat-option>
+    <mat-select [formControl]="form.controls.order">
+      <mat-option [value]="orders[0]">Date (ascending)</mat-option>
+      <mat-option [value]="orders[1]">Date (descending)</mat-option>
     </mat-select>
   </mat-form-field>
 </form>
@@ -33,5 +33,10 @@
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 </mat-table>
-<mat-paginator [pageSize]="20" [pageSizeOptions]="[5, 10, 15, 20]" [pageIndex]="(form.value.page || 1) - 1" showFirstLastButtons (page)="changePage($event)" [pageSize]="20"
-  [length]="_logs.total"></mat-paginator>
+<mat-paginator
+  [pageSize]="defaultSearchParameters.DEFAULT_PAGE_SIZE_LOGS"
+  [pageSizeOptions]="defaultSearchParameters.DEFAULT_PAGE_SIZE_OPTIONS"
+  [pageIndex]="(form.value.page || 1) - 1"
+  showFirstLastButtons (page)="changePage($event)"
+  [length]="_logs.total">
+</mat-paginator>

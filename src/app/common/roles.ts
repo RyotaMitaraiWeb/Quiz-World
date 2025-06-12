@@ -7,3 +7,5 @@ export const roles: Record<roleKey, role> = {
   admin: 'Administrator',
 };
 
+export const rolesThatCanBeGivenOrRemoved: role[] = [roles.moderator];
+

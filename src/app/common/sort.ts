@@ -39,3 +39,15 @@ export const sortAndOrderLabels: SortLabel[] = sorting.categories.map(
     ),
   ),
 ).reduce((acc, current) => acc.concat(current), []);
+
+export const activityLogsOrderLabels: Record<order, string> = sorting.order.reduce(
+  (state, order) => (
+    {...state, [order]: `Date ${order.toLowerCase()}`}
+  ), {} as Record<order, string>,
+);
+
+export const profileSearchOrderLabels: Record<order, string> = sorting.order.reduce(
+  (state, order) => (
+    {...state, [order]: `Username ${order.toLowerCase()}`}
+  ), {} as Record<order, string>,
+);

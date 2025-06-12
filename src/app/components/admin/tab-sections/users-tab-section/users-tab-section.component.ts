@@ -4,15 +4,16 @@ import { AdminService } from '../../../../services/admin/admin.service';
 import { debounceTime, distinctUntilChanged, Subscription, switchMap, tap } from 'rxjs';
 import { role, roles } from '../../../../common/roles';
 import { UserList } from '../../../../services/admin/searchTable.types';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { order } from '../../../../common/sort';
+import { order, sorting } from '../../../../common/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { RoleChangeSelectComponent } from '../../../common/role-change-select/role-change-select.component';
 import { RoleChangeSelectEvent, RoleChangeSelectEventType } from '../../../common/role-change-select/types';
 import { RouterModule } from '@angular/router';
 import { ProfileService } from '../../../../services/profile/profile.service';
+import { defaultSearchValues } from '../../../../common/search';
 
 @Component({
   selector: 'app-users-tab-section',
@@ -68,8 +69,10 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
     users: [],
   });
 
-  changePage(page: number) {
-    this.form.controls.page.setValue(page);
+  changePage(pageEvent: PageEvent) {
+    const page = pageEvent.pageIndex + 1;
+    const pageSize = pageEvent.pageSize;
+    this.form.patchValue({ page, pageSize });
   }
 
   ngOnDestroy() {
@@ -114,4 +117,7 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
 
     private _promoteSub?: Subscription;
     private _demoteSub?: Subscription;
+
+    protected readonly orders = sorting.order;
+    protected readonly defaultSearchParameters = defaultSearchValues;
 }
