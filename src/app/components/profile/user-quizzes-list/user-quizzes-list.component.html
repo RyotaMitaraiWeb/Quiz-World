@@ -1,7 +1,11 @@
 @let _user = user();
 @let username = _user.username;
-<app-search-results [quizList]="quizList()" [routeToNavigate]="['profile', 'user', username]">
+@let results = searchResults$ | async;
+
+@if (results) {
+<app-search-results [quizList]="results" [routeToNavigate]="['profile', 'user', username]">
   <section search-results-title>
     <h2><i>{{ username }}</i>'s quizzes</h2>
   </section>
 </app-search-results>
+}

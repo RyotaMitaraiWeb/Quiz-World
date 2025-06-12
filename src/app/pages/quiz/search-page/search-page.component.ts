@@ -1,11 +1,10 @@
 import { AsyncPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { combineLatest, map, Subscription, switchMap } from 'rxjs';
 import { SearchResultsComponent } from '../../../components/search/search-results/search-results.component';
 import { SearchResultsService } from '../../../services/search-results/search-results.service';
 import { QuizService } from '../../../services/quiz/quiz.service';
-import { QuizList } from '../../../services/quiz/types';
 import { Title } from '@angular/platform-browser';
 
 @Component({
@@ -29,13 +28,6 @@ export class SearchPageComponent implements OnDestroy, OnInit {
     map(qp => qp.get('query') || ''),
   );
 
-  quizList = signal<QuizList>(
-    {
-      total: 0,
-      quizzes: [],
-    },
-  );
-
   private readonly searchParams = combineLatest([this.searchQuery, this.searchResults.searchOptions$])
     .pipe(
       map(value => (
@@ -43,30 +35,22 @@ export class SearchPageComponent implements OnDestroy, OnInit {
       ),
   ));
 
-  ngOnInit() {
-    this.searchResultsSub = this.searchParams.pipe(
+  protected readonly searchResults$ = this.searchParams
+    .pipe(
       switchMap((params) => (
         this.quizService.search({...params, title: params.search })
       )),
-    ).subscribe({
-      next: (value) => {
-        this.quizList.set(value);
-      },
-      error() {
-        //
-      },
-    });
+    );
 
+  ngOnInit() {
     this.searchQuerySub = this.searchQuery.subscribe(query => {
       this.title.setTitle(`Search results for "${query}" | Quiz World`);
     });
   }
 
   ngOnDestroy() {
-    this.searchResultsSub?.unsubscribe();
     this.searchQuerySub?.unsubscribe();
   }
 
-  searchResultsSub?: Subscription;
   searchQuerySub?: Subscription;
 }
