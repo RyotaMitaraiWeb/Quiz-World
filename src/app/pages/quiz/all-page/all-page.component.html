@@ -1,3 +1,7 @@
-<app-search-results [routeToNavigate]="['quiz', 'all']" [quizList]="quizList()">
+@let results = results$ | async;
+
+@if (results) {
+  <app-search-results [routeToNavigate]="['quiz', 'all']" [quizList]="results">
   <h1 search-results-title>Browse all quizzes</h1>
 </app-search-results>
+}

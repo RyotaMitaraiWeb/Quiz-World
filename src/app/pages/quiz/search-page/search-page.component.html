@@ -1,5 +1,8 @@
 @let query = searchQuery | async;
+@let results = searchResults$ | async;
 
-<app-search-results [routeToNavigate]="['quiz', 'search']" [quizList]="quizList()">
-  <h1 search-results-title>Search results for "{{ query }}"</h1>
+@if (results) {
+<app-search-results [routeToNavigate]="['quiz', 'search']" [quizList]="results">
+    <h1 search-results-title>Search results for "{{ query }}"</h1>
 </app-search-results>
+}

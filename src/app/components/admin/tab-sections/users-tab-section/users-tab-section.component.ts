@@ -1,21 +1,24 @@
-import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
 import { AdminService } from '../../../../services/admin/admin.service';
-import { debounceTime, distinctUntilChanged, Subscription, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, startWith, Subscription, switchMap, tap } from 'rxjs';
 import { role, roles } from '../../../../common/roles';
-import { UserList } from '../../../../services/admin/searchTable.types';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { order } from '../../../../common/sort';
+import { order, sorting } from '../../../../common/sort';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { RoleChangeSelectComponent } from '../../../common/role-change-select/role-change-select.component';
 import { RoleChangeSelectEvent, RoleChangeSelectEventType } from '../../../common/role-change-select/types';
 import { RouterModule } from '@angular/router';
+import { ProfileService } from '../../../../services/profile/profile.service';
+import { defaultSearchValues } from '../../../../common/search';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-users-tab-section',
   imports: [
+    AsyncPipe,
     ReactiveFormsModule,
     RouterModule,
     MatTableModule,
@@ -30,16 +33,18 @@ import { RouterModule } from '@angular/router';
 })
 export class UsersTabSectionComponent implements OnDestroy, OnInit {
   private readonly adminService = inject(AdminService);
+  private readonly profileService = inject(ProfileService);
+
   protected displayedColumns = ['username', 'roles', 'actions'];
   protected readonly roles = roles;
 
-  readonly username = new FormControl('');
   readonly form = new FormGroup(
     {
       username: new FormControl(''),
       page: new FormControl(1),
-      order: new FormControl('asc' as order),
-      role: new FormControl(roles.user as role),
+      order: new FormControl('Ascending' as order),
+      roles: new FormControl([roles.user] as role[]),
+      pageSize: new FormControl(20),
     },
   );
 
@@ -59,69 +64,51 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
     this.form.controls.username.setValue('');
   }
 
-  users = signal<UserList>({
-    total: 0,
-    users: [],
-  });
 
-  changePage(page: number) {
-    this.form.controls.page.setValue(page);
+  changePage(pageEvent: PageEvent) {
+    const page = pageEvent.pageIndex + 1;
+    const pageSize = pageEvent.pageSize;
+    this.form.patchValue({ page, pageSize });
   }
 
   ngOnDestroy() {
-    this._usersSub.unsubscribe();
     this._promoteSub?.unsubscribe();
     this._demoteSub?.unsubscribe();
   }
 
-  private _usersSub = this.form.valueChanges.pipe(
+  protected readonly users$ = this.form.valueChanges.pipe(
+    startWith(this.form.value),
     debounceTime(500),
     distinctUntilChanged(),
-    switchMap(() => this.adminService.getUsersOfRole(this.form.value.role || roles.user, this.form.value.username || '', {
-      order: this.form.value.order || 'asc',
+    switchMap(() => this.profileService.searchProfiles({
       page: this.form.value.page || 1,
-    }))).subscribe({
-      next: (v) => {
-        this.users.set(v);
-      },
-      error() {
-//
-      },
-    });
+      pageSize: this.form.value.pageSize || 20,
+      order: this.form.value.order || 'Ascending',
+      roles: this.form.value.roles || [roles.user],
+      username: this.form.value.username || '',
+    })),
+  );
 
 
     private promote(role: role, userId: string) {
-      this._promoteSub = this.adminService.addRoleToUser(userId, role).subscribe({
-        next: v => {
-          this.users.set(v);
-          this.form.setValue(
-            {
-              page: 1,
-              username: '',
-              order: 'asc',
-              role: roles.user,
-            },
-          );
-        },
-      });
+      this._promoteSub = this.adminService.addRoleToUser(userId, role)
+      .pipe(
+        // trigger a "refresh"
+        tap(() => this.form.patchValue({ username: this.form.value.username })),
+      ).subscribe();
     }
 
     private demote(role: role, userId: string) {
-      this._demoteSub = this.adminService.removeRoleFromUser(userId, role).subscribe({
-        next: v => {
-          this.users.set(v);
-          this.form.setValue(
-            {
-              page: 1,
-              username: '',
-              order: 'asc',
-              role: roles.user,
-            },
-          );
-        },
-      });
+      this._demoteSub = this.adminService.removeRoleFromUser(userId, role)
+      .pipe(
+        // trigger a "refresh"
+        tap(() => this.form.patchValue({ username: this.form.value.username })),
+      ).subscribe();
     }
 
     private _promoteSub?: Subscription;
     private _demoteSub?: Subscription;
+
+    protected readonly orders = sorting.order;
+    protected readonly defaultSearchParameters = defaultSearchValues;
 }

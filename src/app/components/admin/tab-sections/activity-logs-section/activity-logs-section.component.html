@@ -1,37 +1,44 @@
-@let _logs = logs();
+@let logs = (logs$ | async);
 
-<h2>Manage users</h2>
+@if (logs) {
+  <h2>Manage users</h2>
 
-<form [formGroup]="form" class="form">
-  <mat-form-field subscriptSizing="dynamic">
-    <mat-label>Order by</mat-label>
-    <mat-select formControlName="order">
-      <mat-option value="asc">Date (ascending)</mat-option>
-      <mat-option value="desc">Date (descending)</mat-option>
-    </mat-select>
-  </mat-form-field>
-</form>
+  <form [formGroup]="form" class="form">
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Order by</mat-label>
+      <mat-select [formControl]="form.controls.order">
+        <mat-option [value]="orders[0]">Date (ascending)</mat-option>
+        <mat-option [value]="orders[1]">Date (descending)</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
 
-<mat-table [dataSource]="_logs.logs">
-  <ng-container matColumnDef="index">
-    <th mat-header-cell *matHeaderCellDef>#</th>
-    <td mat-cell *matCellDef="let log"> {{ log.index }} </td>
-  </ng-container>
+  <mat-table [dataSource]="logs.logs">
+    <ng-container matColumnDef="index">
+      <th mat-header-cell *matHeaderCellDef>#</th>
+      <td mat-cell *matCellDef="let log"> {{ log.index }} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="message">
-    <th mat-header-cell *matHeaderCellDef>Message</th>
-    <td mat-cell *matCellDef="let log"> {{ log.message }} </td>
-  </ng-container>
+    <ng-container matColumnDef="message">
+      <th mat-header-cell *matHeaderCellDef>Message</th>
+      <td mat-cell *matCellDef="let log"> {{ log.message }} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="date">
-    <th mat-header-cell *matHeaderCellDef>Date</th>
-    <td mat-cell *matCellDef="let log">
-      {{ log.date | date: 'short' }}
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let log">
+        {{ log.date | date: 'short' }}
+      </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</mat-table>
-<mat-paginator [pageIndex]="(form.value.page || 1) - 1" showFirstLastButtons (page)="changePage($event.pageIndex + 1)" [pageSize]="20"
-  [length]="_logs.total"></mat-paginator>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </mat-table>
+  <mat-paginator
+    [pageSize]="defaultSearchParameters.DEFAULT_PAGE_SIZE_LOGS"
+    [pageSizeOptions]="defaultSearchParameters.DEFAULT_PAGE_SIZE_OPTIONS"
+    [pageIndex]="(form.value.page || 1) - 1"
+    showFirstLastButtons (page)="changePage($event)"
+    [length]="logs.total">
+  </mat-paginator>
+}

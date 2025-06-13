@@ -3,10 +3,11 @@ import { Router } from '@angular/router';
 import { SortAndOrder } from '../../../common/sort';
 import { SearchQuizSorterComponent } from '../search-quiz-sorter/search-quiz-sorter.component';
 import { AsyncPipe } from '@angular/common';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { SearchResultsService } from '../../../services/search-results/search-results.service';
 import { QuizList } from '../../../services/quiz/types';
 import { SearchResultCardComponent } from '../search-result-card/search-result-card.component';
+import { defaultSearchValues } from '../../../common/search';
 
 @Component({
   selector: 'app-search-results',
@@ -32,12 +33,16 @@ export class SearchResultsComponent {
     });
   }
 
-  paginate(page: number) {
+  paginate(event: PageEvent) {
+    const page = event.pageIndex + 1;
+    const pageSize = event.pageSize;
+
     this.router.navigate(this.routeToNavigate(), {
-      queryParams: { page },
+      queryParams: { page, pageSize },
       queryParamsHandling: 'merge',
     });
   }
 
   protected readonly searchOptions$ = this.searchResults.searchOptions$;
+  protected readonly defaultSearchValues = defaultSearchValues;
 }

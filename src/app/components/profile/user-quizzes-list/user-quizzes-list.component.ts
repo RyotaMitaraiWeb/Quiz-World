@@ -1,24 +1,28 @@
-import { ChangeDetectionStrategy, Component, inject, input, OnInit, OnDestroy, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { UserState } from '../../../store/user/user.store';
 import { SearchResultsService } from '../../../services/search-results/search-results.service';
 import { QuizService } from '../../../services/quiz/quiz.service';
-import { combineLatest, filter, map, Subscription, switchMap } from 'rxjs';
+import { combineLatest, filter, map, switchMap } from 'rxjs';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { QuizList } from '../../../services/quiz/types';
 import { SearchResultsComponent } from '../../search/search-results/search-results.component';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-user-quizzes-list',
-  imports: [SearchResultsComponent],
+  imports: [
+    AsyncPipe,
+    SearchResultsComponent,
+  ],
   templateUrl: './user-quizzes-list.component.html',
   styleUrl: './user-quizzes-list.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserQuizzesListComponent implements OnInit, OnDestroy {
+export class UserQuizzesListComponent {
   user = input.required<UserState>();
   private readonly user$ = toObservable(this.user);
   private readonly searchResults = inject(SearchResultsService);
   private readonly quizService = inject(QuizService);
+
   private readonly searchParams$ = combineLatest(
     [this.user$, this.searchResults.searchOptions$],
   ).pipe(map(value => (
@@ -28,32 +32,11 @@ export class UserQuizzesListComponent implements OnInit, OnDestroy {
     }
   )));
 
-  _searchSub?: Subscription;
-
-  readonly quizList = signal<QuizList>(
-    {
-      total: 0,
-      quizzes: [],
-    },
-  );
-
-  ngOnInit() {
-    this._searchSub = this.searchParams$
-      .pipe(
+  protected readonly searchResults$ = this.searchParams$
+    .pipe(
         filter(value => value.user.id !== ''),
-        switchMap(value => this.quizService.getUserQuizzes(value.user.id, value.search)),
-      )
-      .subscribe({
-        next: (value) => {
-          this.quizList.set(value);
-        },
-        error() {
-          //
-        },
-      });
-  }
-
-  ngOnDestroy() {
-    this._searchSub?.unsubscribe();
-  }
+        switchMap(
+          value => this.quizService.search({...value.search, author: value.user.username}),
+        ),
+    );
 }

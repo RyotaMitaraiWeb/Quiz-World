@@ -1,0 +1,18 @@
+import { sorting } from './sort';
+
+const DEFAULT_PAGE_SIZE_QUIZ = 5;
+const DEFAULT_PAGE_SIZE_LOGS = 20;
+const DEFAULT_PAGE_SIZE_USERS = 20;
+const DEFAULT_PAGE_SIZE_OPTIONS = [5, 10, 15, 20];
+
+const DEFAULT_ORDER = sorting.order[0];
+const DEFAULT_QUIZ_SORT_CATEGORY = sorting.categories[0];
+
+export const defaultSearchValues = {
+  DEFAULT_ORDER,
+  DEFAULT_PAGE_SIZE_LOGS,
+  DEFAULT_PAGE_SIZE_QUIZ,
+  DEFAULT_PAGE_SIZE_USERS,
+  DEFAULT_QUIZ_SORT_CATEGORY,
+  DEFAULT_PAGE_SIZE_OPTIONS,
+};

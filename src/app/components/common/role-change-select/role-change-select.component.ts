@@ -1,5 +1,5 @@
 import { Component, model, output } from '@angular/core';
-import { role, roles as commonRoles } from '../../../common/roles';
+import { role, rolesThatCanBeGivenOrRemoved } from '../../../common/roles';
 import { MatSelectModule } from '@angular/material/select';
 import { RoleChangeSelectEvent, RoleChangeSelectEventType } from './types';
 import { MatOptionSelectionChange } from '@angular/material/core';
@@ -14,7 +14,7 @@ export class RoleChangeSelectComponent {
   roles = model.required<role[]>();
   select = output<RoleChangeSelectEvent>();
 
-  protected readonly rolesList = Object.values(commonRoles).filter(role => role !== commonRoles.user && role !== commonRoles.admin);
+  protected readonly rolesList = rolesThatCanBeGivenOrRemoved;
 
   change(event: MatOptionSelectionChange) {
     if (!event.isUserInput) return;

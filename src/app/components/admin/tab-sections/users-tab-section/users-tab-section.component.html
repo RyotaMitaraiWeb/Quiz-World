@@ -1,48 +1,56 @@
-@let _users = users();
+@let users = users$ | async;
 
-<h2>Manage users</h2>
+@if (users) {
+  <h2>Manage users</h2>
 
-<form [formGroup]="form" class="form">
-  <mat-form-field subscriptSizing="dynamic">
-    <mat-label>Search by username</mat-label>
-    <input matInput formControlName="username" />
-  </mat-form-field>
-  <mat-form-field subscriptSizing="dynamic">
-    <mat-label>Filter by role</mat-label>
-    <mat-select formControlName="role">
-      <mat-option [value]="roles.user">User (all users)</mat-option>
-      <mat-option [value]="roles.moderator">Moderator</mat-option>
-      <mat-option [value]="roles.admin">Administrator</mat-option>
-    </mat-select>
-  </mat-form-field>
-  <mat-form-field subscriptSizing="dynamic">
-    <mat-label>Order by</mat-label>
-    <mat-select formControlName="order">
-      <mat-option value="asc">Username (ascending)</mat-option>
-      <mat-option value="desc">Username (descending)</mat-option>
-    </mat-select>
-  </mat-form-field>
-</form>
+  <form [formGroup]="form" class="form">
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Search by username</mat-label>
+      <input matInput [formControl]="form.controls.username" />
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Filter by role</mat-label>
+      <mat-select multiple [formControl]="form.controls.roles">
+        <mat-option [value]="roles.moderator">Moderator</mat-option>
+        <mat-option [value]="roles.admin">Administrator</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field subscriptSizing="dynamic">
+      <mat-label>Order by</mat-label>
+      <mat-select [formControl]="form.controls.order">
+        <mat-option [value]="orders[0]">Username (ascending)</mat-option>
+        <mat-option [value]="orders[1]">Username (descending)</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
 
-<mat-table [dataSource]="_users.users">
-  <ng-container matColumnDef="username">
-    <th mat-header-cell *matHeaderCellDef>Username</th>
-    <td mat-cell *matCellDef="let user"> <a [routerLink]="['/profile', 'user', user.username]">{{ user.username }}</a> </td>
-  </ng-container>
+  <mat-table [dataSource]="users.users">
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef>Username</th>
+      <td mat-cell *matCellDef="let user"> <a [routerLink]="['/profile', 'user', user.username]">{{ user.username }}</a> </td>
+    </ng-container>
 
-  <ng-container matColumnDef="roles">
-    <th mat-header-cell *matHeaderCellDef>Roles</th>
-    <td mat-cell *matCellDef="let user"> {{ user.roles.join(', ') }} </td>
-  </ng-container>
+    <ng-container matColumnDef="roles">
+      <th mat-header-cell *matHeaderCellDef>Roles</th>
+      <td mat-cell *matCellDef="let user"> {{ user.roles.join(', ') }} </td>
+    </ng-container>
 
-  <ng-container matColumnDef="actions">
-    <th mat-header-cell *matHeaderCellDef>Actions</th>
-    <td mat-cell *matCellDef="let user" class="actions">
-      <app-role-change-select (select)="changeRole($event, user.id)" [roles]="user.roles"></app-role-change-select>
-    </td>
-  </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let user" class="actions">
+        <app-role-change-select (select)="changeRole($event, user.id)" [roles]="user.roles"></app-role-change-select>
+      </td>
+    </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</mat-table>
-<mat-paginator [pageIndex]="(form.value.page || 1) - 1" showFirstLastButtons (page)="changePage($event.pageIndex + 1)" [pageSize]="20" [length]="_users.total"></mat-paginator>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </mat-table>
+  <mat-paginator 
+    [pageIndex]="(form.value.page || 1) - 1"
+    showFirstLastButtons
+    (page)="changePage($event)"
+    [pageSize]="defaultSearchParameters.DEFAULT_PAGE_SIZE_USERS"
+    [pageSizeOptions]="defaultSearchParameters.DEFAULT_PAGE_SIZE_OPTIONS"
+    [length]="users.total">
+  </mat-paginator>
+}

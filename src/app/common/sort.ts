@@ -1,14 +1,14 @@
-export type quizSort = 'title' | 'createdOn' | 'updatedOn';
-export type order = 'asc' | 'desc';
+export type quizSort = 'Title' | 'CreatedOn' | 'UpdatedOn';
+export type order = 'Ascending' | 'Descending';
 
 export interface SortAndOrder {
-  sort: quizSort;
+  sortBy: quizSort;
   order: order;
 }
 
 export const sorting = {
-  categories: ['title', 'createdOn', 'updatedOn'] as quizSort[],
-  order: ['asc', 'desc'] as order[],
+  categories: ['Title', 'CreatedOn', 'UpdatedOn'] as quizSort[],
+  order: ['Ascending', 'Descending'] as order[],
 };
 
 export interface SortLabel {
@@ -18,14 +18,14 @@ export interface SortLabel {
 }
 
 const sortingLabels: Record<quizSort, string> = {
-  title: 'Title',
-  createdOn: 'Date (created on)',
-  updatedOn: 'Date (last updated)',
+  Title: 'Title',
+  CreatedOn: 'Date (created on)',
+  UpdatedOn: 'Date (last updated)',
 };
 
 const orderLabels: Record<order, string> = {
-  asc: 'Ascending',
-  desc: 'Descending',
+  Ascending: 'Ascending',
+  Descending: 'Descending',
 };
 
 export const sortAndOrderLabels: SortLabel[] = sorting.categories.map(
@@ -39,3 +39,15 @@ export const sortAndOrderLabels: SortLabel[] = sorting.categories.map(
     ),
   ),
 ).reduce((acc, current) => acc.concat(current), []);
+
+export const activityLogsOrderLabels: Record<order, string> = sorting.order.reduce(
+  (state, order) => (
+    {...state, [order]: `Date ${order.toLowerCase()}`}
+  ), {} as Record<order, string>,
+);
+
+export const profileSearchOrderLabels: Record<order, string> = sorting.order.reduce(
+  (state, order) => (
+    {...state, [order]: `Username ${order.toLowerCase()}`}
+  ), {} as Record<order, string>,
+);

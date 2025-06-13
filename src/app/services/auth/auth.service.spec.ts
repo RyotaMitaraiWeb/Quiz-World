@@ -30,7 +30,7 @@ describe('AuthService', () => {
         done();
       });
 
-      const request = httpTest.expectOne(service.url.usernameExists(username));
+      const request = httpTest.expectOne((req) => req.url.startsWith(service.url.usernameExists));
       request.flush(null, {
         status: HttpStatusCode.Ok,
         statusText: 'Ok',
@@ -46,7 +46,7 @@ describe('AuthService', () => {
         done();
       });
 
-      const request = httpTest.expectOne(service.url.usernameExists(username));
+      const request = httpTest.expectOne((req) => req.url.startsWith(service.url.usernameExists));
       request.flush(null, {
         status: HttpStatusCode.NotFound,
         statusText: 'Not found',

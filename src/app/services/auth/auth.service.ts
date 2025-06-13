@@ -1,6 +1,5 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { UserState } from '../../store/user/user.store';
 import { api } from '../../common/api';
 import { catchError, map, of } from 'rxjs';
 import type { AuthBody, SuccessfulAuthResponse } from './types';
@@ -26,21 +25,12 @@ export class AuthService {
   }
 
   checkIfUsernameExists(username: string) {
-    return this.http.get(this.url.usernameExists(username))
+    const params = new HttpParams().append('username', username);
+    return this.http.get(this.url.usernameExists, { params })
       .pipe(
         map(() => true),
         catchError(() => of(false)),
     );
-  }
-
-  getProfile(userId: string) {
-    return this.http.get<UserState>(this.url.profile(userId));
-  }
-
-  getProfileByUsername(username: string) {
-    return this.http.get<UserState>(this.url.getProfileByUsername(username), {
-      responseType: 'json',
-    });
   }
 
   retrieveSession() {

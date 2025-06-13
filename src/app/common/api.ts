@@ -6,6 +6,7 @@ const quiz = `${root}/quiz`;
 const answer = `${root}/grade`;
 const logs = `${root}/logs`;
 const roles = `${root}/roles`;
+const profiles = `${root}/profile`;
 
 export const api = {
   root,
@@ -17,7 +18,7 @@ export const api = {
       register: `${auth}/register`,
       login: `${auth}/login`,
       logout: `${auth}/logout`,
-      usernameExists: (username: string) => `${auth}/username/${username}`,
+      usernameExists: `${auth}/username`,
       /** Endpoint to check if the user has a valid session upon app load */
       session: `${auth}/session`,
       profile: (id: string) => `${auth}/${id}`,
@@ -28,6 +29,7 @@ export const api = {
      */
     quiz: {
       create: quiz,
+      browse: quiz,
       /**
        * Endpoint for retrieving a specific quiz by its id.
        * @param id
@@ -36,27 +38,28 @@ export const api = {
       id: (id: string | number) => `${quiz}/${id}`,
       edit: (id: string | number) => `${quiz}/${id}`,
       delete: (id: string | number) => `${quiz}/${id}`,
-      all: `${quiz}/all`,
-      search: `${quiz}/search`,
       user: (id: string) => `${quiz}/user/${id}`,
       quizForEdit: (id: number) => `${quiz}/${id}/edit`,
     },
     answers: {
-      correctAnswersInstantMode: (questionId: string) => `${answer}/${questionId}/question`,
-      correctAnswersFull: (quizId: number) => `${answer}/${quizId}/quiz`,
+      correctAnswersInstantMode: (questionId: string) => `${answer}/question/${questionId}`,
+      correctAnswersFull: (quizId: number) => `${answer}/quiz/${quizId}`,
     },
     logs: {
       getLogs: logs,
     },
 
     roles: {
-      getUsersOfRole: (role: string) => `${roles}/users/${role}`,
-      promote: (userId: string, role: string) => `${roles}/promote/${userId}/${role}`,
-      demote: (userId: string, role: string) => `${roles}/demote/${userId}/${role}`,
+      promote: `${roles}/add`,
+      demote: `${roles}/remove`,
       /**
        * Use query string ``username`` to filter users.
        */
       getUsersOfUsername: () => `${roles}/users`,
+    },
+    profiles: {
+      getByUsername: (username: string) => `${profiles}/username/${username}`,
+      search: profiles,
     },
   },
 };

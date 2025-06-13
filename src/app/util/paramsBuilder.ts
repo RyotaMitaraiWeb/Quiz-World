@@ -10,7 +10,14 @@ export function paramsBuilder(options: Record<string, any> | undefined) {
 
   for (const key of Object.keys(options)) {
     const value = options[key as string];
-    if (value !== undefined) {
+
+    if (value === undefined) continue;
+
+    if (Array.isArray(value)) {
+      value.forEach(v => {
+        params = params.append(key, String(v));
+      });
+    } else {
       params = params.append(key, String(value));
     }
   }

@@ -16,24 +16,18 @@ export class AdminService {
   readonly rolesUrl = api.endpoints.roles;
   readonly logsUrl = api.endpoints.logs;
 
-  getUsersOfRole(role: string, username: string, options: SearchOptionsWithPaginationAndOrdering) {
-    const params = paramsBuilder({ ...options, username });
-
-    return this.http.get<UserList>(this.rolesUrl.getUsersOfRole(role), { params });
-  }
-
   getUsersByUsername(username: string, options?: SearchOptionsWithPaginationAndOrdering) {
     const params = paramsBuilder({ ...options, username });
 
     return this.http.get<UserList>(this.rolesUrl.getUsersOfUsername(), { params });
   }
 
-  addRoleToUser(id: string, role: string) {
-    return this.http.put<UserList>(this.rolesUrl.promote(id, role), {});
+  addRoleToUser(userId: string, role: string) {
+    return this.http.patch(this.rolesUrl.promote, { userId, role });
   }
 
-  removeRoleFromUser(id: string, role: string) {
-    return this.http.put<UserList>(this.rolesUrl.demote(id, role), {});
+  removeRoleFromUser(userId: string, role: string) {
+    return this.http.patch(this.rolesUrl.demote, { userId, role });
   }
 
   getActivityLogs(options?: SearchOptionsWithPaginationAndOrdering) {
