@@ -19,7 +19,7 @@ export class SearchQuizSorterComponent {
     },
   );
 
-  select = output<SortAndOrder>();
+  selectSearch = output<SortAndOrder>();
 
   protected readonly selectedValue = computed(() => {
     const options = this.sortOptions();
@@ -31,7 +31,7 @@ export class SearchQuizSorterComponent {
     const sortBy = this._extractSortCategory(value);
     const order = this._extractOrder(value);
 
-    this.select.emit({ sortBy, order });
+    this.selectSearch.emit({ sortBy, order });
   }
 
   private _extractSortCategory(value: string) {
