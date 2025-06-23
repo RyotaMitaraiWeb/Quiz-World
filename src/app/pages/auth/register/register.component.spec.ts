@@ -12,7 +12,6 @@ import { api } from '../../../common/api';
 import { SuccessfulAuthResponse } from '../../../services/auth/types';
 import { roles } from '../../../common/roles';
 import { MatButtonHarness } from '@angular/material/button/testing';
-import { UserStore } from '../../../store/user/user.store';
 import { AuthService } from '../../../services/auth/auth.service';
 import { of } from 'rxjs';
 import { registerValidationRules } from '../../../common/validationRules/register';
@@ -52,8 +51,6 @@ describe('RegisterComponent', () => {
       const passwordField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Password...' }));
       const spy = spyOn(window.localStorage, 'setItem').and.stub();
 
-      const store = TestBed.inject(UserStore);
-
       await usernameField.setValue('admin');
       await passwordField.setValue('123456');
       await fixture.whenStable();
@@ -77,14 +74,12 @@ describe('RegisterComponent', () => {
       });
 
       expect(spy).toHaveBeenCalledWith('token', 'a');
-      expect(store.username()).toBe('admin');
     }));
 
     it('Handles wrong username and password correctly', fakeAsync(async () => {
       const usernameField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Your username...' }));
       const passwordField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Password...' }));
       const spy = spyOn(window.localStorage, 'setItem').and.stub();
-      const store = TestBed.inject(UserStore);
 
       await usernameField.setValue('admin');
       await passwordField.setValue('123456');
@@ -106,7 +101,6 @@ describe('RegisterComponent', () => {
       await fixture.whenStable();
 
       expect(spy).not.toHaveBeenCalled();
-      expect(store.username()).toBe('');
     }));
 
     it('Disables the submit button when a request is ongoing', fakeAsync(async () => {

@@ -13,6 +13,7 @@ import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-i
 import { AuthBody } from '../../../services/auth/types';
 import { Subscription } from 'rxjs';
 import { uniqueUsernameValidatorAsync } from '../../../validators/unique-username/unique-username.validator';
+import { SignalrService } from '../../../services/signalr/signalr.service';
 
 @Component({
   selector: 'app-register',
@@ -32,6 +33,7 @@ export class RegisterComponent implements OnDestroy {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly userStore = inject(UserStore);
+  private readonly connection = inject(SignalrService);
 
   registerForm = new FormGroup({
     username: new FormControl('', {
@@ -65,11 +67,11 @@ export class RegisterComponent implements OnDestroy {
     if (this.registerForm.valid) {
       this._registerSub = this.authService.register(body).subscribe({
         next: (result) => {
-          const { token, ...user } = result;
+          const { token } = result;
           localStorage.setItem('token', token);
-          this.userStore.updateUser(user);
           this.router.navigate(['']);
           this.submitting.set(false);
+          this.connection.connect();
         },
         error: () => {
           this.submitting.set(false);

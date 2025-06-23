@@ -12,6 +12,7 @@ import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { loginErrors } from '../../../common/validationErrors/login';
 import { PasswordVisibilityButtonComponent } from '../../../components/auth/login/password-visibility-button/password-visibility-button.component';
 import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-input-error.pipe';
+import { SignalrService } from '../../../services/signalr/signalr.service';
 
 @Component({
   selector: 'app-login',
@@ -35,6 +36,7 @@ export class LoginComponent implements OnDestroy {
   protected errorMessages = loginErrors;
   protected usernameErrors = loginErrors.username;
   protected passwordErrors = loginErrors.password;
+  private readonly connection = inject(SignalrService);
 
   private loginSub?: Subscription;
 
@@ -59,12 +61,12 @@ export class LoginComponent implements OnDestroy {
 
     this.loginSub = this.authService.login(body).subscribe({
       next: (user) => {
-        const { token, ...userData } = user;
+        const { token } = user;
         localStorage.setItem('token', token);
-        this.userStore.updateUser(userData);
         this.router.navigate(['']);
         this.loginFailed.set(false);
         this.submitting.set(false);
+        this.connection.connect();
       },
       error: (e: HttpErrorResponse) => {
         if (e.status === HttpStatusCode.Unauthorized) {

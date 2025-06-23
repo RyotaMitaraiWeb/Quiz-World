@@ -11,15 +11,16 @@ import { api } from '../../../common/api';
 import { SuccessfulAuthResponse } from '../../../services/auth/types';
 import { roles } from '../../../common/roles';
 import { MatButtonHarness } from '@angular/material/button/testing';
-import { UserStore } from '../../../store/user/user.store';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { SignalrService } from '../../../services/signalr/signalr.service';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let loader: HarnessLoader;
   let httpTest: HttpTestingController;
+  let connection: SignalrService;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -30,6 +31,8 @@ describe('LoginComponent', () => {
 
     fixture = TestBed.createComponent(LoginComponent);
     loader = TestbedHarnessEnvironment.loader(fixture);
+    connection = TestBed.inject(SignalrService);
+    spyOn(connection, 'connect').and.stub();
     component = fixture.componentInstance;
     httpTest = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
@@ -44,8 +47,6 @@ describe('LoginComponent', () => {
       const usernameField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Your username...' }));
       const passwordField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Password...' }));
       const spy = spyOn(window.localStorage, 'setItem').and.stub();
-
-      const store = TestBed.inject(UserStore);
 
       await usernameField.setValue('admin');
       await passwordField.setValue('123456');
@@ -67,14 +68,12 @@ describe('LoginComponent', () => {
       });
 
       expect(spy).toHaveBeenCalledWith('token', 'a');
-      expect(store.username()).toBe('admin');
     });
 
     it('Handles wrong username and password correctly', async () => {
       const usernameField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Your username...' }));
       const passwordField = await loader.getHarness(MatInputHarness.with({ placeholder: 'Password...' }));
       const spy = spyOn(window.localStorage, 'setItem').and.stub();
-      const store = TestBed.inject(UserStore);
 
       await usernameField.setValue('admin');
       await passwordField.setValue('123456');
@@ -99,7 +98,6 @@ describe('LoginComponent', () => {
       await fixture.whenStable();
 
       expect(spy).not.toHaveBeenCalled();
-      expect(store.username()).toBe('');
 
       const error = fixture.debugElement.query(By.css('.error'));
       expect(error).not.toBeNull();
