@@ -12,7 +12,7 @@ import { MatOptionSelectionChange } from '@angular/material/core';
 })
 export class RoleChangeSelectComponent {
   roles = model.required<role[]>();
-  select = output<RoleChangeSelectEvent>();
+  roleSelect = output<RoleChangeSelectEvent>();
 
   protected readonly rolesList = rolesThatCanBeGivenOrRemoved;
 
@@ -24,7 +24,7 @@ export class RoleChangeSelectComponent {
     const currentValue = this.roles();
     const type = this.determineRoleChangeSelectEventType(value, currentValue);
 
-    this.select.emit({ type, value });
+    this.roleSelect.emit({ type, value });
   }
 
   private determineRoleChangeSelectEventType(eventValue: role, currentValue: role[]): RoleChangeSelectEventType {
