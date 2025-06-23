@@ -20,6 +20,6 @@ jobs:
         node-version: '22'
         cache: 'npm'
     - name: Install dependencies
-      run: npm i
+      run: npm i --force # TO-DO: remove flag when ngrx 20 releases
     - name: Run linting
       run: npm run lint
