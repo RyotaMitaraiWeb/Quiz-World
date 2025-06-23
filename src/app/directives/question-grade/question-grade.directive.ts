@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
+import { Directive, ElementRef, inject, Input, OnChanges } from '@angular/core';
 
 /**
  * Directive for applying class names based on "feedback". Essentially,
@@ -11,12 +11,11 @@ import { Directive, ElementRef, Input, OnChanges } from '@angular/core';
   standalone: true,
 })
 export class QuestionGradeDirective implements OnChanges {
-
+  private readonly el = inject(ElementRef);
   @Input() appQuestionGrade!: boolean | null;
 
   @Input() correctAnswerClassName = 'correct';
   @Input() incorrectAnswerClassName = 'incorrect';
-  constructor(private el: ElementRef) {}
 
   ngOnChanges() {
     this.grade();
