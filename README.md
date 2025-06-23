@@ -1,6 +1,20 @@
 # Quiz World - a web app for creating and playing quizzes
 This repository contains the client of the app, written in Angular 19.
 
+## Preview images
+
+<details>
+<summary>Toggle images</summary>
+<br>
+<img src="./preview-images/creating_quiz_1.png" alt="First step of creating a quiz (basic data like prompt, description, and game mode)">
+<img src="./preview-images/creating_quiz_2.png" alt="Creating a single-choice question">
+<img src="./preview-images/playing_quiz_1.png" alt="Answering a single-choice question incorrectly in a game">
+<img src="./preview-images/playing_quiz_2.png" alt="Answering a multiple-choice correctly question in a game">
+<img src="./preview-images/playing_quiz_3.png" alt="Answering a text question correctly in a game">
+<img src="./preview-images/playing_quiz_4.png" alt="Answering a single-choice question correctly in a game">
+<img src="./preview-images/login.png" alt="A user logging into their profile">
+</details>
+
 ## Installing
 ```bash
 npm i --force
