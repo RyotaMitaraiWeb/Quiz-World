@@ -36,7 +36,6 @@ export class AppComponent implements OnInit {
   private readonly userStore = inject(UserStore);
   protected readonly sidenav = inject(SidenavService);
   private readonly connection = inject(SignalrService);
-
   private readonly breakpointObserver = inject(BreakpointObserver);
   protected readonly isMobile$ = this.breakpointObserver
     .observe('(max-width: 1024px)')
@@ -46,6 +45,15 @@ export class AppComponent implements OnInit {
     this.connection.receiveCredentials$.subscribe((user) =>
       this.userStore.updateUser(user),
     );
+
+    this.connection.roleAdded$.subscribe(data => {
+      this.userStore.addRole(data.role);
+    });
+
+    this.connection.roleRemoved$.subscribe(data => {
+      this.userStore.removeRole(data.role);
+    });
+
     this.authService.retrieveSession().subscribe({
       next: () => {
         this.connection.connect();

@@ -9,6 +9,8 @@ export const hubs = {
 
 export const events = {
   ReceiveCredentials: 'ReceiveCredentials',
+  RoleAdded: 'RoleAdded',
+  RoleRemoved: 'RoleRemoved',
 };
 
 export const actions = {};

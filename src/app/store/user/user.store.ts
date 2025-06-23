@@ -32,5 +32,19 @@ export const UserStore = signalStore(
       logout() {
         patchState(store, initialUserState);
       },
+      addRole(role: role) {
+        patchState(store, {
+          id: store.id(),
+          username: store.username(),
+          roles: [...store.roles(), role],
+        });
+      },
+      removeRole(role: role) {
+        patchState(store, {
+          id: store.id(),
+          username: store.username(),
+          roles: store.roles().filter(r => r !== role),
+        });
+      },
     }
   )));
