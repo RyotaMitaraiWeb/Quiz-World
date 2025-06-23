@@ -10,7 +10,7 @@
 <ng-content select="[search-results-title]" />
 
 <div class="search-results-section">
-  <app-search-quiz-sorter (select)="search($event)" [sortOptions]="{ sortBy, order }" />
+  <app-search-quiz-sorter (selectSearch)="search($event)" [sortOptions]="{ sortBy, order }" />
 
   @if (_quizzes.length === 0) {
   <p class="no-quizzes">No quizzes found, try changing your search parameters and try again!</p>

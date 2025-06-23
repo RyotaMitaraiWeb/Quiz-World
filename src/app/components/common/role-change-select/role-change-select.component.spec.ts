@@ -50,7 +50,7 @@ describe('RoleChangeSelectComponent', () => {
   it('Correctly emits a promotion event', async () => {
     fixture.componentRef.setInput('roles', [roles.user]);
     fixture.detectChanges();
-    const spy = spyOn(component.select, 'emit');
+    const spy = spyOn(component.roleSelect, 'emit');
 
     const select = await loader.getHarness(MatSelectHarness);
     await select.open();
@@ -69,7 +69,7 @@ describe('RoleChangeSelectComponent', () => {
   it('Correctly emits a demotion event', async () => {
     fixture.componentRef.setInput('roles', [roles.moderator, roles.user, roles.admin]);
     fixture.detectChanges();
-    const spy = spyOn(component.select, 'emit');
+    const spy = spyOn(component.roleSelect, 'emit');
 
     const select = await loader.getHarness(MatSelectHarness);
     await select.open();
@@ -88,7 +88,7 @@ describe('RoleChangeSelectComponent', () => {
   it('Toggles between promotion and demotion correctly (thus keeping track of the current state)', async () => {
     fixture.componentRef.setInput('roles', [roles.moderator, roles.user, roles.admin]);
     fixture.detectChanges();
-    const spy = spyOn(component.select, 'emit');
+    const spy = spyOn(component.roleSelect, 'emit');
 
     const select = await loader.getHarness(MatSelectHarness);
     await select.open();

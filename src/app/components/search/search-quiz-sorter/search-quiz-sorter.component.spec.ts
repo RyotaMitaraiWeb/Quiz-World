@@ -54,7 +54,7 @@ describe('SearchQuizSorterComponent', () => {
   });
 
   it('Emits a correct event when an option is selected', async () => {
-    const spy = spyOn(fixture.componentInstance.select, 'emit');
+    const spy = spyOn(fixture.componentInstance.selectSearch, 'emit');
 
     const select = await loader.getHarness(MatSelectHarness);
     await select.open();
