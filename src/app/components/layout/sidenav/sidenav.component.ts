@@ -8,6 +8,8 @@ import { filter, Subscription } from 'rxjs';
 import { MatRippleModule } from '@angular/material/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { SignalrService } from '../../../services/signalr/signalr.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SNACKBAR_DURATION, snackbarAction, snackbarMessages } from '../../../common/snackbar';
 
 @Component({
   selector: 'app-sidenav',
@@ -27,6 +29,7 @@ export class SidenavComponent implements OnDestroy, OnInit {
   private readonly auth = inject(AuthService);
   private readonly breakpointObserver = inject(BreakpointObserver);
   private readonly connection = inject(SignalrService);
+  private readonly snackbar = inject(MatSnackBar);
 
   protected readonly isOpen = computed(() => this.sidenav.isOpen());
   protected readonly tabIndex = computed(() => this.isOpen() ? 0 : -1);
@@ -101,6 +104,9 @@ export class SidenavComponent implements OnDestroy, OnInit {
         this.userStore.logout();
         this.connection.disconnect();
         this.router.navigate(['auth', 'login']);
+        this.snackbar.open(snackbarMessages.success.logout, snackbarAction, {
+          duration: SNACKBAR_DURATION,
+        });
         this.sidenav.close();
       },
       error() {
