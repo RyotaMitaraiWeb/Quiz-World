@@ -1,8 +1,7 @@
 import { HttpErrorResponse, HttpInterceptorFn, HttpRequest, HttpStatusCode } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpResponse } from '@microsoft/signalr';
-import { catchError, filter, throwError } from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 
 const statusCodePaths: Record<number, string> = {
   [HttpStatusCode.Unauthorized]: '/auth/login',
@@ -29,7 +28,6 @@ export const redirectOnErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(reqWithoutHeader)
   .pipe(
-    filter(res => res instanceof HttpResponse),
     catchError((res: HttpErrorResponse) => {
       const statusCode = res.status;
       const path = statusCodePaths[statusCode] as string | undefined;
