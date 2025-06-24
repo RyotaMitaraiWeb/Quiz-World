@@ -8,6 +8,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { AnswerService } from '../../../services/answer/answer.service';
 import { Subscription } from 'rxjs';
 import { QuizGameStatsComponent } from '../quiz-game-stats/quiz-game-stats.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { snackbarMessages, snackbarAction, SNACKBAR_DURATION } from '../../../common/snackbar';
 
 
 @Component({
@@ -23,6 +25,7 @@ export class QuizGameComponent implements OnDestroy  {
   private readonly answerService = inject(AnswerService);
   protected readonly quiz = inject(QuizStore);
   protected readonly form = this.sharedForm.form;
+  private readonly snackbar = inject(MatSnackBar);
 
   correctAnswers = signal<GradedAnswer[] | null>(null);
 
@@ -63,6 +66,9 @@ export class QuizGameComponent implements OnDestroy  {
           this.form.disable();
           this.correctAnswers.set(answers);
           this.form.disable();
+          this.snackbar.open(snackbarMessages.success.quiz.gradedAll, snackbarAction, {
+          duration: SNACKBAR_DURATION,
+        });
         },
         error: () => {
           //

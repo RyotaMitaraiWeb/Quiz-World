@@ -16,6 +16,8 @@ export const snackbarMessages = {
       create: 'Your quiz was created successfully!',
       edit: 'The quiz was edited successfully!',
       delete: 'The quiz was deleted successfully!',
+      gradedAll: 'All questions have been graded! See below for a summary of your performance',
+      gradedAllInstantMode: 'You have answered all questions! Scroll to the bottom to review your performance',
     },
     admin: {
       role: {
