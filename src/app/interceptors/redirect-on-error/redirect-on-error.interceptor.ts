@@ -2,6 +2,8 @@ import { HttpErrorResponse, HttpInterceptorFn, HttpRequest, HttpStatusCode } fro
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
+import { SNACKBAR_DURATION, snackbarAction, snackbarErrorMessagesByStatusCode } from '../../common/snackbar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 const statusCodePaths: Record<number, string> = {
   [HttpStatusCode.Unauthorized]: '/auth/login',
@@ -21,6 +23,7 @@ export function skipRedirectOnResponseHeader(...statusCodes: HttpStatusCode[]): 
 
 export const redirectOnErrorInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
+  const snackbar = inject(MatSnackBar);
 
   const reqWithoutHeader = req.clone({
     headers: req.headers.delete(skipRedirectHeaderName),
@@ -35,6 +38,11 @@ export const redirectOnErrorInterceptor: HttpInterceptorFn = (req, next) => {
 
       if (!skip && path) {
         router.navigateByUrl(path);
+        if (snackbarErrorMessagesByStatusCode[statusCode]) {
+          snackbar.open(snackbarErrorMessagesByStatusCode[statusCode], snackbarAction, {
+            duration: SNACKBAR_DURATION,
+          });
+        }
       }
 
       return throwError(() => res);

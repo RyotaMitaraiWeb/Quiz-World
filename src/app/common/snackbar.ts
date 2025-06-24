@@ -1,7 +1,11 @@
+import { HttpStatusCode } from '@angular/common/http';
+
 export const messages = {
   error: {
     login: 'You must be logged in to perform this action!',
     requestFailed: 'Something went wrong with your request, please try again later!',
+    accessDenied: 'Access denied',
+    notFound: 'The page or resource you are looking for does not exist!',
   },
   success: {
     register: 'You registered successfully!',
@@ -20,3 +24,12 @@ export const messages = {
     },
   },
 };
+
+export const SNACKBAR_DURATION = 10_000;
+export const snackbarErrorMessagesByStatusCode: Record<number, string> = {
+  [HttpStatusCode.Unauthorized]: messages.error.login,
+  [HttpStatusCode.Forbidden]: messages.error.accessDenied,
+  [HttpStatusCode.NotFound]: messages.error.notFound,
+};
+
+export const snackbarAction = 'Got it';
