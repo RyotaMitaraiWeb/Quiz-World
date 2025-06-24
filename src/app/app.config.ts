@@ -6,6 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { tokenInterceptor } from './interceptors/token/token.interceptor';
 import { redirectOnErrorInterceptor } from './interceptors/redirect-on-error/redirect-on-error.interceptor';
+import { notifyOnServerErrorInterceptor } from './interceptors/notify-on-server-error/notify-on-server-error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,6 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([
       tokenInterceptor,
       redirectOnErrorInterceptor,
+      notifyOnServerErrorInterceptor,
     ])),
     provideZonelessChangeDetection(),
   ],
