@@ -5,12 +5,16 @@ import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { tokenInterceptor } from './interceptors/token/token.interceptor';
+import { redirectOnErrorInterceptor } from './interceptors/redirect-on-error/redirect-on-error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withComponentInputBinding()),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([tokenInterceptor])),
+    provideHttpClient(withInterceptors([
+      tokenInterceptor,
+      redirectOnErrorInterceptor,
+    ])),
     provideZonelessChangeDetection(),
   ],
 
