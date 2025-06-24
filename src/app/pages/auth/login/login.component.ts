@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal } from '@angular/core';
 import { AuthService } from '../../../services/auth/auth.service';
-import { UserStore } from '../../../store/user/user.store';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,6 +12,8 @@ import { loginErrors } from '../../../common/validationErrors/login';
 import { PasswordVisibilityButtonComponent } from '../../../components/auth/login/password-visibility-button/password-visibility-button.component';
 import { SingleInputErrorPipe } from '../../../pipes/single-input-error/single-input-error.pipe';
 import { SignalrService } from '../../../services/signalr/signalr.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SNACKBAR_DURATION, snackbarAction, snackbarMessages } from '../../../common/snackbar';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +32,7 @@ import { SignalrService } from '../../../services/signalr/signalr.service';
 })
 export class LoginComponent implements OnDestroy {
   private readonly authService = inject(AuthService);
-  private readonly userStore = inject(UserStore);
+  private readonly snackbar = inject(MatSnackBar);
   private readonly router = inject(Router);
   protected errorMessages = loginErrors;
   protected usernameErrors = loginErrors.username;
@@ -67,6 +68,9 @@ export class LoginComponent implements OnDestroy {
         this.loginFailed.set(false);
         this.submitting.set(false);
         this.connection.connect();
+        this.snackbar.open(snackbarMessages.success.login, snackbarAction, {
+          duration: SNACKBAR_DURATION,
+        });
       },
       error: (e: HttpErrorResponse) => {
         if (e.status === HttpStatusCode.Unauthorized) {

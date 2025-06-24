@@ -14,6 +14,8 @@ import { RouterModule } from '@angular/router';
 import { ProfileService } from '../../../../services/profile/profile.service';
 import { defaultSearchValues } from '../../../../common/search';
 import { AsyncPipe } from '@angular/common';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { snackbarMessages } from '../../../../common/snackbar';
 
 @Component({
   selector: 'app-users-tab-section',
@@ -34,6 +36,7 @@ import { AsyncPipe } from '@angular/common';
 export class UsersTabSectionComponent implements OnDestroy, OnInit {
   private readonly adminService = inject(AdminService);
   private readonly profileService = inject(ProfileService);
+  private readonly snackbar = inject(MatSnackBar);
 
   protected displayedColumns = ['username', 'roles', 'actions'];
   protected readonly roles = roles;
@@ -95,7 +98,14 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
       .pipe(
         // trigger a "refresh"
         tap(() => this.form.patchValue({ username: this.form.value.username })),
-      ).subscribe();
+      ).subscribe({
+        next: () => {
+          this.snackbar.open(snackbarMessages.success.admin.role.promoted(role));
+        },
+        error() {
+          //
+        },
+      });
     }
 
     private demote(role: role, userId: string) {
@@ -103,7 +113,14 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
       .pipe(
         // trigger a "refresh"
         tap(() => this.form.patchValue({ username: this.form.value.username })),
-      ).subscribe();
+      ).subscribe({
+        next: () => {
+          this.snackbar.open(snackbarMessages.success.admin.role.demoted(role));
+        },
+        error() {
+          //
+        },
+      });
     }
 
     private _promoteSub?: Subscription;

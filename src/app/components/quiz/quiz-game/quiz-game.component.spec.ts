@@ -15,6 +15,7 @@ import { QuizDetails } from '../../../services/quiz/types';
 import { AnswerService } from '../../../services/answer/answer.service';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 const sampleQuiz: QuizDetails = {
   id: 1,
@@ -34,6 +35,7 @@ describe('QuizGameComponent', () => {
   let fixture: ComponentFixture<QuizGameComponent>;
   let loader: HarnessLoader;
   let answerService: AnswerService;
+  let snackbar: MatSnackBar;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -46,6 +48,8 @@ describe('QuizGameComponent', () => {
     component = fixture.componentInstance;
     loader = TestbedHarnessEnvironment.loader(fixture);
     answerService = TestBed.inject(AnswerService);
+    snackbar = TestBed.inject(MatSnackBar);
+    spyOn(snackbar, 'open').and.stub();
 
     fixture.detectChanges();
   });

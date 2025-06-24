@@ -16,6 +16,8 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { map } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { SignalrService } from './services/signalr/signalr.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SNACKBAR_DURATION, snackbarAction, snackbarMessages } from './common/snackbar';
 
 @Component({
   selector: 'app-root',
@@ -41,6 +43,8 @@ export class AppComponent implements OnInit {
     .observe('(max-width: 1024px)')
     .pipe(map((breakpoint) => breakpoint.matches));
 
+    private readonly snackbar = inject(MatSnackBar);
+
   ngOnInit(): void {
     this.connection.receiveCredentials$.subscribe((user) =>
       this.userStore.updateUser(user),
@@ -48,10 +52,16 @@ export class AppComponent implements OnInit {
 
     this.connection.roleAdded$.subscribe(data => {
       this.userStore.addRole(data.role);
+      this.snackbar.open(snackbarMessages.roleChanges.added(data.role), snackbarAction, {
+        duration: SNACKBAR_DURATION,
+      });
     });
 
     this.connection.roleRemoved$.subscribe(data => {
       this.userStore.removeRole(data.role);
+      this.snackbar.open(snackbarMessages.roleChanges.removed(data.role), snackbarAction, {
+        duration: SNACKBAR_DURATION,
+      });
     });
 
     this.authService.retrieveSession().subscribe({

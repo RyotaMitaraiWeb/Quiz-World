@@ -1,8 +1,10 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, input } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { PercentPipe } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { snackbarMessages, snackbarAction, SNACKBAR_DURATION } from '../../../common/snackbar';
 
 @Component({
   selector: 'app-quiz-game-stats',
@@ -12,6 +14,21 @@ import { MatCardModule } from '@angular/material/card';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class QuizGameStatsComponent {
+  private readonly snackbar = inject(MatSnackBar);
+  constructor() {
+    effect(() => {
+      const stats = this.stats();
+      const instantMode = this.instantMode();
+      const questions = this.questions();
+      const unansweredQuestionsCount = stats.unanswered;
+
+      if (unansweredQuestionsCount === 0 && instantMode && questions.length) {
+        this.snackbar.open(snackbarMessages.success.quiz.gradedAllInstantMode, snackbarAction, {
+          duration: SNACKBAR_DURATION,
+        });
+      }
+    });
+  }
   questions = input<(boolean | null)[]>([]);
   instantMode = input<boolean>();
 

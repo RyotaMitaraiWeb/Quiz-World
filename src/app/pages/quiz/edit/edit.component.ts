@@ -12,6 +12,8 @@ import { generateUniqueId } from '../../../util/generateUniqueId';
 import { SharedCreateEditQuizFormService } from '../../../services/shared/shared-create-edit-quiz-form.service';
 import { Title } from '@angular/platform-browser';
 import { QuizFormGuideButtonComponent } from '../../../components/quiz/quiz-form-guide-button/quiz-form-guide-button.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { snackbarMessages, snackbarAction, SNACKBAR_DURATION } from '../../../common/snackbar';
 
 @Component({
   selector: 'app-edit',
@@ -25,6 +27,7 @@ export class EditComponent implements OnDestroy, OnInit {
   private readonly router = inject(Router);
   private readonly sharedForm = inject(SharedCreateEditQuizFormService);
   private readonly title = inject(Title);
+  private readonly snackbar = inject(MatSnackBar);
 
   quizTitle = signal('');
 
@@ -73,6 +76,9 @@ export class EditComponent implements OnDestroy, OnInit {
     this._submitSub = this.quizService.edit(this.id(), quiz).subscribe({
       next: () => {
         this.router.navigate(['/quiz', this.id()]);
+        this.snackbar.open(snackbarMessages.success.quiz.edit, snackbarAction, {
+          duration: SNACKBAR_DURATION,
+        });
       },
       error: () => {
         //

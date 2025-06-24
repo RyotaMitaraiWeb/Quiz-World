@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnDestroy, signal } from '@angular/core';
 import { AuthService } from '../../../services/auth/auth.service';
 import { Router, RouterModule } from '@angular/router';
-import { UserStore } from '../../../store/user/user.store';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { PasswordVisibilityButtonComponent } from '../../../components/auth/login/password-visibility-button/password-visibility-button.component';
@@ -14,6 +13,8 @@ import { AuthBody } from '../../../services/auth/types';
 import { Subscription } from 'rxjs';
 import { uniqueUsernameValidatorAsync } from '../../../validators/unique-username/unique-username.validator';
 import { SignalrService } from '../../../services/signalr/signalr.service';
+import { snackbarMessages, snackbarAction, SNACKBAR_DURATION } from '../../../common/snackbar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-register',
@@ -32,7 +33,7 @@ import { SignalrService } from '../../../services/signalr/signalr.service';
 export class RegisterComponent implements OnDestroy {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
-  private readonly userStore = inject(UserStore);
+  private readonly snackbar = inject(MatSnackBar);
   private readonly connection = inject(SignalrService);
 
   registerForm = new FormGroup({
@@ -72,6 +73,9 @@ export class RegisterComponent implements OnDestroy {
           this.router.navigate(['']);
           this.submitting.set(false);
           this.connection.connect();
+          this.snackbar.open(snackbarMessages.success.register, snackbarAction, {
+          duration: SNACKBAR_DURATION,
+        });
         },
         error: () => {
           this.submitting.set(false);
