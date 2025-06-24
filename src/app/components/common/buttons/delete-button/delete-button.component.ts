@@ -3,6 +3,8 @@ import { QuizService } from '../../../../services/quiz/quiz.service';
 import { Subscription } from 'rxjs';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { snackbarMessages, snackbarAction, SNACKBAR_DURATION } from '../../../../common/snackbar';
 
 @Component({
   selector: 'app-delete-button',
@@ -12,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class DeleteButtonComponent implements OnDestroy {
   private readonly quizService = inject(QuizService);
+  private readonly snackbar = inject(MatSnackBar);
   quizId = input.required<number>();
 
   afterDelete = output();
@@ -23,6 +26,10 @@ export class DeleteButtonComponent implements OnDestroy {
         if (this.afterDelete) {
           this.afterDelete.emit();
         }
+
+        this.snackbar.open(snackbarMessages.success.quiz.delete, snackbarAction, {
+          duration: SNACKBAR_DURATION,
+        });
       },
       error: () => {
         //

@@ -8,6 +8,8 @@ import { questionTypes } from '../../../common/questionTypes';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 import { QuizFormGuideButtonComponent } from '../../../components/quiz/quiz-form-guide-button/quiz-form-guide-button.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { SNACKBAR_DURATION, snackbarAction, snackbarMessages } from '../../../common/snackbar';
 @Component({
   selector: 'app-create',
   imports: [QuizFormComponent, QuizFormGuideButtonComponent],
@@ -18,6 +20,7 @@ import { QuizFormGuideButtonComponent } from '../../../components/quiz/quiz-form
 export class CreateQuizComponent implements OnDestroy {
   private readonly quizService = inject(QuizService);
   private readonly router = inject(Router);
+  private readonly snackbar = inject(MatSnackBar);
 
   submit(value: QuizForm) {
     const { basic, questions } = value;
@@ -31,6 +34,9 @@ export class CreateQuizComponent implements OnDestroy {
     this._submitSub = this.quizService.create(quiz).subscribe({
       next: (v) => {
         this.router.navigate(['/quiz', v.id]);
+        this.snackbar.open(snackbarMessages.success.quiz.create, snackbarAction, {
+          duration: SNACKBAR_DURATION,
+        });
       },
       error: () => {
         //
