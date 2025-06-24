@@ -38,8 +38,10 @@ export class AuthService {
   }
 
   retrieveSession() {
+    const headers = new HttpHeaders(this.skip401Redirect);
     return this.http.post<SuccessfulAuthResponse>(this.url.session, undefined, {
       responseType: 'json',
+      headers,
     });
   }
 
