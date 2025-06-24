@@ -1,4 +1,5 @@
 import { HttpStatusCode } from '@angular/common/http';
+import { role } from './roles';
 
 export const snackbarMessages = {
   error: {
@@ -22,6 +23,10 @@ export const snackbarMessages = {
         demoted: (role: string) => `You demoted the user from ${role} successfully!`,
       },
     },
+  },
+  roleChanges: {
+    added: (role: role) => `You have become a ${role}! Congratulations!`,
+    removed: (role: role) => `You are no longer a ${role}`,
   },
 };
 
