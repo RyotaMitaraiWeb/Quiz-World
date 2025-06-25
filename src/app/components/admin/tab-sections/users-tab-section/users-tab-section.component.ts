@@ -38,7 +38,7 @@ export class UsersTabSectionComponent implements OnDestroy, OnInit {
   private readonly profileService = inject(ProfileService);
   private readonly snackbar = inject(MatSnackBar);
 
-  protected displayedColumns = ['username', 'roles', 'actions'];
+  protected displayedColumns = ['id', 'username', 'roles', 'actions'];
   protected readonly roles = roles;
 
   readonly form = new FormGroup(

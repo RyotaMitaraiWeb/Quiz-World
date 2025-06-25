@@ -260,7 +260,7 @@ describe('UsersTabSectionComponent', () => {
       const rows = await table.getRows();
       expect(rows.length).toBe(20);
 
-      const firstValue = (await rows[0].getCellTextByIndex())[0];
+      const firstValue = (await rows[0].getCellTextByIndex())[1];
       const expectedValue = mockUserData.users[mockUserData.users.length - 1].username;
       expect(firstValue).toBe(expectedValue);
     }));
