@@ -9,6 +9,7 @@ import { AdminPageComponent } from './pages/admin/admin-page/admin-page.componen
 import { SearchPageComponent } from './pages/quiz/search-page/search-page.component';
 import { AllPageComponent } from './pages/quiz/all-page/all-page.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { loggedInGuard } from './guards/logged-in/logged-in.guard';
 
 export const routes: Routes = [
   {
@@ -43,6 +44,7 @@ export const routes: Routes = [
         path: 'create',
         component: CreateQuizComponent,
         title: 'Create a new quiz | Quiz World',
+        canActivate: [loggedInGuard],
       },
       {
         path: 'search',
@@ -58,6 +60,7 @@ export const routes: Routes = [
           {
             path: 'edit',
             component: EditComponent,
+            canActivate: [loggedInGuard],
           },
         ],
       },
@@ -81,5 +84,6 @@ export const routes: Routes = [
     path: 'admin',
     title: 'Administrator area',
     component: AdminPageComponent,
+    // guard not included as all errors from access are 404s
   },
 ];
