@@ -1,14 +1,20 @@
-@let _user = user();
-@let username = _user.username;
-@let userRoles = roles();
+@let _user = user(); @let username = _user.username; @let userRoles = roles();
 
 <section>
-  <h1>Overview of {{username}}'s profile</h1>
-  <mat-list>
-    <mat-list-item>
-      <mat-icon matListItemIcon>assignment_ind</mat-icon>
-      <h2 matListItemTitle>Roles</h2>
-      <p matListItemLine>{{ userRoles }}</p>
-    </mat-list-item>
-  </mat-list>
+  <h1>Overview of {{ username }}'s profile</h1>
+  <div class="overview">
+    <app-avatar [src]="avatarSrc()" size="large" alt="" />
+    <div class="user-data">
+      <div class="heading">
+        <h2>{{ username }}</h2>
+      </div>
+      <mat-list>
+        <mat-list-item>
+          <mat-icon matListItemIcon>assignment_ind</mat-icon>
+          <h2 matListItemTitle>Roles</h2>
+          <p matListItemLine>{{ userRoles }}</p>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </div>
 </section>
