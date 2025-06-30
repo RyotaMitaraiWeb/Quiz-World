@@ -7,6 +7,8 @@ const answer = `${root}/grade`;
 const logs = `${root}/logs`;
 const roles = `${root}/roles`;
 const profiles = `${root}/profile`;
+const images = `${root}/images`;
+const profilePictures = `${images}/profile-pictures`;
 
 export const api = {
   root,
@@ -60,6 +62,12 @@ export const api = {
     profiles: {
       getByUsername: (username: string) => `${profiles}/username/${username}`,
       search: profiles,
+    },
+  },
+  images: {
+    root: images,
+    profilePictures: {
+      getByUsername: (username: string) => `${profilePictures}/${username}.webp`,
     },
   },
 };

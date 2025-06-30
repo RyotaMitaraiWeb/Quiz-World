@@ -1,0 +1,14 @@
+@let _src = src();
+@let _alt = alt();
+@let _size = size();
+@let _failedToLoad = failedToLoad();
+@let _priority = priority();
+
+@if (!_failedToLoad && _src) {
+<img [priority]="_priority" (error)="handleError()" [ngSrc]="test()" [alt]="_alt" [class]="[_size, 'avatar']"
+  [width]="avatarSize" [height]="avatarSize">
+} @else {
+<div [class]="[_size, 'avatar', 'no-avatar']">
+  <mat-icon>person</mat-icon>
+</div>
+}

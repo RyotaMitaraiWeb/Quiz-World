@@ -5,11 +5,14 @@
 <section class="quiz-overview">
   <mat-card appearance="outlined">
     <mat-card-header>
+      <a class="avatar-link" mat-card-avatar [routerLink]="['/profile', 'user', username]">
+        <app-avatar [src]="avatarSrc()" [alt]="`${username}'s profile`" size="medium" />
+      </a>
       <mat-card-title>
         Overview
       </mat-card-title>
       <mat-card-subtitle>
-        Made by <a [routerLink]="['/profile', 'user', username]">{{ username }}</a>
+        Made by {{ username }}
 
         <mat-chip-set>
           <mat-chip>
